@@ -1,0 +1,15 @@
+version: "Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)"
+options: "bfd2e8bbad3f0caeddff545304c5ceb34828b5eded2e2f229f5603e7bfdf20f8"
+build_start_time: [1677753780, 129935979]
+build_end_time: [1677753790, 922896862]
+inputs:
+  "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ActionType.swift": [1677753718, 386258125]
+  ? "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ContentBlockerFileManager.swift"
+  : [1677753718, 386489391]
+  ? "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ContentBlockerGenerator.swift"
+  : [1677753718, 386686801]
+  ? "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ContentBlockerParser.swift"
+  : [1677753718, 386932373]
+  "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/Entity.swift": [1677753718, 387179851]
+  "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/FileCategory.swift": [1677753718, 387414932]
+  "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/JsonHelper.swift": [1677753718, 387600898]

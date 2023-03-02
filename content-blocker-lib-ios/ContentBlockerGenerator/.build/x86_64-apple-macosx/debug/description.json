@@ -1,0 +1,227 @@
+{
+  "builtTestProducts" : [
+    {
+      "binaryPath" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGeneratorPackageTests.xctest/Contents/MacOS/ContentBlockerGeneratorPackageTests",
+      "productName" : "ContentBlockerGeneratorPackageTests"
+    }
+  ],
+  "copyCommands" : {
+
+  },
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.ContentBlockerGenerator-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "importPath" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ActionType.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ContentBlockerFileManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ContentBlockerGenerator.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ContentBlockerParser.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/Entity.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/FileCategory.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/JsonHelper.swift"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "ContentBlockerGenerator",
+      "moduleOutputPath" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.swiftmodule",
+      "objects" : [
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/ActionType.swift.o",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/ContentBlockerFileManager.swift.o",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/ContentBlockerGenerator.swift.o",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/ContentBlockerParser.swift.o",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/Entity.swift.o",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/FileCategory.swift.o",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/JsonHelper.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-apple-macosx10.13",
+        "-swift-version",
+        "5",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-g",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "ContentBlockerGenerator_main",
+        "-color-diagnostics",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib"
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/ActionType.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/ContentBlockerFileManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/ContentBlockerGenerator.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/ContentBlockerParser.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/Entity.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/FileCategory.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build/JsonHelper.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.swiftmodule"
+        }
+      ],
+      "sources" : [
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ActionType.swift",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ContentBlockerFileManager.swift",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ContentBlockerGenerator.swift",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/ContentBlockerParser.swift",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/Entity.swift",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/FileCategory.swift",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Sources/ContentBlockerGenerator/JsonHelper.swift"
+      ],
+      "tempsPath" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.ContentBlockerGeneratorTests-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "importPath" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Tests/ContentBlockerGeneratorTests/ContentBlockerGeneratorTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Tests/ContentBlockerGeneratorTests/ContentBlockerParserTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Tests/ContentBlockerGeneratorTests/MockData.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGenerator"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "ContentBlockerGeneratorTests",
+      "moduleOutputPath" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGeneratorTests.swiftmodule",
+      "objects" : [
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGeneratorTests.build/ContentBlockerGeneratorTests.swift.o",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGeneratorTests.build/ContentBlockerParserTests.swift.o",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGeneratorTests.build/MockData.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-apple-macosx11.0",
+        "-swift-version",
+        "5",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-g",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-color-diagnostics",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib"
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGeneratorTests.build/ContentBlockerGeneratorTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGeneratorTests.build/ContentBlockerParserTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGeneratorTests.build/MockData.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGeneratorTests.swiftmodule"
+        }
+      ],
+      "sources" : [
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Tests/ContentBlockerGeneratorTests/ContentBlockerGeneratorTests.swift",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Tests/ContentBlockerGeneratorTests/ContentBlockerParserTests.swift",
+        "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/Tests/ContentBlockerGeneratorTests/MockData.swift"
+      ],
+      "tempsPath" : "/Users/abelanca/firefox-ios/content-blocker-lib-ios/ContentBlockerGenerator/.build/x86_64-apple-macosx/debug/ContentBlockerGeneratorTests.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "testDiscoveryCommands" : {
+
+  }
+}

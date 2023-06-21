@@ -37,7 +37,8 @@ protocol URLBarDelegate: AnyObject {
     func urlBarDidEnterOverlayMode(_ urlBar: URLBarView)
     func urlBarDidLeaveOverlayMode(_ urlBar: URLBarView)
     func urlBarDidLongPressLocation(_ urlBar: URLBarView)
-    func urlBarDidPressQRButton(_ urlBar: URLBarView)
+    func urlBarDidPressQRButton(_ urlBar: URLBarView, button: UIButton)
+    func urlBarDidPressShareFreespokeButton(_ button: UIButton)
     func urlBarDidTapShield(_ urlBar: URLBarView)
     func urlBarLocationAccessibilityActions(_ urlBar: URLBarView) -> [UIAccessibilityCustomAction]?
     func urlBarDidPressScrollToTop(_ urlBar: URLBarView)
@@ -47,7 +48,7 @@ protocol URLBarDelegate: AnyObject {
     // Returns either (search query, true) or (url, false).
     func urlBarDisplayTextForURL(_ url: URL?) -> (String?, Bool)
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView)
-    func urlBarDidPressShare(_ urlBar: URLBarView, shareView: UIView)
+    func urlBarDidPressShare(_ tabLocationView: TabLocationView, urlBar: URLBarView, shareView: UIView)
 }
 
 protocol URLBarViewProtocol {
@@ -121,12 +122,14 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
 
     let line = UIView()
 
+    /*
     lazy var tabsButton: TabsButton = {
         let tabsButton = TabsButton.tabTrayButton()
         tabsButton.accessibilityIdentifier = AccessibilityIdentifiers.Browser.UrlBar.tabsButton
         tabsButton.inTopTabs = false
         return tabsButton
     }()
+    */
 
     fileprivate lazy var progressBar: GradientProgressBar = {
         let progressBar = GradientProgressBar()
@@ -148,7 +151,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
 
     fileprivate lazy var showQRScannerButton: InsetButton = {
         let button = InsetButton()
-        button.setImage(UIImage.templateImageNamed(ImageIdentifiers.menuScanQRCode), for: .normal)
+        button.setImage(UIImage.templateImageNamed(ImageIdentifiers.menuShare), for: .normal)
         button.accessibilityIdentifier = AccessibilityIdentifiers.Browser.UrlBar.scanQRCodeButton
         button.accessibilityLabel = .ScanQRCodeViewTitle
         button.clipsToBounds = false
@@ -176,6 +179,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         return searchIconImageView
     }()
 
+    var tabsButton = ToolbarButton()
     var appMenuButton = ToolbarButton()
     var bookmarksButton = ToolbarButton()
     var homeButton = ToolbarButton()
@@ -411,7 +415,8 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     }
 
     @objc func showQRScanner() {
-        self.delegate?.urlBarDidPressQRButton(self)
+        self.delegate?.urlBarDidPressQRButton(self, button: showQRScannerButton)
+        //self.delegate?.urlBarDidPressShareFreespokeButton(showQRScannerButton)
     }
 
     func createLocationTextField() {
@@ -669,6 +674,10 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
 }
 
 extension URLBarView: TabToolbarProtocol {
+    func updateNavigationButtonsState(_ state: MiddleButtonState) {
+        helper?.setNavigationsButtonsState(state)
+    }
+    
     func privateModeBadge(visible: Bool) {
         if UIDevice.current.userInterfaceIdiom != .pad {
             privateModeBadge.show(visible)
@@ -697,7 +706,7 @@ extension URLBarView: TabToolbarProtocol {
     }
 
     func updateTabCount(_ count: Int, animated: Bool = true) {
-        tabsButton.updateTabCount(count, animated: animated)
+        //tabsButton.updateTabCount(count, animated: animated)
     }
 
     func updateMiddleButtonState(_ state: MiddleButtonState) {
@@ -778,7 +787,8 @@ extension URLBarView: TabLocationViewDelegate {
     }
 
     func tabLocationViewDidTapShare(_ tabLocationView: TabLocationView, button: UIButton) {
-        delegate?.urlBarDidPressShare(self, shareView: button)
+        //tabLocationView.shareButton.setImage(<#T##image: UIImage?##UIImage?#>, for: <#T##UIControl.State#>)
+        delegate?.urlBarDidPressShare(tabLocationView, urlBar: self, shareView: button)
     }
 
     func tabLocationViewLocationAccessibilityActions(_ tabLocationView: TabLocationView) -> [UIAccessibilityCustomAction]? {

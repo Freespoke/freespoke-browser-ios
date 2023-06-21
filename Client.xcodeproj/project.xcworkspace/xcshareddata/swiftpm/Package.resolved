@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mozilla/glean-swift",
       "state" : {
-        "revision" : "80f176317e3b25befaebb48a1009753358fa37b8",
-        "version" : "52.3.1"
+        "branch" : "main",
+        "revision" : "dd626f0fb051ffc70179846a0b75a04f997b63b7"
       }
     },
     {
@@ -79,6 +79,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "f56a6e483163a761adc8cd25c337db0ed1eac524"
+      }
+    },
+    {
+      "identity" : "onesignal-xcframework",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/OneSignal/OneSignal-XCFramework",
+      "state" : {
+        "revision" : "091f9c572b4a522f93cd1d4f2f524e3818a253f2",
+        "version" : "3.12.5"
       }
     },
     {

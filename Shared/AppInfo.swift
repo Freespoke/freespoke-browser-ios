@@ -17,12 +17,12 @@ extension AppInfo {
     /// Return the keychain access group.
     public static func keychainAccessGroupWithPrefix(_ prefix: String) -> String {
         var bundleIdentifier = baseBundleIdentifier
-        if bundleIdentifier == "org.mozilla.ios.FennecEnterprise" {
+        if bundleIdentifier == "com.freespoke.app" {
             // Bug 1373726 - Base bundle identifier incorrectly generated for Nightly builds
             // This can be removed when we are able to fix the app group in the developer portal
-            bundleIdentifier = "org.mozilla.ios.Fennec.enterprise"
+            bundleIdentifier = "com.freespoke.app"
         }
-        return prefix + "." + bundleIdentifier
+        return "group." + bundleIdentifier + ".onesignal"
     }
 
     // Return the MozWhatsNewTopic key from the Info.plist
@@ -49,18 +49,18 @@ extension AppInfo {
         return Locale.current.identifier == "zh_CN"
     }()
 
-    // The App Store page identifier for the Firefox iOS application
-    public static var appStoreId = "id989804926"
+    // The App Store page identifier for the Freespoke iOS application
+    public static var appStoreId = "id1617332602"
 
     /// Return the shared container identifier (also known as the app group) to be used with for example background
     /// http requests. It is the base bundle identifier with a "group." prefix.
     public static var sharedContainerIdentifier: String {
         var bundleIdentifier = baseBundleIdentifier
-        if bundleIdentifier == "org.mozilla.ios.FennecEnterprise" {
+        if bundleIdentifier == "com.freespoke.app" {
             // Bug 1373726 - Base bundle identifier incorrectly generated for Nightly builds
             // This can be removed when we are able to fix the app group in the developer portal
-            bundleIdentifier = "org.mozilla.ios.Fennec.enterprise"
+            bundleIdentifier = "com.freespoke.app"
         }
-        return "group." + bundleIdentifier
+        return "group." + bundleIdentifier + ".onesignal"
     }
 }

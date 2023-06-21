@@ -517,11 +517,9 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
                 // (so we can safely dereference it).
                 let url = NewTabHomePageAccessors.getHomePage(profile.prefs)!
                 tab.loadRequest(URLRequest(url: url))
-            case .blankPage:
-                // If we're showing "about:blank" in a webview, set
-                // the <html> `background-color` to match the theme.
-                if let webView = tab.webView as? TabWebView {
-                    webView.applyTheme()
+            case .freespoke:
+                if let url = URL(string: Constants.freespokeURL.rawValue) {
+                    tab.loadRequest(URLRequest(url: url))
                 }
                 break
             default:
@@ -890,6 +888,7 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
             home.url = homeUrl
             return home
         }
+        //else if page == .freespoke {}
 
         return selectedTab ?? addTab()
     }

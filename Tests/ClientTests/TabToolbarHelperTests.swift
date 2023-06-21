@@ -17,7 +17,7 @@ class TabToolbarHelperTests: XCTestCase {
     let menuButtonImage = UIImage.templateImageNamed("nav-menu")
     let searchButtonImage = UIImage.templateImageNamed("search")
     let imageNewTab = UIImage.templateImageNamed("nav-add")
-    let imageHome = UIImage.templateImageNamed("menu-Home")
+    let imageHome = UIImage.templateImageNamed("icon-menu-Home")
 
     override func setUp() {
         super.setUp()
@@ -87,8 +87,8 @@ class MockTabToolbar: TabToolbarProtocol {
         // swiftlint:enable unused_setter_value
     }
 
-    var _tabsButton = MockTabsButton()
-    var tabsButton: TabsButton { return _tabsButton }
+    var _tabsButton = MockToolbarButton()
+    var tabsButton: ToolbarButton { return _tabsButton }
 
     var _bookmarksButton = MockToolbarButton()
     var bookmarksButton: ToolbarButton { return _bookmarksButton }

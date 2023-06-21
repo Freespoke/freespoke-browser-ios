@@ -103,8 +103,8 @@ class AppSettingsTableViewController: SettingsTableViewController, FeatureFlagga
 
         let prefs = profile.prefs
         var generalSettings: [Setting] = [
-            SearchSetting(settings: self),
-            NewTabPageSetting(settings: self),
+            //SearchSetting(settings: self),
+            //NewTabPageSetting(settings: self),
             HomeSetting(settings: self),
             OpenWithSetting(settings: self),
             ThemeSetting(settings: self),
@@ -128,16 +128,7 @@ class AppSettingsTableViewController: SettingsTableViewController, FeatureFlagga
         if tabTrayGroupsAreBuildActive || inactiveTabsAreBuildActive {
             generalSettings.insert(TabsSetting(theme: themeManager.currentTheme), at: 3)
         }
-
-        let accountChinaSyncSetting: [Setting]
-        if !AppInfo.isChinaEdition {
-            accountChinaSyncSetting = []
-        } else {
-            accountChinaSyncSetting = [
-                // Show China sync service setting:
-                ChinaSyncServiceSetting(settings: self)
-            ]
-        }
+        
         // There is nothing to show in the Customize section if we don't include the compact tab layout
         // setting on iPad. When more options are added that work on both device types, this logic can
         // be changed.
@@ -159,6 +150,18 @@ class AppSettingsTableViewController: SettingsTableViewController, FeatureFlagga
                 statusText: .SettingsShowLinkPreviewsStatus)
         ]
 
+        /*
+        //|     Hide Set default broswer & Passwords options from Settings
+         let accountChinaSyncSetting: [Setting]
+         if !AppInfo.isChinaEdition {
+             accountChinaSyncSetting = []
+         } else {
+             accountChinaSyncSetting = [
+                 // Show China sync service setting:
+                 ChinaSyncServiceSetting(settings: self)
+             ]
+         }
+         
         if #available(iOS 14.0, *) {
             settings += [
                 SettingSection(footerTitle: NSAttributedString(string: String.FirefoxHomepage.HomeTabBanner.EvergreenMessage.HomeTabBannerDescription),
@@ -166,6 +169,7 @@ class AppSettingsTableViewController: SettingsTableViewController, FeatureFlagga
             ]
         }
 
+         
         let accountSectionTitle = NSAttributedString(string: .FxAFirefoxAccount)
 
         let footerText = !profile.hasAccount() ? NSAttributedString(string: .Settings.Sync.ButtonDescription) : nil
@@ -178,17 +182,21 @@ class AppSettingsTableViewController: SettingsTableViewController, FeatureFlagga
                 AccountStatusSetting(settings: self),
                 SyncNowSetting(settings: self)
             ] + accountChinaSyncSetting )]
+        */
 
         settings += [ SettingSection(title: NSAttributedString(string: .SettingsGeneralSectionTitle), children: generalSettings)]
-
+        
         var privacySettings = [Setting]()
-        privacySettings.append(LoginsSetting(settings: self, delegate: settingsDelegate))
+        
+        //|     Hide Password option from Settings
+        //privacySettings.append(LoginsSetting(settings: self, delegate: settingsDelegate))
 
         privacySettings.append(ClearPrivateDataSetting(settings: self))
 
-        if autofillCreditCardStatus {
-            privacySettings.append(AutofillCreditCardSettings(settings: self))
-        }
+        //|     Hide AutoFill Credit Card from Settings
+        //if autofillCreditCardStatus {
+        //    privacySettings.append(AutofillCreditCardSettings(settings: self))
+        //}
 
         privacySettings += [
             BoolSetting(prefs: prefs,
@@ -201,38 +209,43 @@ class AppSettingsTableViewController: SettingsTableViewController, FeatureFlagga
 
         privacySettings.append(ContentBlockerSetting(settings: self))
 
-        privacySettings += [
-            PrivacyPolicySetting()
-        ]
-
         settings += [
             SettingSection(title: NSAttributedString(string: .AppSettingsPrivacyTitle), children: privacySettings),
             SettingSection(title: NSAttributedString(string: .AppSettingsSupport), children: [
-                SendFeedbackSetting(),
-                SendAnonymousUsageDataSetting(prefs: prefs, delegate: settingsDelegate, theme: themeManager.currentTheme),
-                StudiesToggleSetting(prefs: prefs, delegate: settingsDelegate, theme: themeManager.currentTheme),
+                //SendFeedbackSetting(),
                 OpenSupportPageSetting(delegate: settingsDelegate, theme: themeManager.currentTheme),
+                
+                //|     Hide Send Usage Data and Firefox Studies
+                //|
+                //SendAnonymousUsageDataSetting(prefs: prefs, delegate: settingsDelegate, theme: themeManager.currentTheme),
+                //StudiesToggleSetting(prefs: prefs, delegate: settingsDelegate, theme: themeManager.currentTheme),
             ]),
             SettingSection(title: NSAttributedString(string: .AppSettingsAbout), children: [
+                AboutFreespokeSetting(delegate: settingsDelegate, theme: themeManager.currentTheme),
+                TermsSetting(delegate: settingsDelegate, theme: themeManager.currentTheme),
+                PrivacyPolicySetting(delegate: settingsDelegate, theme: themeManager.currentTheme),
                 AppStoreReviewSetting(),
-                VersionSetting(settings: self),
                 LicenseAndAcknowledgementsSetting(),
-                YourRightsSetting(),
-                ExportBrowserDataSetting(settings: self),
-                ExportLogDataSetting(settings: self),
-                DeleteExportedDataSetting(settings: self),
-                ForceCrashSetting(settings: self),
-                SlowTheDatabase(settings: self),
-                ForgetSyncAuthStateDebugSetting(settings: self),
-                SentryIDSetting(settings: self),
-                ChangeToChinaSetting(settings: self),
-                TogglePullToRefresh(settings: self),
-                ResetWallpaperOnboardingPage(settings: self),
-                ToggleInactiveTabs(settings: self),
-                ToggleHistoryGroups(settings: self),
-                ResetContextualHints(settings: self),
-                OpenFiftyTabsDebugOption(settings: self),
-                ExperimentsSettings(settings: self)
+                HithubiOSLink(delegate: settingsDelegate, theme: themeManager.currentTheme),
+                
+                //|     Hide all options from Firefox
+                //VersionSetting(settings: self),
+                //YourRightsSetting(),
+                //ExportBrowserDataSetting(settings: self),
+                //ExportLogDataSetting(settings: self),
+                //DeleteExportedDataSetting(settings: self),
+                //ForceCrashSetting(settings: self),
+                //SlowTheDatabase(settings: self),
+                //ForgetSyncAuthStateDebugSetting(settings: self),
+                //SentryIDSetting(settings: self),
+                //ChangeToChinaSetting(settings: self),
+                //TogglePullToRefresh(settings: self),
+                //ResetWallpaperOnboardingPage(settings: self),
+                //ToggleInactiveTabs(settings: self),
+                //ToggleHistoryGroups(settings: self),
+                //ResetContextualHints(settings: self),
+                //OpenFiftyTabsDebugOption(settings: self),
+                //ExperimentsSettings(settings: self)
             ])]
 
         return settings

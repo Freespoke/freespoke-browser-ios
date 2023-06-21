@@ -77,11 +77,11 @@ class TelemetryWrapper: TelemetryWrapperProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(uploadError), name: Telemetry.notificationReportError, object: nil)
 
         let telemetryConfig = legacyTelemetry.configuration
-        telemetryConfig.appName = "Fennec"
+        telemetryConfig.appName = "Freespoke"
         telemetryConfig.userDefaultsSuiteName = AppInfo.sharedContainerIdentifier
         telemetryConfig.dataDirectory = .cachesDirectory
         telemetryConfig.updateChannel = AppConstants.buildChannel.rawValue
-        let sendUsageData = profile.prefs.boolForKey(AppConstants.prefSendUsageData) ?? true
+        let sendUsageData = false
         telemetryConfig.isCollectionEnabled = sendUsageData
         telemetryConfig.isUploadEnabled = sendUsageData
 

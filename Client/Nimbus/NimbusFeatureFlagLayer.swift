@@ -18,6 +18,7 @@ final class NimbusFeatureFlagLayer {
 
         case .bottomSearchBar,
                 .searchHighlights,
+                .contextualHintForBookmarks,
             // TODO: https://mozilla-hub.atlassian.net/browse/FXIOS-5362
             // This is a temporary workaround for the toolbar experiment hack
                 .contextualHintForToolbar:

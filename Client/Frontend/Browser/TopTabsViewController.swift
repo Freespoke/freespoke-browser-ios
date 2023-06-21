@@ -53,11 +53,12 @@ class TopTabsViewController: UIViewController, Themeable {
         return collectionView
     }()
 
-    private lazy var tabsButton: TabsButton = .build { button in
+    private lazy var tabsButton: UIButton = .build { button in
+        button.setImage(UIImage.templateImageNamed("icon-tabs"), for: .normal)
         button.semanticContentAttribute = .forceLeftToRight
         button.addTarget(self, action: #selector(TopTabsViewController.tabsTrayTapped), for: .touchUpInside)
         button.accessibilityIdentifier = AccessibilityIdentifiers.Browser.TopTabs.tabsButton
-        button.inTopTabs = true
+        //button.inTopTabs = true
     }
 
     private lazy var newTab: UIButton = .build { button in
@@ -148,7 +149,7 @@ class TopTabsViewController: UIViewController, Themeable {
         let dropInteraction = UIDropInteraction(delegate: topTabDisplayManager)
         newTab.addInteraction(dropInteraction)
 
-        tabsButton.applyTheme()
+        //tabsButton.applyTheme()
         applyUIMode(isPrivate: tabManager.selectedTab?.isPrivate ?? false)
 
         updateTabCount(topTabDisplayManager.dataStore.count, animated: false)
@@ -171,7 +172,7 @@ class TopTabsViewController: UIViewController, Themeable {
     }
 
     func updateTabCount(_ count: Int, animated: Bool = true) {
-        self.tabsButton.updateTabCount(count, animated: animated)
+        //self.tabsButton.updateTabCount(count, animated: animated)
     }
 
     @objc func tabsTrayTapped() {
@@ -307,9 +308,9 @@ extension TopTabsViewController: NotificationThemeable, PrivateModeUI {
 
     func applyTheme() {
         view.backgroundColor = themeManager.currentTheme.colors.layer3
-        tabsButton.applyTheme()
         privateModeButton.applyTheme(theme: themeManager.currentTheme)
         newTab.tintColor = themeManager.currentTheme.colors.iconPrimary
+        tabsButton.tintColor = themeManager.currentTheme.colors.iconPrimary
         collectionView.backgroundColor = view.backgroundColor
         collectionView.reloadData()
         topTabDisplayManager.refreshStore()

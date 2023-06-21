@@ -43,9 +43,9 @@ class NewTabContentSettingsViewController: SettingsTableViewController {
             title: NSAttributedString(string: .SettingsNewTabBlankPage),
             subtitle: nil,
             accessibilityIdentifier: "NewTabAsBlankPage",
-            isChecked: {return self.currentChoice == NewTabPage.blankPage},
+            isChecked: {return self.currentChoice == NewTabPage.freespoke},
             onChecked: {
-                self.currentChoice = NewTabPage.blankPage
+                self.currentChoice = NewTabPage.freespoke
                 onFinished()
         })
         let showWebPage = WebPageSetting(

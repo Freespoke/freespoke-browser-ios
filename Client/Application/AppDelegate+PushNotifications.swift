@@ -90,36 +90,74 @@ extension AppDelegate {
     }
 }
 
+// MARK: - UNUserNotificationCenterDelegate Methods
+
 extension AppDelegate: UNUserNotificationCenterDelegate {
-    // Called when the user taps on a sent-tab notification from the background.
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        openURLsInNewTabs(response.notification)
-    }
-
-    // Called when the user receives a tab (or any other notification) while in foreground.
-    func userNotificationCenter(
-        _ center: UNUserNotificationCenter,
-        willPresent notification: UNNotification,
-        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
-    ) {
-        if profile.prefs.boolForKey(PendingAccountDisconnectedKey) ?? false {
-            profile.removeAccount()
-
-            // show the notification
-            if #available(iOS 14, *) {
-                completionHandler([.list, .banner, .sound])
-            } else {
-                completionHandler([.alert, .sound])
-            }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        //  show the notification
+        if #available(iOS 14, *) {
+            completionHandler([.list, .banner, .sound])
         } else {
-            openURLsInNewTabs(notification)
+            completionHandler([.alert, .sound])
         }
     }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo    = response.notification.request.content.userInfo
+        let info        = userInfo as NSDictionary
+        
+        if let custom = info["custom"] as? NSDictionary {
+            if let url = custom["u"] as? String {
+                print(url)
+                
+                if let url = URL(string: url) {
+                    if UIApplication.shared.applicationState == .active {
+                        let object = OpenTabNotificationObject(type: .switchToTabForURLOrOpen(url))
+                        NotificationCenter.default.post(name: .OpenTabNotification, object: object)
+                    }
+                    else {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            if UIApplication.shared.applicationState == .active {
+                                let object = OpenTabNotificationObject(type: .switchToTabForURLOrOpen(url))
+                                NotificationCenter.default.post(name: .OpenTabNotification, object: object)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        completionHandler()
+    }
+    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) {
+//        let userInfo    = response.notification.request.content.userInfo
+//        let info        = userInfo as NSDictionary
+//
+//        if let custom = info["custom"] as? NSDictionary {
+//            if let url = custom["u"] as? String {
+//                print(url)
+//
+//                if let url = URL(string: url) {
+//                    if UIApplication.shared.applicationState == .active {
+//                        let object = OpenTabNotificationObject(type: .switchToTabForURLOrOpen(url))
+//                        NotificationCenter.default.post(name: .OpenTabNotification, object: object)
+//                    }
+//                    else {
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+//                            let object = OpenTabNotificationObject(type: .switchToTabForURLOrOpen(url))
+//                            NotificationCenter.default.post(name: .OpenTabNotification, object: object)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
 
 extension AppDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        RustFirefoxAccounts.shared.pushNotifications.didRegister(withDeviceToken: deviceToken)
+        //RustFirefoxAccounts.shared.pushNotifications.didRegister(withDeviceToken: deviceToken)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

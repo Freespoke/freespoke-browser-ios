@@ -26,7 +26,7 @@ class HomeLogoHeaderCell: UICollectionViewCell, ReusableCell {
 
     // MARK: - UI Elements
     lazy var logoImage: UIImageView = .build { imageView in
-        imageView.image = UIImage(imageLiteralResourceName: ImageIdentifiers.homeHeaderLogoBall)
+        //imageView.image = UIImage(imageLiteralResourceName: ImageIdentifiers.homeHeaderLogoBall)
         imageView.contentMode = .scaleAspectFit
         imageView.accessibilityIdentifier = a11y.logoImage
     }
@@ -78,6 +78,14 @@ class HomeLogoHeaderCell: UICollectionViewCell, ReusableCell {
 // MARK: - ThemeApplicable
 extension HomeLogoHeaderCell: ThemeApplicable {
     func applyTheme(theme: Theme) {
+        switch theme.type {
+        case .light:
+            logoImage.image = UIImage(named: "Freespoke Torch - Light Mode")!
+            
+        case .dark:
+            logoImage.image = UIImage(named: "Freespoke Torch - Dark Mode")!
+        }
+        
         let wallpaperManager = WallpaperManager()
         if let logoTextColor = wallpaperManager.currentWallpaper.logoTextColor {
             logoTextImage.image = UIImage(imageLiteralResourceName: ImageIdentifiers.homeHeaderLogoText)

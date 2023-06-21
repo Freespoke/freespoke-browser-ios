@@ -20,7 +20,7 @@ class DefaultLoggerFileManager: LoggerFileManager {
 
     var logDirectoryPath: String?
 
-    init(fileNameRoot: String = "Firefox",
+    init(fileNameRoot: String = "Freespoke",
          fileManager: FileManagerProtocol = FileManager.default,
          sizeLimit: Int64 = TwoMBsInBytes) {
         self.fileNameRoot = fileNameRoot

@@ -7,6 +7,7 @@ import Storage
 import CoreSpotlight
 import UIKit
 import Common
+import OneSignal
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let logger = DefaultLogger.shared
@@ -80,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    level: .info,
                    category: .lifecycle)
 
-        pushNotificationSetup()
+        //pushNotificationSetup()
         appLaunchUtil?.setUpPostLaunchDependencies()
         backgroundSyncUtil = BackgroundSyncUtil(profile: profile, application: application)
 
@@ -100,7 +101,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logger.log("didFinishLaunchingWithOptions end",
                    level: .info,
                    category: .lifecycle)
-
+        
+        //FeatureFlagsManager.shared.set(feature: .startAtHome, to: Client.StartAtHomeSetting.always)
+        
+        if UserDefaults.standard.string(forKey: NimbusFeatureFlagIsSet.searchBarPosition.rawValue) == nil {
+            FeatureFlagsManager.shared.set(feature: .searchBarPosition, to: SearchBarPosition.bottom)
+            
+            UserDefaults.standard.set(NimbusFeatureFlagIsSet.searchBarPosition.rawValue, forKey: NimbusFeatureFlagIsSet.searchBarPosition.rawValue)
+        }
+        
+        if UserDefaults.standard.string(forKey: NimbusFeatureFlagIsSet.jumpBackIn.rawValue) == nil {
+            let jumpBackIn = NimbusFlaggableFeature(withID: .jumpBackIn, and: profile)
+            jumpBackIn.setUserPreference(to: false)
+            
+            UserDefaults.standard.set(NimbusFeatureFlagIsSet.jumpBackIn.rawValue, forKey: NimbusFeatureFlagIsSet.jumpBackIn.rawValue)
+        }
+        
+        if UserDefaults.standard.string(forKey: NimbusFeatureFlagIsSet.sponsoredTiles.rawValue) == nil {
+            let sponsoredTiles = NimbusFlaggableFeature(withID: .sponsoredTiles, and: profile)
+            sponsoredTiles.setUserPreference(to: false)
+            
+            UserDefaults.standard.set(NimbusFeatureFlagIsSet.sponsoredTiles.rawValue, forKey: NimbusFeatureFlagIsSet.sponsoredTiles.rawValue)
+        }
+        
+        // OneSignal initialization
+        OneSignal.initWithLaunchOptions(launchOptions)
+        OneSignal.setLaunchURLsInApp(true)
+        
+        //|     One Signal Secret Key
+        //OneSignal.setAppId("XXXX")
+        
+        UNUserNotificationCenter.current().delegate = self
+        
+        //|     Ask for setup notification setting
+        OneSignal.promptForPushNotifications(userResponse: { accepted in
+                 print("User accepted notification: \(accepted)")
+        })
+        
         return true
     }
 
@@ -188,6 +225,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             widgetManager?.writeWidgetKitTopSites()
         }
     }
+    
+    //|     Look Orientation in some screens for UX
+    struct AppUtility {
+        static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
+            if let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.orientationLock = orientation
+            }
+        }
+        
+        /*
+        static func lockOrientation(_ orientation: UIInterfaceOrientationMask, andRotateTo rotateOrientation:UIInterfaceOrientation) {
+            self.lockOrientation(orientation)
+
+            if #available(iOS 16.0, *) {
+                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+
+                windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: orientation))
+            } else {
+                UIDevice.current.setValue(rotateOrientation.rawValue, forKey: "orientation")
+            }
+        }
+        */
+    }
 }
 
 extension AppDelegate: Notifiable {
@@ -214,11 +274,7 @@ extension AppDelegate: Notifiable {
 
 // This functionality will need to be moved to the SceneDelegate when the time comes
 extension AppDelegate {
-    // Orientation lock for views that use new modal presenter
-    func application(
-        _ application: UIApplication,
-        supportedInterfaceOrientationsFor window: UIWindow?
-    ) -> UIInterfaceOrientationMask {
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.orientationLock
     }
 }
@@ -256,3 +312,4 @@ extension AppDelegate {
         return configuration
     }
 }
+

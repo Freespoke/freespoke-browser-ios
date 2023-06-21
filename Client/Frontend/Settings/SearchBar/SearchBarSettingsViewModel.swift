@@ -38,6 +38,12 @@ extension SearchBarLocationProvider {
 
         return isFeatureEnabled && !isiPad && !AppConstants.isRunningUITests
     }
+    
+    var isSearchBarLeatureEnabled: Bool {
+        let isFeatureEnabled = featureFlags.isFeatureEnabled(.contextualHintForBookmarks, checking: .buildOnly)
+
+        return isFeatureEnabled && !AppConstants.isRunningUITests
+    }
 
     var searchBarPosition: SearchBarPosition {
         guard let position: SearchBarPosition = featureFlags.getCustomState(for: .searchBarPosition) else {

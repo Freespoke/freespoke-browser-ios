@@ -10,7 +10,7 @@ class TabToolbar: UIView {
 
     weak var tabToolbarDelegate: TabToolbarDelegate?
 
-    let tabsButton = TabsButton()
+    let tabsButton = ToolbarButton()
     let addNewTabButton = ToolbarButton()
     let appMenuButton = ToolbarButton()
     let bookmarksButton = ToolbarButton()
@@ -125,11 +125,15 @@ extension TabToolbar: TabToolbarProtocol {
     func updateMiddleButtonState(_ state: MiddleButtonState) {
         helper?.setMiddleButtonState(state)
     }
+    
+    func updateNavigationButtonsState(_ state: MiddleButtonState) {
+        helper?.setNavigationsButtonsState(state)
+    }
 
     func updatePageStatus(_ isWebPage: Bool) { }
 
     func updateTabCount(_ count: Int, animated: Bool) {
-        tabsButton.updateTabCount(count, animated: animated)
+        //tabsButton.updateTabCount(count, animated: animated)
     }
 }
 

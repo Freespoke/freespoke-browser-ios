@@ -35,6 +35,7 @@ struct ContextualHintCopyProvider: FeatureFlaggable {
         switch copyType {
         case .action:
             copyToReturn = getActionCopyFor(hint)
+            
         case .description:
             copyToReturn = getDescriptionCopyFor(hint)
         }
@@ -57,6 +58,9 @@ struct ContextualHintCopyProvider: FeatureFlaggable {
         case .jumpBackInSyncedTab:
             descriptionCopy = CFRStrings.FirefoxHomepage.JumpBackIn.SyncedTab
 
+        case .bookmarksLocation:
+            descriptionCopy = CFRStrings.TabsTray.InactiveTabs.BookmarksDecriptionAlert
+            
         case .toolbarLocation:
             return getToolbarDescriptionCopy(with: arrowDirection)
         }
@@ -70,8 +74,13 @@ struct ContextualHintCopyProvider: FeatureFlaggable {
         switch hint {
         case .inactiveTabs:
             actionCopy = CFRStrings.TabsTray.InactiveTabs.Action
+            
+        case .bookmarksLocation:
+            actionCopy = CFRStrings.Toolbar.BookmarksButtonText
+            
         case .toolbarLocation:
             actionCopy = CFRStrings.Toolbar.SearchBarPlacementButtonText
+            
         case .jumpBackIn,
                 .jumpBackInSyncedTab:
             actionCopy = ""

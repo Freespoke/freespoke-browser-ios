@@ -103,8 +103,9 @@ class BookmarksPanelViewModel {
                 self.bookmarkFolder = mobileFolder
                 self.bookmarkNodes = mobileFolder.fxChildren ?? []
 
-                let desktopFolder = LocalDesktopFolder()
-                self.bookmarkNodes.insert(desktopFolder, at: 0)
+                //|     Remove "Desktop Bookmars" from Bookmars
+                //let desktopFolder = LocalDesktopFolder()
+                //self.bookmarkNodes.insert(desktopFolder, at: 0)
 
                 completion()
             }
@@ -118,7 +119,7 @@ class BookmarksPanelViewModel {
         let menu = LocalDesktopFolder(forcedGuid: BookmarkRoots.MenuFolderGUID)
 
         self.bookmarkFolder = nil
-        self.bookmarkNodes = [unfiled, toolbar, menu]
+        //self.bookmarkNodes = [unfiled, toolbar, menu]
         completion()
     }
 

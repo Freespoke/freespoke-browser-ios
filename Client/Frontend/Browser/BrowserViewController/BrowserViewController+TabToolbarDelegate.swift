@@ -9,11 +9,35 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressHome(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         userHasPressedHomeButton = true
         let page = NewTabAccessors.getHomePage(self.profile.prefs)
+        
         if page == .homePage, let homePageURL = HomeButtonHomePageAccessors.getHomePage(self.profile.prefs) {
-            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePageURL) as URLRequest)
+                    tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePageURL) as URLRequest)
         } else if let homePanelURL = page.url {
             tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
         }
+        else
+        if page == .freespoke {
+            if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
+                          tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
+                      }
+        }
+        
+//        switch page {
+//        case .freespoke:
+//            tabManager.startAtHomeCheck()
+////            if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
+////                tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
+////            }
+//
+//        case .homePage:
+//            if let homePageURL = HomeButtonHomePageAccessors.getHomePage(self.profile.prefs) {
+//                tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePageURL) as URLRequest)
+//            }
+//
+//        case .topSites:
+//            tabManager.startAtHomeCheck()
+//        }
+        
         TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .home)
     }
 
@@ -44,7 +68,12 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
 
     func tabToolbarDidPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        tabManager.selectedTab?.goBack()
+        if button.tag == 1 {
+            openLinkURL(Constants.newsURL.rawValue)
+        }
+        else {
+            tabManager.selectedTab?.goBack()
+        }
     }
 
     func tabToolbarDidLongPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -54,7 +83,12 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
 
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        tabManager.selectedTab?.goForward()
+        if button.tag == 1 {
+            openLinkURL(Constants.shopURL.rawValue)
+        }
+        else {
+            tabManager.selectedTab?.goForward()
+        }
     }
 
     func tabToolbarDidLongPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -77,6 +111,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         // Ensure that any keyboards or spinners are dismissed before presenting the menu
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 
+        /*
+        //|     Hide Firefox menu flow
+         
         // Logs homePageMenu or siteMenu depending if HomePage is open or not
         let isHomePage = tabManager.selectedTab?.isFxHomeTab ?? false
         let eventObject: TelemetryWrapper.EventObject = isHomePage ? .homePageMenu : .siteMenu
@@ -94,11 +131,36 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             let viewModel = PhotonActionSheetViewModel(actions: actions, modalStyle: .popover, isMainMenu: true, isMainMenuInverted: shouldInverse)
             self.presentSheetWith(viewModel: viewModel, on: self, from: button)
         }
+        */
+        
+        //|     Show Freespoke customized menu
+        showMenuController()
+    }
+    
+    private func showMenuController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "MenuController") as! MenuController
+        vc.delegate = self
+        vc.currentTheme = themeManager.currentTheme
+        
+        transitionVc(duration: 0.0, type: .fromRight)
+        navigationController?.pushViewController(vc, animated: false)
+        
+        //vc.modalPresentationStyle = .fullScreen
+        //vc.modalTransitionStyle = .coverVertical
+        //present(vc, animated: false, completion: nil)
     }
 
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        showTabTray()
-        TelemetryWrapper.recordEvent(category: .action, method: .press, object: .tabToolbar, value: .tabView)
+        let boolBookmarksProfile = profile.prefs.boolForKey("ContextualHintBookmarksLocationKey") ?? false
+        
+        if boolBookmarksProfile {
+            showTabTray()
+            TelemetryWrapper.recordEvent(category: .action, method: .press, object: .tabToolbar, value: .tabView)
+        }
+        else {
+            showBookamrksAlert()
+        }
     }
 
     func getTabToolbarLongPressActionsForModeSwitching() -> [PhotonRowActions] {
@@ -109,7 +171,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
         func action() {
             let result = tabManager.switchPrivacyMode()
-            if result == .createdNewTab, NewTabAccessors.getNewTabPage(self.profile.prefs) == .blankPage {
+            if result == .createdNewTab, NewTabAccessors.getNewTabPage(self.profile.prefs) == .freespoke {
                 focusLocationTextField(forTab: tabManager.selectedTab)
             }
         }
@@ -136,12 +198,12 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func getMoreTabToolbarLongPressActions() -> [PhotonRowActions] {
         let newTab = SingleActionViewModel(title: .KeyboardShortcuts.NewTab, iconString: ImageIdentifiers.newTab, iconType: .Image) { _ in
-            let shouldFocusLocationField = NewTabAccessors.getNewTabPage(self.profile.prefs) == .blankPage
+            let shouldFocusLocationField = NewTabAccessors.getNewTabPage(self.profile.prefs) == .freespoke
             self.openBlankNewTab(focusLocationField: shouldFocusLocationField, isPrivate: false)
         }.items
 
         let newPrivateTab = SingleActionViewModel(title: .KeyboardShortcuts.NewPrivateTab, iconString: ImageIdentifiers.newTab, iconType: .Image) { _ in
-            let shouldFocusLocationField = NewTabAccessors.getNewTabPage(self.profile.prefs) == .blankPage
+            let shouldFocusLocationField = NewTabAccessors.getNewTabPage(self.profile.prefs) == .freespoke
             self.openBlankNewTab(focusLocationField: shouldFocusLocationField, isPrivate: true)
         }.items
 
@@ -187,6 +249,76 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
 }
 
+// MARK: - MenuControllerDelegate Methods
+extension BrowserViewController: MenuControllerDelegate {
+    func didSelectOption(curCellType: MenuCellType) {
+        switch curCellType {
+        case .freespokeBlog:
+            openLinkURL(Constants.freespokeBlogURL.rawValue)
+            
+        case .ourNewsletters:
+            openLinkURL(Constants.ourNewslettersURL.rawValue)
+            
+        case .getInTouch:
+            openLinkURL(Constants.getInTouchURL.rawValue)
+            
+        case .appSettings:
+            showSettingsScreen()
+            
+        case .bookmars:
+            showLibrary(panel: .bookmarks)
+            
+        default:
+            break
+        }
+    }
+    
+    func didSelectSocial(socialType: SocialType) {
+        switch socialType {
+        case .twitter:
+            openLinkURL(Constants.twitterURL.rawValue)
+            
+        case .linkedin:
+            openLinkURL(Constants.linkedinURL.rawValue)
+            
+        case .instagram:
+            openLinkURL(Constants.instagramURL.rawValue)
+            
+        case .facebook:
+            openLinkURL(Constants.facebookURL.rawValue)
+        }
+    }
+    
+    // MARK: Custom Methods
+    
+    private func openLinkURL(_ strUrl: String) {
+        if let url = URL(string: strUrl) {
+            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
+        }
+    }
+    
+    private func showSettingsScreen() {
+        let settingsTableViewController = AppSettingsTableViewController(
+            with: self.profile,
+            and: self.tabManager,
+            delegate: self)
+
+        let controller = ThemedNavigationController(rootViewController: settingsTableViewController)
+        // On iPhone iOS13 the WKWebview crashes while presenting file picker if its not full screen. Ref #6232
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            controller.modalPresentationStyle = .fullScreen
+        }
+        //controller.presentingModalViewControllerDelegate = self.menuActionDelegate
+        TelemetryWrapper.recordEvent(category: .action, method: .open, object: .settings)
+
+        // Wait to present VC in an async dispatch queue to prevent a case where dismissal
+        // of this popover on iPad seems to block the presentation of the modal VC.
+        DispatchQueue.main.async {
+            self.showViewController(viewController: controller)
+        }
+    }
+}
+
 // MARK: - ToolbarActionMenuDelegate
 extension BrowserViewController: ToolBarActionMenuDelegate {
     func updateToolbarState() {
@@ -229,5 +361,17 @@ extension BrowserViewController: ToolBarActionMenuDelegate {
 
     func showWallpaperSettings() {
         showSettingsWithDeeplink(to: .wallpaper)
+    }
+}
+
+extension UIViewController {
+    func transitionVc(duration: CFTimeInterval, type: CATransitionSubtype) {
+        let transition = CATransition()
+        transition.duration = duration
+        transition.type = CATransitionType.reveal
+        transition.subtype = type
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        view.window!.layer.add(transition, forKey: kCATransition)
+        //present(customVcTransition, animated: false, completion: nil)
     }
 }

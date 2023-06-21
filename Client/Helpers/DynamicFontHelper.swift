@@ -44,27 +44,35 @@ class DynamicFontHelper: NSObject {
 
     var DeviceFont: UIFont {
         return UIFont.systemFont(ofSize: deviceFontSize, weight: UIFont.Weight.medium)
+        //return UIFont(name: "SourceSansPro-Regular", size: deviceFontSize)!
     }
     var DeviceFontLight: UIFont {
         return UIFont.systemFont(ofSize: deviceFontSize, weight: UIFont.Weight.light)
+        //return UIFont(name: "SourceSansPro-Regular", size: deviceFontSize)!
     }
     var DeviceFontSmall: UIFont {
         return UIFont.systemFont(ofSize: deviceFontSize - 1, weight: UIFont.Weight.medium)
+        //return UIFont(name: "SourceSansPro-Regular", size: deviceFontSize - 1)!
     }
     var DeviceFontSmallLight: UIFont {
         return UIFont.systemFont(ofSize: deviceFontSize - 1, weight: UIFont.Weight.light)
+        //return UIFont(name: "SourceSansPro-Regular", size: deviceFontSize - 1)!
     }
     var DeviceFontSmallBold: UIFont {
         return UIFont.boldSystemFont(ofSize: deviceFontSize - 1)
+        //return UIFont(name: "SourceSansPro-Bold", size: deviceFontSize - 1)!
     }
     var DeviceFontExtraLarge: UIFont {
         return UIFont.systemFont(ofSize: deviceFontSize + 4)
+        //return UIFont(name: "SourceSansPro-Regular", size: deviceFontSize + 4)!
     }
     var DeviceFontLargeBold: UIFont {
         return UIFont.boldSystemFont(ofSize: deviceFontSize + 2)
+        //return UIFont(name: "SourceSansPro-Bold", size: deviceFontSize + 2)!
     }
     var DeviceFontExtraLargeBold: UIFont {
         return UIFont.boldSystemFont(ofSize: deviceFontSize + 4)
+        //return UIFont(name: "SourceSansPro-Bold", size: deviceFontSize + 4)!
     }
 
     /*
@@ -76,21 +84,25 @@ class DynamicFontHelper: NSObject {
     var SemiMediumRegularWeightAS: UIFont {
         let size = max(deviceFontSize, 16.5)
         return UIFont.systemFont(ofSize: size)
+        //return UIFont(name: "SourceSansPro-Regular", size: size)!
     }
 
     var LargeSizeRegularWeightAS: UIFont {
         let size = max(deviceFontSize + 2, 20)
         return UIFont.systemFont(ofSize: size)
+        //return UIFont(name: "SourceSansPro-Regular", size: size)!
     }
 
     var MediumSizeBoldFontAS: UIFont {
         let size = max(deviceFontSize, 18)
         return UIFont.boldSystemFont(ofSize: size)
+        //return UIFont(name: "SourceSansPro-Bold", size: size)!
     }
 
     var SmallSizeRegularWeightAS: UIFont {
         let size = max(defaultSmallFontSize, 14)
         return UIFont.systemFont(ofSize: size)
+        //return UIFont(name: "SourceSansPro-Regular", size: size)!
     }
 
     /**
@@ -99,9 +111,11 @@ class DynamicFontHelper: NSObject {
     fileprivate var defaultSmallFontSize: CGFloat
     var DefaultSmallFont: UIFont {
         return UIFont.systemFont(ofSize: defaultSmallFontSize, weight: UIFont.Weight.regular)
+        //return UIFont(name: "SourceSansPro-Regular", size: defaultSmallFontSize)!
     }
     var DefaultSmallFontBold: UIFont {
         return UIFont.boldSystemFont(ofSize: defaultSmallFontSize)
+        //return UIFont(name: "SourceSansPro-Bold", size: defaultSmallFontSize)!
     }
 
     /**
@@ -110,9 +124,11 @@ class DynamicFontHelper: NSObject {
     fileprivate var defaultMediumFontSize: CGFloat
     var DefaultMediumFont: UIFont {
         return UIFont.systemFont(ofSize: defaultMediumFontSize, weight: UIFont.Weight.regular)
+        //return UIFont(name: "SourceSansPro-Regular", size: defaultMediumFontSize)!
     }
     var DefaultMediumBoldFont: UIFont {
         return UIFont.boldSystemFont(ofSize: defaultMediumFontSize)
+        //return UIFont(name: "SourceSansPro-Bold", size: defaultMediumFontSize)!
     }
 
     /**
@@ -124,8 +140,10 @@ class DynamicFontHelper: NSObject {
     }
     var DefaultStandardFont: UIFont {
         return UIFont.systemFont(ofSize: defaultStandardFontSize, weight: UIFont.Weight.regular)
+        //return UIFont(name: "SourceSansPro-Regular", size: defaultStandardFontSize)!
     }
     var DefaultStandardFontBold: UIFont {
+        //return UIFont(name: "SourceSansPro-Bold", size: defaultStandardFontSize)!
         return UIFont.boldSystemFont(ofSize: defaultStandardFontSize)
     }
 
@@ -165,6 +183,8 @@ class DynamicFontHelper: NSObject {
         let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: textStyle)
 
         var font: UIFont
+        //font = UIFont(name: "SourceSansPro-Regular", size: fontDescriptor.pointSize)!
+        
         if let weight = weight {
             font = UIFont.systemFont(ofSize: fontDescriptor.pointSize, weight: weight)
         } else {
@@ -190,6 +210,10 @@ class DynamicFontHelper: NSObject {
         let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: textStyle)
 
         var font: UIFont
+        //font = UIFont(name: "SourceSansPro-Regular", size: size)!
+        
+        //var font = UIFont(name: "SourceSansPro-Regular", size: size)
+        
         if let weight = weight {
             font = UIFont.systemFont(ofSize: size, weight: weight)
         } else {
@@ -208,3 +232,5 @@ class DynamicFontHelper: NSObject {
         return preferredFont(withTextStyle: textStyle, size: size, weight: .bold)
     }
 }
+//UIFont(name: "SourceSansPro-Regular", size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize)
+

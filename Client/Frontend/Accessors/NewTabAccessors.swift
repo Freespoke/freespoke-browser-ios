@@ -38,13 +38,13 @@ struct NewTabAccessors {
 
 /// Enum to encode what should happen when the user opens a new tab without a URL.
 enum NewTabPage: String {
-    case blankPage = "Blank"
+    case freespoke = "Freespoke"
     case homePage = "HomePage"
     case topSites = "TopSites"
 
     var settingTitle: String {
         switch self {
-        case .blankPage:
+        case .freespoke:
             return .SettingsNewTabBlankPage
         case .homePage:
             return .SettingsNewTabHomePage
@@ -81,5 +81,5 @@ enum NewTabPage: String {
         }
     }
 
-    static let allValues = [blankPage, topSites, homePage]
+    static let allValues = [freespoke, topSites, homePage]
 }

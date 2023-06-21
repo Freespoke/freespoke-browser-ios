@@ -17,6 +17,7 @@ enum ContextualHintType: String {
     case jumpBackInSyncedTab = "JumpBackInSyncedTab"
     case inactiveTabs = "InactiveTabs"
     case toolbarLocation = "ToolbarLocation"
+    case bookmarksLocation = "BookmarksLocation"
 }
 
 class ContextualHintViewModel: ContextualHintPrefsKeysProvider {
@@ -75,6 +76,7 @@ class ContextualHintViewModel: ContextualHintPrefsKeysProvider {
         switch hintType {
         case .inactiveTabs: timeInterval = 0.25
         case .toolbarLocation: timeInterval = 0.5
+        case .bookmarksLocation: timeInterval = 0.01
         default: timeInterval = 1.25
         }
 
@@ -109,6 +111,7 @@ class ContextualHintViewModel: ContextualHintPrefsKeysProvider {
     func isActionType() -> Bool {
         switch hintType {
         case .inactiveTabs,
+                .bookmarksLocation,
                 .toolbarLocation:
             return true
 

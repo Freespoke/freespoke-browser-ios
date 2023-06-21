@@ -107,8 +107,9 @@ class ShareExtensionHelper: NSObject, FeatureFlaggable {
         let copyLinkActivity = CopyLinkActivity(activityType: .copyLink, url: url)
         appActivities.append(copyLinkActivity)
 
-        let sendToDeviceActivity = SendToDeviceActivity(activityType: .sendToDevice, url: url)
-        appActivities.append(sendToDeviceActivity)
+        //|     Hide send to device Firefox login method
+        //let sendToDeviceActivity = SendToDeviceActivity(activityType: .sendToDevice, url: url)
+        //appActivities.append(sendToDeviceActivity)
 
         return appActivities
     }

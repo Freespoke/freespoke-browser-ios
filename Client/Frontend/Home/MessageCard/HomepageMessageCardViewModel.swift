@@ -96,7 +96,8 @@ extension HomepageMessageCardViewModel: HomepageViewModelProtocol {
     }
 
     var hasData: Bool {
-        return shouldDisplayMessageCard
+        //return shouldDisplayMessageCard
+        return false
     }
 
     func setTheme(theme: Theme) {

@@ -238,7 +238,8 @@ class SearchViewController: SiteTableViewController,
             engines?.insert(defaultEngine, at: 0)
         }
 
-        return engines!
+        //return engines!
+        return [defaultEngine]
     }
 
     var searchQuery: String = "" {
@@ -267,32 +268,33 @@ class SearchViewController: SiteTableViewController,
 
     func reloadSearchEngines() {
         searchEngineScrollViewContent.subviews.forEach { $0.removeFromSuperview() }
-        var leftEdge = searchEngineScrollViewContent.snp.leading
-
-        // search settings icon
-        let searchButton = UIButton()
-        searchButton.setImage(UIImage(named: "quickSearch"), for: [])
-        searchButton.imageView?.contentMode = .scaleAspectFit
-        searchButton.layer.backgroundColor = SearchViewControllerUX.EngineButtonBackgroundColor
-        searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
-        searchButton.accessibilityLabel = String(format: .SearchSettingsAccessibilityLabel)
-
-        searchButton.imageView?.snp.makeConstraints { make in
-            make.width.height.equalTo(20)
-            return
-        }
-
-        searchEngineScrollViewContent.addSubview(searchButton)
-        searchButton.snp.makeConstraints { make in
-            make.width.height.equalTo(SearchViewControllerUX.FaviconSize)
-            // offset the left edge to align with search results
-            make.leading.equalTo(leftEdge).offset(16)
-            make.top.equalTo(searchEngineScrollViewContent).offset(SearchViewControllerUX.SuggestionMargin)
-            make.bottom.equalTo(searchEngineScrollViewContent).offset(-SearchViewControllerUX.SuggestionMargin)
-        }
+//        var leftEdge = searchEngineScrollViewContent.snp.leading
+//
+//        // search settings icon
+//        let searchButton = UIButton()
+//        searchButton.setImage(UIImage(named: "quickSearch"), for: [])
+//        searchButton.imageView?.contentMode = .scaleAspectFit
+//        searchButton.layer.backgroundColor = SearchViewControllerUX.EngineButtonBackgroundColor
+//        searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
+//        searchButton.accessibilityLabel = String(format: .SearchSettingsAccessibilityLabel)
+//
+//        searchButton.imageView?.snp.makeConstraints { make in
+//            make.width.height.equalTo(20)
+//            return
+//        }
+//
+//        searchEngineScrollViewContent.addSubview(searchButton)
+//        searchButton.snp.makeConstraints { make in
+//            make.width.height.equalTo(SearchViewControllerUX.FaviconSize)
+//            // offset the left edge to align with search results
+//            make.leading.equalTo(leftEdge).offset(16)
+//            make.top.equalTo(searchEngineScrollViewContent).offset(SearchViewControllerUX.SuggestionMargin)
+//            make.bottom.equalTo(searchEngineScrollViewContent).offset(-SearchViewControllerUX.SuggestionMargin)
+//        }
 
         // search engines
-        leftEdge = searchButton.snp.trailing
+        //leftEdge = searchButton.snp.trailing\
+        var leftEdge = searchEngineScrollViewContent.snp.leading
 
         for engine in quickSearchEngines {
             let engineButton = UIButton()
@@ -326,12 +328,12 @@ class SearchViewController: SiteTableViewController,
     func didSelectEngine(_ sender: UIButton) {
         // The UIButtons are the same cardinality and order as the array of quick search engines.
         // Subtract 1 from index to account for magnifying glass accessory.
-        guard let index = searchEngineScrollViewContent.subviews.firstIndex(of: sender) else {
-            assertionFailure()
-            return
-        }
+//        guard let index = searchEngineScrollViewContent.subviews.firstIndex(of: sender) else {
+//            assertionFailure()
+//            return
+//        }
 
-        let engine = quickSearchEngines[index - 1]
+        let engine = quickSearchEngines[0]
 
         guard let url = engine.searchURLForQuery(searchQuery) else {
             assertionFailure()

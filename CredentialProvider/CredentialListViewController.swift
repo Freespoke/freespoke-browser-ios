@@ -79,7 +79,7 @@ class CredentialListViewController: UIViewController, CredentialListViewProtocol
     }
 
     private func styleNavigationBar() {
-        navigationItem.title = "Firefox"
+        navigationItem.title = "Freespoke"
         navigationItem.largeTitleDisplayMode = .never
         navigationController?.navigationBar.accessibilityIdentifier = "firefox.navigationBar"
         navigationController?.navigationBar.titleTextAttributes = [

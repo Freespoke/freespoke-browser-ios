@@ -84,26 +84,75 @@ extension BrowserViewController: URLBarDelegate {
         tabManager.selectedTab?.reload()
     }
 
-    func urlBarDidPressShare(_ urlBar: URLBarView, shareView: UIView) {
-        TelemetryWrapper.recordEvent(category: .action,
-                                     method: .tap,
-                                     object: .awesomebarLocation,
-                                     value: .awesomebarShareTap,
-                                     extras: nil)
-
+    func urlBarDidPressShare(_ tabLocationView: TabLocationView, urlBar: URLBarView, shareView: UIView) {
         if let selectedtab = tabManager.selectedTab, let tabUrl = selectedtab.canonicalURL?.displayURL {
-            presentShareSheet(tabUrl,
-                              tab: selectedtab,
-                              sourceView: shareView,
-                              sourceRect: CGRect.null,
-                              arrowDirection: isBottomSearchBar ? .down : .up)
+            
+            let isBookmarkedSite = profile.places.isBookmarked(url: tabUrl.absoluteString).value.successValue ?? false
+            
+            if !isBookmarkedSite {
+                tabLocationView.shareButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.actionRemoveBookmark), for: .normal)
+                
+                self.addBookmark(url: tabUrl.absoluteString, title: selectedtab.title)
+            }
+            else {
+                tabLocationView.shareButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.addToBookmark), for: .normal)
+                
+                self.removeBookmark(url: tabUrl.absoluteString)
+            }
+            
+//            presentShareSheet(tabUrl,
+//                              tab: selectedtab,
+//                              sourceView: shareView,
+//                              sourceRect: CGRect.null,
+//                              arrowDirection: isBottomSearchBar ? .down : .up)
         }
     }
+    
+    func urlBarDidPressShareFreespokeButton(_ button: UIButton) {
+        shareFresspoke(button)
+    }
 
-    func urlBarDidPressQRButton(_ urlBar: URLBarView) {
+    func urlBarDidPressQRButton(_ urlBar: URLBarView, button: UIButton) {
+        guard let url = urlBar.currentURL else { return }
+        
+        guard let tab = self.tabManager.selectedTab else { return }
+
+        let helper = ShareExtensionHelper(url: url, tab: tab)
+        let controller = helper.createActivityViewController({ completed, activityType in
+        })
+        
+        if let popoverPresentationController = controller.popoverPresentationController {
+            popoverPresentationController.sourceView = button
+            popoverPresentationController.sourceRect = button.bounds
+            popoverPresentationController.permittedArrowDirections = [.up, .down]
+            //popoverPresentationController.delegate = self
+        }
+
+        self.present(controller, animated: true, completion: nil)
+        /*
+        //|     Hide Scan Firefox functionality from toolbar
+         
         let qrCodeViewController = QRCodeViewController()
         qrCodeViewController.qrCodeDelegate = self
         let controller = QRCodeNavigationController(rootViewController: qrCodeViewController)
+        self.present(controller, animated: true, completion: nil)
+        */
+    }
+    
+    private func shareFresspoke(_ button: UIButton) {
+        guard let url = URL(string: Constants.freespokeURL.rawValue) else { return }
+        
+        let helper = ShareExtensionHelper(url: url, tab: nil)
+        let controller = helper.createActivityViewController({ completed, activityType in
+        })
+        
+        if let popoverPresentationController = controller.popoverPresentationController {
+            popoverPresentationController.sourceView = button
+            popoverPresentationController.sourceRect = button.bounds
+            popoverPresentationController.permittedArrowDirections = [.up, .down]
+            //popoverPresentationController.delegate = self
+        }
+
         self.present(controller, animated: true, completion: nil)
     }
 
@@ -328,7 +377,7 @@ extension BrowserViewController: URLBarDelegate {
         urlBar.searchEnginesDidUpdate()
         guard let profile = profile as? BrowserProfile else { return }
 
-        if .blankPage == NewTabAccessors.getNewTabPage(profile.prefs) {
+        if .freespoke == NewTabAccessors.getNewTabPage(profile.prefs) {
             UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: UIAccessibility.Notification.screenChanged)
         } else {
             if let toast = clipboardBarDisplayHandler?.clipboardToast {

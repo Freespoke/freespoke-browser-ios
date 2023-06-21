@@ -764,15 +764,60 @@ class YourRightsSetting: Setting {
 
 class SendFeedbackSetting: Setting {
     override var title: NSAttributedString? {
-        return NSAttributedString(string: .AppSettingsSendFeedback, attributes: [NSAttributedString.Key.foregroundColor: theme.colors.textPrimary])
+        return NSAttributedString(string: "Contact Us", attributes: [NSAttributedString.Key.foregroundColor: theme.colors.textPrimary])
     }
 
     override var url: URL? {
-        return URL(string: "https://connect.mozilla.org/")
+        return URL(string: Constants.getInTouchURL.rawValue)
     }
 
     override func onClick(_ navigationController: UINavigationController?) {
         setUpAndPushSettingsContentViewController(navigationController, self.url)
+    }
+}
+
+class AboutFreespokeSetting: Setting {
+    init(delegate: SettingsDelegate?, theme: Theme) {
+        super.init(title: NSAttributedString(string: "About Freespoke", attributes: [NSAttributedString.Key.foregroundColor: theme.colors.textPrimary]),
+                   delegate: delegate)
+    }
+
+    override func onClick(_ navigationController: UINavigationController?) {
+        navigationController?.dismiss(animated: true) {
+            if let url = URL(string: "https://freespoke.com/about") {
+                self.delegate?.settingsOpenURLInNewTab(url)
+            }
+        }
+    }
+}
+
+class HithubiOSLink: Setting {
+    init(delegate: SettingsDelegate?, theme: Theme) {
+        super.init(title: NSAttributedString(string: "Freespoke for iOS", attributes: [NSAttributedString.Key.foregroundColor: theme.colors.textPrimary]),
+                   delegate: delegate)
+    }
+
+    override func onClick(_ navigationController: UINavigationController?) {
+        navigationController?.dismiss(animated: true) {
+            if let url = URL(string: Constants.githubiOSURL.rawValue) {
+                self.delegate?.settingsOpenURLInNewTab(url)
+            }
+        }
+    }
+}
+
+class TermsSetting: Setting {
+    init(delegate: SettingsDelegate?, theme: Theme) {
+        super.init(title: NSAttributedString(string: "Terms", attributes: [NSAttributedString.Key.foregroundColor: theme.colors.textPrimary]),
+                   delegate: delegate)
+    }
+
+    override func onClick(_ navigationController: UINavigationController?) {
+        navigationController?.dismiss(animated: true) {
+            if let url = URL(string: "https://freespoke.com/terms-of-service") {
+                self.delegate?.settingsOpenURLInNewTab(url)
+            }
+        }
     }
 }
 
@@ -797,7 +842,7 @@ class SendAnonymousUsageDataSetting: BoolSetting {
         )
         // We make sure to set this on initialization, in case the setting is turned off
         // in which case, we would to make sure that users are opted out of experiments
-        Experiments.setTelemetrySetting(prefs.boolForKey(AppConstants.prefSendUsageData) ?? true)
+        Experiments.setTelemetrySetting(false)
     }
 
     override var accessibilityIdentifier: String? { return "SendAnonymousUsageData" }
@@ -847,13 +892,13 @@ class StudiesToggleSetting: BoolSetting {
 // Opens the SUMO page in a new tab
 class OpenSupportPageSetting: Setting {
     init(delegate: SettingsDelegate?, theme: Theme) {
-        super.init(title: NSAttributedString(string: .AppSettingsHelp, attributes: [NSAttributedString.Key.foregroundColor: theme.colors.textPrimary]),
+        super.init(title: NSAttributedString(string: "Contact Us", attributes: [NSAttributedString.Key.foregroundColor: theme.colors.textPrimary]),
                    delegate: delegate)
     }
 
     override func onClick(_ navigationController: UINavigationController?) {
         navigationController?.dismiss(animated: true) {
-            if let url = URL(string: "https://support.mozilla.org/products/ios") {
+            if let url = URL(string: Constants.getInTouchURL.rawValue) {
                 self.delegate?.settingsOpenURLInNewTab(url)
             }
         }
@@ -1034,16 +1079,18 @@ class AutofillCreditCardSettings: Setting, FeatureFlaggable {
 }
 
 class PrivacyPolicySetting: Setting {
-    override var title: NSAttributedString? {
-        return NSAttributedString(string: .AppSettingsPrivacyPolicy, attributes: [NSAttributedString.Key.foregroundColor: theme.colors.textPrimary])
-    }
-
-    override var url: URL? {
-        return URL(string: "https://www.mozilla.org/privacy/firefox/")
+    init(delegate: SettingsDelegate?, theme: Theme) {
+        super.init(title: NSAttributedString(string: "Privacy", attributes: [NSAttributedString.Key.foregroundColor: theme.colors.textPrimary]),
+                   delegate: delegate)
     }
 
     override func onClick(_ navigationController: UINavigationController?) {
-        setUpAndPushSettingsContentViewController(navigationController, self.url)
+        //setUpAndPushSettingsContentViewController(navigationController, )
+        navigationController?.dismiss(animated: true) {
+            if let url = URL(string: "https://freespoke.com/privacy-policy") {
+                self.delegate?.settingsOpenURLInNewTab(url)
+            }
+        }
     }
 }
 

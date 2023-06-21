@@ -49,6 +49,7 @@ class EmptyPrivateTabsView: UIView {
         button.setTitle( .PrivateBrowsingLearnMore, for: [])
         button.titleLabel?.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .subheadline,
                                                                                 size: UX.buttonSizeFont)
+        button.isHidden = true
     }
 
     private let iconImageView: UIImageView = .build { imageView in

@@ -293,6 +293,10 @@ class Tab: NSObject {
         }
         return false
     }
+    
+    var isFreespoke: Bool {
+        return false
+    }
 
     var mimeType: String?
     var isEditing: Bool = false

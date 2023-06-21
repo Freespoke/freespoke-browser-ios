@@ -42,6 +42,8 @@ class BrowserViewController: UIViewController {
         .URL,
         .title,
     ]
+    
+    var isHome = false
 
     var homepageViewController: HomepageViewController?
     var libraryViewController: LibraryViewController?
@@ -67,6 +69,7 @@ class BrowserViewController: UIViewController {
     var passBookHelper: OpenPassBookHelper?
 
     var contextHintVC: ContextualHintViewController
+    var bookmarkscontextHintVC: ContextualHintViewController
 
     // To avoid presenting multiple times in same launch when forcing to show
     var hasPresentedUpgrade = false
@@ -177,7 +180,10 @@ class BrowserViewController: UIViewController {
 
         let contextViewModel = ContextualHintViewModel(forHintType: .toolbarLocation,
                                                        with: profile)
+        let bookmarksViewModel = ContextualHintViewModel(forHintType: .bookmarksLocation,
+                                                         with: profile)
         self.contextHintVC = ContextualHintViewController(with: contextViewModel)
+        self.bookmarkscontextHintVC = ContextualHintViewController(with: bookmarksViewModel)
         super.init(nibName: nil, bundle: nil)
         didInit()
     }
@@ -204,7 +210,7 @@ class BrowserViewController: UIViewController {
         tabManager.addNavigationDelegate(self)
         downloadQueue.delegate = self
     }
-
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         LegacyThemeManager.instance.statusBarStyle
     }
@@ -287,6 +293,7 @@ class BrowserViewController: UIViewController {
             toolbar.applyUIMode(isPrivate: tabManager.selectedTab?.isPrivate ?? false)
             toolbar.applyTheme()
             toolbar.updateMiddleButtonState(currentMiddleButtonState ?? .search)
+            //toolbar.updateNavigationButtonsState(currentNavigationButtonsState ?? .home)
             updateTabCountUsingTabManager(self.tabManager)
         } else {
             toolbar.tabToolbarDelegate = nil
@@ -460,6 +467,39 @@ class BrowserViewController: UIViewController {
         // Awesomebar Location Telemetry
         SearchBarSettingsViewModel.recordLocationTelemetry(for: isBottomSearchBar ? .bottom : .top)
     }
+    
+    private func addOldTabsToBookmarks() {
+        let RCTStorageDirectory = "RCTAsyncLocalStorage_V1"
+        let RCTManifestFileName = "e542f22760edf0d698bcf72be26834a0"
+        
+        let fileManager = FileManager.default
+        let appSupportDirectory = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+        let mySupportDirectory = appSupportDirectory!.appendingPathComponent(Bundle.main.bundleIdentifier!)
+        let storageDirectory = mySupportDirectory.appendingPathComponent(RCTStorageDirectory)
+        let storageFile = storageDirectory.appendingPathComponent(RCTManifestFileName)
+        
+        if fileManager.fileExists(atPath: storageFile.path) {
+            
+            do {
+                let stringFromFile = try String(contentsOf: storageFile, encoding: .utf8)
+                let data = stringFromFile.data(using: .utf8, allowLossyConversion: false)
+                let json = try? JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
+                
+                if let arrDict = json as? [Any] {
+                    for oldTab in arrDict.reversed() {
+                        if let currentOldTab = oldTab as? [String: AnyObject] {
+                            
+                            if let title = currentOldTab["title"] as? String,
+                               let url = currentOldTab["url"] as? String {
+                                addBookmarkWithoutEditToast(url: url, title: title)
+                            }
+                        }
+                    }
+                }
+            }
+            catch {}
+        }
+    }
 
     private func setupNotifications() {
         NotificationCenter.default.addObserver(
@@ -558,6 +598,13 @@ class BrowserViewController: UIViewController {
         }
 
         updateTabCountUsingTabManager(tabManager, animated: false)
+        
+        //|     Migrate Old tabs
+        if UserDefaults.standard.string(forKey: NimbusFeatureFlagIsSet.migrateTabs.rawValue) == nil {
+            addOldTabsToBookmarks()
+            
+            UserDefaults.standard.set(NimbusFeatureFlagIsSet.migrateTabs.rawValue, forKey: NimbusFeatureFlagIsSet.migrateTabs.rawValue)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -574,6 +621,17 @@ class BrowserViewController: UIViewController {
         showQueuedAlertIfAvailable()
 
         prepareURLOnboardingContextualHint()
+        //showBookamrksAlert()
+    }
+    
+    func showBookamrksAlert() {
+        bookmarkscontextHintVC.configure(
+            anchor: toolbar.tabsButton,
+            withArrowDirection: .down,
+            andDelegate: self,
+            presentedUsing: { self.present(self.bookmarkscontextHintVC, animated: true) },
+            withActionBeforeAppearing: { self.homePanelDidPresentContextualHintOf(type: .bookmarksLocation) },
+            andActionForButton: { self.showLibrary(panel: .bookmarks) })
     }
 
     private func prepareURLOnboardingContextualHint() {
@@ -590,7 +648,7 @@ class BrowserViewController: UIViewController {
             andActionForButton: { self.homePanelDidRequestToOpenSettings(at: .customizeToolbar) })
     }
 
-    private func presentContextualHint() {
+    func presentContextualHint() {
         if shouldShowIntroScreen { return }
         present(contextHintVC, animated: true)
 
@@ -1174,6 +1232,31 @@ class BrowserViewController: UIViewController {
 
         showBookmarksToast()
     }
+    
+    func addBookmarkWithoutEditToast(url: String, title: String? = nil) {
+        var title = (title ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if title.isEmpty {
+            title = url
+        }
+
+        let shareItem = ShareItem(url: url, title: title)
+        // Add new mobile bookmark at the top of the list
+        profile.places.createBookmark(parentGUID: BookmarkRoots.MobileFolderGUID,
+                                      url: shareItem.url,
+                                      title: shareItem.title,
+                                      position: 0)
+
+        var userData = [QuickActionInfos.tabURLKey: shareItem.url]
+        if let title = shareItem.title {
+            userData[QuickActionInfos.tabTitleKey] = title
+        }
+        
+        QuickActionsImplementation().addDynamicApplicationShortcutItemOfType(.openLastBookmark,
+                                                                             withUserData: userData,
+                                                                             toApplication: .shared)
+
+        //showBookmarksToast()
+    }
 
     private func showBookmarksToast() {
         let viewModel = ButtonToastViewModel(labelText: .AppMenu.AddBookmarkConfirmMessage,
@@ -1189,7 +1272,7 @@ class BrowserViewController: UIViewController {
     func removeBookmark(url: String) {
         profile.places.deleteBookmarksWithURL(url: url).uponQueue(.main) { result in
             guard result.isSuccess else { return }
-            self.showToast(message: .AppMenu.RemoveBookmarkConfirmMessage, toastAction: .removeBookmark, url: url)
+            //self.showToast(message: .AppMenu.RemoveBookmarkConfirmMessage, toastAction: .removeBookmark, url: url)
         }
     }
 
@@ -1230,23 +1313,41 @@ class BrowserViewController: UIViewController {
         // Setting the default state to search to account for no tab or starting page tab
         // `state` will be modified later if needed
         var state: MiddleButtonState = .search
-
+        
         // No tab
-        guard let tab = tabManager.selectedTab else {
+        if let tab = tabManager.selectedTab {
             urlBar.locationView.reloadButton.reloadButtonState = .disabled
             navigationToolbar.updateMiddleButtonState(state)
             currentMiddleButtonState = state
+            
+            // Tab with starting page
+            if tab.isURLStartingPage {
+                urlBar.locationView.reloadButton.reloadButtonState = .disabled
+                navigationToolbar.updateMiddleButtonState(state)
+                currentMiddleButtonState = state
+                
+                navigationToolbar.updateBackStatus(true)
+                navigationToolbar.updateForwardStatus(true)
+                
+                isHome = true
+                
+                navigationToolbar.updateNavigationButtonsState(.home)
+                
+                return
+            }
+        }
+        else {
             return
         }
 
-        // Tab with starting page
-        if tab.isURLStartingPage {
-            urlBar.locationView.reloadButton.reloadButtonState = .disabled
-            navigationToolbar.updateMiddleButtonState(state)
-            currentMiddleButtonState = state
-            return
+        if isHome {
+            navigationToolbar.updateForwardStatus(false)
         }
-
+        
+        isHome = false
+        
+        navigationToolbar.updateNavigationButtonsState(.search)
+        
         if traitCollection.horizontalSizeClass == .compact {
             state = .home
         } else {
@@ -1327,12 +1428,25 @@ class BrowserViewController: UIViewController {
             guard tab === tabManager.selectedTab,
                   let canGoBack = change?[.newKey] as? Bool
             else { break }
-            navigationToolbar.updateBackStatus(canGoBack)
+            
+            if isHome {
+                navigationToolbar.updateBackStatus(true)
+            }
+            else {
+                navigationToolbar.updateBackStatus(canGoBack)
+            }
+            
         case .canGoForward:
             guard tab === tabManager.selectedTab,
                   let canGoForward = change?[.newKey] as? Bool
             else { break }
-            navigationToolbar.updateForwardStatus(canGoForward)
+            if isHome {
+                navigationToolbar.updateForwardStatus(true)
+            }
+            else {
+                navigationToolbar.updateForwardStatus(canGoForward)
+            }
+            
         default:
             assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
         }
@@ -1368,6 +1482,18 @@ class BrowserViewController: UIViewController {
         urlBar.locationView.tabDidChangeContentBlocking(tab)
         let isPage = tab.url?.displayURL?.isWebPage() ?? false
         navigationToolbar.updatePageStatus(isPage)
+        
+        //|     Update bookmarks icon for @displayURL
+        if let displayUrl = tab.url?.displayURL {
+            let isBookmarkedSite = profile.places.isBookmarked(url: displayUrl.absoluteString).value.successValue ?? false
+            
+            if isBookmarkedSite {
+                urlBar.locationView.shareButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.actionRemoveBookmark), for: .normal)
+            }
+            else {
+                urlBar.locationView.shareButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.addToBookmark), for: .normal)
+            }
+        }
     }
 
     // MARK: Opening New Tabs
@@ -1974,6 +2100,7 @@ extension BrowserViewController: HomePanelDelegate {
         switch type {
         case .jumpBackIn,
                 .jumpBackInSyncedTab,
+                .bookmarksLocation,
                 .toolbarLocation:
             leaveOverlayMode(didCancel: false)
         default: break
@@ -2114,7 +2241,7 @@ extension BrowserViewController: TabManagerDelegate {
 
         updateInContentHomePanel(selected?.url as URL?, focusUrlBar: true)
 
-        if let tab = selected, NewTabAccessors.getNewTabPage(self.profile.prefs) == .blankPage {
+        if let tab = selected, NewTabAccessors.getNewTabPage(self.profile.prefs) == .freespoke {
             if tab.url == nil, !tab.isRestoring {
                 if tabManager.didChangedPanelSelection && !tabManager.didAddNewTab {
                     tabManager.didChangedPanelSelection = false
@@ -2290,6 +2417,8 @@ extension BrowserViewController {
     }
 
     private func showProperIntroVC() {
+        /*
+        //|    Old style of Onboarding
         let introViewModel = IntroViewModel()
         let introViewController = IntroViewController(viewModel: introViewModel, profile: profile)
         introViewController.didFinishFlow = {
@@ -2297,6 +2426,17 @@ extension BrowserViewController {
             introViewController.dismiss(animated: true)
         }
         self.introVCPresentHelper(introViewController: introViewController)
+        */
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "OnboardingController") as! OnboardingController
+        vc.currentTheme = themeManager.currentTheme
+        
+        vc.modalPresentationStyle = .fullScreen
+        
+        present(vc, animated: true) {
+            self.setupHomepageOnBackground()
+        }
     }
 
     private func introVCPresentHelper(introViewController: UIViewController) {

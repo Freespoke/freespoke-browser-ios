@@ -25,19 +25,19 @@ public class FxNimbus : FeatureManifestInterface {
     /// The lambda MUST be threadsafe in its own right.
     public func initialize(with getSdk: @escaping () -> FeaturesInterface?) {
         self.getSdk = getSdk
-        self.features.generalAppFeatures.with(sdk: getSdk)
-        self.features.spotlightSearch.with(sdk: getSdk)
-        self.features.startAtHomeFeature.with(sdk: getSdk)
-        self.features.contextualHintFeature.with(sdk: getSdk)
-        self.features.searchTermGroupsFeature.with(sdk: getSdk)
         self.features.creditCardAutofill.with(sdk: getSdk)
-        self.features.search.with(sdk: getSdk)
-        self.features.shareSheet.with(sdk: getSdk)
-        self.features.onboardingFeature.with(sdk: getSdk)
-        self.features.tabTrayFeature.with(sdk: getSdk)
+        self.features.generalAppFeatures.with(sdk: getSdk)
         self.features.messaging.with(sdk: getSdk)
+        self.features.searchTermGroupsFeature.with(sdk: getSdk)
+        self.features.shareSheet.with(sdk: getSdk)
+        self.features.contextualHintFeature.with(sdk: getSdk)
+        self.features.spotlightSearch.with(sdk: getSdk)
+        self.features.tabTrayFeature.with(sdk: getSdk)
         self.features.wallpaperFeature.with(sdk: getSdk)
+        self.features.onboardingFeature.with(sdk: getSdk)
+        self.features.startAtHomeFeature.with(sdk: getSdk)
         self.features.homescreenFeature.with(sdk: getSdk)
+        self.features.search.with(sdk: getSdk)
         self.reinitialize()
     }
 
@@ -67,19 +67,19 @@ public class FxNimbus : FeatureManifestInterface {
     /// It must be called whenever the Nimbus SDK finishes the `applyPendingExperiments()` method.
     ///
     public func invalidateCachedValues() {
-        features.generalAppFeatures.with(cachedValue: nil)
-        features.spotlightSearch.with(cachedValue: nil)
-        features.startAtHomeFeature.with(cachedValue: nil)
-        features.contextualHintFeature.with(cachedValue: nil)
-        features.searchTermGroupsFeature.with(cachedValue: nil)
         features.creditCardAutofill.with(cachedValue: nil)
-        features.search.with(cachedValue: nil)
-        features.shareSheet.with(cachedValue: nil)
-        features.onboardingFeature.with(cachedValue: nil)
-        features.tabTrayFeature.with(cachedValue: nil)
+        features.generalAppFeatures.with(cachedValue: nil)
         features.messaging.with(cachedValue: nil)
+        features.searchTermGroupsFeature.with(cachedValue: nil)
+        features.shareSheet.with(cachedValue: nil)
+        features.contextualHintFeature.with(cachedValue: nil)
+        features.spotlightSearch.with(cachedValue: nil)
+        features.tabTrayFeature.with(cachedValue: nil)
         features.wallpaperFeature.with(cachedValue: nil)
+        features.onboardingFeature.with(cachedValue: nil)
+        features.startAtHomeFeature.with(cachedValue: nil)
         features.homescreenFeature.with(cachedValue: nil)
+        features.search.with(cachedValue: nil)
     }
 
     ///
@@ -89,66 +89,16 @@ public class FxNimbus : FeatureManifestInterface {
 }
 
 public class FxNimbusFeatures {
-    /// The feature that contains feature flags for the entire application
-    public lazy var generalAppFeatures: FeatureHolder<GeneralAppFeatures> = {
-        FeatureHolder(FxNimbus.shared.getSdk, featureId: "general-app-features") { (variables) in
-            GeneralAppFeatures(variables)
-        }
-    }()
-    /// Add pages as items findable with Spotlight.
-    public lazy var spotlightSearch: FeatureHolder<SpotlightSearch> = {
-        FeatureHolder(FxNimbus.shared.getSdk, featureId: "spotlight-search") { (variables) in
-            SpotlightSearch(variables)
-        }
-    }()
-    /// The controls for Start at Home feature
-    public lazy var startAtHomeFeature: FeatureHolder<StartAtHomeFeature> = {
-        FeatureHolder(FxNimbus.shared.getSdk, featureId: "start-at-home-feature") { (variables) in
-            StartAtHomeFeature(variables)
-        }
-    }()
-    /// This set holds all features pertaining to contextual hints.
-    public lazy var contextualHintFeature: FeatureHolder<ContextualHintFeature> = {
-        FeatureHolder(FxNimbus.shared.getSdk, featureId: "contextual-hint-feature") { (variables) in
-            ContextualHintFeature(variables)
-        }
-    }()
-    /// The feature that controls whether or not search term groups are enabled.
-    public lazy var searchTermGroupsFeature: FeatureHolder<SearchTermGroupsFeature> = {
-        FeatureHolder(FxNimbus.shared.getSdk, featureId: "search-term-groups-feature") { (variables) in
-            SearchTermGroupsFeature(variables)
-        }
-    }()
     /// This property defines the credit card autofill feature
     public lazy var creditCardAutofill: FeatureHolder<CreditCardAutofill> = {
         FeatureHolder(FxNimbus.shared.getSdk, featureId: "credit-card-autofill") { (variables) in
             CreditCardAutofill(variables)
         }
     }()
-    /// Configuring the functionality to do with search. This will be separated into
-         /// smaller sub-features in later releases.
-         /// 
-    public lazy var search: FeatureHolder<Search> = {
-        FeatureHolder(FxNimbus.shared.getSdk, featureId: "search") { (variables) in
-            Search(variables)
-        }
-    }()
-    /// This feature define the redesign of the share sheet
-    public lazy var shareSheet: FeatureHolder<ShareSheet> = {
-        FeatureHolder(FxNimbus.shared.getSdk, featureId: "share-sheet") { (variables) in
-            ShareSheet(variables)
-        }
-    }()
-    /// The feature that controls whether to show or not Upgrade onboarding
-    public lazy var onboardingFeature: FeatureHolder<OnboardingFeature> = {
-        FeatureHolder(FxNimbus.shared.getSdk, featureId: "onboarding-feature") { (variables) in
-            OnboardingFeature(variables)
-        }
-    }()
-    /// The tab tray screen that the user goes to when they open the tab tray.
-    public lazy var tabTrayFeature: FeatureHolder<TabTrayFeature> = {
-        FeatureHolder(FxNimbus.shared.getSdk, featureId: "tabTrayFeature") { (variables) in
-            TabTrayFeature(variables)
+    /// The feature that contains feature flags for the entire application
+    public lazy var generalAppFeatures: FeatureHolder<GeneralAppFeatures> = {
+        FeatureHolder(FxNimbus.shared.getSdk, featureId: "general-app-features") { (variables) in
+            GeneralAppFeatures(variables)
         }
     }()
     /// Configuration for the messaging system.
@@ -160,10 +110,52 @@ public class FxNimbusFeatures {
             Messaging(variables)
         }
     }()
+    /// The feature that controls whether or not search term groups are enabled.
+    public lazy var searchTermGroupsFeature: FeatureHolder<SearchTermGroupsFeature> = {
+        FeatureHolder(FxNimbus.shared.getSdk, featureId: "search-term-groups-feature") { (variables) in
+            SearchTermGroupsFeature(variables)
+        }
+    }()
+    /// This feature define the redesign of the share sheet
+    public lazy var shareSheet: FeatureHolder<ShareSheet> = {
+        FeatureHolder(FxNimbus.shared.getSdk, featureId: "share-sheet") { (variables) in
+            ShareSheet(variables)
+        }
+    }()
+    /// This set holds all features pertaining to contextual hints.
+    public lazy var contextualHintFeature: FeatureHolder<ContextualHintFeature> = {
+        FeatureHolder(FxNimbus.shared.getSdk, featureId: "contextual-hint-feature") { (variables) in
+            ContextualHintFeature(variables)
+        }
+    }()
+    /// Add pages as items findable with Spotlight.
+    public lazy var spotlightSearch: FeatureHolder<SpotlightSearch> = {
+        FeatureHolder(FxNimbus.shared.getSdk, featureId: "spotlight-search") { (variables) in
+            SpotlightSearch(variables)
+        }
+    }()
+    /// The tab tray screen that the user goes to when they open the tab tray.
+    public lazy var tabTrayFeature: FeatureHolder<TabTrayFeature> = {
+        FeatureHolder(FxNimbus.shared.getSdk, featureId: "tabTrayFeature") { (variables) in
+            TabTrayFeature(variables)
+        }
+    }()
     /// This property defines the configuration for the wallpaper feature
     public lazy var wallpaperFeature: FeatureHolder<WallpaperFeature> = {
         FeatureHolder(FxNimbus.shared.getSdk, featureId: "wallpaper-feature") { (variables) in
             WallpaperFeature(variables)
+        }
+    }()
+    /// The feature that controls whether to show or not Upgrade onboarding
+    public lazy var onboardingFeature: FeatureHolder<OnboardingFeature> = {
+        FeatureHolder(FxNimbus.shared.getSdk, featureId: "onboarding-feature") { (variables) in
+            OnboardingFeature(variables)
+        }
+    }()
+    /// The controls for Start at Home feature
+    public lazy var startAtHomeFeature: FeatureHolder<StartAtHomeFeature> = {
+        FeatureHolder(FxNimbus.shared.getSdk, featureId: "start-at-home-feature") { (variables) in
+            StartAtHomeFeature(variables)
         }
     }()
     /// The homescreen that the user goes to when they press home or new tab.
@@ -172,9 +164,46 @@ public class FxNimbusFeatures {
             HomescreenFeature(variables)
         }
     }()
+    /// Configuring the functionality to do with search. This will be separated into
+         /// smaller sub-features in later releases.
+         /// 
+    public lazy var search: FeatureHolder<Search> = {
+        FeatureHolder(FxNimbus.shared.getSdk, featureId: "search") { (variables) in
+            Search(variables)
+        }
+    }()
 }
 
 // Public interface members begin here.
+
+
+/// This property defines the credit card autofill feature
+public class CreditCardAutofill {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let creditCardAutofillStatus: Bool
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        creditCardAutofillStatus: Bool = true
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            creditCardAutofillStatus: creditCardAutofillStatus))
+    }
+
+    /// If true, we will allow user to use the credit autofill feature
+    public lazy var creditCardAutofillStatus: Bool = {
+        self._variables.getBool("credit-card-autofill-status") ?? _defaults.creditCardAutofillStatus
+    }()
+}
+
 
 
 /// The feature that contains feature flags for the entire application
@@ -215,318 +244,6 @@ public class GeneralAppFeatures {
     /// This property defines whether or not the feature is enabled
     public lazy var shakeToRestore: GeneralFeature = {
         self._variables.getVariables("shake-to-restore")?.map(GeneralFeature.create)._mergeWith(_defaults.shakeToRestore) ?? _defaults.shakeToRestore
-    }()
-}
-
-
-
-/// Add pages as items findable with Spotlight.
-public class SpotlightSearch {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let enabled: Bool
-        let iconType: IconType?
-        let keepForDays: Int?
-        let searchableContent: PageContent?
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        enabled: Bool = true,
-        iconType: IconType? = .screenshot,
-        keepForDays: Int? = nil,
-        searchableContent: PageContent? = .textExcerpt
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            enabled: enabled,
-            iconType: iconType,
-            keepForDays: keepForDays,
-            searchableContent: searchableContent))
-    }
-
-    /// If this is true, then on each page load adds a new item to Spotlight.
-    public lazy var enabled: Bool = {
-        self._variables.getBool("enabled") ?? _defaults.enabled
-    }()
-    /// The icon that is displayed next to the item in the search results. If this
-     /// is `null`, then no icon is displayed.
-     /// 
-    public lazy var iconType: IconType? = {
-        self._variables.getString("icon-type")?.map(IconType.enumValue) ?? _defaults.iconType
-    }()
-    /// Number of days to keep the item before automatic deletion. If this is left
-     /// `null`, then it is left to iOS's default.
-     /// 
-    public lazy var keepForDays: Int? = {
-        self._variables.getInt("keep-for-days") ?? _defaults.keepForDays
-    }()
-    /// The text content that is made searchable. If this is `null` then no
-     /// additional content is used, and only the title and URL will be used.
-     /// 
-    public lazy var searchableContent: PageContent? = {
-        self._variables.getString("searchable-content")?.map(PageContent.enumValue) ?? _defaults.searchableContent
-    }()
-}
-
-
-
-/// The controls for Start at Home feature
-public class StartAtHomeFeature {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let setting: StartAtHome
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        setting: StartAtHome = .afterFourHours
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            setting: setting))
-    }
-
-    /// This property provides a default setting for the startAtHomeFeature
-    public lazy var setting: StartAtHome = {
-        self._variables.getString("setting")?.map(StartAtHome.enumValue) ?? _defaults.setting
-    }()
-}
-
-
-
-/// This set holds all features pertaining to contextual hints.
-public class ContextualHintFeature {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let featuresEnabled: [ContextualHint: Bool]
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        featuresEnabled: [ContextualHint: Bool] = [.jumpBackInSyncedTabContextualHint: false, .toolbarHint: false]
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            featuresEnabled: featuresEnabled))
-    }
-
-    /// This property provides a lookup table of whether specific contextual hints
-     /// are enabled.
-     /// 
-    public lazy var featuresEnabled: [ContextualHint: Bool] = {
-        self._variables.getBoolMap("features-enabled")?.mapKeysNotNull(ContextualHint.enumValue).mergeWith(_defaults.featuresEnabled) ?? _defaults.featuresEnabled
-    }()
-}
-
-
-
-/// The feature that controls whether or not search term groups are enabled.
-public class SearchTermGroupsFeature {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let groupingEnabled: [SearchTermGroups: Bool]
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        groupingEnabled: [SearchTermGroups: Bool] = [.historyGroups: true, .tabTrayGroups: true]
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            groupingEnabled: groupingEnabled))
-    }
-
-    /// This property provides a lookup table of whether or not the given grouping
-     /// should be enabled.
-    public lazy var groupingEnabled: [SearchTermGroups: Bool] = {
-        self._variables.getBoolMap("grouping-enabled")?.mapKeysNotNull(SearchTermGroups.enumValue).mergeWith(_defaults.groupingEnabled) ?? _defaults.groupingEnabled
-    }()
-}
-
-
-
-/// This property defines the credit card autofill feature
-public class CreditCardAutofill {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let creditCardAutofillStatus: Bool
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        creditCardAutofillStatus: Bool = true
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            creditCardAutofillStatus: creditCardAutofillStatus))
-    }
-
-    /// If true, we will allow user to use the credit autofill feature
-    public lazy var creditCardAutofillStatus: Bool = {
-        self._variables.getBool("credit-card-autofill-status") ?? _defaults.creditCardAutofillStatus
-    }()
-}
-
-
-
-/// Configuring the functionality to do with search. This will be separated into
- /// smaller sub-features in later releases.
- /// 
-public class Search {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let awesomeBar: AwesomeBar
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        awesomeBar: AwesomeBar = AwesomeBar(position: SearchBarPositionFeature(isBottom: false, isPositionFeatureEnabled: true, isToolbarCfrOn: true), searchHighlights: false, usePageContent: false)
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            awesomeBar: awesomeBar))
-    }
-
-    /// Configuring the awesome bar.
-    public lazy var awesomeBar: AwesomeBar = {
-        self._variables.getVariables("awesome-bar")?.map(AwesomeBar.create)._mergeWith(_defaults.awesomeBar) ?? _defaults.awesomeBar
-    }()
-}
-
-
-
-/// This feature define the redesign of the share sheet
-public class ShareSheet {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let moveActions: Bool
-        let toolbarChanges: Bool
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        moveActions: Bool = true,
-        toolbarChanges: Bool = true
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            moveActions: moveActions,
-            toolbarChanges: toolbarChanges))
-    }
-
-    /// If true copy and send to device are moved to share sheet
-    public lazy var moveActions: Bool = {
-        self._variables.getBool("move-actions") ?? _defaults.moveActions
-    }()
-    /// If true share option is shown on the toolbar
-    public lazy var toolbarChanges: Bool = {
-        self._variables.getBool("toolbar-changes") ?? _defaults.toolbarChanges
-    }()
-}
-
-
-
-/// The feature that controls whether to show or not Upgrade onboarding
-public class OnboardingFeature {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let firstRunFlow: Bool
-        let upgradeFlow: Bool
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        firstRunFlow: Bool = true,
-        upgradeFlow: Bool = false
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            firstRunFlow: firstRunFlow,
-            upgradeFlow: upgradeFlow))
-    }
-
-    /// If true, we show the new Onboarding screen when the user for v106 version.
-     /// 
-    public lazy var firstRunFlow: Bool = {
-        self._variables.getBool("first-run-flow") ?? _defaults.firstRunFlow
-    }()
-    /// If true, we show the Upgrade onboarding screen when the user upgrades the
-     /// version.
-     /// 
-    public lazy var upgradeFlow: Bool = {
-        self._variables.getBool("upgrade-flow") ?? _defaults.upgradeFlow
-    }()
-}
-
-
-
-/// The tab tray screen that the user goes to when they open the tab tray.
-public class TabTrayFeature {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let sectionsEnabled: [TabTraySection: Bool]
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        sectionsEnabled: [TabTraySection: Bool] = [.inactiveTabs: true]
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            sectionsEnabled: sectionsEnabled))
-    }
-
-    /// This property provides a lookup table of whether or not the given section
-     /// should be enabled. If the section is enabled, it should be toggleable
-     /// in the settings screen, and on by default.
-    public lazy var sectionsEnabled: [TabTraySection: Bool] = {
-        self._variables.getBoolMap("sections-enabled")?.mapKeysNotNull(TabTraySection.enumValue).mergeWith(_defaults.sectionsEnabled) ?? _defaults.sectionsEnabled
     }()
 }
 
@@ -604,6 +321,190 @@ public class Messaging {
 
 
 
+/// The feature that controls whether or not search term groups are enabled.
+public class SearchTermGroupsFeature {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let groupingEnabled: [SearchTermGroups: Bool]
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        groupingEnabled: [SearchTermGroups: Bool] = [.historyGroups: true, .tabTrayGroups: true]
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            groupingEnabled: groupingEnabled))
+    }
+
+    /// This property provides a lookup table of whether or not the given grouping
+     /// should be enabled.
+    public lazy var groupingEnabled: [SearchTermGroups: Bool] = {
+        self._variables.getBoolMap("grouping-enabled")?.mapKeysNotNull(SearchTermGroups.enumValue).mergeWith(_defaults.groupingEnabled) ?? _defaults.groupingEnabled
+    }()
+}
+
+
+
+/// This feature define the redesign of the share sheet
+public class ShareSheet {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let moveActions: Bool
+        let toolbarChanges: Bool
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        moveActions: Bool = true,
+        toolbarChanges: Bool = true
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            moveActions: moveActions,
+            toolbarChanges: toolbarChanges))
+    }
+
+    /// If true copy and send to device are moved to share sheet
+    public lazy var moveActions: Bool = {
+        self._variables.getBool("move-actions") ?? _defaults.moveActions
+    }()
+    /// If true share option is shown on the toolbar
+    public lazy var toolbarChanges: Bool = {
+        self._variables.getBool("toolbar-changes") ?? _defaults.toolbarChanges
+    }()
+}
+
+
+
+/// This set holds all features pertaining to contextual hints.
+public class ContextualHintFeature {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let featuresEnabled: [ContextualHint: Bool]
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        featuresEnabled: [ContextualHint: Bool] = [.jumpBackInSyncedTabContextualHint: false, .toolbarHint: false]
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            featuresEnabled: featuresEnabled))
+    }
+
+    /// This property provides a lookup table of whether specific contextual hints
+     /// are enabled.
+     /// 
+    public lazy var featuresEnabled: [ContextualHint: Bool] = {
+        self._variables.getBoolMap("features-enabled")?.mapKeysNotNull(ContextualHint.enumValue).mergeWith(_defaults.featuresEnabled) ?? _defaults.featuresEnabled
+    }()
+}
+
+
+
+/// Add pages as items findable with Spotlight.
+public class SpotlightSearch {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let enabled: Bool
+        let iconType: IconType?
+        let keepForDays: Int?
+        let searchableContent: PageContent?
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        enabled: Bool = true,
+        iconType: IconType? = .screenshot,
+        keepForDays: Int? = nil,
+        searchableContent: PageContent? = .textExcerpt
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            enabled: enabled,
+            iconType: iconType,
+            keepForDays: keepForDays,
+            searchableContent: searchableContent))
+    }
+
+    /// If this is true, then on each page load adds a new item to Spotlight.
+    public lazy var enabled: Bool = {
+        self._variables.getBool("enabled") ?? _defaults.enabled
+    }()
+    /// The icon that is displayed next to the item in the search results. If this
+     /// is `null`, then no icon is displayed.
+     /// 
+    public lazy var iconType: IconType? = {
+        self._variables.getString("icon-type")?.map(IconType.enumValue) ?? _defaults.iconType
+    }()
+    /// Number of days to keep the item before automatic deletion. If this is left
+     /// `null`, then it is left to iOS's default.
+     /// 
+    public lazy var keepForDays: Int? = {
+        self._variables.getInt("keep-for-days") ?? _defaults.keepForDays
+    }()
+    /// The text content that is made searchable. If this is `null` then no
+     /// additional content is used, and only the title and URL will be used.
+     /// 
+    public lazy var searchableContent: PageContent? = {
+        self._variables.getString("searchable-content")?.map(PageContent.enumValue) ?? _defaults.searchableContent
+    }()
+}
+
+
+
+/// The tab tray screen that the user goes to when they open the tab tray.
+public class TabTrayFeature {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let sectionsEnabled: [TabTraySection: Bool]
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        sectionsEnabled: [TabTraySection: Bool] = [.inactiveTabs: true]
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            sectionsEnabled: sectionsEnabled))
+    }
+
+    /// This property provides a lookup table of whether or not the given section
+     /// should be enabled. If the section is enabled, it should be toggleable
+     /// in the settings screen, and on by default.
+    public lazy var sectionsEnabled: [TabTraySection: Bool] = {
+        self._variables.getBoolMap("sections-enabled")?.mapKeysNotNull(TabTraySection.enumValue).mergeWith(_defaults.sectionsEnabled) ?? _defaults.sectionsEnabled
+    }()
+}
+
+
+
 /// This property defines the configuration for the wallpaper feature
 public class WallpaperFeature {
     private let _variables: Variables
@@ -635,6 +536,74 @@ public class WallpaperFeature {
     /// This property defines whether the wallpaper onboarding is shown or not
     public lazy var onboardingSheet: Bool = {
         self._variables.getBool("onboarding-sheet") ?? _defaults.onboardingSheet
+    }()
+}
+
+
+
+/// The feature that controls whether to show or not Upgrade onboarding
+public class OnboardingFeature {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let firstRunFlow: Bool
+        let upgradeFlow: Bool
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        firstRunFlow: Bool = true,
+        upgradeFlow: Bool = false
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            firstRunFlow: firstRunFlow,
+            upgradeFlow: upgradeFlow))
+    }
+
+    /// If true, we show the new Onboarding screen when the user for v106 version.
+     /// 
+    public lazy var firstRunFlow: Bool = {
+        self._variables.getBool("first-run-flow") ?? _defaults.firstRunFlow
+    }()
+    /// If true, we show the Upgrade onboarding screen when the user upgrades the
+     /// version.
+     /// 
+    public lazy var upgradeFlow: Bool = {
+        self._variables.getBool("upgrade-flow") ?? _defaults.upgradeFlow
+    }()
+}
+
+
+
+/// The controls for Start at Home feature
+public class StartAtHomeFeature {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let setting: StartAtHome
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        setting: StartAtHome = .afterFourHours
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            setting: setting))
+    }
+
+    /// This property provides a default setting for the startAtHomeFeature
+    public lazy var setting: StartAtHome = {
+        self._variables.getString("setting")?.map(StartAtHome.enumValue) ?? _defaults.setting
     }()
 }
 
@@ -699,61 +668,62 @@ public class HomescreenFeature {
 
 
 
-
-/// The identifiers for the different types of search term groups.
-public enum SearchTermGroups: String, CaseIterable {
-    
-    /// Grouping for items in the Tab Tray and in JumpBackIn
-    case tabTrayGroups = "tab-tray-groups"
-    
-    /// Grouping for items in History and RecentlyVisited
-    case historyGroups = "history-groups"
-    
-
-    public static func enumValue(_ s: String?) -> SearchTermGroups? {
-        guard let s = s else {
-            return nil
-        }
-        return SearchTermGroups(rawValue: s)
+/// Configuring the functionality to do with search. This will be separated into
+ /// smaller sub-features in later releases.
+ /// 
+public class Search {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
     }
+    
+    struct Defaults {
+        let awesomeBar: AwesomeBar
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        awesomeBar: AwesomeBar = AwesomeBar(position: SearchBarPositionFeature(isBottom: false, isPositionFeatureEnabled: true, isToolbarCfrOn: true), searchHighlights: false, usePageContent: false)
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            awesomeBar: awesomeBar))
+    }
+
+    /// Configuring the awesome bar.
+    public lazy var awesomeBar: AwesomeBar = {
+        self._variables.getVariables("awesome-bar")?.map(AwesomeBar.create)._mergeWith(_defaults.awesomeBar) ?? _defaults.awesomeBar
+    }()
 }
 
 
-/// The page content that will be added as an item in the device's search
- /// engine.
-public enum PageContent: String, CaseIterable {
+
+
+/// The identifiers for the sections of the homescreen.
+public enum HomeScreenSection: String, CaseIterable {
     
-    /// Use all the page as text
-    case textContent = "text-content"
+    /// The frecency and pinned sites.
+    case topSites = "top-sites"
     
-    /// Only use the first paragraph
-    case textExcerpt = "text-excerpt"
+    /// The sites the user has bookmarked recently.
+    case recentlySaved = "recently-saved"
     
-    /// Use all the page as HTML
-    case htmlContent = "html-content"
+    /// The tab groups
+    case recentExplorations = "recent-explorations"
+    
+    /// The pocket section. This should only be available in the US.
+    case pocket = "pocket"
+    
+    /// The tabs the user was looking immediately before being interrupted.
+    case jumpBackIn = "jump-back-in"
     
 
-    public static func enumValue(_ s: String?) -> PageContent? {
+    public static func enumValue(_ s: String?) -> HomeScreenSection? {
         guard let s = s else {
             return nil
         }
-        return PageContent(rawValue: s)
-    }
-}
-
-
-/// The identifiers for the sections of the tab tray.
-public enum TabTraySection: String, CaseIterable {
-    
-    /// Tabs that have been automatically closed for the user.
-    case inactiveTabs = "inactive-tabs"
-    
-
-    public static func enumValue(_ s: String?) -> TabTraySection? {
-        guard let s = s else {
-            return nil
-        }
-        return TabTraySection(rawValue: s)
+        return HomeScreenSection(rawValue: s)
     }
 }
 
@@ -761,12 +731,12 @@ public enum TabTraySection: String, CaseIterable {
 /// The identifiers for a individual contextual hints.
 public enum ContextualHint: String, CaseIterable {
     
+    /// The contextual hint bubble that appears to provide a hint about the toolbar.
+    case toolbarHint = "toolbar-hint"
+    
     /// The contextual hint bubble that appears to indicate a synced tab has
      /// appeared within the Jump Back In section.
     case jumpBackInSyncedTabContextualHint = "jump-back-in-synced-tab-contextual-hint"
-    
-    /// The contextual hint bubble that appears to provide a hint about the toolbar.
-    case toolbarHint = "toolbar-hint"
     
 
     public static func enumValue(_ s: String?) -> ContextualHint? {
@@ -778,91 +748,25 @@ public enum ContextualHint: String, CaseIterable {
 }
 
 
-/// The identifiers for the different types of options for StartAtHome
-public enum StartAtHome: String, CaseIterable {
+/// The page content that will be added as an item in the device's search
+ /// engine.
+public enum PageContent: String, CaseIterable {
     
-    /// App opens to a new homepage tab after four hours of inactivity
-    case afterFourHours = "after-four-hours"
+    /// Use all the page as HTML
+    case htmlContent = "html-content"
     
-    /// App opens to a new homepage tab after five minutes of inactiviny
-    case always = "always"
+    /// Only use the first paragraph
+    case textExcerpt = "text-excerpt"
     
-    /// App always opens to the last tab the user was on.
-    case disabled = "disabled"
+    /// Use all the page as text
+    case textContent = "text-content"
     
 
-    public static func enumValue(_ s: String?) -> StartAtHome? {
+    public static func enumValue(_ s: String?) -> PageContent? {
         guard let s = s else {
             return nil
         }
-        return StartAtHome(rawValue: s)
-    }
-}
-
-
-/// An enum to influence what should be displayed when a control message is
- /// selected.
-public enum ControlMessageBehavior: String, CaseIterable {
-    
-    /// The surface should show no message.
-    case showNone = "show-none"
-    
-    /// The next eligible message should be shown.
-    case showNextMessage = "show-next-message"
-    
-
-    public static func enumValue(_ s: String?) -> ControlMessageBehavior? {
-        guard let s = s else {
-            return nil
-        }
-        return ControlMessageBehavior(rawValue: s)
-    }
-}
-
-
-/// An enum to identify which version of the wallpaper system to use
-public enum WallpaperVariantVersion: String, CaseIterable {
-    
-    /// The 2022 MR version
-    case v1 = "v1"
-    
-    /// The legacy wallpaper version
-    case legacy = "legacy"
-    
-
-    public static func enumValue(_ s: String?) -> WallpaperVariantVersion? {
-        guard let s = s else {
-            return nil
-        }
-        return WallpaperVariantVersion(rawValue: s)
-    }
-}
-
-
-/// The identifiers for the sections of the homescreen.
-public enum HomeScreenSection: String, CaseIterable {
-    
-    /// The sites the user has bookmarked recently.
-    case recentlySaved = "recently-saved"
-    
-    /// The frecency and pinned sites.
-    case topSites = "top-sites"
-    
-    /// The tabs the user was looking immediately before being interrupted.
-    case jumpBackIn = "jump-back-in"
-    
-    /// The tab groups
-    case recentExplorations = "recent-explorations"
-    
-    /// The pocket section. This should only be available in the US.
-    case pocket = "pocket"
-    
-
-    public static func enumValue(_ s: String?) -> HomeScreenSection? {
-        guard let s = s else {
-            return nil
-        }
-        return HomeScreenSection(rawValue: s)
+        return PageContent(rawValue: s)
     }
 }
 
@@ -891,17 +795,113 @@ public enum MessageSurfaceId: String, CaseIterable {
 }
 
 
+/// An enum to influence what should be displayed when a control message is
+ /// selected.
+public enum ControlMessageBehavior: String, CaseIterable {
+    
+    /// The surface should show no message.
+    case showNone = "show-none"
+    
+    /// The next eligible message should be shown.
+    case showNextMessage = "show-next-message"
+    
+
+    public static func enumValue(_ s: String?) -> ControlMessageBehavior? {
+        guard let s = s else {
+            return nil
+        }
+        return ControlMessageBehavior(rawValue: s)
+    }
+}
+
+
+/// The identifiers for the different types of search term groups.
+public enum SearchTermGroups: String, CaseIterable {
+    
+    /// Grouping for items in History and RecentlyVisited
+    case historyGroups = "history-groups"
+    
+    /// Grouping for items in the Tab Tray and in JumpBackIn
+    case tabTrayGroups = "tab-tray-groups"
+    
+
+    public static func enumValue(_ s: String?) -> SearchTermGroups? {
+        guard let s = s else {
+            return nil
+        }
+        return SearchTermGroups(rawValue: s)
+    }
+}
+
+
+/// The identifiers for the different types of options for StartAtHome
+public enum StartAtHome: String, CaseIterable {
+    
+    /// App opens to a new homepage tab after five minutes of inactiviny
+    case always = "always"
+    
+    /// App always opens to the last tab the user was on.
+    case disabled = "disabled"
+    
+    /// App opens to a new homepage tab after four hours of inactivity
+    case afterFourHours = "after-four-hours"
+    
+
+    public static func enumValue(_ s: String?) -> StartAtHome? {
+        guard let s = s else {
+            return nil
+        }
+        return StartAtHome(rawValue: s)
+    }
+}
+
+
+/// An enum to identify which version of the wallpaper system to use
+public enum WallpaperVariantVersion: String, CaseIterable {
+    
+    /// The 2022 MR version
+    case v1 = "v1"
+    
+    /// The legacy wallpaper version
+    case legacy = "legacy"
+    
+
+    public static func enumValue(_ s: String?) -> WallpaperVariantVersion? {
+        guard let s = s else {
+            return nil
+        }
+        return WallpaperVariantVersion(rawValue: s)
+    }
+}
+
+
+/// The identifiers for the sections of the tab tray.
+public enum TabTraySection: String, CaseIterable {
+    
+    /// Tabs that have been automatically closed for the user.
+    case inactiveTabs = "inactive-tabs"
+    
+
+    public static func enumValue(_ s: String?) -> TabTraySection? {
+        guard let s = s else {
+            return nil
+        }
+        return TabTraySection(rawValue: s)
+    }
+}
+
+
 /// The icon that will be added to the item in the device's search engine.
 public enum IconType: String, CaseIterable {
     
     /// A screenshot of the page at load time.
     case screenshot = "screenshot"
     
-    /// The favicon of the page
-    case favicon = "favicon"
-    
     /// An icon generated from the first letter of the base domain.
     case letter = "letter"
+    
+    /// The favicon of the page
+    case favicon = "favicon"
     
 
     public static func enumValue(_ s: String?) -> IconType? {
@@ -912,8 +912,8 @@ public enum IconType: String, CaseIterable {
     }
 }
 
-/// The configuration for the sponsored tile on the homescreen
-public class SponsoredTiles {
+/// The configuration for the a feature that can be enabled or disabled
+public class GeneralFeature {
     private let _variables: Variables
     private let _defaults: Defaults
     private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
@@ -922,51 +922,42 @@ public class SponsoredTiles {
     }
     
     struct Defaults {
-        let maxNumberOfTiles: Int
         let status: Bool
     }
 
     public convenience init(
         _ _variables: Variables = NilVariables.instance, 
-        maxNumberOfTiles: Int = 2,
         status: Bool = false
     ) {
         self.init(variables: _variables, defaults: Defaults(
-            maxNumberOfTiles: maxNumberOfTiles,
             status: status))
     }
 
-    /// The maximum number of sponsored tiles a user can see
-    public lazy var maxNumberOfTiles: Int = {
-        self._variables.getInt("max-number-of-tiles") ?? _defaults.maxNumberOfTiles
-    }()
     /// Whether or not the feature is enabled
     public lazy var status: Bool = {
         self._variables.getBool("status") ?? _defaults.status
     }()
 }
 
-public extension SponsoredTiles {
-    func _mergeWith(_ defaults: SponsoredTiles?) -> SponsoredTiles {
+public extension GeneralFeature {
+    func _mergeWith(_ defaults: GeneralFeature?) -> GeneralFeature {
         guard let defaults = defaults else {
             return self
         }
-        return SponsoredTiles(variables: self._variables, defaults: defaults._defaults)
+        return GeneralFeature(variables: self._variables, defaults: defaults._defaults)
     }
 
-    static func create(_ variables: Variables?) -> SponsoredTiles {
-        return SponsoredTiles(variables ?? NilVariables.instance)
+    static func create(_ variables: Variables?) -> GeneralFeature {
+        return GeneralFeature(variables ?? NilVariables.instance)
     }
 
-    static func mergeWith(_ overrides: SponsoredTiles, _ defaults: SponsoredTiles) -> SponsoredTiles {
+    static func mergeWith(_ overrides: GeneralFeature, _ defaults: GeneralFeature) -> GeneralFeature {
         return overrides._mergeWith(defaults)
     }
 }
 
-/// A group of properities (predominantly visual) to the describe style of the
- /// message.
- /// 
-public class StyleData {
+/// The configuration for the bottom search bar on the homescreen
+public class SearchBarPositionFeature {
     private let _variables: Variables
     private let _defaults: Defaults
     private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
@@ -975,98 +966,50 @@ public class StyleData {
     }
     
     struct Defaults {
-        let maxDisplayCount: Int
-        let priority: Int
+        let isBottom: Bool
+        let isPositionFeatureEnabled: Bool
+        let isToolbarCfrOn: Bool
     }
 
     public convenience init(
         _ _variables: Variables = NilVariables.instance, 
-        maxDisplayCount: Int = 5,
-        priority: Int = 50
+        isBottom: Bool = true,
+        isPositionFeatureEnabled: Bool = true,
+        isToolbarCfrOn: Bool = true
     ) {
         self.init(variables: _variables, defaults: Defaults(
-            maxDisplayCount: maxDisplayCount,
-            priority: priority))
+            isBottom: isBottom,
+            isPositionFeatureEnabled: isPositionFeatureEnabled,
+            isToolbarCfrOn: isToolbarCfrOn))
     }
 
-    /// How many sessions will this message be shown to the user before it is
-     /// expired.
-     /// 
-    public lazy var maxDisplayCount: Int = {
-        self._variables.getInt("max-display-count") ?? _defaults.maxDisplayCount
+    /// Whether or not the default position is at the bottom
+    public lazy var isBottom: Bool = {
+        self._variables.getBool("is-bottom") ?? _defaults.isBottom
     }()
-    /// The importance of this message. 0 is not very important, 100 is very
-     /// important.
-     /// 
-    public lazy var priority: Int = {
-        self._variables.getInt("priority") ?? _defaults.priority
-    }()
-}
-
-public extension StyleData {
-    func _mergeWith(_ defaults: StyleData?) -> StyleData {
-        guard let defaults = defaults else {
-            return self
-        }
-        return StyleData(variables: self._variables, defaults: defaults._defaults)
-    }
-
-    static func create(_ variables: Variables?) -> StyleData {
-        return StyleData(variables ?? NilVariables.instance)
-    }
-
-    static func mergeWith(_ overrides: StyleData, _ defaults: StyleData) -> StyleData {
-        return overrides._mergeWith(defaults)
-    }
-}
-
-/// The configuration for the a feature that can be enabled or disabled
-public class WallpaperConfiguration {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let status: Bool
-        let version: WallpaperVariantVersion
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        status: Bool = false,
-        version: WallpaperVariantVersion = .legacy
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            status: status,
-            version: version))
-    }
-
     /// Whether or not the feature is enabled
-    public lazy var status: Bool = {
-        self._variables.getBool("status") ?? _defaults.status
+    public lazy var isPositionFeatureEnabled: Bool = {
+        self._variables.getBool("is-position-feature-enabled") ?? _defaults.isPositionFeatureEnabled
     }()
-    /// Which version of the wallpaper sytem to use
-    public lazy var version: WallpaperVariantVersion = {
-        self._variables.getString("version")?.map(WallpaperVariantVersion.enumValue) ?? _defaults.version
+    /// Whether or not the toolbar CFR shows. This is a temporary hack for Nimbus
+    public lazy var isToolbarCfrOn: Bool = {
+        self._variables.getBool("is-toolbar-cfr-on") ?? _defaults.isToolbarCfrOn
     }()
 }
 
-public extension WallpaperConfiguration {
-    func _mergeWith(_ defaults: WallpaperConfiguration?) -> WallpaperConfiguration {
+public extension SearchBarPositionFeature {
+    func _mergeWith(_ defaults: SearchBarPositionFeature?) -> SearchBarPositionFeature {
         guard let defaults = defaults else {
             return self
         }
-        return WallpaperConfiguration(variables: self._variables, defaults: defaults._defaults)
+        return SearchBarPositionFeature(variables: self._variables, defaults: defaults._defaults)
     }
 
-    static func create(_ variables: Variables?) -> WallpaperConfiguration {
-        return WallpaperConfiguration(variables ?? NilVariables.instance)
+    static func create(_ variables: Variables?) -> SearchBarPositionFeature {
+        return SearchBarPositionFeature(variables ?? NilVariables.instance)
     }
 
-    static func mergeWith(_ overrides: WallpaperConfiguration, _ defaults: WallpaperConfiguration) -> WallpaperConfiguration {
+    static func mergeWith(_ overrides: SearchBarPositionFeature, _ defaults: SearchBarPositionFeature) -> SearchBarPositionFeature {
         return overrides._mergeWith(defaults)
     }
 }
@@ -1135,6 +1078,165 @@ public extension AwesomeBar {
     }
 
     static func mergeWith(_ overrides: AwesomeBar, _ defaults: AwesomeBar) -> AwesomeBar {
+        return overrides._mergeWith(defaults)
+    }
+}
+
+/// The configuration for the a feature that can be enabled or disabled
+public class WallpaperConfiguration {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let status: Bool
+        let version: WallpaperVariantVersion
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        status: Bool = false,
+        version: WallpaperVariantVersion = .legacy
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            status: status,
+            version: version))
+    }
+
+    /// Whether or not the feature is enabled
+    public lazy var status: Bool = {
+        self._variables.getBool("status") ?? _defaults.status
+    }()
+    /// Which version of the wallpaper sytem to use
+    public lazy var version: WallpaperVariantVersion = {
+        self._variables.getString("version")?.map(WallpaperVariantVersion.enumValue) ?? _defaults.version
+    }()
+}
+
+public extension WallpaperConfiguration {
+    func _mergeWith(_ defaults: WallpaperConfiguration?) -> WallpaperConfiguration {
+        guard let defaults = defaults else {
+            return self
+        }
+        return WallpaperConfiguration(variables: self._variables, defaults: defaults._defaults)
+    }
+
+    static func create(_ variables: Variables?) -> WallpaperConfiguration {
+        return WallpaperConfiguration(variables ?? NilVariables.instance)
+    }
+
+    static func mergeWith(_ overrides: WallpaperConfiguration, _ defaults: WallpaperConfiguration) -> WallpaperConfiguration {
+        return overrides._mergeWith(defaults)
+    }
+}
+
+/// A group of properities (predominantly visual) to the describe style of the
+ /// message.
+ /// 
+public class StyleData {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let maxDisplayCount: Int
+        let priority: Int
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        maxDisplayCount: Int = 5,
+        priority: Int = 50
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            maxDisplayCount: maxDisplayCount,
+            priority: priority))
+    }
+
+    /// How many sessions will this message be shown to the user before it is
+     /// expired.
+     /// 
+    public lazy var maxDisplayCount: Int = {
+        self._variables.getInt("max-display-count") ?? _defaults.maxDisplayCount
+    }()
+    /// The importance of this message. 0 is not very important, 100 is very
+     /// important.
+     /// 
+    public lazy var priority: Int = {
+        self._variables.getInt("priority") ?? _defaults.priority
+    }()
+}
+
+public extension StyleData {
+    func _mergeWith(_ defaults: StyleData?) -> StyleData {
+        guard let defaults = defaults else {
+            return self
+        }
+        return StyleData(variables: self._variables, defaults: defaults._defaults)
+    }
+
+    static func create(_ variables: Variables?) -> StyleData {
+        return StyleData(variables ?? NilVariables.instance)
+    }
+
+    static func mergeWith(_ overrides: StyleData, _ defaults: StyleData) -> StyleData {
+        return overrides._mergeWith(defaults)
+    }
+}
+
+/// The configuration for the sponsored tile on the homescreen
+public class SponsoredTiles {
+    private let _variables: Variables
+    private let _defaults: Defaults
+    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
+        self._variables = variables
+        self._defaults = defaults
+    }
+    
+    struct Defaults {
+        let maxNumberOfTiles: Int
+        let status: Bool
+    }
+
+    public convenience init(
+        _ _variables: Variables = NilVariables.instance, 
+        maxNumberOfTiles: Int = 2,
+        status: Bool = false
+    ) {
+        self.init(variables: _variables, defaults: Defaults(
+            maxNumberOfTiles: maxNumberOfTiles,
+            status: status))
+    }
+
+    /// The maximum number of sponsored tiles a user can see
+    public lazy var maxNumberOfTiles: Int = {
+        self._variables.getInt("max-number-of-tiles") ?? _defaults.maxNumberOfTiles
+    }()
+    /// Whether or not the feature is enabled
+    public lazy var status: Bool = {
+        self._variables.getBool("status") ?? _defaults.status
+    }()
+}
+
+public extension SponsoredTiles {
+    func _mergeWith(_ defaults: SponsoredTiles?) -> SponsoredTiles {
+        guard let defaults = defaults else {
+            return self
+        }
+        return SponsoredTiles(variables: self._variables, defaults: defaults._defaults)
+    }
+
+    static func create(_ variables: Variables?) -> SponsoredTiles {
+        return SponsoredTiles(variables ?? NilVariables.instance)
+    }
+
+    static func mergeWith(_ overrides: SponsoredTiles, _ defaults: SponsoredTiles) -> SponsoredTiles {
         return overrides._mergeWith(defaults)
     }
 }
@@ -1238,108 +1340,6 @@ public extension MessageData {
     }
 
     static func mergeWith(_ overrides: MessageData, _ defaults: MessageData) -> MessageData {
-        return overrides._mergeWith(defaults)
-    }
-}
-
-/// The configuration for the bottom search bar on the homescreen
-public class SearchBarPositionFeature {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let isBottom: Bool
-        let isPositionFeatureEnabled: Bool
-        let isToolbarCfrOn: Bool
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        isBottom: Bool = true,
-        isPositionFeatureEnabled: Bool = true,
-        isToolbarCfrOn: Bool = true
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            isBottom: isBottom,
-            isPositionFeatureEnabled: isPositionFeatureEnabled,
-            isToolbarCfrOn: isToolbarCfrOn))
-    }
-
-    /// Whether or not the default position is at the bottom
-    public lazy var isBottom: Bool = {
-        self._variables.getBool("is-bottom") ?? _defaults.isBottom
-    }()
-    /// Whether or not the feature is enabled
-    public lazy var isPositionFeatureEnabled: Bool = {
-        self._variables.getBool("is-position-feature-enabled") ?? _defaults.isPositionFeatureEnabled
-    }()
-    /// Whether or not the toolbar CFR shows. This is a temporary hack for Nimbus
-    public lazy var isToolbarCfrOn: Bool = {
-        self._variables.getBool("is-toolbar-cfr-on") ?? _defaults.isToolbarCfrOn
-    }()
-}
-
-public extension SearchBarPositionFeature {
-    func _mergeWith(_ defaults: SearchBarPositionFeature?) -> SearchBarPositionFeature {
-        guard let defaults = defaults else {
-            return self
-        }
-        return SearchBarPositionFeature(variables: self._variables, defaults: defaults._defaults)
-    }
-
-    static func create(_ variables: Variables?) -> SearchBarPositionFeature {
-        return SearchBarPositionFeature(variables ?? NilVariables.instance)
-    }
-
-    static func mergeWith(_ overrides: SearchBarPositionFeature, _ defaults: SearchBarPositionFeature) -> SearchBarPositionFeature {
-        return overrides._mergeWith(defaults)
-    }
-}
-
-/// The configuration for the a feature that can be enabled or disabled
-public class GeneralFeature {
-    private let _variables: Variables
-    private let _defaults: Defaults
-    private init(variables: Variables = NilVariables.instance, defaults: Defaults) {
-        self._variables = variables
-        self._defaults = defaults
-    }
-    
-    struct Defaults {
-        let status: Bool
-    }
-
-    public convenience init(
-        _ _variables: Variables = NilVariables.instance, 
-        status: Bool = false
-    ) {
-        self.init(variables: _variables, defaults: Defaults(
-            status: status))
-    }
-
-    /// Whether or not the feature is enabled
-    public lazy var status: Bool = {
-        self._variables.getBool("status") ?? _defaults.status
-    }()
-}
-
-public extension GeneralFeature {
-    func _mergeWith(_ defaults: GeneralFeature?) -> GeneralFeature {
-        guard let defaults = defaults else {
-            return self
-        }
-        return GeneralFeature(variables: self._variables, defaults: defaults._defaults)
-    }
-
-    static func create(_ variables: Variables?) -> GeneralFeature {
-        return GeneralFeature(variables ?? NilVariables.instance)
-    }
-
-    static func mergeWith(_ overrides: GeneralFeature, _ defaults: GeneralFeature) -> GeneralFeature {
         return overrides._mergeWith(defaults)
     }
 }

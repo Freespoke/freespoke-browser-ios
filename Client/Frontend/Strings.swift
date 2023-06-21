@@ -146,15 +146,25 @@ extension String {
                     tableName: nil,
                     value: "Tabs you haven’t viewed for two weeks get moved here.",
                     comment: "Contextual hints are little popups that appear for the users informing them of new features. This one talks about the inactive tabs feature.")
+                public static let BookmarksDecriptionAlert = MZLocalizedString(
+                    "ContextualHints.TabTray.BookmarksDecriptionAlert",
+                    tableName: nil,
+                    value: "Find all of your saved tab under Bookmarks.",
+                    comment: "Contextual hints are little popups that appear for the users informing them of new features. This onalks about the inactive tabs feature.")
             }
         }
 
         public struct Toolbar {
+            public static let BookmarksButtonText = MZLocalizedString(
+                "ContextualHints.SearchBarPlacement.BookmarksButtonText",
+                tableName: nil,
+                value: "Bookmarks",
+                comment: "Contextual hints are little popups that appear for the users informing them of new features. This one is a call to action for the popup describing search bar placement. It indicates a user can navigate to the settings page that allows them to customize the placement of the search bar.")
             public static let SearchBarPlacementButtonText = MZLocalizedString(
                 "ContextualHints.SearchBarPlacement.CallToAction",
                 tableName: nil,
                 value: "Toolbar Settings",
-                comment: "Contextual hints are little popups that appear for the users informing them of new features. This one is a call to action for the popup describing search bar placement. It indicates a user can navigate to the settings page that allows them to customize the placement of the search bar.")
+                comment: "Contextual hinare little popups that appear for the users informing them of new features. This one is a call to action for the popup describing search bar placement. It indicates a user can navigate to the settings page that allows them to customize the placement of the search bar.")
             public static let SearchBarTopPlacement = MZLocalizedString(
                 "ContextualHints.Toolbar.Top.Description.v107",
                 tableName: "ToolbarLocation",
@@ -200,12 +210,12 @@ extension String {
                     "DefaultBrowserCard.Title",
                     tableName: "Default Browser",
                     value: "Switch Your Default Browser",
-                    comment: "Title for small home tab banner shown that allows the user to switch their default browser to Firefox.")
+                    comment: "Title for small home tab banner shown that allows the user to switch their default browser to Freespoke.")
                 public static let HomeTabBannerDescription = MZLocalizedString(
                     "DefaultBrowserCard.Description",
                     tableName: "Default Browser",
-                    value: "Set links from websites, emails, and Messages to open automatically in Firefox.",
-                    comment: "Description for small home tab banner shown that allows the user to switch their default browser to Firefox.")
+                    value: "Set links from websites, emails, and Messages to open automatically in Freespoke.",
+                    comment: "Description for small home tab banner shown that allows the user to switch their default browser to Freespoke.")
                 public static let HomeTabBannerButton = MZLocalizedString(
                     "DefaultBrowserCard.Button.v2",
                     tableName: "Default Browser",
@@ -219,33 +229,33 @@ extension String {
                 public static let PeaceOfMindTitle = MZLocalizedString(
                     "DefaultBrowserCard.PeaceOfMind.Title.v108",
                     tableName: "Default Browser",
-                    value: "Firefox Has Privacy Covered",
-                    comment: "Title for small home tab banner shown that allows the user to switch their default browser to Firefox.")
+                    value: "Freespoke Has Privacy Covered",
+                    comment: "Title for small home tab banner shown that allows the user to switch their default browser to Freespoke.")
                 public static let PeaceOfMindDescription = MZLocalizedString(
                     "DefaultBrowserCard.PeaceOfMind.Description.v108",
                     tableName: "Default Browser",
-                    value: "Firefox blocks 3,000+ trackers per user each month on average. Make us your default browser for privacy peace of mind.",
-                    comment: "Description for small home tab banner shown that allows the user to switch their default browser to Firefox.")
+                    value: "Freespoke blocks 3,000+ trackers per user each month on average. Make us your default browser for privacy peace of mind.",
+                    comment: "Description for small home tab banner shown that allows the user to switch their default browser to Freespoke.")
                 public static let BetterInternetTitle = MZLocalizedString(
                     "DefaultBrowserCard.BetterInternet.Title.v108",
                     tableName: "Default Browser",
                     value: "Default to a Better Internet",
-                    comment: "Title for small home tab banner shown that allows the user to switch their default browser to Firefox.")
+                    comment: "Title for small home tab banner shown that allows the user to switch their default browser to Freespoke.")
                 public static let BetterInternetDescription = MZLocalizedString(
                     "DefaultBrowserCard.BetterInternet.Description.v108",
                     tableName: "Default Browser",
-                    value: "Making Firefox your default browser is a vote for an open, accessible internet.",
-                    comment: "Description for small home tab banner shown that allows the user to switch their default browser to Firefox.")
+                    value: "Making Freespoke your default browser is a vote for an open, accessible internet.",
+                    comment: "Description for small home tab banner shown that allows the user to switch their default browser to Freespoke.")
                 public static let NextLevelTitle = MZLocalizedString(
                     "DefaultBrowserCard.NextLevel.Title.v108",
                     tableName: "Default Browser",
                     value: "Elevate Everyday Browsing",
-                    comment: "Title for small home tab banner shown that allows the user to switch their default browser to Firefox.")
+                    comment: "Title for small home tab banner shown that allows the user to switch their default browser to Freespoke.")
                 public static let NextLevelDescription = MZLocalizedString(
                     "DefaultBrowserCard.NextLevel.Description.v108",
                     tableName: "Default Browser",
-                    value: "Choose Firefox as your default browser to make speed, safety, and privacy automatic.",
-                    comment: "Description for small home tab banner shown that allows the user to switch their default browser to Firefox.")
+                    value: "Choose Freespoke as your default browser to make speed, safety, and privacy automatic.",
+                    comment: "Description for small home tab banner shown that allows the user to switch their default browser to Freespoke.")
             }
         }
 
@@ -624,7 +634,7 @@ extension String {
         public static let WallpaperTitle = MZLocalizedString(
             "Onboarding.WallpaperTitle.v102",
             tableName: nil,
-            value: "Choose a Firefox Wallpaper",
+            value: "Choose a Freespoke Wallpaper",
             comment: "Title for the wallpaper onboarding page in our Onboarding screens. This describes to the user that they can choose different wallpapers.")
         public static let WallpaperAction = MZLocalizedString(
             "Onboarding.WallpaperAction.v102",
@@ -640,7 +650,7 @@ extension String {
             "Onboarding.SyncTitle.v102",
             tableName: nil,
             value: "Sync to Stay In Your Flow",
-            comment: "Title for the sync onboarding page in our Onboarding screens. The user will be able to setup their Firefox sync account from that screen. 'Stay in the flow' means that a person is fully immersed in an activity. The user will sync with their Firefox sync account to stay connected and immersed in the activity they are doing.")
+            comment: "Title for the sync onboarding page in our Onboarding screens. The user will be able to setup their Freespoke sync account from that screen. 'Stay in the flow' means that a person is fully immersed in an activity. The user will sync with their Firefox sync account to stay connected and immersed in the activity they are doing.")
         public static let SyncDescription = MZLocalizedString(
             "Onboarding.SyncDescription.v102",
             tableName: nil,
@@ -659,7 +669,7 @@ extension String {
         public static let IntroWelcomeDescription = MZLocalizedString(
             "Onboarding.Welcome.Description.v106",
             tableName: nil,
-            value: "Firefox puts people over profits and defends your privacy by default.",
+            value: "Freespoke puts people over profits and defends your privacy by default.",
             comment: "String used to describes the description of what Firefox is on the welcome onboarding page for 106 version in our Onboarding screens.")
         public static let IntroSyncTitle = MZLocalizedString(
             "Onboarding.Sync.Title.v106",
@@ -787,7 +797,7 @@ extension String {
         public static let SuggestSectionTitle = MZLocalizedString(
             "Search.SuggestSectionTitle.v102",
             tableName: nil,
-            value: "Firefox Suggest",
+            value: "Freespoke Suggest",
             comment: "When making a new search from the awesome bar, suggestions appear to the user as they write new letters in their search. Different types of suggestions can appear. This string will be used as a header to separate Firefox suggestions from normal suggestions.")
         public static let EngineSectionTitle = MZLocalizedString(
             "Search.EngineSection.Title.v108",
@@ -869,7 +879,7 @@ extension String {
                 public static let Description = MZLocalizedString(
                     "Settings.Home.Option.Description.v101",
                     tableName: nil,
-                    value: "Choose what’s included on the Firefox homepage.",
+                    value: "Choose what’s included on the Freespoke homepage.",
                     comment: "In the settings menu, on the Firefox homepage customization section, this is the description below the section, describing what the options in the section are for.")
                 public static let Wallpaper = MZLocalizedString(
                     "Settings.Home.Option.Wallpaper",
@@ -930,7 +940,7 @@ extension String {
                 public static let SectionDescription = MZLocalizedString(
                     "Settings.Home.Option.StartAtHome.Description",
                     tableName: nil,
-                    value: "Choose what you see when you return to Firefox.",
+                    value: "Choose what you see when you return to Freespoke.",
                     comment: "In the settings menu, in the Start at Home customization options, this is text that appears below the section, describing what the section settings do.")
                 public static let AfterFourHours = MZLocalizedString(
                     "Settings.Home.Option.StartAtHome.AfterFourHours",
@@ -963,7 +973,7 @@ extension String {
                 public static let SwitchTitle = MZLocalizedString(
                     "Settings.Home.Option.Wallpaper.SwitchTitle.v99",
                     tableName: nil,
-                    value: "Change wallpaper by tapping Firefox homepage logo",
+                    value: "Change wallpaper by tapping Freespoke homepage logo",
                     comment: "In the settings menu, on the Firefox wallpaper customization screen, this is the string titling the switch button's function, which allows a user to toggle wallpaper switching from the homepage logo on or off.")
                 public static let WallpaperUpdatedToastLabel = MZLocalizedString(
                     "Settings.Home.Option.Wallpaper.UpdatedToast",
@@ -1007,7 +1017,7 @@ extension String {
                     public static let FxHomepageWallpaperButton = MZLocalizedString(
                         "FxHomepage.Wallpaper.ButtonLabel.v99",
                         tableName: nil,
-                        value: "Firefox logo, change the wallpaper.",
+                        value: "Freespoke logo, change the wallpaper.",
                         comment: "On the firefox homepage, the string read by the voice over prompt for accessibility, for the button which changes the wallpaper")
                     public static let ToggleButton = MZLocalizedString(
                         "Settings.Home.Option.Wallpaper.Accessibility.ToggleButton",
@@ -1022,27 +1032,27 @@ extension String {
                     public static let FxAmethystWallpaper = MZLocalizedString(
                         "Settings.Home.Option.Wallpaper.Accessibility.AmethystWallpaper.v99",
                         tableName: nil,
-                        value: "Firefox wallpaper, amethyst pattern.",
+                        value: "Freespoke wallpaper, amethyst pattern.",
                         comment: "In the settings menu, on the Firefox wallpaper customization screen, this is the accessibility string for the amethyst firefox wallpaper.")
                     public static let FxSunriseWallpaper = MZLocalizedString(
                         "Settings.Home.Option.Wallpaper.Accessibility.SunriseWallpaper.v99",
                         tableName: nil,
-                        value: "Firefox wallpaper, sunrise pattern.",
+                        value: "Freespoke wallpaper, sunrise pattern.",
                         comment: "In the settings menu, on the Firefox wallpaper customization screen, this is the title accessibility string for the sunrise firefox wallpaper.")
                     public static let FxCeruleanWallpaper = MZLocalizedString(
                         "Settings.Home.Option.Wallpaper.Accessibility.CeruleanWallpaper.v99",
                         tableName: nil,
-                        value: "Firefox wallpaper, cerulean pattern.",
+                        value: "Freespoke wallpaper, cerulean pattern.",
                         comment: "In the settings menu, on the Firefox wallpaper customization screen, this is the title accessibility string for the cerulean firefox wallpaper.")
                     public static let FxBeachHillsWallpaper = MZLocalizedString(
                         "Settings.Home.Option.Wallpaper.Accessibility.BeachHillsWallpaper.v100",
                         tableName: nil,
-                        value: "Firefox wallpaper, beach hills pattern.",
+                        value: "Freespoke wallpaper, beach hills pattern.",
                         comment: "In the settings menu, on the Firefox wallpaper customization screen, this is the title accessibility string for the beach hills firefox wallpaper.")
                     public static let FxTwilightHillsWallpaper = MZLocalizedString(
                         "Settings.Home.Option.Wallpaper.Accessibility.TwilightHillsWallpaper.v100",
                         tableName: nil,
-                        value: "Firefox wallpaper, twilight hills pattern.",
+                        value: "Freespoke wallpaper, twilight hills pattern.",
                         comment: "In the settings menu, on the Firefox wallpaper customization screen, this is the title accessibility string for the twilight hills firefox wallpaper.")
                 }
             }
@@ -1433,7 +1443,7 @@ extension String {
     public static let SettingsDisconnectSyncAlertBody = MZLocalizedString(
         "Settings.Disconnect.Body",
         tableName: nil,
-        value: "Firefox will stop syncing with your account, but won’t delete any of your browsing data on this device.",
+        value: "Freespoke will stop syncing with your account, but won’t delete any of your browsing data on this device.",
         comment: "Body of the alert when prompting the user asking to disconnect.")
     public static let SettingsDisconnectSyncButton = MZLocalizedString(
         "Settings.Disconnect.Button",
@@ -1492,7 +1502,7 @@ extension String {
     public static let ErrorPagesCertWarningDescription = MZLocalizedString(
         "ErrorPages.CertWarning.Description",
         tableName: nil,
-        value: "The owner of %@ has configured their website improperly. To protect your information from being stolen, Firefox has not connected to this website.",
+        value: "The owner of %@ has configured their website improperly. To protect your information from being stolen, Freespoke has not connected to this website.",
         comment: "Warning text on the certificate error page")
     public static let ErrorPagesCertWarningTitle = MZLocalizedString(
         "ErrorPages.CertWarning.Title",
@@ -1564,7 +1574,7 @@ extension String {
     public static let EmptySyncedTabsPanelStateTitle = MZLocalizedString(
         "HistoryPanel.EmptySyncedTabsState.Title",
         tableName: nil,
-        value: "Firefox Sync",
+        value: "Freespoke Sync",
         comment: "Title for the empty synced tabs state in the History Panel")
     public static let EmptySyncedTabsPanelNotSignedInStateDescription = MZLocalizedString(
         "HistoryPanel.EmptySyncedTabsPanelNotSignedInState.Description",
@@ -1589,7 +1599,7 @@ extension String {
     public static let FirefoxHomePage = MZLocalizedString(
         "Firefox.HomePage.Title",
         tableName: nil,
-        value: "Firefox Home Page",
+        value: "Freespoke Home Page",
         comment: "Title for firefox about:home page in tab history list")
     public static let HistoryPanelDelete = MZLocalizedString(
         "Delete",
@@ -1764,8 +1774,8 @@ extension String {
     public static let FxAFirefoxAccount = MZLocalizedString(
         "FxA.FirefoxAccount",
         tableName: nil,
-        value: "Firefox Account",
-        comment: "Settings section title for Firefox Account")
+        value: "Freespoke Account",
+        comment: "Settings section title for Freespoke Account")
     public static let FxAManageAccount = MZLocalizedString(
         "FxA.ManageAccount",
         tableName: nil,
@@ -1784,7 +1794,7 @@ extension String {
     public static let FxASettingsTitle = MZLocalizedString(
         "Settings.FxA.Title",
         tableName: nil,
-        value: "Firefox Account",
+        value: "Freespoke Account",
         comment: "Title displayed in header of the FxA settings panel.")
     public static let FxASettingsSyncSettings = MZLocalizedString(
         "Settings.FxA.Sync.SectionName",
@@ -1836,7 +1846,7 @@ extension String {
     public static let SettingsNewTabTopSites = MZLocalizedString(
         "Settings.NewTab.Option.FirefoxHome",
         tableName: nil,
-        value: "Firefox Home",
+        value: "Home",
         comment: "Option in settings to show Firefox Home when you open a new tab")
     public static let SettingsNewTabBlankPage = MZLocalizedString(
         "Settings.NewTab.Option.BlankPage",
@@ -2130,7 +2140,7 @@ extension String {
     public static let UnableToOpenURLError = MZLocalizedString(
         "OpenURL.Error.Message",
         tableName: nil,
-        value: "Firefox cannot open the page because it has an invalid address.",
+        value: "Freespoke cannot open the page because it has an invalid address.",
         comment: "The message displayed to a user when they try to open a URL that cannot be handled by Firefox, or any external app.")
     public static let UnableToOpenURLErrorTitle = MZLocalizedString(
         "OpenURL.Error.Title",
@@ -2341,7 +2351,7 @@ extension String {
     public static let PhotoLibraryFirefoxWouldLikeAccessTitle = MZLocalizedString(
         "PhotoLibrary.FirefoxWouldLikeAccessTitle",
         tableName: nil,
-        value: "Firefox would like to access your Photos",
+        value: "Freespoke would like to access your Photos",
         comment: "See http://mzl.la/1G7uHo7")
     public static let PhotoLibraryFirefoxWouldLikeAccessMessage = MZLocalizedString(
         "PhotoLibrary.FirefoxWouldLikeAccessMessage",
@@ -2357,7 +2367,7 @@ extension String {
     public static let SentTab_NoTabArrivingNotification_title = MZLocalizedString(
         "SentTab.NoTabArrivingNotification.title",
         tableName: nil,
-        value: "Firefox Sync",
+        value: "Freespoke Sync",
         comment: "Title of notification received after a spurious message from FxA has been received.")
     public static let SentTab_NoTabArrivingNotification_body =
     MZLocalizedString(
@@ -2422,7 +2432,7 @@ extension String {
     public static let FxAPush_DeviceDisconnected_ThisDevice_body = MZLocalizedString(
         "FxAPush_DeviceDisconnected_ThisDevice_body",
         tableName: nil,
-        value: "This device has been successfully disconnected from Firefox Sync.",
+        value: "This device has been successfully disconnected from Freespoke Sync.",
         comment: "Body of a notification displayed when this device has been disconnected from FxA by another device.")
     public static let FxAPush_DeviceDisconnected_title = MZLocalizedString(
         "FxAPush_DeviceDisconnected_title",
@@ -2438,7 +2448,7 @@ extension String {
     public static let FxAPush_DeviceDisconnected_UnknownDevice_body = MZLocalizedString(
         "FxAPush_DeviceDisconnected_UnknownDevice_body",
         tableName: nil,
-        value: "A device has disconnected from Firefox Sync",
+        value: "A device has disconnected from Freespoke Sync",
         comment: "Body of a notification displayed when unnamed device has been disconnected from FxA.")
 
     public static let FxAPush_DeviceConnected_title = MZLocalizedString(
@@ -2449,7 +2459,7 @@ extension String {
     public static let FxAPush_DeviceConnected_body = MZLocalizedString(
         "FxAPush_DeviceConnected_body",
         tableName: nil,
-        value: "Firefox Sync has connected to %@",
+        value: "Freespoke Sync has connected to %@",
         comment: "Title of a notification displayed when another device has connected to FxA. %@ refers to the name of the newly connected device.")
 }
 
@@ -2487,7 +2497,7 @@ extension String {
     public static let ScanQRCodePermissionErrorMessage = MZLocalizedString(
         "ScanQRCode.PermissionError.Message.v100",
         tableName: nil,
-        value: "Go to device ‘Settings’ > ‘Firefox’. Allow Firefox to access camera.",
+        value: "Go to device ‘Settings’ > ‘Firefox’. Allow Freespoke to access camera.",
         comment: "Text of the prompt to setup the camera authorization for the Scan QR Code feature.")
     public static let ScanQRCodeErrorOKButton = MZLocalizedString(
         "ScanQRCode.Error.OK.Button",
@@ -2990,7 +3000,7 @@ extension String {
     public static let SendUsageSettingMessage = MZLocalizedString(
         "Settings.SendUsage.Message",
         tableName: nil,
-        value: "Mozilla strives to only collect what we need to provide and improve Firefox for everyone.",
+        value: "Mozilla strives to only collect what we need to provide and improve Freespoke for everyone.",
         comment: "A short description that explains why mozilla collects usage data.")
     public static let SettingsSiriSectionName = MZLocalizedString(
         "Settings.Siri.SectionName",
@@ -3000,7 +3010,7 @@ extension String {
     public static let SettingsSiriSectionDescription = MZLocalizedString(
         "Settings.Siri.SectionDescription",
         tableName: nil,
-        value: "Use Siri shortcuts to quickly open Firefox via Siri",
+        value: "Use Siri shortcuts to quickly open Freespoke via Siri",
         comment: "The description that describes what siri shortcuts are")
     public static let SettingsSiriOpenURL = MZLocalizedString(
         "Settings.Siri.OpenTabShortcut",
@@ -3024,7 +3034,7 @@ extension String {
     public static let SettingsStudiesToggleMessage = MZLocalizedString(
         "Settings.Studies.Toggle.Message",
         tableName: nil,
-        value: "Firefox may install and run studies from time to time.",
+        value: "Freespoke may install and run studies from time to time.",
         comment: "A short description that explains that Mozilla is running studies")
 }
 
@@ -3044,7 +3054,7 @@ extension String {
         "Intro.Slides.Button.SignIn",
         tableName: "Intro",
         value: "Sign In",
-        comment: "Sign in to Firefox account button on second intro screen.")
+        comment: "Sign in to Freespoke account button on second intro screen.")
 }
 
 // MARK: - Share extension
@@ -3077,7 +3087,7 @@ extension String {
     public static let SendToNotSignedInText = MZLocalizedString(
         "SendTo.NotSignedIn.Title",
         tableName: nil,
-        value: "You are not signed in to your Firefox Account.",
+        value: "You are not signed in to your Freespoke Account.",
         comment: "See http://mzl.la/1ISlXnU")
     public static let SendToNotSignedInMessage = MZLocalizedString(
         "SendTo.NotSignedIn.Message",
@@ -3087,7 +3097,7 @@ extension String {
     public static let SendToNoDevicesFound = MZLocalizedString(
         "SendTo.NoDevicesFound.Message",
         tableName: nil,
-        value: "You don’t have any other devices connected to this Firefox Account available to sync.",
+        value: "You don’t have any other devices connected to this Freespoke Account available to sync.",
         comment: "Error message shown in the remote tabs panel")
     public static let SendToTitle = MZLocalizedString(
         "SendTo.NavBar.Title",
@@ -3105,9 +3115,9 @@ extension String {
         value: "Available devices:",
         comment: "Header for the list of devices table")
     public static let ShareSendToDevice = String.AppMenu.TouchActions.SendToDeviceTitle
-
+    
     // The above items are re-used strings from the old extension. New strings below.
-
+    
     public static let ShareAddToReadingList = MZLocalizedString(
         "ShareExtension.AddToReadingListAction.Title",
         tableName: nil,
@@ -3128,23 +3138,23 @@ extension String {
         tableName: nil,
         value: "Bookmarked",
         comment: "Share extension label shown after user has performed 'Bookmark this Page' action.")
-
+    
     public static let ShareOpenInFirefox = MZLocalizedString(
         "ShareExtension.OpenInFirefoxAction.Title",
         tableName: nil,
-        value: "Open in Firefox",
+        value: "Open in Freespoke",
         comment: "Action label on share extension to immediately open page in Firefox.")
     public static let ShareSearchInFirefox = MZLocalizedString(
         "ShareExtension.SeachInFirefoxAction.Title",
         tableName: nil,
         value: "Search in Firefox",
-        comment: "Action label on share extension to search for the selected text in Firefox.")
-
+        comment: "Action label on share extension to search for the selected text in Freespoke.")
+    
     public static let ShareLoadInBackground = MZLocalizedString(
         "ShareExtension.LoadInBackgroundAction.Title",
         tableName: nil,
         value: "Load in Background",
-        comment: "Action label on share extension to load the page in Firefox when user switches apps to bring it to foreground.")
+        comment: "Action label on share extension to load the page in Freespoke when user switches apps to bring it to foreground.")
     public static let ShareLoadInBackgroundDone = MZLocalizedString(
         "ShareExtension.LoadInBackgroundActionDone.Title",
         tableName: nil,
@@ -3288,7 +3298,7 @@ extension String {
     public static let FxASignin_QRInstructions = MZLocalizedString(
         "fxa.signin.qr-link-instruction",
         tableName: nil,
-        value: "On your computer open Firefox and go to firefox.com/pair",
+        value: "On your computer open Freespoke and go to firefox.com/pair",
         comment: "FxA sign in view qr code instructions")
     public static let FxASignin_QRScanSignin = MZLocalizedString(
         "fxa.signin.ready-to-scan",
@@ -3325,8 +3335,8 @@ extension String {
     public static let QuickActionsGalleryTitlev2 = MZLocalizedString(
         "TodayWidget.QuickActionsGalleryTitleV2",
         tableName: "Today",
-        value: "Firefox Shortcuts",
-        comment: "Firefox shortcuts title when widget enters edit mode. Do not translate the word Firefox.")
+        value: "Freespoke Shortcuts",
+        comment: "Firefox shortcuts title when widget enters edit mode. Do not translate the word Freespoke.")
 
     // Quick Action - Medium Size Quick Action
     public static let GoToCopiedLinkLabel = MZLocalizedString(
@@ -3349,7 +3359,7 @@ extension String {
     public static let FirefoxShortcutGalleryDescription = MZLocalizedString(
         "TodayWidget.FirefoxShortcutGalleryDescription",
         tableName: "Today",
-        value: "Add Firefox shortcuts to your Home screen.",
+        value: "Add Freespoke shortcuts to your Home screen.",
         comment: "Description for medium size widget to add Firefox Shortcut to home screen")
 
     // Quick Action - Small Size Widget
@@ -3373,7 +3383,7 @@ extension String {
     public static let QuickActionGalleryDescription = MZLocalizedString(
         "TodayWidget.QuickActionGalleryDescription",
         tableName: "Today",
-        value: "Add a Firefox shortcut to your Home screen. After adding the widget, touch and hold to edit it and select a different shortcut.",
+        value: "Add a Freespoke shortcut to your Home screen. After adding the widget, touch and hold to edit it and select a different shortcut.",
         comment: "Description for small size widget to add it to home screen")
 
     // Top Sites - Medium Size - Gallery View
@@ -3434,7 +3444,7 @@ extension String {
         "DefaultBrowserOnboarding.Screenshot",
         tableName: "Default Browser",
         value: "Default Browser App",
-        comment: "Text for the screenshot of the iOS system settings page for Firefox.")
+        comment: "Text for the screenshot of the iOS system settings page for Freespoke.")
     public static let DefaultBrowserOnboardingDescriptionStep1 = MZLocalizedString(
         "DefaultBrowserOnboarding.Description1",
         tableName: "Default Browser",
@@ -3454,7 +3464,7 @@ extension String {
         "DefaultBrowserOnboarding.Button",
         tableName: "Default Browser",
         value: "Go to Settings",
-        comment: "Button string to open settings that allows user to switch their default browser to Firefox.")
+        comment: "Button string to open settings that allows user to switch their default browser to Freespoke.")
 }
 
 // MARK: - FxAWebViewController
@@ -3886,7 +3896,7 @@ extension String {
         value: nil,
         comment: "Title displayed for when there are no open tabs while in private mode")
     public static let TabTrayPrivateBrowsingDescription =  MZLocalizedString(
-        "Firefox won’t remember any of your history or cookies, but new bookmarks will be saved.",
+        "Freespoke won’t remember any of your history or cookies, but new bookmarks will be saved.",
         tableName: "PrivateBrowsing",
         value: nil,
         comment: "Description text displayed when there are no open tabs while in private mode")
@@ -4545,7 +4555,7 @@ extension String {
     public static let LoginsWelcomeViewTitle2 = MZLocalizedString(
         "Logins.WelcomeView.Title2",
         tableName: nil,
-        value: "AutoFill Firefox Passwords",
+        value: "AutoFill Freespoke Passwords",
         comment: "Label displaying welcome view title")
     public static let LoginsWelcomeViewTagline = MZLocalizedString(
         "Logins.WelcomeView.Tagline",
@@ -4590,7 +4600,7 @@ extension String {
     public static let LoginsListNoLoginsFoundDescription = MZLocalizedString(
         "LoginsList.NoLoginsFound.Description",
         tableName: nil,
-        value: "Saved logins will show up here. If you saved your logins to Firefox on a different device, sign in to your Firefox Account.",
+        value: "Saved logins will show up here. If you saved your logins to Freespoke on a different device, sign in to your Freespoke Account.",
         comment: "Label shown when there are no logins to list")
     public static let LoginsPasscodeRequirementWarning = MZLocalizedString(
         "Logins.PasscodeRequirement.Warning",

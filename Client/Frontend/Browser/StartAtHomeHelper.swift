@@ -72,8 +72,8 @@ class StartAtHomeHelper: FeatureFlaggable {
             return tabs.first { $0.isCustomHomeTab }
         case .topSites:
             return tabs.first { $0.isFxHomeTab }
-        case .blankPage:
-            return nil
+        case .freespoke:
+            return tabs.first { $0.isFreespoke }
         }
     }
 }

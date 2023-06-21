@@ -96,7 +96,7 @@ struct ImageButtonWithLabel: View {
                     if isSmall {
                         HStack(alignment: .bottom) {
                             Spacer()
-                            Image("faviconFox")
+                            Image("Freespoke Torch - Light Mode")
                                 .scaledToFit()
                                 .frame(height: 24.0)
                         }

@@ -145,7 +145,10 @@ class TabTrayViewController: UIViewController, Themeable {
     }()
 
     private lazy var segmentedControlIpad: UISegmentedControl = {
-        let items = TabTrayViewModel.Segment.allCases.map { $0.label }
+        //let items = TabTrayViewModel.Segment.allCases.map { $0.label }
+        let items = [
+            TabTrayViewModel.Segment.tabs.label,
+            TabTrayViewModel.Segment.privateTabs.label]
         return createSegmentedControl(items: items,
                                       action: #selector(segmentIpadChanged),
                                       a11yId: AccessibilityIdentifiers.TabTray.navBarSegmentedControl)
@@ -154,8 +157,7 @@ class TabTrayViewController: UIViewController, Themeable {
     private lazy var segmentedControlIphone: UISegmentedControl = {
         let items = [
             TabTrayViewModel.Segment.tabs.image!.overlayWith(image: countLabel),
-            TabTrayViewModel.Segment.privateTabs.image!,
-            TabTrayViewModel.Segment.syncedTabs.image!]
+            TabTrayViewModel.Segment.privateTabs.image!]
         return createSegmentedControl(items: items,
                                       action: #selector(segmentIphoneChanged),
                                       a11yId: AccessibilityIdentifiers.TabTray.navBarSegmentedControl)

@@ -28,4 +28,8 @@ class HomeButtonHomePageAccessors {
         guard let urlString = string else { return nil }
         return URL(string: urlString)
     }
+    
+    static func getFreespokePage() -> URL? {
+        return URL(string: Constants.freespokeURL.rawValue)
+    }
 }

@@ -13,6 +13,7 @@ enum NimbusFeatureFlagID: String, CaseIterable {
     case bottomSearchBar
     case contextualHintForJumpBackInSyncedTab
     case contextualHintForToolbar
+    case contextualHintForBookmarks
     case creditCardAutofillStatus
     case historyHighlights
     case historyGroups
@@ -37,6 +38,13 @@ enum NimbusFeatureFlagID: String, CaseIterable {
     case wallpapers
     case wallpaperOnboardingSheet
     case wallpaperVersion
+}
+
+enum NimbusFeatureFlagIsSet: String {
+    case sponsoredTiles = "sponsoredTiles"
+    case jumpBackIn = "jumpBackIn"
+    case searchBarPosition = "searchBarPosition"
+    case migrateTabs = "migrateTabs"
 }
 
 /// This enum is a constraint for any feature flag options that have more than
@@ -88,6 +96,7 @@ struct NimbusFlaggableFeature: HasNimbusSearchBar {
         // Cases where users do not have the option to manipulate a setting.
         case .contextualHintForJumpBackInSyncedTab,
                 .contextualHintForToolbar,
+                .contextualHintForBookmarks,
                 .creditCardAutofillStatus,
                 .jumpBackInSyncedTab,
                 .onboardingUpgrade,

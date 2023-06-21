@@ -185,7 +185,8 @@ extension PocketViewModel: HomepageViewModelProtocol, FeatureFlaggable {
         // For Pocket, the user preference check returns a user preference if it exists in
         // UserDefaults, and, if it does not, it will return a default preference based on
         // a (nimbus pocket section enabled && Pocket.isLocaleSupported) check
-        return featureFlags.isFeatureEnabled(.pocket, checking: .buildAndUser)
+        //return featureFlags.isFeatureEnabled(.pocket, checking: .buildAndUser)
+        return false
     }
 
     var hasData: Bool {

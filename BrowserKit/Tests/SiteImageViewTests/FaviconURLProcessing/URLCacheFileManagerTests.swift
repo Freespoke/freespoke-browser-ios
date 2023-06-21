@@ -35,7 +35,7 @@ class URLCacheFileManagerTests: XCTestCase {
 }
 
 class MockFileManager: FileManagerProtocol {
-    var urls = [URL(string: "firefox")!]
+    var urls = [URL(string: "freespoke")!]
     var fileExists = true
     var fileExistsCalledCount = 0
     var urlsCalledCount = 0

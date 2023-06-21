@@ -206,8 +206,9 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
             append(to: &section, action: readingListSection)
         }
 
-        let syncAction = syncMenuButton(showFxA: showFXASyncAction)
-        append(to: &section, action: syncAction)
+        //|     Hide Sync and Save Data from Home
+        //let syncAction = syncMenuButton(showFxA: showFXASyncAction)
+        //append(to: &section, action: syncAction)
 
         return section
     }
@@ -226,8 +227,9 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         let nightModeAction = getNightModeAction()
         append(to: &section, action: nightModeAction)
 
-        let passwordsAction = getPasswordAction(navigationController: navigationController)
-        append(to: &section, action: passwordsAction)
+        //|     Hide Passwords from Home
+        //let passwordsAction = getPasswordAction(navigationController: navigationController)
+        //append(to: &section, action: passwordsAction)
 
         if !isHomePage && !isFileURL {
             let reportSiteIssueAction = getReportSiteIssueAction()
@@ -273,8 +275,9 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         var section = [PhotonRowActions]()
 
         if isHomePage {
-            let whatsNewAction = getWhatsNewAction()
-            append(to: &section, action: whatsNewAction)
+            //|     Hide What's New from Home
+            //let whatsNewAction = getWhatsNewAction()
+            //append(to: &section, action: whatsNewAction)
 
             let helpAction = getHelpAction()
             section.append(helpAction)
@@ -294,7 +297,7 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
     private func getNewTabAction() -> PhotonRowActions {
         return SingleActionViewModel(title: .AppMenu.NewTab,
                                      iconString: ImageIdentifiers.newTab) { _ in
-            let shouldFocusLocationField = NewTabAccessors.getNewTabPage(self.profile.prefs) == .blankPage
+            let shouldFocusLocationField = NewTabAccessors.getNewTabPage(self.profile.prefs) == .freespoke
             self.delegate?.openBlankNewTab(focusLocationField: shouldFocusLocationField, isPrivate: false, searchFor: nil)
             TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .createNewTab)
         }.items
@@ -401,7 +404,7 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
     private func getHelpAction() -> PhotonRowActions {
         return SingleActionViewModel(title: .AppMenu.Help,
                                      iconString: ImageIdentifiers.help) { _ in
-            if let url = URL(string: "https://support.mozilla.org/products/ios") {
+            if let url = URL(string: "https://freespoke-support.freshdesk.com/support/home") {
                 self.delegate?.openURLInNewTab(url, isPrivate: false)
             }
             TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)

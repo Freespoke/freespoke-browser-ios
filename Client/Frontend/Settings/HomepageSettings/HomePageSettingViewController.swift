@@ -75,7 +75,8 @@ class HomePageSettingViewController: SettingsTableViewController, FeatureFlaggab
             return [customizeFirefoxHomeSection, customizeHomePageSection]
         }
 
-        return [startAtHomeSection, customizeFirefoxHomeSection, customizeHomePageSection]
+        //return [startAtHomeSection, customizeFirefoxHomeSection, customizeHomePageSection]
+        return [startAtHomeSection, customizeFirefoxHomeSection]
     }
 
     private func customizeHomeSettingSection() -> SettingSection {
@@ -97,13 +98,22 @@ class HomePageSettingViewController: SettingsTableViewController, FeatureFlaggab
                 self.currentNewTabChoice = NewTabPage.topSites
                 onFinished()
         })
+        let showBlankPage = CheckmarkSetting(
+            title: NSAttributedString(string: .SettingsNewTabBlankPage),
+            subtitle: nil,
+            accessibilityIdentifier: "HomeAsBlankPage",
+            isChecked: {return self.currentNewTabChoice == NewTabPage.freespoke},
+            onChecked: {
+                self.currentNewTabChoice = NewTabPage.freespoke
+                onFinished()
+        })
         let showWebPage = WebPageSetting(
             prefs: prefs,
             prefKey: PrefsKeys.HomeButtonHomePageURL,
             defaultValue: nil,
             placeholder: .CustomNewPageURL,
             accessibilityIdentifier: "HomeAsCustomURL",
-            isChecked: { return !showTopSites.isChecked() },
+            isChecked: { return !showTopSites.isChecked() && !showBlankPage.isChecked() },
             settingDidChange: { (string) in
                 self.currentNewTabChoice = NewTabPage.homePage
                 self.prefs.setString(self.currentNewTabChoice.rawValue, forKey: NewTabAccessors.HomePrefKey)
@@ -113,7 +123,7 @@ class HomePageSettingViewController: SettingsTableViewController, FeatureFlaggab
 
         return SettingSection(title: NSAttributedString(string: .SettingsHomePageURLSectionTitle),
                               footerTitle: NSAttributedString(string: .Settings.Homepage.Current.Description),
-                              children: [showTopSites, showWebPage])
+                              children: [showTopSites, showBlankPage, showWebPage])
     }
 
     private func customizeFirefoxSettingSection() -> SettingSection {
@@ -161,6 +171,9 @@ class HomePageSettingViewController: SettingsTableViewController, FeatureFlaggab
             sectionItems.append(historyHighlightsSetting)
         }
 
+        /*
+        //|     Hide Recommended by Poket & Sponsored stories
+        
         if isPocketSectionEnabled {
             sectionItems.append(pocketSetting)
 
@@ -169,6 +182,7 @@ class HomePageSettingViewController: SettingsTableViewController, FeatureFlaggab
                 sectionItems.append(pocketSponsoredSetting)
             }
         }
+        */
 
         if isWallpaperSectionEnabled {
             sectionItems.append(wallpaperSetting)

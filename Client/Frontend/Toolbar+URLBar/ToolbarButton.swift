@@ -10,13 +10,20 @@ class ToolbarButton: UIButton {
     var selectedTintColor: UIColor!
     var unselectedTintColor: UIColor!
     var disabledTintColor = UIColor.Photon.Grey50
+    
+    var isHome = false
 
     // Optionally can associate a separator line that hide/shows along with the button
     weak var separatorLine: UIView?
 
     override open var isHighlighted: Bool {
         didSet {
-            self.tintColor = isHighlighted ? selectedTintColor : unselectedTintColor
+            if self.tag == 2 && isHome {
+                self.tintColor = UIColor.redHomeToolbar
+            }
+            else {
+                self.tintColor = isHighlighted ? selectedTintColor : unselectedTintColor
+            }
         }
     }
 
@@ -28,7 +35,8 @@ class ToolbarButton: UIButton {
 
     override var tintColor: UIColor! {
         didSet {
-            self.imageView?.tintColor = self.tintColor
+            imageView?.tintColor = self.tintColor
+            setTitleColor(tintColor, for: .normal)
         }
     }
 
@@ -43,6 +51,7 @@ class ToolbarButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         adjustsImageWhenHighlighted = false
+        titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
         selectedTintColor = tintColor
         unselectedTintColor = tintColor
         imageView?.contentMode = .scaleAspectFit
@@ -60,7 +69,21 @@ extension ToolbarButton: NotificationThemeable {
         selectedTintColor = UIColor.legacyTheme.toolbarButton.selectedTint
         disabledTintColor = UIColor.legacyTheme.toolbarButton.disabledTint
         unselectedTintColor = UIColor.legacyTheme.browser.tint
-        tintColor = isEnabled ? unselectedTintColor : disabledTintColor
+        
+        if tag == 2 && isHome {
+            tintColor = UIColor.redHomeToolbar
+        }
+        else {
+            tintColor = isEnabled ? unselectedTintColor : disabledTintColor
+        }
+        
+        if tag == 2 {
+            selectedTintColor = UIColor.redHomeToolbar
+        }
+        
         imageView?.tintColor = tintColor
+        titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
+        setTitleColor(selectedTintColor, for: .highlighted)
+        setTitleColor(tintColor, for: .normal)
     }
 }

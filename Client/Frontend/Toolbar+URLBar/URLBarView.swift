@@ -49,6 +49,7 @@ protocol URLBarDelegate: AnyObject {
     func urlBarDisplayTextForURL(_ url: URL?) -> (String?, Bool)
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView)
     func urlBarDidPressShare(_ tabLocationView: TabLocationView, urlBar: URLBarView, shareView: UIView)
+    func urlBarPressShare(_ tabLocationView: TabLocationView, urlBar: URLBarView, shareView: UIView)
 }
 
 protocol URLBarViewProtocol {
@@ -785,9 +786,12 @@ extension URLBarView: TabLocationViewDelegate {
     func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView) {
         delegate?.urlBarDidPressReaderMode(self)
     }
+    
+    func tabLocationViewTapShare(_ tabLocationView: TabLocationView, button: UIButton) {
+        delegate?.urlBarPressShare(tabLocationView, urlBar: self, shareView: button)
+    }
 
     func tabLocationViewDidTapShare(_ tabLocationView: TabLocationView, button: UIButton) {
-        //tabLocationView.shareButton.setImage(<#T##image: UIImage?##UIImage?#>, for: <#T##UIControl.State#>)
         delegate?.urlBarDidPressShare(tabLocationView, urlBar: self, shareView: button)
     }
 

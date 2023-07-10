@@ -14,6 +14,7 @@ protocol TabLocationViewDelegate: AnyObject {
     func tabLocationViewDidTapShield(_ tabLocationView: TabLocationView)
     func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapShare(_ tabLocationView: TabLocationView, button: UIButton)
+    func tabLocationViewTapShare(_ tabLocationView: TabLocationView, button: UIButton)
 
     /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
     @discardableResult func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool
@@ -108,7 +109,7 @@ class TabLocationView: UIView, FeatureFlaggable {
     }
 
     private lazy var readerModeButton: ReaderModeButton = .build { readerModeButton in
-        readerModeButton.addTarget(self, action: #selector(self.tapReaderModeButton), for: .touchUpInside)
+        readerModeButton.addTarget(self, action: #selector(self.tapReaderModeButton(_:)), for: .touchUpInside)
         readerModeButton.addGestureRecognizer(
             UILongPressGestureRecognizer(target: self,
                                          action: #selector(self.longPressReaderModeButton)))
@@ -210,8 +211,9 @@ class TabLocationView: UIView, FeatureFlaggable {
 
     // MARK: - User actions
 
-    @objc func tapReaderModeButton() {
-        delegate?.tabLocationViewDidTapReaderMode(self)
+    @objc func tapReaderModeButton(_ button: UIButton) {
+        //delegate?.tabLocationViewDidTapReaderMode(self)
+        delegate?.tabLocationViewTapShare(self, button: shareButton)
     }
 
     @objc func tapReloadButton() {

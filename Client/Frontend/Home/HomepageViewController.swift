@@ -26,6 +26,8 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             contextMenuHelper.sendToDeviceDelegate = sendToDeviceDelegate
         }
     }
+    
+    var delegate: FreespokeHomepageViewDelegate?
 
     private var viewModel: HomepageViewModel
     private var contextMenuHelper: HomepageContextMenuHelper
@@ -41,6 +43,11 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     var themeManager: ThemeManager
     var notificationCenter: NotificationProtocol
     var themeObserver: NSObjectProtocol?
+    
+    var isHome = false
+    var isNewTab = false
+    var isSearching = false
+    var freespokeHomepageView: FreespokeHomepageView!
 
     // Background for status bar
     private lazy var statusBarView: UIView = {
@@ -117,13 +124,22 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configureWallpaperView()
         configureContentStackView()
         configureCollectionView()
 
         // Delay setting up the view model delegate to ensure the views have been configured first
         viewModel.delegate = self
+        
+        freespokeHomepageView = FreespokeHomepageView()
+        freespokeHomepageView.delegate = self
+        
+        view.addSubview(freespokeHomepageView)
+        
+        freespokeHomepageView.snp.makeConstraints { make in
+            make.top.left.right.bottom.equalTo(view)
+        }
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -135,6 +151,67 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         listenForThemeChange(view)
         applyTheme()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        AppDelegate.AppUtility.lockOrientation(.portrait)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        AppDelegate.AppUtility.lockOrientation(.all)
+    }
+    
+    func checkFreespokeHomepage() {
+        if isHome {
+            if !isNewTab {
+                if isSearching {
+                    if let freespokeHomepageView = freespokeHomepageView {
+                        
+                        UIView.animate(
+                            withDuration: 0.2,
+                            animations: {
+                                self.freespokeHomepageView.alpha = 0
+                            }, completion: {_ in
+                            })
+                    }
+                }
+                else {
+                    if let freespokeHomepageView = freespokeHomepageView {
+                        UIView.animate(
+                            withDuration: 0.2,
+                            animations: {
+                                self.freespokeHomepageView.alpha = 1
+                            }, completion: {_ in
+                            })
+                    }
+                }
+            }
+            else {
+                if let freespokeHomepageView = freespokeHomepageView {
+                    UIView.animate(
+                        withDuration: 0.2,
+                        animations: {
+                            self.freespokeHomepageView.alpha = 0
+                        }, completion: {_ in
+                        })
+                }
+            }
+        }
+        else {
+            if let freespokeHomepageView = freespokeHomepageView {
+                UIView.animate(
+                    withDuration: 0.2,
+                    animations: {
+                        self.freespokeHomepageView.alpha = 0
+                    }, completion: {_ in
+                    })
+            }
+        }
+    }
+
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -313,6 +390,67 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         viewModel.theme = theme
         view.backgroundColor = theme.colors.layer1
         updateStatusBar(theme: theme)
+        
+        if let freespokeHomepageView = freespokeHomepageView {
+            freespokeHomepageView.contentView.backgroundColor = theme.colors.layer1
+            
+            let color1 = UIColor(colorString: "2F3644")
+            let color3 = UIColor(colorString: "9AA2B2")
+
+            switch theme.type {
+            case .light:
+                let color5 = UIColor(colorString: "E1E5EB")
+                let color7 = UIColor(colorString: "F9F9F9")
+                
+                freespokeHomepageView.lblTitle.textColor = color1
+                freespokeHomepageView.imgViewTop.image = UIImage(named: "banner-light")
+                
+                freespokeHomepageView.imgViewSearch.tintColor = color1
+                freespokeHomepageView.imgViewNews.tintColor = color3
+                freespokeHomepageView.imgViewShop.tintColor = color3
+                freespokeHomepageView.lblNews.textColor = color3
+                freespokeHomepageView.lblShop.textColor = color3
+                
+                freespokeHomepageView.btnSerch.setTitleColor(color1, for: .normal)
+                freespokeHomepageView.btnShop.setTitleColor(color1, for: .normal)
+                freespokeHomepageView.btnNews.setTitleColor(color1, for: .normal)
+
+                freespokeHomepageView.viewShop.layer.borderColor        = color5.cgColor
+                freespokeHomepageView.viewNews.layer.borderColor        = color5.cgColor
+                freespokeHomepageView.btnSerch.layer.borderColor        = color5.cgColor
+                
+                freespokeHomepageView.viewSeparatorNews.backgroundColor = color1
+                freespokeHomepageView.viewSeparatorShop.backgroundColor = color1
+                
+                freespokeHomepageView.btnSerch.backgroundColor = color7
+                
+            case .dark:
+                let color2 = UIColor(colorString: "606671")
+                let color5 = UIColor(colorString: "292929")
+
+                freespokeHomepageView.lblTitle.textColor = .white
+                freespokeHomepageView.imgViewTop.image = UIImage(named: "banner-dark")
+                
+                freespokeHomepageView.imgViewSearch.tintColor = .white
+                freespokeHomepageView.imgViewNews.tintColor = color2
+                freespokeHomepageView.imgViewShop.tintColor = color2
+                freespokeHomepageView.lblNews.textColor = color2
+                freespokeHomepageView.lblShop.textColor = color2
+                
+                freespokeHomepageView.btnSerch.setTitleColor(.white, for: .normal)
+                freespokeHomepageView.btnShop.setTitleColor(.white, for: .normal)
+                freespokeHomepageView.btnNews.setTitleColor(.white, for: .normal)
+
+                freespokeHomepageView.viewShop.layer.borderColor        = color1.cgColor
+                freespokeHomepageView.viewNews.layer.borderColor        = color1.cgColor
+                freespokeHomepageView.btnSerch.layer.borderColor        = color1.cgColor
+                
+                freespokeHomepageView.viewSeparatorNews.backgroundColor = .white
+                freespokeHomepageView.viewSeparatorShop.backgroundColor = .white
+                
+                freespokeHomepageView.btnSerch.backgroundColor = color5
+            }
+        }
     }
 
     func scrollToTop(animated: Bool = false) {
@@ -790,6 +928,21 @@ extension HomepageViewController: HomepageViewModelDelegate {
             self.collectionView.reloadData()
             self.collectionView.collectionViewLayout.invalidateLayout()
         }
+    }
+}
+
+// MARK: FreespokeHomepageViewDelegate
+extension HomepageViewController: FreespokeHomepageViewDelegate {
+    func didPressSearch() {
+        delegate?.didPressSearch()
+    }
+    
+    func didPressNews() {
+        delegate?.didPressNews()
+    }
+    
+    func didPressShop() {
+        delegate?.didPressShop()
     }
 }
 

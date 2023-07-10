@@ -878,7 +878,7 @@
 "Settings.General.SectionName" = "General";
 
 /* Label used as an item in Settings. When touched it will open a dialog to configure the home page and its uses. */
-"Settings.HomePage.SectionName" = "Homepage";
+"Settings.HomePage.SectionName" = "New Tab";
 
 /* Title of the setting section containing the URL of the current home page. */
 "Settings.HomePage.URL.Title" = "Current Homepage";

@@ -119,7 +119,7 @@ class AppSettingsTableViewController: SettingsTableViewController, FeatureFlagga
            ]
 
         if isSearchBarLocationFeatureEnabled {
-            generalSettings.insert(SearchBarSetting(settings: self), at: 5)
+            //generalSettings.insert(SearchBarSetting(settings: self), at: 5)
         }
 
         let autofillCreditCardStatus = featureFlags.isFeatureEnabled(.creditCardAutofillStatus, checking: .buildOnly)
@@ -226,7 +226,6 @@ class AppSettingsTableViewController: SettingsTableViewController, FeatureFlagga
                 PrivacyPolicySetting(delegate: settingsDelegate, theme: themeManager.currentTheme),
                 AppStoreReviewSetting(),
                 LicenseAndAcknowledgementsSetting(),
-                HithubiOSLink(delegate: settingsDelegate, theme: themeManager.currentTheme),
                 
                 //|     Hide all options from Firefox
                 //VersionSetting(settings: self),

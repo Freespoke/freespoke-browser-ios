@@ -8,6 +8,13 @@ import UIKit
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressHome(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         userHasPressedHomeButton = true
+        
+        isNewTab = false
+        isHome = true
+        isSearching = false
+        
+        setValues(isHome: isHome, isNewTab: isNewTab, isSearching: isSearching)
+        
         let page = NewTabAccessors.getHomePage(self.profile.prefs)
         
         if page == .homePage, let homePageURL = HomeButtonHomePageAccessors.getHomePage(self.profile.prefs) {
@@ -70,8 +77,21 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
             openLinkURL(Constants.newsURL.rawValue)
+            
+            urlBar.alpha = 1.0
         }
         else {
+            if !isNewTab {
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    urlBar.alpha = 0
+                } else {
+                    urlBar.alpha = 1.0
+                }
+            }
+            else {
+                urlBar.alpha = 1.0
+            }
+            
             tabManager.selectedTab?.goBack()
         }
     }
@@ -87,6 +107,17 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             openLinkURL(Constants.shopURL.rawValue)
         }
         else {
+            if !isNewTab {
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    urlBar.alpha = 0
+                } else {
+                    urlBar.alpha = 1
+                }
+            }
+            else {
+                urlBar.alpha = 1
+            }
+            
             tabManager.selectedTab?.goForward()
         }
     }
@@ -291,7 +322,7 @@ extension BrowserViewController: MenuControllerDelegate {
     
     // MARK: Custom Methods
     
-    private func openLinkURL(_ strUrl: String) {
+    func openLinkURL(_ strUrl: String) {
         if let url = URL(string: strUrl) {
             tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
         }

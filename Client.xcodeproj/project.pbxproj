@@ -212,6 +212,20 @@
 		2F18E17029C763B100F222A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F18E16F29C763B100F222A3 /* Main.storyboard */; };
 		2F18E17829C9A80C00F222A3 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F18E17729C9A80C00F222A3 /* MenuController.swift */; };
 		2F18E17A29C9DAA000F222A3 /* MenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F18E17929C9DAA000F222A3 /* MenuCell.swift */; };
+		2F18F87C2A4F07A60061D517 /* FreespokeHomepageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F87A2A4F07A40061D517 /* FreespokeHomepageView.xib */; };
+		2F18F87D2A4F07A60061D517 /* FreespokeHomepageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F18F87B2A4F07A50061D517 /* FreespokeHomepageView.swift */; };
+		2F18F88D2A55ED430061D517 /* SourceSerifPro-It.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F8812A55ED2A0061D517 /* SourceSerifPro-It.otf */; };
+		2F18F88E2A55ED430061D517 /* SourceSerifPro-ExtraLightIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F8822A55ED2B0061D517 /* SourceSerifPro-ExtraLightIt.otf */; };
+		2F18F88F2A55ED430061D517 /* SourceSerifPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F8832A55ED2D0061D517 /* SourceSerifPro-Regular.otf */; };
+		2F18F8902A55ED430061D517 /* SourceSerifPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F8842A55ED300061D517 /* SourceSerifPro-Bold.otf */; };
+		2F18F8912A55ED430061D517 /* SourceSerifPro-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F8852A55ED340061D517 /* SourceSerifPro-ExtraLight.otf */; };
+		2F18F8922A55ED430061D517 /* SourceSerifPro-BlackIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F8862A55ED360061D517 /* SourceSerifPro-BlackIt.otf */; };
+		2F18F8932A55ED430061D517 /* SourceSerifPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F8872A55ED370061D517 /* SourceSerifPro-Light.otf */; };
+		2F18F8942A55ED430061D517 /* SourceSerifPro-SemiboldIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F8882A55ED380061D517 /* SourceSerifPro-SemiboldIt.otf */; };
+		2F18F8952A55ED430061D517 /* SourceSerifPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F8892A55ED3A0061D517 /* SourceSerifPro-Semibold.otf */; };
+		2F18F8962A55ED430061D517 /* SourceSerifPro-BoldIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F88A2A55ED3D0061D517 /* SourceSerifPro-BoldIt.otf */; };
+		2F18F8972A55ED430061D517 /* SourceSerifPro-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F88B2A55ED410061D517 /* SourceSerifPro-Black.otf */; };
+		2F18F8982A55ED430061D517 /* SourceSerifPro-LightIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F18F88C2A55ED430061D517 /* SourceSerifPro-LightIt.otf */; };
 		2F3724C71ABF3C01007607FA /* StorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3724C51ABF3C01007607FA /* StorageClientTests.swift */; };
 		2F3724E51ABF3C19007607FA /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3724E21ABF3C19007607FA /* Info.swift */; };
 		2F3724E71ABF3C19007607FA /* StorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3724E31ABF3C19007607FA /* StorageClient.swift */; };
@@ -1811,6 +1825,20 @@
 		2F18E16F29C763B100F222A3 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		2F18E17729C9A80C00F222A3 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		2F18E17929C9DAA000F222A3 /* MenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCell.swift; sourceTree = "<group>"; };
+		2F18F87A2A4F07A40061D517 /* FreespokeHomepageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FreespokeHomepageView.xib; sourceTree = "<group>"; };
+		2F18F87B2A4F07A50061D517 /* FreespokeHomepageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FreespokeHomepageView.swift; sourceTree = "<group>"; };
+		2F18F8812A55ED2A0061D517 /* SourceSerifPro-It.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-It.otf"; sourceTree = "<group>"; };
+		2F18F8822A55ED2B0061D517 /* SourceSerifPro-ExtraLightIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-ExtraLightIt.otf"; sourceTree = "<group>"; };
+		2F18F8832A55ED2D0061D517 /* SourceSerifPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-Regular.otf"; sourceTree = "<group>"; };
+		2F18F8842A55ED300061D517 /* SourceSerifPro-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-Bold.otf"; sourceTree = "<group>"; };
+		2F18F8852A55ED340061D517 /* SourceSerifPro-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-ExtraLight.otf"; sourceTree = "<group>"; };
+		2F18F8862A55ED360061D517 /* SourceSerifPro-BlackIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-BlackIt.otf"; sourceTree = "<group>"; };
+		2F18F8872A55ED370061D517 /* SourceSerifPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-Light.otf"; sourceTree = "<group>"; };
+		2F18F8882A55ED380061D517 /* SourceSerifPro-SemiboldIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-SemiboldIt.otf"; sourceTree = "<group>"; };
+		2F18F8892A55ED3A0061D517 /* SourceSerifPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-Semibold.otf"; sourceTree = "<group>"; };
+		2F18F88A2A55ED3D0061D517 /* SourceSerifPro-BoldIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-BoldIt.otf"; sourceTree = "<group>"; };
+		2F18F88B2A55ED410061D517 /* SourceSerifPro-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-Black.otf"; sourceTree = "<group>"; };
+		2F18F88C2A55ED430061D517 /* SourceSerifPro-LightIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSerifPro-LightIt.otf"; sourceTree = "<group>"; };
 		2F3724C51ABF3C01007607FA /* StorageClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageClientTests.swift; sourceTree = "<group>"; };
 		2F3724E21ABF3C19007607FA /* Info.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
 		2F3724E31ABF3C19007607FA /* StorageClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageClient.swift; sourceTree = "<group>"; };
@@ -3538,6 +3566,25 @@
 				2F0F06E729B279CA00A89B37 /* SourceSansPro-Italic.ttf */,
 			);
 			path = Source_Sans_Pro;
+			sourceTree = "<group>";
+		};
+		2F18F8802A55ECE80061D517 /* source-serif-pro */ = {
+			isa = PBXGroup;
+			children = (
+				2F18F88B2A55ED410061D517 /* SourceSerifPro-Black.otf */,
+				2F18F8862A55ED360061D517 /* SourceSerifPro-BlackIt.otf */,
+				2F18F8842A55ED300061D517 /* SourceSerifPro-Bold.otf */,
+				2F18F88A2A55ED3D0061D517 /* SourceSerifPro-BoldIt.otf */,
+				2F18F8852A55ED340061D517 /* SourceSerifPro-ExtraLight.otf */,
+				2F18F8822A55ED2B0061D517 /* SourceSerifPro-ExtraLightIt.otf */,
+				2F18F8812A55ED2A0061D517 /* SourceSerifPro-It.otf */,
+				2F18F8872A55ED370061D517 /* SourceSerifPro-Light.otf */,
+				2F18F88C2A55ED430061D517 /* SourceSerifPro-LightIt.otf */,
+				2F18F8832A55ED2D0061D517 /* SourceSerifPro-Regular.otf */,
+				2F18F8892A55ED3A0061D517 /* SourceSerifPro-Semibold.otf */,
+				2F18F8882A55ED380061D517 /* SourceSerifPro-SemiboldIt.otf */,
+			);
+			path = "source-serif-pro";
 			sourceTree = "<group>";
 		};
 		2F44FC551A9E83E200FD20CC /* Settings */ = {
@@ -5338,6 +5385,8 @@
 				884CA7482344A301002E4711 /* TextContentDetector.swift */,
 				43BDBBFD2752FA8600254DE4 /* TabCell.swift */,
 				E1877A7F286E0EFD00F5BDF2 /* WebView */,
+				2F18F87B2A4F07A50061D517 /* FreespokeHomepageView.swift */,
+				2F18F87A2A4F07A40061D517 /* FreespokeHomepageView.xib */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -6234,6 +6283,7 @@
 		F84B22391A0914A300AAB793 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				2F18F8802A55ECE80061D517 /* source-serif-pro */,
 				2F0F06DA29B279CA00A89B37 /* Source_Sans_Pro */,
 				23BEA766251A99E300A014BF /* NewYorkMedium-Bold.otf */,
 				23BEA765251A99E200A014BF /* NewYorkMedium-BoldItalic.otf */,
@@ -7117,12 +7167,17 @@
 				7B42406E1CA04CAC009B5C28 /* Menu.xcassets in Resources */,
 				E49943F71AE69EDD00BF9DE4 /* Intro.xcassets in Resources */,
 				4336FAD2264B169000A6B076 /* WebcompatAllFramesAtDocumentStart.js in Resources */,
+				2F18F8972A55ED430061D517 /* SourceSerifPro-Black.otf in Resources */,
 				2F0F06F429B279CB00A89B37 /* SourceSansPro-Italic.ttf in Resources */,
+				2F18F8932A55ED430061D517 /* SourceSerifPro-Light.otf in Resources */,
 				23BEA767251A99ED00A014BF /* NewYorkMedium-Bold.otf in Resources */,
+				2F18F88E2A55ED430061D517 /* SourceSerifPro-ExtraLightIt.otf in Resources */,
 				3BC659591E5BA505006D560F /* bundle_sites.json in Resources */,
 				C8399D9522DE5E6200EFA5CA /* disconnect-block-social.json in Resources */,
+				2F18F88F2A55ED430061D517 /* SourceSerifPro-Regular.otf in Resources */,
 				E4CD9F541A71506400318571 /* Reader.html in Resources */,
 				E1AF3563286DE5F800960045 /* Fennec_Enterprise_XCUITests.xctestplan in Resources */,
+				2F18F8912A55ED430061D517 /* SourceSerifPro-ExtraLight.otf in Resources */,
 				2F0F06E829B279CB00A89B37 /* SourceSansPro-BlackItalic.ttf in Resources */,
 				E1AF3567286DE5F800960045 /* PerformanceTestPlan.xctestplan in Resources */,
 				2F0F06EB29B279CB00A89B37 /* SourceSansPro-Bold.ttf in Resources */,
@@ -7142,6 +7197,7 @@
 				2F44FB2C1A9D5D8500FD20CC /* Library.xcassets in Resources */,
 				43175DB626B8774D00C41C31 /* Ads.js in Resources */,
 				D0FCF8081FE4772D004A7995 /* MainFrameAtDocumentStart.js in Resources */,
+				2F18F8952A55ED430061D517 /* SourceSerifPro-Semibold.otf in Resources */,
 				2F0F06E929B279CB00A89B37 /* SourceSansPro-SemiBoldItalic.ttf in Resources */,
 				EBC9D38722D4D56F0011D881 /* disconnect-block-cookies-content.json in Resources */,
 				D30684F11C84F12A002D8D82 /* SearchPlugins in Resources */,
@@ -7151,18 +7207,23 @@
 				2F0F06F029B279CB00A89B37 /* SourceSansPro-ExtraLight.ttf in Resources */,
 				2F0F06F329B279CB00A89B37 /* SourceSansPro-ExtraLightItalic.ttf in Resources */,
 				FA9294011D6584A200AC8D33 /* QRCode.xcassets in Resources */,
+				2F18F8922A55ED430061D517 /* SourceSerifPro-BlackIt.otf in Resources */,
 				EBC9D38822D4D56F0011D881 /* disconnect-block-cookies-social.json in Resources */,
 				D308EE561CBF0BF5006843F2 /* CertError.css in Resources */,
 				C8399D9122DE5E5200EFA5CA /* disconnect-block-advertising.json in Resources */,
+				2F18F88D2A55ED430061D517 /* SourceSerifPro-It.otf in Resources */,
+				2F18F8962A55ED430061D517 /* SourceSerifPro-BoldIt.otf in Resources */,
 				2F18E17029C763B100F222A3 /* Main.storyboard in Resources */,
 				E1AF3566286DE5F800960045 /* SmokeXCUITests.xctestplan in Resources */,
 				43A5643923CD1E1C00B6857D /* Update.xcassets in Resources */,
+				2F18F8942A55ED430061D517 /* SourceSerifPro-SemiboldIt.otf in Resources */,
 				C8399D9322DE5E5B00EFA5CA /* disconnect-block-analytics.json in Resources */,
 				E1AF3561286DE5F800960045 /* Smoketest4.xctestplan in Resources */,
 				EB84945722D4FA8A0004C2E2 /* disconnect-block-fingerprinting.json in Resources */,
 				8A2B1A5D28216C4D0061216B /* Debug.xcconfig in Resources */,
 				0BA1E00E1B03FB0B007675AF /* NetError.html in Resources */,
 				23BEA768251A99ED00A014BF /* NewYorkMedium-BoldItalic.otf in Resources */,
+				2F18F87C2A4F07A60061D517 /* FreespokeHomepageView.xib in Resources */,
 				E4A961381AC06FA50069AD6F /* ReaderViewLoading.html in Resources */,
 				EBE7635820ADCB7600E27F2D /* SendTo.xcassets in Resources */,
 				E1AF3565286DE5F800960045 /* UnitTest.xctestplan in Resources */,
@@ -7173,6 +7234,7 @@
 				8A2B1A5F28216C4D0061216B /* Release.xcconfig in Resources */,
 				2F0F06EC29B279CB00A89B37 /* SourceSansPro-LightItalic.ttf in Resources */,
 				D0E17FB6201F847600F1FCB5 /* FxASignIn.js in Resources */,
+				2F18F8902A55ED430061D517 /* SourceSerifPro-Bold.otf in Resources */,
 				2F0F06F129B279CB00A89B37 /* SourceSansPro-BoldItalic.ttf in Resources */,
 				8A2B1A5E28216C4D0061216B /* Common.xcconfig in Resources */,
 				39A35AED1C0662A3006B9E87 /* SpotlightHelper.js in Resources */,
@@ -7180,6 +7242,7 @@
 				D0FCF8071FE4772D004A7995 /* MainFrameAtDocumentEnd.js in Resources */,
 				EB84945822D4FA8A0004C2E2 /* disconnect-block-cryptomining.json in Resources */,
 				2F0F06EA29B279CB00A89B37 /* SourceSansPro-Regular.ttf in Resources */,
+				2F18F8982A55ED430061D517 /* SourceSerifPro-LightIt.otf in Resources */,
 				E4D6BEB91A0930EC00F538BD /* LaunchScreen.xib in Resources */,
 				23BEA769251A99ED00A014BF /* NewYorkMedium-Regular.otf in Resources */,
 				D03F8F23200EAC1F003C2224 /* AllFramesAtDocumentStart.js in Resources */,
@@ -8142,6 +8205,7 @@
 				E63ED8E11BFD25580097D08E /* LoginListViewController.swift in Sources */,
 				D0625CA8208FC47A0081F3B2 /* BrowserViewController+DownloadQueueDelegate.swift in Sources */,
 				8A56955227C68AE00077A89E /* UILabel+Extension.swift in Sources */,
+				2F18F87D2A4F07A60061D517 /* FreespokeHomepageView.swift in Sources */,
 				2F44FCC71A9E8CF500FD20CC /* SearchSettingsTableViewController.swift in Sources */,
 				8AD3271527E3B45D00EAF033 /* SponsoredTile.swift in Sources */,
 				C8417D222657F0600010B877 /* LibraryViewModel.swift in Sources */,

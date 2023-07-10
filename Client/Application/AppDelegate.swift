@@ -102,7 +102,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    level: .info,
                    category: .lifecycle)
         
-        //FeatureFlagsManager.shared.set(feature: .startAtHome, to: Client.StartAtHomeSetting.always)
+        FeatureFlagsManager.shared.set(feature: .startAtHome, to: Client.StartAtHomeSetting.afterFourHours)
+        FeatureFlagsManager.shared.set(feature: .searchBarPosition, to: SearchBarPosition.bottom)
+        
+        //|     Change homepage & new tab configurations from scope 2.0.0
+        profile.prefs.setString("", forKey: PrefsKeys.HomeButtonHomePageURL)
+        profile.prefs.setString("", forKey: PrefsKeys.KeyDefaultHomePageURL)
+        profile.prefs.setString(NewTabPage.topSites.rawValue, forKey: NewTabAccessors.HomePrefKey)
         
         if UserDefaults.standard.string(forKey: NimbusFeatureFlagIsSet.searchBarPosition.rawValue) == nil {
             FeatureFlagsManager.shared.set(feature: .searchBarPosition, to: SearchBarPosition.bottom)
@@ -230,7 +236,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     struct AppUtility {
         static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
             if let delegate = UIApplication.shared.delegate as? AppDelegate {
-                delegate.orientationLock = orientation
+                
+                //|     Custom configuration
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    delegate.orientationLock = .all
+                } else {
+                    delegate.orientationLock = .portrait
+                }
             }
         }
         

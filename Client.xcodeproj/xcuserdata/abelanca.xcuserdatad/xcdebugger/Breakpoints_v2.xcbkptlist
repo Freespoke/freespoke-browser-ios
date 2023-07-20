@@ -55,86 +55,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "0D03CED5-B38F-4850-881C-8D8A18FB2191"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Extensions/NotificationService/NotificationService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232"
-            landmarkName = "presentNotification(title:body:titleArg:bodyArg:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "83544E00-005F-4451-9071-56319FD12935"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Extensions/NotificationService/NotificationService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "191"
-            endingLineNumber = "191"
-            landmarkName = "presentSentTabsNotification(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "18FA2556-0B81-4BC7-B4A4-88A7274AFA43"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Extensions/NotificationService/NotificationService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
-            landmarkName = "displayNewSentTabNotification(tab:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "C24A6257-5151-405C-AB63-765F807F92FA"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Extensions/NotificationService/NotificationService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
-            landmarkName = "displayDeviceConnectedNotification(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "393D34E2-E4C4-495C-9C2A-3726558DEE27"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Extensions/NotificationService/NotificationService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
-            landmarkName = "displayNotification(_:profile:with:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "3DC077F6-4CC4-48EF-885A-48DA3E7B99F2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -174,8 +94,8 @@
             filePath = "Client/Application/SceneDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "scene(_:openURLContexts:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -231,70 +151,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D3E6D52D-4B82-416D-A4F4-3A99D590E6EC"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/BrowserViewController/BrowserViewController+TabToolbarDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
-            landmarkName = "tabToolbarDidPressAddNewTab(_:button:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "31D09D72-3618-4820-A691-A16AB8EF0413"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/BrowserViewController/BrowserViewController+TabToolbarDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
-            landmarkName = "tabToolbarDidPressAddNewTab(_:button:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "31D09D72-3618-4820-A691-A16AB8EF0413 - 8c97dbddc8abbe56"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Client.BrowserViewController.tabToolbarDidPressAddNewTab(_: Client.TabToolbarProtocol, button: __C.UIButton) -&gt; ()"
-                  moduleName = "Client"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController/BrowserViewController+TabToolbarDelegate.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "143"
-                  endingLineNumber = "143"
-                  offsetFromSymbolStart = "200">
-               </Location>
-               <Location
-                  uuid = "31D09D72-3618-4820-A691-A16AB8EF0413 - 8c97dbddc8abbe56"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Client.BrowserViewController.tabToolbarDidPressAddNewTab(_: Client.TabToolbarProtocol, button: __C.UIButton) -&gt; ()"
-                  moduleName = "Client"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController/BrowserViewController+TabToolbarDelegate.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "143"
-                  endingLineNumber = "143"
-                  offsetFromSymbolStart = "296">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "8DAC9AF5-B3CE-46E4-9155-C75CECD23246"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -302,10 +158,10 @@
             filePath = "Client/Frontend/Browser/BrowserViewController/BrowserViewController+TabToolbarDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
-            landmarkName = "action()"
-            landmarkType = "9">
+            startingLineNumber = "210"
+            endingLineNumber = "210"
+            landmarkName = "tabToolbarDidPressForward(_:button:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -318,13 +174,13 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1630"
-            endingLineNumber = "1630"
-            landmarkName = "openSearchNewTab(isPrivate:_:)"
+            startingLineNumber = "1632"
+            endingLineNumber = "1632"
+            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "F9F4B381-0206-4611-8B1C-8F64DB61F6E8 - 99af697277579a77"
+                  uuid = "F9F4B381-0206-4611-8B1C-8F64DB61F6E8 - 99af697277579f2c"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -334,12 +190,12 @@
                   urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1651"
-                  endingLineNumber = "1651"
+                  startingLineNumber = "1630"
+                  endingLineNumber = "1630"
                   offsetFromSymbolStart = "440">
                </Location>
                <Location
-                  uuid = "F9F4B381-0206-4611-8B1C-8F64DB61F6E8 - 99af697277579a77"
+                  uuid = "F9F4B381-0206-4611-8B1C-8F64DB61F6E8 - 99af697277579f2c"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -349,8 +205,8 @@
                   urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1651"
-                  endingLineNumber = "1651"
+                  startingLineNumber = "1630"
+                  endingLineNumber = "1630"
                   offsetFromSymbolStart = "552">
                </Location>
             </Locations>
@@ -366,9 +222,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1562"
-            endingLineNumber = "1562"
-            landmarkName = "switchToTabForURLOrOpen(_:uuid:isPrivate:)"
+            startingLineNumber = "1564"
+            endingLineNumber = "1564"
+            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -414,9 +270,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2866"
-            endingLineNumber = "2866"
-            landmarkName = "topTabsDidPressTabs()"
+            startingLineNumber = "2868"
+            endingLineNumber = "2868"
+            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -430,9 +286,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2196"
-            endingLineNumber = "2196"
-            landmarkName = "presentSearchSettingsController()"
+            startingLineNumber = "2198"
+            endingLineNumber = "2198"
+            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -558,9 +414,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2057"
-            endingLineNumber = "2057"
-            landmarkName = "libraryPanelDidRequestToOpenInNewTab(_:isPrivate:)"
+            startingLineNumber = "2059"
+            endingLineNumber = "2059"
+            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -574,9 +430,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2131"
-            endingLineNumber = "2131"
-            landmarkName = "homePanelDidRequestToOpenInNewTab(_:isPrivate:selectNewTab:)"
+            startingLineNumber = "2133"
+            endingLineNumber = "2133"
+            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -590,10 +446,10 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2937"
-            endingLineNumber = "2937"
-            landmarkName = "reopenLastTab(_:)"
-            landmarkType = "9">
+            startingLineNumber = "2939"
+            endingLineNumber = "2939"
+            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -622,9 +478,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController/BrowserViewController+TabToolbarDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "279"
-            endingLineNumber = "279"
-            landmarkName = "tabToolbarDidPressSearch(_:button:)"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
+            landmarkName = "tabToolbarDidPressForward(_:button:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -782,9 +638,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2417"
-            endingLineNumber = "2417"
-            landmarkName = "tabManagerUpdateCount()"
+            startingLineNumber = "2419"
+            endingLineNumber = "2419"
+            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -957,13 +813,13 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2399"
-            endingLineNumber = "2399"
-            landmarkName = "tabManagerDidRemoveAllTabs(_:toast:)"
+            startingLineNumber = "2401"
+            endingLineNumber = "2401"
+            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "95270F8F-746E-4EAB-A91E-D8BBC72F429D - 6a888c3cfa869c2b"
+                  uuid = "95270F8F-746E-4EAB-A91E-D8BBC72F429D - 6a888c3cfa86a33c"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -973,12 +829,12 @@
                   urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "2422"
-                  endingLineNumber = "2422"
+                  startingLineNumber = "2399"
+                  endingLineNumber = "2399"
                   offsetFromSymbolStart = "256">
                </Location>
                <Location
-                  uuid = "95270F8F-746E-4EAB-A91E-D8BBC72F429D - 6a888c3cfa869c2b"
+                  uuid = "95270F8F-746E-4EAB-A91E-D8BBC72F429D - 6a888c3cfa86a33c"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -988,8 +844,8 @@
                   urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "2422"
-                  endingLineNumber = "2422"
+                  startingLineNumber = "2399"
+                  endingLineNumber = "2399"
                   offsetFromSymbolStart = "284">
                </Location>
             </Locations>

@@ -1037,7 +1037,7 @@ class BrowserViewController: UIViewController {
     }
 
     func hideHomepage(completion: (() -> Void)? = nil) {
-        urlBar.alpha = 1
+        //urlBar.alpha = 1
         
         guard let homepageViewController = self.homepageViewController else { return }
 
@@ -1371,6 +1371,7 @@ class BrowserViewController: UIViewController {
     }
     
     func setValues(isHome: Bool, isNewTab: Bool, isSearching: Bool) {
+        /*
         if isHome {
             if !isNewTab {
                 if isSearching {
@@ -1391,6 +1392,7 @@ class BrowserViewController: UIViewController {
         else {
             urlBar.alpha = 1
         }
+        */
         
         homepageViewController?.isHome = isHome
         homepageViewController?.isNewTab = isNewTab
@@ -2091,7 +2093,7 @@ extension BrowserViewController: FreespokeHomepageViewDelegate {
         homepageViewController?.isSearching = true
         homepageViewController?.checkFreespokeHomepage()
         
-        urlBar.alpha = 1
+        //urlBar.alpha = 1
         
         focusLocationTextField(forTab: tabManager.selectedTab)
     }

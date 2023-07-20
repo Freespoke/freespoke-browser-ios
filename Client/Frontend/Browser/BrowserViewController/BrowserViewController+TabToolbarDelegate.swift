@@ -78,9 +78,10 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         if button.tag == 1 {
             openLinkURL(Constants.newsURL.rawValue)
             
-            urlBar.alpha = 1.0
+            //urlBar.alpha = 1.0
         }
         else {
+            /*
             if !isNewTab {
                 if UIDevice.current.userInterfaceIdiom == .phone {
                     urlBar.alpha = 0
@@ -91,6 +92,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             else {
                 urlBar.alpha = 1.0
             }
+            */
             
             tabManager.selectedTab?.goBack()
         }
@@ -107,6 +109,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             openLinkURL(Constants.shopURL.rawValue)
         }
         else {
+            /*
             if !isNewTab {
                 if UIDevice.current.userInterfaceIdiom == .phone {
                     urlBar.alpha = 0
@@ -117,6 +120,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             else {
                 urlBar.alpha = 1
             }
+            */
             
             tabManager.selectedTab?.goForward()
         }

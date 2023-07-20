@@ -242,7 +242,18 @@
 		2F7E23422A09053400E11726 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2F7E233B2A09052E00E11726 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2F7E234A2A09084300E11726 /* OneSignal in Frameworks */ = {isa = PBXBuildFile; productRef = 2F7E23492A09084300E11726 /* OneSignal */; };
 		2F7E234C2A09084300E11726 /* OneSignalExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 2F7E234B2A09084300E11726 /* OneSignalExtension */; };
+		2F88741A2A5C91CB002A84D9 /* Fennec.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = E40A18F71EDC73D5006B7F28 /* Fennec.entitlements */; };
+		2F88741B2A5C91E4002A84D9 /* Firefox.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = E40A18F91EDC73D5006B7F28 /* Firefox.entitlements */; };
+		2F88741C2A5C91F6002A84D9 /* FennecEnterprise.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = E40A18F81EDC73D5006B7F28 /* FennecEnterprise.entitlements */; };
 		2F8C76571BC32F3C00D5E4E0 /* MockSyncServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8C76561BC32F3C00D5E4E0 /* MockSyncServerTests.swift */; };
+		2FA274202A5C9A2000818760 /* BranchSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 2FA2741F2A5C9A2000818760 /* BranchSDK */; };
+		2FA274222A5C9A6A00818760 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA274212A5C9A6A00818760 /* CoreServices.framework */; };
+		2FA274242A5C9A7500818760 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA274232A5C9A7500818760 /* SystemConfiguration.framework */; };
+		2FA274262A5C9A8600818760 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA274252A5C9A8600818760 /* CoreTelephony.framework */; };
+		2FA274282A5C9A9000818760 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA274272A5C9A9000818760 /* WebKit.framework */; };
+		2FA2742A2A5C9A9B00818760 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA274292A5C9A9A00818760 /* CoreSpotlight.framework */; };
+		2FA2742C2A5C9ACC00818760 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA2742B2A5C9ACC00818760 /* StoreKit.framework */; };
+		2FA2742E2A5C9AD400818760 /* LinkPresentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA2742D2A5C9AD400818760 /* LinkPresentation.framework */; };
 		2FA436331ABB8436008031D1 /* HawkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA436271ABB8436008031D1 /* HawkHelper.swift */; };
 		2FA436351ABB8436008031D1 /* TokenServerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA436281ABB8436008031D1 /* TokenServerClient.swift */; };
 		2FA436401ABB8448008031D1 /* HawkHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA4363A1ABB8448008031D1 /* HawkHelperTests.swift */; };
@@ -530,7 +541,7 @@
 		8A0621B829428FBD005D1EFD /* OpenTabNotificationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0621B729428FBD005D1EFD /* OpenTabNotificationObject.swift */; };
 		8A07910F278F62F2005529CB /* AdjustHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07910E278F62F2005529CB /* AdjustHelper.swift */; };
 		8A08EC6227EBDCA400E119C7 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B334871BBF23F3004E2BFF /* iAd.framework */; };
-		8A08EC6427EBDCAD00E119C7 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A08EC6327EBDCAC00E119C7 /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		8A08EC6427EBDCAD00E119C7 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A08EC6327EBDCAC00E119C7 /* AdServices.framework */; };
 		8A0F2A7E286DFCC800D84CC6 /* PushRemoteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F2A7D286DFCC800D84CC6 /* PushRemoteError.swift */; };
 		8A0F2A80286DFD2B00D84CC6 /* PushClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F2A7F286DFD2B00D84CC6 /* PushClientError.swift */; };
 		8A0F2A82286DFD9800D84CC6 /* PushRegistrationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F2A81286DFD9800D84CC6 /* PushRegistrationAPI.swift */; };
@@ -1854,6 +1865,13 @@
 		2F7E233D2A09053400E11726 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		2F7E233F2A09053400E11726 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F8C76561BC32F3C00D5E4E0 /* MockSyncServerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockSyncServerTests.swift; sourceTree = "<group>"; };
+		2FA274212A5C9A6A00818760 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		2FA274232A5C9A7500818760 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		2FA274252A5C9A8600818760 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		2FA274272A5C9A9000818760 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		2FA274292A5C9A9A00818760 /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
+		2FA2742B2A5C9ACC00818760 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		2FA2742D2A5C9AD400818760 /* LinkPresentation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LinkPresentation.framework; path = System/Library/Frameworks/LinkPresentation.framework; sourceTree = SDKROOT; };
 		2FA435FB1ABB83B4008031D1 /* libAccount.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAccount.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FA435FE1ABB83B4008031D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FA436051ABB83B4008031D1 /* AccountTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AccountTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3081,9 +3099,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A70EF0E295DFCCF00790249 /* Common in Frameworks */,
+				2FA2742E2A5C9AD400818760 /* LinkPresentation.framework in Frameworks */,
+				2FA2742C2A5C9ACC00818760 /* StoreKit.framework in Frameworks */,
+				E4B3348A1BBF23F9004E2BFF /* AdSupport.framework in Frameworks */,
 				8A08EC6427EBDCAD00E119C7 /* AdServices.framework in Frameworks */,
+				2FA2742A2A5C9A9B00818760 /* CoreSpotlight.framework in Frameworks */,
+				2FA274282A5C9A9000818760 /* WebKit.framework in Frameworks */,
+				2FA274262A5C9A8600818760 /* CoreTelephony.framework in Frameworks */,
+				2FA274242A5C9A7500818760 /* SystemConfiguration.framework in Frameworks */,
+				2FA274222A5C9A6A00818760 /* CoreServices.framework in Frameworks */,
+				5A70EF0E295DFCCF00790249 /* Common in Frameworks */,
 				8A08EC6227EBDCA400E119C7 /* iAd.framework in Frameworks */,
+				2FA274202A5C9A2000818760 /* BranchSDK in Frameworks */,
 				5A37861929A2C337006B3A34 /* Sentry in Frameworks */,
 				5A871490292EA3910039A5BD /* SiteImageView in Frameworks */,
 				C8E18F20222EDED000E30E52 /* SafariServices.framework in Frameworks */,
@@ -3092,7 +3119,6 @@
 				F8324A7C2649A5A5007E4BFA /* AuthenticationServices.framework in Frameworks */,
 				E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */,
 				E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */,
-				E4B3348A1BBF23F9004E2BFF /* AdSupport.framework in Frameworks */,
 				2FB655DC2A24FAC100FE660F /* Glean in Frameworks */,
 				5A871488292EA1440039A5BD /* Fuzi in Frameworks */,
 				2F18222029BB3CB100BEE23E /* RustMozillaAppServices.framework in Frameworks */,
@@ -4136,6 +4162,13 @@
 		7B604FC11C496005006EEEC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2FA2742D2A5C9AD400818760 /* LinkPresentation.framework */,
+				2FA2742B2A5C9ACC00818760 /* StoreKit.framework */,
+				2FA274292A5C9A9A00818760 /* CoreSpotlight.framework */,
+				2FA274272A5C9A9000818760 /* WebKit.framework */,
+				2FA274252A5C9A8600818760 /* CoreTelephony.framework */,
+				2FA274232A5C9A7500818760 /* SystemConfiguration.framework */,
+				2FA274212A5C9A6A00818760 /* CoreServices.framework */,
 				8A08EC6327EBDCAC00E119C7 /* AdServices.framework */,
 				C8E18F1F222EDED000E30E52 /* SafariServices.framework */,
 				C8E18F1D222EDE4400E30E52 /* Accelerate.framework */,
@@ -6772,6 +6805,7 @@
 				2F7E23492A09084300E11726 /* OneSignal */,
 				2F7E234B2A09084300E11726 /* OneSignalExtension */,
 				2FB655DB2A24FAC100FE660F /* Glean */,
+				2FA2741F2A5C9A2000818760 /* BranchSDK */,
 			);
 			productName = Client;
 			productReference = F84B21BE1A090F8100AAB793 /* Client.app */;
@@ -7011,6 +7045,7 @@
 				5A37861729A2C337006B3A34 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				2F7E23482A09084300E11726 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
 				2FB655DA2A24FAC100FE660F /* XCRemoteSwiftPackageReference "glean-swift" */,
+				2FA2741E2A5C9A2000818760 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */,
 			);
 			productRefGroup = F84B21BF1A090F8100AAB793 /* Products */;
 			projectDirPath = "";
@@ -7155,6 +7190,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F88741C2A5C91F6002A84D9 /* FennecEnterprise.entitlements in Resources */,
+				2F88741B2A5C91E4002A84D9 /* Firefox.entitlements in Resources */,
+				2F88741A2A5C91CB002A84D9 /* Fennec.entitlements in Resources */,
 				39D056382665235700FBEE59 /* initial_experiments.json in Resources */,
 				C8B0F5F8283B7D38007AE65D /* pocketsponsoredfeed.json in Resources */,
 				D38A1EE01CB458EC0080C842 /* CertError.html in Resources */,
@@ -11390,6 +11428,14 @@
 				version = 3.12.5;
 			};
 		};
+		2FA2741E2A5C9A2000818760 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BranchMetrics/ios-branch-sdk-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		2FB655DA2A24FAC100FE660F /* XCRemoteSwiftPackageReference "glean-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mozilla/glean-swift";
@@ -11499,6 +11545,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2F7E23482A09084300E11726 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;
 			productName = OneSignalExtension;
+		};
+		2FA2741F2A5C9A2000818760 /* BranchSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2FA2741E2A5C9A2000818760 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */;
+			productName = BranchSDK;
 		};
 		2FB655DB2A24FAC100FE660F /* Glean */ = {
 			isa = XCSwiftPackageProductDependency;

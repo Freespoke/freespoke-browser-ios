@@ -749,7 +749,7 @@
 "Menu.CopyURL.Confirm" = "URL Copied To Clipboard";
 
 /* Label for the customize homepage button in the menu page. Pressing this button takes users to the settings options, where they can customize the Firefox Home page */
-"Menu.CustomizeHomePage.v99" = "Customise Homepage";
+"Menu.CustomizeHomePage.v99" = "Customise New Tab";
 
 /* Label for the button, displayed in the menu, takes you to to Downloads screen when pressed. */
 "Menu.Downloads.Label" = "Downloads";

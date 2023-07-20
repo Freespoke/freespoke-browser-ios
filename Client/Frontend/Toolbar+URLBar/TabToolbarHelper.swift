@@ -121,11 +121,11 @@ open class TabToolbarHelper: NSObject {
             toolbar.forwardButton.setImage(ImageForward, for: .normal)
             toolbar.backButton.setImage(ImageBack, for: .normal)
             
-            toolbar.forwardButton.setTitle(" ", for: .normal)
+            toolbar.forwardButton.setTitle("FORWARD", for: .normal)
             toolbar.forwardButton.alignTextBelow()
             toolbar.forwardButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
             
-            toolbar.backButton.setTitle(" ", for: .normal)
+            toolbar.backButton.setTitle("BACK", for: .normal)
             toolbar.backButton.alignTextBelow()
             toolbar.backButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
             

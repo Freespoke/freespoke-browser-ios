@@ -9,6 +9,7 @@ import UIKit
 import Common
 import OneSignal
 import BranchSDK
+import MatomoTracker
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let logger = DefaultLogger.shared
@@ -142,13 +143,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //|     Ask for setup notification setting
         OneSignal.promptForPushNotifications(userResponse: { accepted in
-                 print("User accepted notification: \(accepted)")
+            print("User accepted notification: \(accepted)")
         })
         
         //|     Branch init
         Branch.getInstance().initSession(launchOptions: launchOptions) { (params, error) in
             print(params as? [String: AnyObject] ?? {})
         }
+        
+        MatomoTracker.shared.isOptedOut = false
+        
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appEntry.rawValue, action: MatomoCategory.appEntry.rawValue, name: MatomoName.open.rawValue, value: nil)
         
         return true
     }
@@ -254,12 +259,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
             if let delegate = UIApplication.shared.delegate as? AppDelegate {
                 
-                //|     Custom configuration
-                if UIDevice.current.userInterfaceIdiom == .pad {
-                    delegate.orientationLock = .all
-                } else {
-                    delegate.orientationLock = .portrait
-                }
+                delegate.orientationLock = orientation
             }
         }
         
@@ -342,3 +342,6 @@ extension AppDelegate {
     }
 }
 
+extension MatomoTracker {
+    static let shared: MatomoTracker = MatomoTracker(siteId: Matomo.productionSiteId.rawValue, baseURL: URL(string: Matomo.baseURL.rawValue)!)
+}

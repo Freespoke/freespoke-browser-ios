@@ -7,6 +7,7 @@ import Storage
 import Foundation
 import UIKit
 import Common
+import MatomoTracker
 
 enum TabTrayViewAction {
     case addTab
@@ -566,6 +567,8 @@ extension TabTrayViewController {
     }
 
     @objc func didTapDone() {
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appTabs.rawValue, action: MatomoAction.appTabsCloseTabsMenu.rawValue, name: MatomoName.click.rawValue, value: nil)
+        
         notificationCenter.post(name: .TabsTrayDidClose)
         // Update Private mode when closing TabTray, if the mode toggle but no tab is pressed with return to previous state
         updatePrivateUIState()

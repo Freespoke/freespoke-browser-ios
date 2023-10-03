@@ -6,6 +6,7 @@ import UIKit
 import Storage
 import Shared
 import Common
+import MatomoTracker
 
 struct GridTabTrayControllerUX {
     static let CornerRadius = CGFloat(6.0)
@@ -348,6 +349,8 @@ extension GridTabViewController {
     }
 
     func closeTabsTrayBackground() {
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appTabs.rawValue, action: MatomoAction.appTabsCloseAllTabs.rawValue, name: MatomoName.click.rawValue, value: nil)
+        
         tabDisplayManager.removeAllTabsFromView()
 
         tabManager.backgroundRemoveAllTabs(isPrivate: tabDisplayManager.isPrivate) {

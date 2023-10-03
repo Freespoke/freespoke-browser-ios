@@ -123,6 +123,7 @@ class SearchViewController: SiteTableViewController,
         getCachedTabs()
         KeyboardHelper.defaultHelper.addDelegate(self)
 
+        /*
         searchEngineContainerView.layer.shadowRadius = 0
         searchEngineContainerView.layer.shadowOpacity = 100
         searchEngineContainerView.layer.shadowOffset = CGSize(width: 0,
@@ -135,14 +136,16 @@ class SearchViewController: SiteTableViewController,
 
         searchEngineScrollViewContent.layer.backgroundColor = UIColor.clear.cgColor
         searchEngineScrollView.addSubview(searchEngineScrollViewContent)
-
-        layoutTable()
+        
         layoutSearchEngineScrollView()
         layoutSearchEngineScrollViewContent()
 
         searchEngineContainerView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
         }
+        */
+        
+        layoutTable()
 
         setupNotifications(forObserver: self, observing: [.DynamicFontChanged,
                                                           .SearchSettingsChanged])
@@ -170,7 +173,7 @@ class SearchViewController: SiteTableViewController,
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        reloadSearchEngines()
+        //reloadSearchEngines()
         reloadData()
     }
 
@@ -180,6 +183,7 @@ class SearchViewController: SiteTableViewController,
     }
 
     private func layoutSearchEngineScrollView() {
+        /*
         let keyboardHeight = KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(self.view) ?? 0
         searchEngineScrollView.snp.remakeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
@@ -190,9 +194,11 @@ class SearchViewController: SiteTableViewController,
                 make.bottom.equalTo(view).offset(-offset)
             }
         }
+        */
     }
 
     private func layoutSearchEngineScrollViewContent() {
+        /*
         searchEngineScrollViewContent.snp.remakeConstraints { make in
             make.center.equalTo(self.searchEngineScrollView).priority(10)
             // left-align the engines on iphones, center on ipad
@@ -205,6 +211,7 @@ class SearchViewController: SiteTableViewController,
             make.top.equalTo(self.searchEngineScrollView)
             make.bottom.equalTo(self.searchEngineScrollView)
         }
+        */
     }
 
     var searchEngines: SearchEngines? {
@@ -223,7 +230,7 @@ class SearchViewController: SiteTableViewController,
             }
 
             // Reload the footer list of search engines.
-            reloadSearchEngines()
+            //reloadSearchEngines()
         }
     }
 
@@ -262,38 +269,40 @@ class SearchViewController: SiteTableViewController,
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: searchEngineScrollView.topAnchor)
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 
     func reloadSearchEngines() {
+        /*
         searchEngineScrollViewContent.subviews.forEach { $0.removeFromSuperview() }
-//        var leftEdge = searchEngineScrollViewContent.snp.leading
-//
-//        // search settings icon
-//        let searchButton = UIButton()
-//        searchButton.setImage(UIImage(named: "quickSearch"), for: [])
-//        searchButton.imageView?.contentMode = .scaleAspectFit
-//        searchButton.layer.backgroundColor = SearchViewControllerUX.EngineButtonBackgroundColor
-//        searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
-//        searchButton.accessibilityLabel = String(format: .SearchSettingsAccessibilityLabel)
-//
-//        searchButton.imageView?.snp.makeConstraints { make in
-//            make.width.height.equalTo(20)
-//            return
-//        }
-//
-//        searchEngineScrollViewContent.addSubview(searchButton)
-//        searchButton.snp.makeConstraints { make in
-//            make.width.height.equalTo(SearchViewControllerUX.FaviconSize)
-//            // offset the left edge to align with search results
-//            make.leading.equalTo(leftEdge).offset(16)
-//            make.top.equalTo(searchEngineScrollViewContent).offset(SearchViewControllerUX.SuggestionMargin)
-//            make.bottom.equalTo(searchEngineScrollViewContent).offset(-SearchViewControllerUX.SuggestionMargin)
-//        }
+        var leftEdge = searchEngineScrollViewContent.snp.leading
+
+        // search settings icon
+        let searchButton = UIButton()
+        searchButton.setImage(UIImage(named: "quickSearch"), for: [])
+        searchButton.imageView?.contentMode = .scaleAspectFit
+        searchButton.layer.backgroundColor = SearchViewControllerUX.EngineButtonBackgroundColor
+        searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
+        searchButton.accessibilityLabel = String(format: .SearchSettingsAccessibilityLabel)
+
+        searchButton.imageView?.snp.makeConstraints { make in
+            make.width.height.equalTo(20)
+            return
+        }
+
+        searchEngineScrollViewContent.addSubview(searchButton)
+        searchButton.snp.makeConstraints { make in
+            make.width.height.equalTo(SearchViewControllerUX.FaviconSize)
+            // offset the left edge to align with search results
+            make.leading.equalTo(leftEdge).offset(16)
+            make.top.equalTo(searchEngineScrollViewContent).offset(SearchViewControllerUX.SuggestionMargin)
+            make.bottom.equalTo(searchEngineScrollViewContent).offset(-SearchViewControllerUX.SuggestionMargin)
+        }
+        */
 
         // search engines
-        //leftEdge = searchButton.snp.trailing\
+        //leftEdge = searchButton.snp.trailing
         var leftEdge = searchEngineScrollViewContent.snp.leading
 
         for engine in quickSearchEngines {
@@ -621,9 +630,9 @@ class SearchViewController: SiteTableViewController,
 
     override func applyTheme() {
         super.applyTheme()
-        view.backgroundColor = themeManager.currentTheme.colors.layer5
-        searchEngineContainerView.layer.backgroundColor = themeManager.currentTheme.colors.layer1.cgColor
-        searchEngineContainerView.layer.shadowColor = themeManager.currentTheme.colors.shadowDefault.cgColor
+        //view.backgroundColor = themeManager.currentTheme.colors.layer5
+        //searchEngineContainerView.layer.backgroundColor = UIColor.darkBackground.cgColor//themeManager.currentTheme.colors.layer1.cgColor
+        //searchEngineContainerView.layer.shadowColor = themeManager.currentTheme.colors.shadowDefault.cgColor
         reloadData()
     }
 
@@ -634,7 +643,7 @@ class SearchViewController: SiteTableViewController,
         guard searchPhrase != query, let upperBound = range?.upperBound else { return nil }
 
         let attributedString = searchPhrase.attributedText(boldIn: upperBound..<searchPhrase.endIndex,
-                                                           font: DynamicFontHelper().DefaultStandardFont)
+                                                           font: UIFont(name: "SourceSansPro-Regular", size: 16)!)
         return attributedString
     }
 
@@ -653,15 +662,26 @@ class SearchViewController: SiteTableViewController,
                 }
                 oneLineCell.leftImageView.contentMode = .center
                 oneLineCell.leftImageView.layer.borderWidth = 0
-                oneLineCell.leftImageView.image = UIImage(named: SearchViewControllerUX.SearchImage)
-                oneLineCell.leftImageView.tintColor = themeManager.currentTheme.colors.iconPrimary
+                oneLineCell.leftImageView.image = UIImage(named: "search")!.withRenderingMode(.alwaysTemplate)
+                
+                switch LegacyThemeManager.instance.currentName {
+                case .normal:
+                    oneLineCell.leftImageView.tintColor = .blackColor
+                    
+                case .dark:
+                    oneLineCell.leftImageView.tintColor = .white
+                }
+                
                 oneLineCell.leftImageView.backgroundColor = nil
+                /*
                 let appendButton = UIButton(type: .roundedRect)
                 appendButton.setImage(searchAppendImage?.withRenderingMode(.alwaysTemplate), for: .normal)
                 appendButton.addTarget(self, action: #selector(append(_ :)), for: .touchUpInside)
                 appendButton.tintColor = themeManager.currentTheme.colors.iconPrimary
                 appendButton.sizeToFit()
                 oneLineCell.accessoryView = indexPath.row > 0 ? appendButton : nil
+                */
+                oneLineCell.accessoryView = nil
                 cell = oneLineCell
             }
         case .openedTabs:
@@ -732,8 +752,13 @@ class SearchViewController: SiteTableViewController,
         switch section {
         case SearchListSection.remoteTabs.rawValue:
             return hasFirefoxSuggestions
+            
+        case SearchListSection.bookmarksAndHistory.rawValue:
+            return false
+            
         case SearchListSection.searchSuggestions.rawValue:
-            return true
+            return false
+            
         default:
             return false
         }
@@ -767,7 +792,8 @@ class SearchViewController: SiteTableViewController,
         case .DynamicFontChanged:
             dynamicFontChanged(notification)
         case .SearchSettingsChanged:
-            reloadSearchEngines()
+            break
+            //reloadSearchEngines()
         default:
             break
         }

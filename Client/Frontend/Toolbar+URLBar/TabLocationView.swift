@@ -334,7 +334,14 @@ extension TabLocationView: AccessibilityActionsSource {
 
 extension TabLocationView: NotificationThemeable {
     func applyTheme() {
-        urlTextField.textColor = UIColor.legacyTheme.textField.textAndTint
+        switch LegacyThemeManager.instance.currentName {
+        case .normal:
+            urlTextField.textColor = UIColor.blackColor
+            
+        case .dark:
+            urlTextField.textColor = UIColor.white//legacyTheme.textField.textAndTint
+        }
+        
         readerModeButton.applyTheme()
         trackingProtectionButton.applyTheme()
 

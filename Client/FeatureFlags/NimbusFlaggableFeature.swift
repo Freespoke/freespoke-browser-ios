@@ -45,6 +45,7 @@ enum NimbusFeatureFlagIsSet: String {
     case jumpBackIn = "jumpBackIn"
     case searchBarPosition = "searchBarPosition"
     case migrateTabs = "migrateTabs"
+    case freespokeBookmarks = "freespokeBookmarks"
 }
 
 /// This enum is a constraint for any feature flag options that have more than

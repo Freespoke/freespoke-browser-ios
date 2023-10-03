@@ -82,8 +82,6 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         if let theme = currentTheme {
             viewBackground.backgroundColor = theme.colors.layer1
             
-            let color = UIColor(colorString: "2F3644")
-            
             switch theme.type {
             case .dark:
                 lblDescription.textColor = .white
@@ -95,13 +93,13 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
                 pageControl.tintColor = .white
                 
             case .light:
-                lblDescription.textColor = color
+                lblDescription.textColor = .blackColor
       
-                btnSetAsDefault.tintColor = color
-                btnBack.tintColor = color
-                viewSeparator.backgroundColor = color
+                btnSetAsDefault.tintColor = .blackColor
+                btnBack.tintColor = .blackColor
+                //viewSeparator.backgroundColor = .blackColor
                 
-                pageControl.tintColor = color
+                pageControl.tintColor = .blackColor
             }
         }
     }

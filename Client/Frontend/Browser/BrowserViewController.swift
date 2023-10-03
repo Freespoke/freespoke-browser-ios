@@ -609,7 +609,23 @@ class BrowserViewController: UIViewController {
             UserDefaults.standard.set(NimbusFeatureFlagIsSet.migrateTabs.rawValue, forKey: NimbusFeatureFlagIsSet.migrateTabs.rawValue)
         }
         
+        //|     Add Freespoke bookmarks
+        if UserDefaults.standard.string(forKey: NimbusFeatureFlagIsSet.freespokeBookmarks.rawValue) == nil {
+            addFreespokeCustomLinksToBookmarks()
+            
+            UserDefaults.standard.set(NimbusFeatureFlagIsSet.freespokeBookmarks.rawValue, forKey: NimbusFeatureFlagIsSet.freespokeBookmarks.rawValue)
+        }
+        
         setValues(isHome: true, isNewTab: false, isSearching: false)
+    }
+    
+    private func addFreespokeCustomLinksToBookmarks() {
+        addBookmarkWithoutEditToast(url: "https://freespoke.com/join/step-1", title: "Join")
+        addBookmarkWithoutEditToast(url: Constants.freespokeBlogURL.rawValue, title: "Blog")
+        addBookmarkWithoutEditToast(url: Constants.getInTouchURL.rawValue, title: "Contact")
+        addBookmarkWithoutEditToast(url: Constants.freespokeURL.rawValue, title: "Freespoke")
+        
+        homepageViewController?.freespokeHomepageView.reloadAllItems()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -2086,7 +2102,15 @@ extension BrowserViewController: RecentlyClosedPanelDelegate {
 }
 
 // MARK: FreespokeHomepageViewDelegate
-extension BrowserViewController: FreespokeHomepageViewDelegate {
+extension BrowserViewController: FreespokeHomepageDelegate {
+    func didPressBookmarks() {
+        showLibrary(panel: .bookmarks)
+    }
+    
+    func didPressRecentlyViewed() {
+        showLibrary(panel: .history)
+    }
+
     func didPressSearch() {
         homepageViewController?.isHome = true
         homepageViewController?.isNewTab = false
@@ -2098,12 +2122,8 @@ extension BrowserViewController: FreespokeHomepageViewDelegate {
         focusLocationTextField(forTab: tabManager.selectedTab)
     }
     
-    func didPressNews() {
-        openLinkURL(Constants.newsURL.rawValue)
-    }
-    
-    func didPressShop() {
-        openLinkURL(Constants.shopURL.rawValue)
+    func showURL(url: String) {
+        openLinkURL(url)
     }
 }
 

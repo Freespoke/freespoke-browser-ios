@@ -25,8 +25,10 @@ class SiteTableViewHeader: UITableViewHeaderFooterView, ThemeApplicable, Reusabl
     private let titleLabel: UILabel = .build { label in
         label.textColor = UIColor.legacyTheme.tableView.headerTextDark
         label.numberOfLines = 0
-        label.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .headline,
-                                                                   size: 16)
+        //label.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .headline,
+                                                                   //size: 16)
+        
+        label.font = UIFont (name: "SourceSansPro-Bold", size: 14)
         label.adjustsFontForContentSizeCategory = true
     }
 
@@ -66,10 +68,10 @@ class SiteTableViewHeader: UITableViewHeaderFooterView, ThemeApplicable, Reusabl
         translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubviews(titleLabel, collapsibleImageView)
 
-        bordersHelper.initBorders(view: self.contentView)
-        setDefaultBordersValues()
+        //bordersHelper.initBorders(view: self.contentView)
+        //setDefaultBordersValues()
 
-        backgroundView = UIView()
+        //backgroundView = UIView()
 
         imageViewLeadingConstraint = titleLabel.trailingAnchor.constraint(
             equalTo: collapsibleImageView.leadingAnchor,
@@ -102,11 +104,11 @@ class SiteTableViewHeader: UITableViewHeaderFooterView, ThemeApplicable, Reusabl
         titleLabel.textColor = theme.colors.textPrimary
         backgroundView?.backgroundColor = theme.colors.layer1
         collapsibleImageView.image = collapsibleState?.image?.tinted(withColor: theme.colors.iconAction)
-        bordersHelper.applyTheme(theme: theme)
+        //bordersHelper.applyTheme(theme: theme)
     }
 
     func showBorder(for location: ThemedHeaderFooterViewBordersHelper.BorderLocation, _ show: Bool) {
-        bordersHelper.showBorder(for: location, show)
+        //bordersHelper.showBorder(for: location, show)
     }
 
     private func showImage(_ show: Bool) {
@@ -116,7 +118,7 @@ class SiteTableViewHeader: UITableViewHeaderFooterView, ThemeApplicable, Reusabl
     }
 
     func setDefaultBordersValues() {
-        bordersHelper.showBorder(for: .top, true)
-        bordersHelper.showBorder(for: .bottom, true)
+        //bordersHelper.showBorder(for: .top, true)
+        //bordersHelper.showBorder(for: .bottom, true)
     }
 }

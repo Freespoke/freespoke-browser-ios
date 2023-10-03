@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "get-in-touch.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

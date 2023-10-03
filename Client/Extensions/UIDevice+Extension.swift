@@ -15,6 +15,12 @@ extension UIDevice {
     var isTinyFormFactor: Bool {
         return UIDevice().type == .iPhoneSE
     }
+    
+    // Returns `true` if the device has a notch
+    var hasNotch: Bool {
+        let bottom = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        return bottom > 0
+    }
 
     var isIphoneLandscape: Bool {
         return UIDevice().userInterfaceIdiom == .phone && UIWindow.isLandscape

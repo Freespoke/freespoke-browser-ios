@@ -40,14 +40,23 @@ enum Constants: String {
     case facebookURL = "https://www.facebook.com/FreespokeSearch"
     case freespokeBlogURL = "https://freespoke.substack.com/"
     case ourNewslettersURL = "https://about.freespoke.com/SignUp"
+    case freespokePremiumURL = "https://subscriptions.freespoke.com/signup"
     case getInTouchURL = "https://freespoke-support.freshdesk.com/support/tickets/new"
     case newsURL = "https://freespoke.com/news"
     case shopURL = "https://freespoke.com/products"
+    case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
 }
 
 extension UIColor {
     static let redHomeToolbar = Utils.hexStringToUIColor(hex: "C43351")
+    static let inactiveToolbar = Utils.hexStringToUIColor(hex: "9AA2B2")
+    static let blackColor = Utils.hexStringToUIColor(hex: "2F3644")
+    static let whiteColor = Utils.hexStringToUIColor(hex: "E1E5EB")
+    static let lightGray = Utils.hexStringToUIColor(hex: "B5BCC9")
+    static let darkBackground = Utils.hexStringToUIColor(hex: "161616")
+    static let gray7 = Utils.hexStringToUIColor(hex: "F8F9FB")
+    static let gray2 = Utils.hexStringToUIColor(hex: "606671")
 }
 
 class Utils {
@@ -72,4 +81,40 @@ class Utils {
             alpha: CGFloat(1.0)
         )
     }
+}
+
+enum Matomo: String {
+    case baseURL            = "https://example.com/matomo.php"
+    case staggingSiteId     = "1"
+    case productionSiteId   = "1"
+}
+
+enum MatomoCategory: String {
+    case appEntry           = "app entry"
+    case appMenu            = "app menu"
+    case appHome            = "app home"
+    case appTabs            = "app tabs"
+    case appShare           = "app share"
+}
+
+enum MatomoAction: String {
+    case appMenuTab         = "app menu tab click - "
+    case appHomeSearch      = "app home search"
+    case appHomeBookmarks   = "app home my bookmarks click"
+    case appHomeNews        = "app home trending news story view summary click"
+    case appHomeRecently    = "app home recently viewed click"
+    case appHomeShop        = "app home shop usa store product click"
+    case appHomeFreespoke   = "app home the freespoke way click - "
+    case appTabsCloseTabsMenu   = "app tabs close tabs menu"
+    case appTabsNewTab          = "app tabs new tab click"
+    case appTabsCloseAllTabs    = "app tabs close all tabs click"
+    case appTabsPrivateBrowsing = "app tabs private browsing click"
+    case appTabsRegularBrowsing = "app tabs regular browsing click"
+    case appShareMenu           = "app share from menu"
+}
+
+enum MatomoName: String {
+    case open               = "open"
+    case click              = "click"
+    case search             = "search"
 }

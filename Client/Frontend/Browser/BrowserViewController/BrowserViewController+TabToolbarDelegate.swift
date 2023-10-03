@@ -4,11 +4,17 @@
 
 import Shared
 import UIKit
+import MatomoTracker
 
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressHome(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        userHasPressedHomeButton = true
         
+        //|     Reload all items on freespoke home
+        if !isHome {
+            homepageViewController?.reloadFreespokeHomepage()
+        }
+        
+        userHasPressedHomeButton = true
         isNewTab = false
         isHome = true
         isSearching = false
@@ -76,6 +82,8 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "News", name: MatomoName.click.rawValue, value: nil)
+            
             openLinkURL(Constants.newsURL.rawValue)
             
             //urlBar.alpha = 1.0
@@ -106,6 +114,8 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Shop", name: MatomoName.click.rawValue, value: nil)
+            
             openLinkURL(Constants.shopURL.rawValue)
         }
         else {
@@ -145,10 +155,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressMenu(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         // Ensure that any keyboards or spinners are dismissed before presenting the menu
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Menu", name: MatomoName.click.rawValue, value: nil)
 
-        /*
-        //|     Hide Firefox menu flow
-         
         // Logs homePageMenu or siteMenu depending if HomePage is open or not
         let isHomePage = tabManager.selectedTab?.isFxHomeTab ?? false
         let eventObject: TelemetryWrapper.EventObject = isHomePage ? .homePageMenu : .siteMenu
@@ -166,10 +175,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             let viewModel = PhotonActionSheetViewModel(actions: actions, modalStyle: .popover, isMainMenu: true, isMainMenuInverted: shouldInverse)
             self.presentSheetWith(viewModel: viewModel, on: self, from: button)
         }
-        */
         
         //|     Show Freespoke customized menu
-        showMenuController()
+        //showMenuController()
     }
     
     private func showMenuController() {
@@ -187,6 +195,8 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
 
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Tabs", name: MatomoName.click.rawValue, value: nil)
+        
         let boolBookmarksProfile = profile.prefs.boolForKey("ContextualHintBookmarksLocationKey") ?? false
         
         if boolBookmarksProfile {
@@ -396,6 +406,10 @@ extension BrowserViewController: ToolBarActionMenuDelegate {
 
     func showWallpaperSettings() {
         showSettingsWithDeeplink(to: .wallpaper)
+    }
+
+    func showDeviceSettings() {
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])
     }
 }
 

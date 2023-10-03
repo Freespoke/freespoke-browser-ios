@@ -242,7 +242,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
         let label = UILabel()
         var frame = self.bounds
         label.attributedText = autocompleteText
-        label.font = self.font
+        label.font = UIFont (name: "SourceSansPro-Regular", size: 17)
         label.accessibilityIdentifier = "autocomplete"
         label.backgroundColor = self.backgroundColor
         label.textColor = self.textColor

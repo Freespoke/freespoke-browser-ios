@@ -19,7 +19,13 @@ class ToolbarButton: UIButton {
     override open var isHighlighted: Bool {
         didSet {
             if self.tag == 2 && isHome {
-                self.tintColor = UIColor.redHomeToolbar
+                switch LegacyThemeManager.instance.currentName {
+                case .normal:
+                    self.tintColor = UIColor.redHomeToolbar
+                    
+                case .dark:
+                    self.tintColor = UIColor.white
+                }
             }
             else {
                 self.tintColor = isHighlighted ? selectedTintColor : unselectedTintColor
@@ -67,18 +73,39 @@ class ToolbarButton: UIButton {
 extension ToolbarButton: NotificationThemeable {
     func applyTheme() {
         selectedTintColor = UIColor.legacyTheme.toolbarButton.selectedTint
-        disabledTintColor = UIColor.legacyTheme.toolbarButton.disabledTint
-        unselectedTintColor = UIColor.legacyTheme.browser.tint
+        //disabledTintColor = UIColor.legacyTheme.toolbarButton.disabledTint
+        disabledTintColor = UIColor.Photon.Grey50
+        //unselectedTintColor = UIColor.legacyTheme.browser.tint
+        
+        switch LegacyThemeManager.instance.currentName {
+        case .normal:
+            unselectedTintColor = UIColor.legacyTheme.browser.tint
+            
+        case .dark:
+            unselectedTintColor = UIColor.inactiveToolbar
+        }
         
         if tag == 2 && isHome {
-            tintColor = UIColor.redHomeToolbar
+            switch LegacyThemeManager.instance.currentName {
+            case .normal:
+                tintColor = UIColor.redHomeToolbar
+                
+            case .dark:
+                tintColor = UIColor.white
+            }
         }
         else {
             tintColor = isEnabled ? unselectedTintColor : disabledTintColor
         }
         
         if tag == 2 {
-            selectedTintColor = UIColor.redHomeToolbar
+            switch LegacyThemeManager.instance.currentName {
+            case .normal:
+                selectedTintColor = UIColor.redHomeToolbar
+                
+            case .dark:
+                selectedTintColor = UIColor.white
+            }
         }
         
         imageView?.tintColor = tintColor

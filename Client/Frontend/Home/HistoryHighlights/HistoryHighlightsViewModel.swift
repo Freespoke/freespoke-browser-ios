@@ -69,7 +69,7 @@ class HistoryHighlightsViewModel {
     private var isPrivate: Bool
     private var urlBar: URLBarViewProtocol
     private var hasSentSectionEvent = false
-    private var historyHighlightsDataAdaptor: HistoryHighlightsDataAdaptor
+    var historyHighlightsDataAdaptor: HistoryHighlightsDataAdaptor
     private let dispatchQueue: DispatchQueueInterface
     private let telemetry: TelemetryWrapperProtocol
 

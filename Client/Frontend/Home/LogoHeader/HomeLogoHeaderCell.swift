@@ -9,13 +9,13 @@ import UIKit
 class HomeLogoHeaderCell: UICollectionViewCell, ReusableCell {
     private struct UX {
         struct Logo {
-            static let imageSize: CGFloat = 40
-            static let topConstant: CGFloat = 32
+            static let imageSize: CGFloat = 28
+            static let topConstant: CGFloat = 36
             static let bottomConstant: CGFloat = -10
         }
 
         struct TextImage {
-            static let imageWidth: CGFloat = 165.5
+            static let imageWidth: CGFloat = 170
             static let imageHeight: CGFloat = 17.5
             static let leadingConstant: CGFloat = 9
             static let trailingConstant: CGFloat = -15
@@ -60,12 +60,15 @@ class HomeLogoHeaderCell: UICollectionViewCell, ReusableCell {
                                            constant: UX.Logo.topConstant),
             logoImage.widthAnchor.constraint(equalToConstant: UX.Logo.imageSize),
             logoImage.heightAnchor.constraint(equalToConstant: UX.Logo.imageSize),
-            logoImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            logoImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor,
+                                               constant: -99),
+            //logoImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             logoImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
                                               constant: UX.Logo.bottomConstant),
 
             logoTextImage.widthAnchor.constraint(equalToConstant: UX.TextImage.imageWidth),
             logoTextImage.heightAnchor.constraint(equalToConstant: UX.TextImage.imageHeight),
+            
             logoTextImage.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor,
                                                    constant: UX.TextImage.leadingConstant),
             logoTextImage.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
@@ -81,9 +84,9 @@ extension HomeLogoHeaderCell: ThemeApplicable {
         switch theme.type {
         case .light:
             logoImage.image = UIImage(named: "Freespoke Torch - Light Mode")!
-            
+             
         case .dark:
-            logoImage.image = UIImage(named: "Freespoke Torch - Dark Mode")!
+            logoImage.image = UIImage(named: "Freespoke Torch - Light Mode")!
         }
         
         let wallpaperManager = WallpaperManager()

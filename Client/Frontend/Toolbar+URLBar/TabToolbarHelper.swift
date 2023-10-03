@@ -4,6 +4,7 @@
 
 import UIKit
 import Shared
+import MatomoTracker
 
 protocol TabToolbarProtocol: AnyObject {
     var tabToolbarDelegate: TabToolbarDelegate? { get set }
@@ -114,8 +115,15 @@ open class TabToolbarHelper: NSObject {
             
             toolbar.homeButton.isHome = true
             
-            toolbar.homeButton.setTitleColor(UIColor.redHomeToolbar, for: .normal)
-            toolbar.homeButton.tintColor = UIColor.redHomeToolbar
+            switch LegacyThemeManager.instance.currentName {
+            case .normal:
+                toolbar.homeButton.setTitleColor(UIColor.redHomeToolbar, for: .normal)
+                toolbar.homeButton.tintColor = UIColor.redHomeToolbar
+                
+            case .dark:
+                toolbar.homeButton.setTitleColor(UIColor.white, for: .normal)
+                toolbar.homeButton.tintColor = UIColor.white
+            }
             
         case (.search, _):
             toolbar.forwardButton.setImage(ImageForward, for: .normal)
@@ -134,8 +142,15 @@ open class TabToolbarHelper: NSObject {
             
             toolbar.homeButton.isHome = false
             
-            toolbar.homeButton.setTitleColor(UIColor.legacyTheme.browser.tint, for: .normal)
-            toolbar.homeButton.tintColor = UIColor.legacyTheme.browser.tint
+            switch LegacyThemeManager.instance.currentName {
+            case .normal:
+                toolbar.homeButton.setTitleColor(UIColor.legacyTheme.browser.tint, for: .normal)
+                toolbar.homeButton.tintColor = UIColor.legacyTheme.browser.tint
+                
+            case .dark:
+                toolbar.homeButton.setTitleColor(UIColor.inactiveToolbar, for: .normal)
+                toolbar.homeButton.tintColor = UIColor.inactiveToolbar
+            }
             
         default:
             break
@@ -216,8 +231,16 @@ open class TabToolbarHelper: NSObject {
         toolbar.homeButton.alignTextBelow()
         
         toolbar.homeButton.tag = 2
-        toolbar.homeButton.setTitleColor(UIColor.redHomeToolbar, for: .normal)
-        toolbar.homeButton.tintColor = UIColor.redHomeToolbar
+        
+        switch LegacyThemeManager.instance.currentName {
+        case .normal:
+            toolbar.homeButton.setTitleColor(UIColor.redHomeToolbar, for: .normal)
+            toolbar.homeButton.tintColor = UIColor.redHomeToolbar
+            
+        case .dark:
+            toolbar.homeButton.setTitleColor(UIColor.white, for: .normal)
+            toolbar.homeButton.tintColor = UIColor.white
+        }
         
         toolbar.bookmarksButton.contentMode = .center
         toolbar.bookmarksButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.bookmarks), for: .normal)
@@ -266,6 +289,8 @@ open class TabToolbarHelper: NSObject {
     }
 
     func didClickHome() {
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Home", name: MatomoName.click.rawValue, value: nil)
+        
         toolbar.tabToolbarDelegate?.tabToolbarDidPressHome(toolbar, button: toolbar.appMenuButton)
     }
 
@@ -275,6 +300,7 @@ open class TabToolbarHelper: NSObject {
 
     func didClickAddNewTab() {
         TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .addNewTabButton)
+        
         toolbar.tabToolbarDelegate?.tabToolbarDidPressAddNewTab(toolbar, button: toolbar.addNewTabButton)
     }
 

@@ -32,7 +32,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "43"
                   endingLineNumber = "43"
-                  offsetFromSymbolStart = "888">
+                  offsetFromSymbolStart = "817">
                </Location>
                <Location
                   uuid = "9FB1AD73-AA4F-4CFA-995D-A0175C7908E7 - fb40774c2207e7fb"
@@ -47,7 +47,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "43"
                   endingLineNumber = "43"
-                  offsetFromSymbolStart = "260">
+                  offsetFromSymbolStart = "227">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -151,70 +151,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8DAC9AF5-B3CE-46E4-9155-C75CECD23246"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/BrowserViewController/BrowserViewController+TabToolbarDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
-            landmarkName = "tabToolbarDidPressForward(_:button:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F9F4B381-0206-4611-8B1C-8F64DB61F6E8"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/BrowserViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1632"
-            endingLineNumber = "1632"
-            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "F9F4B381-0206-4611-8B1C-8F64DB61F6E8 - 99af697277579f2c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Client.BrowserViewController.openSearchNewTab(isPrivate: Swift.Bool, _: Swift.String) -&gt; ()"
-                  moduleName = "Client"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1630"
-                  endingLineNumber = "1630"
-                  offsetFromSymbolStart = "440">
-               </Location>
-               <Location
-                  uuid = "F9F4B381-0206-4611-8B1C-8F64DB61F6E8 - 99af697277579f2c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Client.BrowserViewController.openSearchNewTab(isPrivate: Swift.Bool, _: Swift.String) -&gt; ()"
-                  moduleName = "Client"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1630"
-                  endingLineNumber = "1630"
-                  offsetFromSymbolStart = "552">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "FCD57ADD-363A-4F7E-87A5-4CC9E0247C9B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -222,9 +158,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1564"
-            endingLineNumber = "1564"
-            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
+            startingLineNumber = "1580"
+            endingLineNumber = "1580"
+            landmarkName = "switchToTabForURLOrOpen(_:uuid:isPrivate:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -247,38 +183,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "ABFE55B2-59FD-4A90-8A2D-D79FA9648206"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/BrowserViewController/BrowserViewController+URLBarDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "311"
-            endingLineNumber = "311"
-            landmarkName = "urlBar(_:didRestoreText:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4CCAB59D-CD5F-4C3E-98FE-386AF2544B6F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/BrowserViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2868"
-            endingLineNumber = "2868"
-            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "E06E2B4A-75CF-4F80-8AA1-022181B5F5F5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -286,9 +190,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2198"
-            endingLineNumber = "2198"
-            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
+            startingLineNumber = "2218"
+            endingLineNumber = "2218"
+            landmarkName = "presentSearchSettingsController()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -302,42 +206,42 @@
             filePath = "Client/Frontend/Toolbar+URLBar/URLBarView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "546"
-            endingLineNumber = "546"
+            startingLineNumber = "560"
+            endingLineNumber = "560"
             landmarkName = "enterOverlayMode(_:pasted:search:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "487A89EF-94CC-45D5-A95E-E1C87D74B0A0"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/TabManagement/Tab.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "948"
-            endingLineNumber = "948"
-            landmarkName = "hitTest(_:with:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5695BEBC-C411-46AF-A306-3B4B86A58C09"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/TabManagement/Tab.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "951"
-            endingLineNumber = "951"
-            landmarkName = "hitTest(_:with:)"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AA4801BC-9EEC-4B7E-8123-DF207A965E21 - 5f07ccb589a3778f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Client.URLBarView.enterOverlayMode(_: Swift.Optional&lt;Swift.String&gt;, pasted: Swift.Bool, search: Swift.Bool) -&gt; ()"
+                  moduleName = "Client"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Toolbar+URLBar/URLBarView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "563"
+                  endingLineNumber = "563"
+                  offsetFromSymbolStart = "1133">
+               </Location>
+               <Location
+                  uuid = "AA4801BC-9EEC-4B7E-8123-DF207A965E21 - b03ef5544b264503"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 @Swift.MainActor () -&gt; () in Client.URLBarView.enterOverlayMode(_: Swift.Optional&lt;Swift.String&gt;, pasted: Swift.Bool, search: Swift.Bool) -&gt; ()"
+                  moduleName = "Client"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Toolbar+URLBar/URLBarView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "563"
+                  endingLineNumber = "563"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -353,22 +257,6 @@
             startingLineNumber = "14"
             endingLineNumber = "14"
             landmarkName = "updateFindInPageVisibility(visible:tab:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "2657C0B7-5394-463E-AEDE-14B6B2F3194E"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Toolbar+URLBar/URLBarView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "455"
-            endingLineNumber = "455"
-            landmarkName = "becomeFirstResponder()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -414,25 +302,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2059"
-            endingLineNumber = "2059"
-            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6403E10E-5217-439C-8A2B-A18C5D61EEF8"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/BrowserViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2133"
-            endingLineNumber = "2133"
-            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
+            startingLineNumber = "2075"
+            endingLineNumber = "2075"
+            landmarkName = "libraryPanelDidRequestToOpenInNewTab(_:isPrivate:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -446,10 +318,10 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2939"
-            endingLineNumber = "2939"
-            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
-            landmarkType = "7">
+            startingLineNumber = "2959"
+            endingLineNumber = "2959"
+            landmarkName = "reopenLastTab(_:)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -465,22 +337,6 @@
             startingLineNumber = "160"
             endingLineNumber = "160"
             landmarkName = "getHomepageTab(isPrivate:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FC0169BA-FC9E-4E60-83AD-0AB0635072F9"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/BrowserViewController/BrowserViewController+TabToolbarDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
-            landmarkName = "tabToolbarDidPressForward(_:button:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -512,7 +368,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "300"
                   endingLineNumber = "300"
-                  offsetFromSymbolStart = "92">
+                  offsetFromSymbolStart = "96">
                </Location>
                <Location
                   uuid = "3BC48769-947C-4093-ADD1-17E11009023E - 6891f674737a1393"
@@ -527,7 +383,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "300"
                   endingLineNumber = "300"
-                  offsetFromSymbolStart = "164">
+                  offsetFromSymbolStart = "168">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -560,7 +416,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "307"
                   endingLineNumber = "307"
-                  offsetFromSymbolStart = "68">
+                  offsetFromSymbolStart = "59">
                </Location>
                <Location
                   uuid = "630EEF86-E1F2-491A-A4D7-10757813EAD1 - aaf4d1470d673456"
@@ -575,25 +431,9 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "307"
                   endingLineNumber = "307"
-                  offsetFromSymbolStart = "32">
+                  offsetFromSymbolStart = "26">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E49322F1-387B-4EFA-B9B8-2D9FFC52EDA4"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Home/HomepageViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
-            landmarkName = "viewWillTransition(to:with:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -638,9 +478,9 @@
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2419"
-            endingLineNumber = "2419"
-            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
+            startingLineNumber = "2439"
+            endingLineNumber = "2439"
+            landmarkName = "tabManagerUpdateCount()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -688,7 +528,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "127"
                   endingLineNumber = "127"
-                  offsetFromSymbolStart = "352">
+                  offsetFromSymbolStart = "287">
                </Location>
                <Location
                   uuid = "F0AA062A-B518-43D6-B06D-2A1CAC1E01E9 - d528177b9e2f1e8e"
@@ -703,7 +543,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "127"
                   endingLineNumber = "127"
-                  offsetFromSymbolStart = "1300">
+                  offsetFromSymbolStart = "1305">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -711,62 +551,47 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2908DDAD-AC1A-4B07-A170-1D34CB637FCE"
-            shouldBeEnabled = "Yes"
+            uuid = "4B7252B1-7045-4642-9420-6FBEF7319EFA"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/BrowserViewController/BrowserViewController+URLBarDelegate.swift"
+            filePath = "Client/Frontend/Library/Bookmarks/BookmarksPanel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "urlBarDidPressShare(_:urlBar:shareView:)"
+            startingLineNumber = "371"
+            endingLineNumber = "371"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "2908DDAD-AC1A-4B07-A170-1D34CB637FCE - 66cd3d8f4a50efee"
+                  uuid = "4B7252B1-7045-4642-9420-6FBEF7319EFA - 627ddfa3c92c9311"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Client.BrowserViewController.urlBarDidPressShare(_: Client.TabLocationView, urlBar: Client.URLBarView, shareView: __C.UIView) -&gt; ()"
+                  symbolName = "Client.BookmarksPanel.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
                   moduleName = "Client"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController/BrowserViewController+URLBarDelegate.swift"
+                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Library/Bookmarks/BookmarksPanel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "88"
-                  endingLineNumber = "88"
-                  offsetFromSymbolStart = "452">
+                  startingLineNumber = "371"
+                  endingLineNumber = "371"
+                  offsetFromSymbolStart = "404">
                </Location>
                <Location
-                  uuid = "2908DDAD-AC1A-4B07-A170-1D34CB637FCE - 66cd3d8f4a50efee"
+                  uuid = "4B7252B1-7045-4642-9420-6FBEF7319EFA - 627ddfa3c92c9311"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Client.BrowserViewController.urlBarDidPressShare(_: Client.TabLocationView, urlBar: Client.URLBarView, shareView: __C.UIView) -&gt; ()"
+                  symbolName = "Client.BookmarksPanel.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
                   moduleName = "Client"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController/BrowserViewController+URLBarDelegate.swift"
+                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Library/Bookmarks/BookmarksPanel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "88"
-                  endingLineNumber = "88"
-                  offsetFromSymbolStart = "528">
-               </Location>
-               <Location
-                  uuid = "2908DDAD-AC1A-4B07-A170-1D34CB637FCE - 66cd3d8f4a50efee"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Client.BrowserViewController.urlBarDidPressShare(_: Client.TabLocationView, urlBar: Client.URLBarView, shareView: __C.UIView) -&gt; ()"
-                  moduleName = "Client"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController/BrowserViewController+URLBarDelegate.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "88"
-                  endingLineNumber = "88"
-                  offsetFromSymbolStart = "580">
+                  startingLineNumber = "371"
+                  endingLineNumber = "371"
+                  offsetFromSymbolStart = "3140">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -774,81 +599,209 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "38FE709D-A104-4878-A17A-B75B51D97004"
+            uuid = "5691D804-0384-45C6-A1F7-A445063D45B7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Client/Frontend/Browser/BrowserViewController/BrowserViewController+TabToolbarDelegate.swift"
+            filePath = "Client/Frontend/Widgets/SearchInputView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "10"
-            endingLineNumber = "10"
-            landmarkName = "tabToolbarDidPressHome(_:button:)"
-            landmarkType = "7">
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "titleLabel"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CC2EA7DE-1602-47E5-BF7D-F68355545272"
+            uuid = "284FF733-EE89-4851-898E-C22672E007EC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Client/Frontend/Widgets/SearchInputView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "inputField"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DEDDACA1-F87E-49D7-B646-3FB4E6A82478"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Client/Frontend/Toolbar+URLBar/URLBarView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "679"
-            endingLineNumber = "679"
-            landmarkName = "updateNavigationButtonsState(_:)"
+            startingLineNumber = "846"
+            endingLineNumber = "846"
+            landmarkName = "autocompleteTextFieldDidCancel(_:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "DEDDACA1-F87E-49D7-B646-3FB4E6A82478 - 82bae5fec5bb248e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Client.URLBarView.autocompletePasteAndGo(Client.AutocompleteTextField) -&gt; ()"
+                  moduleName = "Client"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Toolbar+URLBar/URLBarView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "849"
+                  endingLineNumber = "849"
+                  offsetFromSymbolStart = "99">
+               </Location>
+               <Location
+                  uuid = "DEDDACA1-F87E-49D7-B646-3FB4E6A82478 - 82bae5fec5bb248e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Client.URLBarView.autocompletePasteAndGo(Client.AutocompleteTextField) -&gt; ()"
+                  moduleName = "Client"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Toolbar+URLBar/URLBarView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "849"
+                  endingLineNumber = "849"
+                  offsetFromSymbolStart = "190">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "95270F8F-746E-4EAB-A91E-D8BBC72F429D"
+            uuid = "21A24700-F156-420C-8424-8229016E70F4"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Client/Frontend/Browser/BrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2401"
-            endingLineNumber = "2401"
-            landmarkName = "setValues(isHome:isNewTab:isSearching:)"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "didTapUndoCloseAllTabToast(notification:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "95270F8F-746E-4EAB-A91E-D8BBC72F429D - 6a888c3cfa86a33c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Client.BrowserViewController.tabManagerDidRemoveAllTabs(_: Client.TabManager, toast: Swift.Optional&lt;Client.ButtonToast&gt;) -&gt; ()"
-                  moduleName = "Client"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "2399"
-                  endingLineNumber = "2399"
-                  offsetFromSymbolStart = "256">
-               </Location>
-               <Location
-                  uuid = "95270F8F-746E-4EAB-A91E-D8BBC72F429D - 6a888c3cfa86a33c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Client.BrowserViewController.tabManagerDidRemoveAllTabs(_: Client.TabManager, toast: Swift.Optional&lt;Client.ButtonToast&gt;) -&gt; ()"
-                  moduleName = "Client"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/abelanca/Work/freespoke-browser-ios/Client/Frontend/Browser/BrowserViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "2399"
-                  endingLineNumber = "2399"
-                  offsetFromSymbolStart = "284">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9E13F0DF-5407-4407-B15D-5AE17FFFB497"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Client/Frontend/Browser/GridTabViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "352"
+            endingLineNumber = "352"
+            landmarkName = "closeTabsTrayBackground()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0BA95090-EA57-41F2-8EEC-BDD70C8436B5"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Client/Frontend/Browser/GridTabViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "376"
+            endingLineNumber = "376"
+            landmarkName = "closeTabsTrayHelper()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B6BE72F3-F5C7-423C-A9B6-7EEB1F6B5697"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Client/Frontend/Browser/BrowserViewController/BrowserViewController+URLBarDelegate.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
+            landmarkName = "urlBar(_:didSubmitText:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E5FFC725-DDF4-4CB4-9B8E-2D7FB0B19EAD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Client/Frontend/Toolbar+URLBar/URLBarView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "850"
+            endingLineNumber = "850"
+            landmarkName = "autocompletePasteAndGo(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D7854709-68A9-490D-B7B8-E475B9150DFA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Client/Application/NavigationRouter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
+            landmarkName = "handleText(text:with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CECBC87B-192A-4A3B-BDC3-46699A630849"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Client/Frontend/Toolbar+URLBar/URLBarView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "829"
+            endingLineNumber = "829"
+            landmarkName = "autocompleteTextFieldShouldReturn(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "288CCAC0-B336-4CD2-85E2-C88D23A00533"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Client/Frontend/Browser/BrowserViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "429"
+            endingLineNumber = "429"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

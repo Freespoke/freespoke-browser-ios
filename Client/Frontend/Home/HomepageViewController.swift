@@ -234,9 +234,12 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             reloadOnRotation(newSize: size)
         }
         
-        //|     Update Homepage UI for landscape mode
-        if let freespokeHomepageView = freespokeHomepageView {
-            freespokeHomepageView.updateUI()
+        //|     Update UI after some time because of iOS 15 Apple functions
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            //|     Update Homepage UI for landscape mode
+            if let freespokeHomepageView = self?.freespokeHomepageView {
+                freespokeHomepageView.updateUI()
+            }
         }
     }
 

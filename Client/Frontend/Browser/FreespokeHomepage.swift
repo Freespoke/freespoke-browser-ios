@@ -140,13 +140,7 @@ class FreespokeHomepage: UIView {
     }
     
     func updateUI() {
-        //| Scroll view dimension
-        if UIDevice.current.orientation.isLandscape {
-            constScrollViewWidth.constant = UIDevice.current.hasNotch ? UIScreen.main.bounds.size.width - 100 : UIScreen.main.bounds.size.width
-        }
-        else {
-            constScrollViewWidth.constant = UIScreen.main.bounds.size.width
-        }
+        setupScrollViewWidth()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
             self.collectionViewShopUsa.reloadData()
@@ -154,14 +148,32 @@ class FreespokeHomepage: UIView {
         }
     }
     
-    func setUI() {
+    private func setupScrollViewWidth() {
         //| Scroll view dimension
-        if UIDevice.current.orientation.isLandscape {
-            constScrollViewWidth.constant = UIDevice.current.hasNotch ? UIScreen.main.bounds.size.width - 100 : UIScreen.main.bounds.size.width
+        if UIWindow.isLandscape {
+            
+            //|     Check if the device has notch and set it to the scroll view
+            if UIDevice.current.hasNotch {
+                if let topNotch = UIApplication.shared.keyWindow?.safeAreaInsets.top,
+                   let leftNotch = UIApplication.shared.keyWindow?.safeAreaInsets.left {
+                    
+                    constScrollViewWidth.constant = topNotch > leftNotch ? UIScreen.main.bounds.size.width - (topNotch * 2) : UIScreen.main.bounds.size.width - (leftNotch * 2)
+                }
+                else {
+                    constScrollViewWidth.constant = UIScreen.main.bounds.size.width - 100
+                }
+            }
+            else {
+                constScrollViewWidth.constant = UIScreen.main.bounds.size.width
+            }
         }
         else {
             constScrollViewWidth.constant = UIScreen.main.bounds.size.width
         }
+    }
+    
+    func setUI() {
+        setupScrollViewWidth()
         
         btnSerch.layer.cornerRadius     = 8
         btnSerch.layer.borderWidth      = 1

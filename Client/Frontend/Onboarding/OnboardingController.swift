@@ -6,6 +6,7 @@ import UIKit
 import Foundation
 import Common
 import Shared
+import OneSignal
 
 class OnboardingController: UIViewController, UIScrollViewDelegate {
 
@@ -20,18 +21,25 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var btnNext: UIButton!
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var btnSetAsDefault: UIButton!
-    @IBOutlet weak var lblDescription: UILabel!
-    @IBOutlet weak var viewSeparator: UIView!
+    @IBOutlet weak var imgViewBackground: UIImageView!
     
     lazy var profile: Profile = BrowserProfile(
         localName: "profile",
         syncDelegate: UIApplication.shared.syncDelegate
     )
     
+    let yourAttributes: [NSAttributedString.Key: Any] = [
+          .font: UIFont(name: "SourceSansPro-Regular", size: 18)!,
+          .underlineStyle: NSUnderlineStyle.single.rawValue]
+    
     var currentTheme: Theme?
     
     var index = 0
     var slides: [Slide] = []
+    
+    var breakingNews = true
+    var shopUSADiscounts = true
+    var generalAlerts = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,51 +83,126 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         btnNext.layer.cornerRadius     = 4
         btnNext.layer.masksToBounds    = true
         
+        //|     Set underline atribution button
+        let attributeString = NSMutableAttributedString(
+            string: "No, thanks. I prefer Big Tech bros\n      to decide my search results.",
+            attributes: yourAttributes
+        )
+        
+        btnSetAsDefault.setAttributedTitle(attributeString, for: .normal)
+        
         applyTheme()
     }
     
     func applyTheme() {
         if let theme = currentTheme {
-            viewBackground.backgroundColor = theme.colors.layer1
+            //viewBackground.backgroundColor = theme.colors.layer1
             
             switch theme.type {
             case .dark:
-                lblDescription.textColor = .white
-               
-                btnSetAsDefault.tintColor = .white
+                btnSetAsDefault.setTitleColor(.white, for: .normal)
                 btnBack.tintColor = .white
-                viewSeparator.backgroundColor = .white
             
                 pageControl.tintColor = .white
                 
+                viewBackground.backgroundColor = .onboardingDark
+                imgViewBackground.backgroundColor = .onboardingDark
+                
+                imgViewBackground.image = UIImage(named: "onboarding-dark")
+                
             case .light:
-                lblDescription.textColor = .blackColor
-      
-                btnSetAsDefault.tintColor = .blackColor
+                btnSetAsDefault.setTitleColor(.blackColor, for: .normal)
                 btnBack.tintColor = .blackColor
-                //viewSeparator.backgroundColor = .blackColor
                 
                 pageControl.tintColor = .blackColor
+                
+                viewBackground.backgroundColor = .white
+                imgViewBackground.backgroundColor = .white
+                
+                imgViewBackground.image = UIImage(named: "onboarding")
             }
+        }
+    }
+    
+    private func setTheme(isDark: Bool) {
+        if !isDark {
+            btnSetAsDefault.setTitleColor(.blackColor, for: .normal)
+            btnBack.tintColor = .blackColor
+            
+            pageControl.tintColor = .blackColor
+            
+            viewBackground.backgroundColor = .onboardingDark
+            imgViewBackground.backgroundColor = .onboardingDark
+            
+            imgViewBackground.image = UIImage(named: "onboarding-dark")
+        }
+        else {
+            //btnSetAsDefault.tintColor = .white
+            btnSetAsDefault.setTitleColor(.white, for: .normal)
+            btnBack.tintColor = .white
+        
+            pageControl.tintColor = .white
+            
+            viewBackground.backgroundColor = .white
+            imgViewBackground.backgroundColor = .white
+            
+            imgViewBackground.image = UIImage(named: "onboarding")
         }
     }
     
     private func createSlides() -> [Slide] {
         if let currentTheme = currentTheme {
             let slide1:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            slide1.imageView.image = currentTheme.type == .light ? UIImage(named: "tutorial1") : UIImage(named: "tutorial1-dark")
+            slide1.viewSecondSlide.isHidden = true
+            slide1.lblFirstTitle.isHidden = false
+            slide1.lblFirstDesc.isHidden = false
+            slide1.lblFirstTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
+            slide1.lblFirstDesc.textColor = currentTheme.type == .light ? .blackColor : .whiteColor
             
             let slide2:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            slide2.imageView.image = currentTheme.type == .light ? UIImage(named: "tutorial2") : UIImage(named: "tutorial2-dark")
+            slide2.imageView.isHidden = true
+            slide2.viewSegments.isHidden = false
+            slide2.delegate = self
+            slide2.lblTitle.text = "First things first..."
+            slide2.lblDesc.text = "We only want to send you the stuff that lights a fire in you. Select the updates you want to receive from Freespoke."
+            slide2.lblTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
+            slide2.lblDesc.textColor = currentTheme.type == .light ? .blackColor : .whiteColor
+            
+            slide2.lblTitleBreakingNews.textColor = currentTheme.type == .light ? .blackColor : .white
+            slide2.lblTitleShopUSA.textColor = currentTheme.type == .light ? .blackColor : .white
+            slide2.lblTitleGeneralAlerts.textColor = currentTheme.type == .light ? .blackColor : .white
+            
+            slide2.lblDescBreakingNews.textColor = currentTheme.type == .light ? .gray2 : .lightGray
+            slide2.lblDescUSA.textColor = currentTheme.type == .light ? .gray2 : .lightGray
+            slide2.lblDescGeneralAlerts.textColor = currentTheme.type == .light ? .gray2 : .lightGray
+            
+            slide2.viewBreakingNews.backgroundColor = currentTheme.type == .light ? .white : .darkBackground
+            slide2.viewShopUSA.backgroundColor = currentTheme.type == .light ? .white : .darkBackground
+            slide2.viewGeneralAlerts.backgroundColor = currentTheme.type == .light ? .white : .darkBackground
+            
+            slide2.viewBreakingNews.layer.borderColor = currentTheme.type == .light ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
+            slide2.viewShopUSA.layer.borderColor = currentTheme.type == .light ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
+            slide2.viewGeneralAlerts.layer.borderColor = currentTheme.type == .light ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
             
             let slide3:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            slide3.imageView.image = currentTheme.type == .light ? UIImage(named: "tutorial3") : UIImage(named: "tutorial3-dark")
+            slide3.imageView.image = currentTheme.type == .light ? UIImage(named: "onboarding1") : UIImage(named: "onboarding1-dark")
+            slide3.lblTitle.text = "Enable Notifications from Freespoke"
+            slide3.lblDesc.text = "Click “Next”, then select “Allow” to save and enable your previous selections."
+            slide3.lblTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
+            slide3.lblDesc.textColor = currentTheme.type == .light ? .blackColor : .whiteColor
             
             let slide4:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            slide4.imageView.image = currentTheme.type == .light ? UIImage(named: "tutorial4") : UIImage(named: "tutorial4-dark")
+            slide4.imageView.image = currentTheme.type == .light ? UIImage(named: "onboarding2") : UIImage(named: "onboarding2-dark")
+            slide4.lblTitle.text = "Try Freespoke As Your Default Browser"
+            slide4.lblDesc.text = "Browse and search the internet in peace with data privacy, unbiased results, and more."
+            slide4.lblTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
+            slide4.lblDesc.textColor = currentTheme.type == .light ? .blackColor : .whiteColor
             
             let slide5:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            slide5.imageView.image = currentTheme.type == .light ? UIImage(named: "tutorial5") : UIImage(named: "tutorial5-dark")
+            slide5.imageView.image = currentTheme.type == .light ? UIImage(named: "onboarding3") : UIImage(named: "onboarding3-dark")
+            slide5.lblTitle.text = "You're ready to light this party up! Let's jump in..."
+            slide5.lblDesc.text = ""
+            slide5.lblTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
             
             return [slide1, slide2, slide3, slide4, slide5]
         }
@@ -162,20 +245,20 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         
         if(percentOffset.x > 0 && percentOffset.x <= 0.25) {
             
-            slides[0].imageView.transform = CGAffineTransform(scaleX: (0.25-percentOffset.x)/0.25, y: (0.25-percentOffset.x)/0.25)
-            slides[1].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.25, y: percentOffset.x/0.25)
+            slides[0].viewBackground.transform = CGAffineTransform(scaleX: (0.25-percentOffset.x)/0.25, y: (0.25-percentOffset.x)/0.25)
+            slides[1].viewBackground.transform = CGAffineTransform(scaleX: percentOffset.x/0.25, y: percentOffset.x/0.25)
             
         } else if(percentOffset.x > 0.25 && percentOffset.x <= 0.50) {
-            slides[1].imageView.transform = CGAffineTransform(scaleX: (0.50-percentOffset.x)/0.25, y: (0.50-percentOffset.x)/0.25)
-            slides[2].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.50, y: percentOffset.x/0.50)
+            slides[1].viewBackground.transform = CGAffineTransform(scaleX: (0.50-percentOffset.x)/0.25, y: (0.50-percentOffset.x)/0.25)
+            slides[2].viewBackground.transform = CGAffineTransform(scaleX: percentOffset.x/0.50, y: percentOffset.x/0.50)
             
         } else if(percentOffset.x > 0.50 && percentOffset.x <= 0.75) {
-            slides[2].imageView.transform = CGAffineTransform(scaleX: (0.75-percentOffset.x)/0.25, y: (0.75-percentOffset.x)/0.25)
-            slides[3].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.75, y: percentOffset.x/0.75)
+            slides[2].viewBackground.transform = CGAffineTransform(scaleX: (0.75-percentOffset.x)/0.25, y: (0.75-percentOffset.x)/0.25)
+            slides[3].viewBackground.transform = CGAffineTransform(scaleX: percentOffset.x/0.75, y: percentOffset.x/0.75)
             
         } else if(percentOffset.x > 0.75 && percentOffset.x <= 1) {
-            slides[3].imageView.transform = CGAffineTransform(scaleX: (1-percentOffset.x)/0.25, y: (1-percentOffset.x)/0.25)
-            slides[4].imageView.transform = CGAffineTransform(scaleX: percentOffset.x, y: percentOffset.x)
+            slides[3].viewBackground.transform = CGAffineTransform(scaleX: (1-percentOffset.x)/0.25, y: (1-percentOffset.x)/0.25)
+            slides[4].viewBackground.transform = CGAffineTransform(scaleX: percentOffset.x, y: percentOffset.x)
         }
     }
 
@@ -214,8 +297,65 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
     //  MARK: Action Methods
     
     @IBAction func btnNext(_ sender: Any) {
+        
+        if index == 3 {
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])
+            
+            return
+        }
+        
         index += 1
         
+        switch index {
+        case 1:
+            UIView.animate(withDuration: 0.5,
+                           delay: 0,
+                           usingSpringWithDamping: 0.7,
+                           initialSpringVelocity: 1,
+                           options: .curveEaseOut,
+                           animations: {
+                self.btnNext.setTitle("Next", for: .normal)
+            })
+            
+        case 2:
+            if breakingNews {
+                OneSignal.sendTag("News", value: "1")
+            } else {
+                OneSignal.sendTag("News", value: "0")
+            }
+            
+            if shopUSADiscounts {
+                OneSignal.sendTag("Shop", value: "1")
+            } else {
+                OneSignal.sendTag("Shop", value: "0")
+            }
+            
+            if generalAlerts {
+                OneSignal.sendTag("General Alerts", value: "1")
+            } else {
+                OneSignal.sendTag("General Alerts", value: "0")
+            }
+            
+        case 3:
+            //|     Ask for setup notification setting
+            OneSignal.promptForPushNotifications(userResponse: { accepted in
+                print("User accepted notification: \(accepted)")
+            })
+            
+            UIView.animate(withDuration: 0.5,
+                           delay: 0,
+                           usingSpringWithDamping: 0.7,
+                           initialSpringVelocity: 1,
+                           options: .curveEaseOut,
+                           animations: {
+                self.btnSetAsDefault.alpha = 1
+                self.btnNext.setTitle("Set as Default Browser", for: .normal)
+            })
+            
+        default:
+            break
+        }
+
         if index == 5 {
             profile.prefs.setInt(1, forKey: PrefsKeys.IntroSeen)
             
@@ -233,12 +373,39 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func btnSetDefaultBrowser(_ sender: Any) {
-        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])
+        index += 1
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 1,
+                       options: .curveEaseOut,
+                       animations: {
+            self.btnSetAsDefault.alpha = 0
+            self.btnNext.setTitle("Start Searching", for: .normal)
+        })
+        
+        scrollView.setContentOffset(CGPoint(x: view.frame.width * CGFloat(index), y: 0), animated: true)
     }
     
     @IBAction func pageControlAction(_ sender: UIPageControl) {
         scrollView.setContentOffset(CGPoint(x: view.frame.width * CGFloat(sender.currentPage), y: 0), animated: true)
     }
 }
+
+extension OnboardingController: SlideDelegate {
+    func didSelectBreakingNews(value: Bool) {
+        breakingNews = value
+    }
+    
+    func didSelectShopUSADiscounts(value: Bool) {
+        shopUSADiscounts = value
+    }
+    
+    func didSelectGeneralAlerts(value: Bool) {
+        generalAlerts = value
+    }
+}
+
 
 

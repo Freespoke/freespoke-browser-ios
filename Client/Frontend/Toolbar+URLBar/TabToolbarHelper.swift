@@ -289,7 +289,7 @@ open class TabToolbarHelper: NSObject {
     }
 
     func didClickHome() {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Home", name: MatomoName.click.rawValue, value: nil)
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "home", name: MatomoName.click.rawValue, value: nil)
         
         toolbar.tabToolbarDelegate?.tabToolbarDidPressHome(toolbar, button: toolbar.appMenuButton)
     }

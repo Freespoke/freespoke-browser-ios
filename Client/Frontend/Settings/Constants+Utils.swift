@@ -57,6 +57,8 @@ extension UIColor {
     static let darkBackground = Utils.hexStringToUIColor(hex: "161616")
     static let gray7 = Utils.hexStringToUIColor(hex: "F8F9FB")
     static let gray2 = Utils.hexStringToUIColor(hex: "606671")
+    static let onboardingDark = Utils.hexStringToUIColor(hex: "#1D1D1D")
+    static let onboardingTitleDark = Utils.hexStringToUIColor(hex: "#081A33")
 }
 
 class Utils {
@@ -86,7 +88,7 @@ class Utils {
 enum Matomo: String {
     case baseURL            = "https://example.com/matomo.php"
     case staggingSiteId     = "1"
-    case productionSiteId   = "1"
+    case productionSiteId   = "2"
 }
 
 enum MatomoCategory: String {
@@ -99,12 +101,17 @@ enum MatomoCategory: String {
 
 enum MatomoAction: String {
     case appMenuTab         = "app menu tab click - "
-    case appHomeSearch      = "app home search"
-    case appHomeBookmarks   = "app home my bookmarks click"
-    case appHomeNews        = "app home trending news story view summary click"
-    case appHomeRecently    = "app home recently viewed click"
-    case appHomeShop        = "app home shop usa store product click"
-    case appHomeFreespoke   = "app home the freespoke way click - "
+    case appMenuMakeDefaultBrowser          = "app menu make default browser click"
+    case appMenuManageNotifications         = "app manage notifications click"
+    case appMenuManageGetPremium            = "app manage get freespoke premium click"
+    case appHomeSearch          = "app home search"
+    case appHomeBookmarks       = "app home my bookmarks click"
+    case appHomeTrendingNewsStoryViewMore   = "app home trending news story view more click"
+    case appHomeTrendingNewsStoryClick      = "app home trending news story click"
+    case appHomeRecently        = "app home recently viewed click"
+    case appHomeShopClick       = "app home shop usa click"
+    case appHomeShopViewMore    = "app home shop usa view more click"
+    case appHomeFreespoke       = "app home the freespoke way click - "
     case appTabsCloseTabsMenu   = "app tabs close tabs menu"
     case appTabsNewTab          = "app tabs new tab click"
     case appTabsCloseAllTabs    = "app tabs close all tabs click"

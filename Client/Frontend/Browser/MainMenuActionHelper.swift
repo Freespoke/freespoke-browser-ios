@@ -515,7 +515,8 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
     private func getDefaultBrowserAction() -> PhotonRowActions {
         return SingleActionViewModel(title: "Make Default Browser",
                                      iconString: "menu-add-browser") { _ in
-            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .findInPage)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuMakeDefaultBrowser.rawValue, name: MatomoName.click.rawValue, value: nil)
+            
             self.delegate?.showDeviceSettings()
         }.items
     }
@@ -523,7 +524,8 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
     private func getNotificationsAction() -> PhotonRowActions {
         return SingleActionViewModel(title: "Manage Notifications",
                                      iconString: "menu-notifications") { _ in
-            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .findInPage)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuManageNotifications.rawValue, name: MatomoName.click.rawValue, value: nil)
+            
             self.delegate?.showDeviceSettings()
         }.items
     }
@@ -531,10 +533,12 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
     private func getPremiumAction() -> PhotonRowActions {
         return SingleActionViewModel(title: "Get Freespoke Premium",
                                      iconString: "menu-premium") { _ in
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuManageGetPremium.rawValue, name: MatomoName.click.rawValue, value: nil)
+            
             if let url = URL(string: Constants.freespokePremiumURL.rawValue) {
                 self.delegate?.openURLInNewTab(url, isPrivate: false)
             }
-            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
+            
         }.items
     }
 

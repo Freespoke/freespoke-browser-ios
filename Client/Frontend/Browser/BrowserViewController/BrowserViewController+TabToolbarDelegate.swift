@@ -114,9 +114,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "shop", name: MatomoName.click.rawValue, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "election", name: MatomoName.click.rawValue, value: nil)
             
-            openLinkURL(Constants.shopURL.rawValue)
+            openLinkURL(Constants.electionURL.rawValue)
         }
         else {
             /*

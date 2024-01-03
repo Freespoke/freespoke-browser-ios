@@ -46,6 +46,7 @@ enum Constants: String {
     case shopURL = "https://freespoke.com/products"
     case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
+    case electionURL = "https://freespoke.com/election/2024"
 }
 
 extension UIColor {

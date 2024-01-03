@@ -317,24 +317,24 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
                 self.btnNext.setTitle("Next", for: .normal)
             })
             
-        case 2:
-            if breakingNews {
-                OneSignal.sendTag("News", value: "1")
-            } else {
-                OneSignal.sendTag("News", value: "0")
-            }
-            
-            if shopUSADiscounts {
-                OneSignal.sendTag("Shop", value: "1")
-            } else {
-                OneSignal.sendTag("Shop", value: "0")
-            }
-            
-            if generalAlerts {
-                OneSignal.sendTag("General Alerts", value: "1")
-            } else {
-                OneSignal.sendTag("General Alerts", value: "0")
-            }
+//        case 2:
+//            if breakingNews {
+//                OneSignal.sendTag("News", value: "1")
+//            } else {
+//                OneSignal.sendTag("News", value: "0")
+//            }
+//
+//            if shopUSADiscounts {
+//                OneSignal.sendTag("Shop", value: "1")
+//            } else {
+//                OneSignal.sendTag("Shop", value: "0")
+//            }
+//
+//            if generalAlerts {
+//                OneSignal.sendTag("General Alerts", value: "1")
+//            } else {
+//                OneSignal.sendTag("General Alerts", value: "0")
+//            }
             
         case 3:
             //|     Ask for setup notification setting

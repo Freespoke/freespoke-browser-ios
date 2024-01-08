@@ -64,7 +64,7 @@ open class TabToolbarHelper: NSObject {
     let ImageHome = UIImage.templateImageNamed("icon-menu-Home")
     let ImageTabs = UIImage.templateImageNamed("icon-tabs")
     
-    let ImageShop = UIImage.templateImageNamed("icon-shop")
+    let ImageShop = UIImage.templateImageNamed("icon-election")
     let ImageNews = UIImage.templateImageNamed("icon-news")
     let ImageBack = UIImage.templateImageNamed("nav-back")?.imageFlippedForRightToLeftLayoutDirection()
     let ImageForward = UIImage.templateImageNamed("nav-forward")?.imageFlippedForRightToLeftLayoutDirection()
@@ -103,7 +103,7 @@ open class TabToolbarHelper: NSObject {
             toolbar.backButton.setImage(ImageNews, for: .normal)
             
             toolbar.forwardButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
-            toolbar.forwardButton.setTitle("SHOP", for: .normal)
+            toolbar.forwardButton.setTitle("ELECTION", for: .normal)
             toolbar.forwardButton.alignTextBelow()
             
             toolbar.backButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
@@ -183,7 +183,7 @@ open class TabToolbarHelper: NSObject {
         toolbar.forwardButton.addGestureRecognizer(longPressGestureForwardButton)
         toolbar.forwardButton.addTarget(self, action: #selector(didClickForward), for: .touchUpInside)
         
-        toolbar.forwardButton.setTitle("SHOP", for: .normal)
+        toolbar.forwardButton.setTitle("ELECTION", for: .normal)
         toolbar.forwardButton.alignTextBelow()
 
         if UIDevice.current.userInterfaceIdiom == .phone {

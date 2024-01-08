@@ -200,7 +200,7 @@ extension String {
             public static let ButtonTitle = MZLocalizedString(
                 "FirefoxHome.CustomizeHomeButton.Title",
                 tableName: nil,
-                value: "Customize Homepage",
+                value: "Customize",
                 comment: "A button at bottom of the Firefox homepage that, when clicked, takes users straight to the settings options, where they can customize the Firefox Home page")
         }
 
@@ -797,7 +797,7 @@ extension String {
         public static let SuggestSectionTitle = MZLocalizedString(
             "Search.SuggestSectionTitle.v102",
             tableName: nil,
-            value: "Freespoke Suggest",
+            value: "FREESPOKE SUGGESTIONS",
             comment: "When making a new search from the awesome bar, suggestions appear to the user as they write new letters in their search. Different types of suggestions can appear. This string will be used as a header to separate Firefox suggestions from normal suggestions.")
         public static let EngineSectionTitle = MZLocalizedString(
             "Search.EngineSection.Title.v108",
@@ -2623,7 +2623,7 @@ extension String {
         public static let CustomizeHomePage = MZLocalizedString(
             "Menu.CustomizeHomePage.v99",
             tableName: nil,
-            value: "Customize Homepage",
+            value: "Customise",
             comment: "Label for the customize homepage button in the menu page. Pressing this button takes users to the settings options, where they can customize the Firefox Home page")
         public static let NewTab = MZLocalizedString(
             "Menu.NewTab.v99",

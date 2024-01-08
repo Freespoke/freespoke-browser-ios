@@ -784,7 +784,7 @@ class AboutFreespokeSetting: Setting {
 
     override func onClick(_ navigationController: UINavigationController?) {
         navigationController?.dismiss(animated: true) {
-            if let url = URL(string: "https://freespoke.com/about") {
+            if let url = URL(string: Constants.aboutFreespokeURL.rawValue) {
                 self.delegate?.settingsOpenURLInNewTab(url)
             }
         }

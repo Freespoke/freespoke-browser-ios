@@ -26,6 +26,8 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             contextMenuHelper.sendToDeviceDelegate = sendToDeviceDelegate
         }
     }
+    
+    var delegate: FreespokeHomepageDelegate?
 
     private var viewModel: HomepageViewModel
     private var contextMenuHelper: HomepageContextMenuHelper
@@ -41,6 +43,11 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     var themeManager: ThemeManager
     var notificationCenter: NotificationProtocol
     var themeObserver: NSObjectProtocol?
+    
+    var isHome = false
+    var isNewTab = false
+    var isSearching = false
+    var freespokeHomepageView: FreespokeHomepage!
 
     // Background for status bar
     private lazy var statusBarView: UIView = {
@@ -59,6 +66,8 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     var currentTab: Tab? {
         return tabManager.selectedTab
     }
+    
+    var profile: Profile?
 
     // MARK: - Initializers
     init(profile: Profile,
@@ -69,6 +78,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
          notificationCenter: NotificationProtocol = NotificationCenter.default,
          logger: Logger = DefaultLogger.shared
     ) {
+        self.profile = profile
         self.urlBar = urlBar
         self.tabManager = tabManager
         self.userDefaults = userDefaults
@@ -117,23 +127,96 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configureWallpaperView()
         configureContentStackView()
         configureCollectionView()
 
         // Delay setting up the view model delegate to ensure the views have been configured first
         viewModel.delegate = self
+        
+        freespokeHomepageView = FreespokeHomepage()
+        freespokeHomepageView.profile = profile
+        
+        freespokeHomepageView.getRecentBookmarks()
+        
+        freespokeHomepageView.delegate = self
+
+        view.addSubview(freespokeHomepageView)
+
+        freespokeHomepageView.snp.makeConstraints { make in
+            make.top.left.right.bottom.equalTo(view)
+        }
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
+        //view.addGestureRecognizer(tap)
 
         setupSectionsAction()
         reloadView()
 
         listenForThemeChange(view)
         applyTheme()
+    }
+    
+    func checkFreespokeHomepage() {
+        if isHome {
+            if !isNewTab {
+                if isSearching {
+                    if let freespokeHomepageView = freespokeHomepageView {
+                        
+                        UIView.animate(
+                            withDuration: 0.2,
+                            animations: {
+                                self.freespokeHomepageView.alpha = 0
+                            }, completion: {_ in
+                            })
+                    }
+                }
+                else {
+                    if let freespokeHomepageView = freespokeHomepageView {
+                        UIView.animate(
+                            withDuration: 0.2,
+                            animations: {
+                                self.freespokeHomepageView.alpha = 1
+                            }, completion: {_ in
+                            })
+                    }
+                }
+            }
+            else {
+                if let freespokeHomepageView = freespokeHomepageView {
+                    UIView.animate(
+                        withDuration: 0.2,
+                        animations: {
+                            self.freespokeHomepageView.alpha = 0
+                        }, completion: {_ in
+                        })
+                }
+            }
+        }
+        else {
+            if let freespokeHomepageView = freespokeHomepageView {
+                UIView.animate(
+                    withDuration: 0.2,
+                    animations: {
+                        self.freespokeHomepageView.alpha = 0
+                    }, completion: {_ in
+                    })
+            }
+        }
+    }
+
+    func reloadFreespokeHomepage() {
+        if let freespokeHomepageView = freespokeHomepageView {
+            freespokeHomepageView.reloadAllItems()
+        }
+        
+        //|     Update recently visited item in homepage
+        let items = self.viewModel.historyHighlightsViewModel.historyHighlightsDataAdaptor.getHistoryHightlights()
+        
+        self.freespokeHomepageView.arrRecenlyViewed = items
+        self.freespokeHomepageView.collectionViewRecentlyViewd.reloadData()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -149,6 +232,14 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
 
         if UIDevice.current.userInterfaceIdiom == .pad {
             reloadOnRotation(newSize: size)
+        }
+        
+        //|     Update UI after some time because of iOS 15 Apple functions
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            //|     Update Homepage UI for landscape mode
+            if let freespokeHomepageView = self?.freespokeHomepageView {
+                freespokeHomepageView.updateUI()
+            }
         }
     }
 
@@ -171,6 +262,14 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
            presentedViewController.isKind(of: BottomSheetViewController.self) {
             self.dismissKeyboard()
         }
+        
+        //|     Update recently visited item in homepage
+        //DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+        let items = self.viewModel.historyHighlightsViewModel.historyHighlightsDataAdaptor.getHistoryHightlights()
+        
+        self.freespokeHomepageView.arrRecenlyViewed = items
+        self.freespokeHomepageView.collectionViewRecentlyViewd.reloadData()
+        //})
     }
 
     // MARK: - Layout
@@ -295,6 +394,8 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
+        
+        
     }
 
     private func adjustPrivacySensitiveSections(notification: Notification) {
@@ -311,8 +412,117 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     func applyTheme() {
         let theme = themeManager.currentTheme
         viewModel.theme = theme
-        view.backgroundColor = theme.colors.layer1
         updateStatusBar(theme: theme)
+        
+        if let freespokeHomepageView = freespokeHomepageView {
+            switch theme.type {
+            case .light:
+                view.backgroundColor = theme.colors.layer1
+                
+                freespokeHomepageView.contentView.backgroundColor = .white
+
+                freespokeHomepageView.lblFreespoke.textColor = UIColor(colorString: "081A33")
+                freespokeHomepageView.imgViewFreespoke.image = UIImage(named: "banner-light")
+                
+                freespokeHomepageView.imgViewSearch.tintColor = .blackColor
+                freespokeHomepageView.btnSerch.setTitleColor(.blackColor, for: .normal)
+                freespokeHomepageView.btnSerch.backgroundColor = .gray7
+                freespokeHomepageView.btnSerch.layer.borderColor = UIColor.whiteColor.cgColor
+                
+                freespokeHomepageView.lblFreespokeWay.textColor = .blackColor
+                freespokeHomepageView.lblBookmarks.textColor = .blackColor
+                freespokeHomepageView.lblTrendingNews.textColor = .blackColor
+                freespokeHomepageView.lblRecentlyViewed.textColor = .blackColor
+                freespokeHomepageView.lblShopUsa.textColor = .blackColor
+                
+                freespokeHomepageView.imgViewBookmarks.tintColor = .blackColor
+                freespokeHomepageView.imgViewTrendingNews.tintColor = .blackColor
+                freespokeHomepageView.imgViewRecentlyViewed.tintColor = .blackColor
+                freespokeHomepageView.imgViewShopUsa.tintColor = .blackColor
+                
+                freespokeHomepageView.viewFreespokeWay.layer.borderColor        = UIColor.whiteColor.cgColor
+                freespokeHomepageView.viewBookmarks.layer.borderColor           = UIColor.whiteColor.cgColor
+                freespokeHomepageView.viewTrendingNews.layer.borderColor        = UIColor.whiteColor.cgColor
+                freespokeHomepageView.viewRecentlyViewed.layer.borderColor      = UIColor.whiteColor.cgColor
+                freespokeHomepageView.viewShopUsa.layer.borderColor             = UIColor.whiteColor.cgColor
+                //freespokeHomepageView.viewSeparator.backgroundColor             = .whiteColor
+                
+                freespokeHomepageView.btnFreespokeWayUp.setTitleColor(.blackColor, for: .normal)
+                freespokeHomepageView.btnFreespokeWayMiddle.setTitleColor(.blackColor, for: .normal)
+                freespokeHomepageView.btnFreespokeWayDown.setTitleColor(.blackColor, for: .normal)
+
+                freespokeHomepageView.btnFreespokeWayUp.layer.borderColor           = UIColor.whiteColor.cgColor
+                freespokeHomepageView.btnFreespokeWayMiddle.layer.borderColor       = UIColor.whiteColor.cgColor
+                freespokeHomepageView.btnFreespokeWayDown.layer.borderColor         = UIColor.whiteColor.cgColor
+                
+                freespokeHomepageView.imgViewFreespokeWayUp.tintColor           = .lightGray
+                freespokeHomepageView.imgViewFreespokeWayMiddle.tintColor       = .lightGray
+                freespokeHomepageView.imgViewFreespokeWayDown.tintColor         = .lightGray
+                
+                freespokeHomepageView.btnBookmarks.backgroundColor = .gray7
+                freespokeHomepageView.btnTrendingNews.backgroundColor = .gray7
+                freespokeHomepageView.btnRecentlyViewed.backgroundColor = .gray7
+                freespokeHomepageView.btnShopUsa.backgroundColor = .gray7
+                
+                freespokeHomepageView.btnBookmarks.setTitleColor(.blackColor, for: .normal)
+                freespokeHomepageView.btnTrendingNews.setTitleColor(.blackColor, for: .normal)
+                freespokeHomepageView.btnRecentlyViewed.setTitleColor(.blackColor, for: .normal)
+                freespokeHomepageView.btnShopUsa.setTitleColor(.blackColor, for: .normal)
+                
+            case .dark:
+                view.backgroundColor = .darkBackground
+                
+                freespokeHomepageView.contentView.backgroundColor = .darkBackground
+
+                freespokeHomepageView.lblFreespoke.textColor = .white
+                freespokeHomepageView.imgViewFreespoke.image = UIImage(named: "banner-dark")
+                
+                freespokeHomepageView.imgViewSearch.tintColor = .blackColor
+                freespokeHomepageView.btnSerch.setTitleColor(.blackColor, for: .normal)
+                freespokeHomepageView.btnSerch.backgroundColor = .white
+                freespokeHomepageView.btnSerch.layer.borderColor = UIColor.whiteColor.cgColor
+                
+                freespokeHomepageView.lblFreespokeWay.textColor = .white
+                freespokeHomepageView.lblBookmarks.textColor = .white
+                freespokeHomepageView.lblTrendingNews.textColor = .white
+                freespokeHomepageView.lblRecentlyViewed.textColor = .white
+                freespokeHomepageView.lblShopUsa.textColor = .white
+                
+                freespokeHomepageView.imgViewBookmarks.tintColor = .white
+                freespokeHomepageView.imgViewTrendingNews.tintColor = .white
+                freespokeHomepageView.imgViewRecentlyViewed.tintColor = .white
+                freespokeHomepageView.imgViewShopUsa.tintColor = .white
+                
+                freespokeHomepageView.viewFreespokeWay.layer.borderColor        = UIColor.blackColor.cgColor
+                freespokeHomepageView.viewBookmarks.layer.borderColor           = UIColor.blackColor.cgColor
+                freespokeHomepageView.viewTrendingNews.layer.borderColor        = UIColor.blackColor.cgColor
+                freespokeHomepageView.viewRecentlyViewed.layer.borderColor      = UIColor.blackColor.cgColor
+                freespokeHomepageView.viewShopUsa.layer.borderColor             = UIColor.blackColor.cgColor
+                freespokeHomepageView.viewSeparator.backgroundColor             = .blackColor
+                
+                freespokeHomepageView.btnFreespokeWayUp.setTitleColor(.white, for: .normal)
+                freespokeHomepageView.btnFreespokeWayMiddle.setTitleColor(.white, for: .normal)
+                freespokeHomepageView.btnFreespokeWayDown.setTitleColor(.white, for: .normal)
+
+                freespokeHomepageView.btnFreespokeWayUp.layer.borderColor           = UIColor.blackColor.cgColor
+                freespokeHomepageView.btnFreespokeWayMiddle.layer.borderColor       = UIColor.blackColor.cgColor
+                freespokeHomepageView.btnFreespokeWayDown.layer.borderColor         = UIColor.blackColor.cgColor
+                
+                freespokeHomepageView.imgViewFreespokeWayUp.tintColor           = .lightGray
+                freespokeHomepageView.imgViewFreespokeWayMiddle.tintColor       = .lightGray
+                freespokeHomepageView.imgViewFreespokeWayDown.tintColor         = .lightGray
+                
+                freespokeHomepageView.btnBookmarks.backgroundColor = .white.withAlphaComponent(0.05)
+                freespokeHomepageView.btnTrendingNews.backgroundColor = .white.withAlphaComponent(0.05)
+                freespokeHomepageView.btnRecentlyViewed.backgroundColor = .white.withAlphaComponent(0.05)
+                freespokeHomepageView.btnShopUsa.backgroundColor = .white.withAlphaComponent(0.05)
+                
+                freespokeHomepageView.btnBookmarks.setTitleColor(.white, for: .normal)
+                freespokeHomepageView.btnTrendingNews.setTitleColor(.white, for: .normal)
+                freespokeHomepageView.btnRecentlyViewed.setTitleColor(.white, for: .normal)
+                freespokeHomepageView.btnShopUsa.setTitleColor(.white, for: .normal)
+            }
+        }
     }
 
     func scrollToTop(animated: Bool = false) {
@@ -320,7 +530,8 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        dismissKeyboard()
+        //|     don't close the view on homepage 
+        //dismissKeyboard()
     }
 
     @objc private func dismissKeyboard() {
@@ -746,8 +957,15 @@ extension HomepageViewController {
     }
 
     func updateStatusBar(theme: Theme) {
-        let backgroundColor = theme.colors.layer1
-        statusBarView.backgroundColor = backgroundColor.withAlphaComponent(scrollOffset)
+        switch theme.type {
+        case .dark:
+            let backgroundColor = UIColor.darkBackground//theme.colors.layer1
+            statusBarView.backgroundColor = backgroundColor.withAlphaComponent(scrollOffset)
+            
+        case .light:
+            let backgroundColor = theme.colors.layer1
+            statusBarView.backgroundColor = backgroundColor.withAlphaComponent(scrollOffset)
+        }
 
         if let statusBarFrame = statusBarFrame {
             statusBarView.frame = statusBarFrame
@@ -790,6 +1008,25 @@ extension HomepageViewController: HomepageViewModelDelegate {
             self.collectionView.reloadData()
             self.collectionView.collectionViewLayout.invalidateLayout()
         }
+    }
+}
+
+// MARK: FreespokeHomepageViewDelegate
+extension HomepageViewController: FreespokeHomepageDelegate {
+    func didPressBookmarks() {
+        delegate?.didPressBookmarks()
+    }
+    
+    func didPressRecentlyViewed() {
+        delegate?.didPressRecentlyViewed()
+    }
+    
+    func didPressSearch() {
+        delegate?.didPressSearch()
+    }
+    
+    func showURL(url: String) {
+        delegate?.showURL(url: url)
     }
 }
 

@@ -46,6 +46,15 @@
       }
     },
     {
+      "identity" : "ios-branch-sdk-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/BranchMetrics/ios-branch-sdk-spm",
+      "state" : {
+        "revision" : "7fbe3085821c8e60241a2037098c6eed76fd2798",
+        "version" : "2.2.0"
+      }
+    },
+    {
       "identity" : "ios_sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/adjust/ios_sdk.git",
@@ -79,6 +88,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "f56a6e483163a761adc8cd25c337db0ed1eac524"
+      }
+    },
+    {
+      "identity" : "matomo-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/matomo-org/matomo-sdk-ios.git",
+      "state" : {
+        "revision" : "15a645e11eaa8053f93749d73ced03da1e56fd01",
+        "version" : "7.5.2"
       }
     },
     {

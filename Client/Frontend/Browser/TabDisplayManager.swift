@@ -6,6 +6,7 @@ import Foundation
 import Shared
 import Storage
 import Common
+import MatomoTracker
 
 extension UIGestureRecognizer {
     func cancel() {
@@ -320,6 +321,13 @@ class TabDisplayManager: NSObject, FeatureFlaggable {
         isPrivate = isOn
 
         UserDefaults.standard.set(isPrivate, forKey: "wasLastSessionPrivate")
+        
+        if isOn {
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appTabs.rawValue, action: MatomoAction.appTabsPrivateBrowsing.rawValue, name: MatomoName.click.rawValue, value: nil)
+        }
+        else {
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appTabs.rawValue, action: MatomoAction.appTabsRegularBrowsing.rawValue, name: MatomoName.click.rawValue, value: nil)
+        }
 
         TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .privateBrowsingButton, extras: ["is-private": isOn.description] )
 

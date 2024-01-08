@@ -13,6 +13,7 @@ import Account
 import MobileCoreServices
 import Telemetry
 import Common
+import Sync
 
 struct UrlToOpenModel {
     var url: URL?
@@ -44,6 +45,8 @@ class BrowserViewController: UIViewController {
     ]
     
     var isHome = false
+    var isNewTab = false
+    var isSearching = false
 
     var homepageViewController: HomepageViewController?
     var libraryViewController: LibraryViewController?
@@ -567,7 +570,7 @@ class BrowserViewController: UIViewController {
         urlBar.translatesAutoresizingMaskIntoConstraints = false
         urlBar.delegate = self
         urlBar.tabToolbarDelegate = self
-
+        
         urlBar.addToParent(parent: isBottomSearchBar ? overKeyboardContainer : header)
         view.addSubview(header)
         view.addSubview(bottomContentStackView)
@@ -605,6 +608,24 @@ class BrowserViewController: UIViewController {
             
             UserDefaults.standard.set(NimbusFeatureFlagIsSet.migrateTabs.rawValue, forKey: NimbusFeatureFlagIsSet.migrateTabs.rawValue)
         }
+        
+        //|     Add Freespoke bookmarks
+        if UserDefaults.standard.string(forKey: NimbusFeatureFlagIsSet.freespokeBookmarks.rawValue) == nil {
+            addFreespokeCustomLinksToBookmarks()
+            
+            UserDefaults.standard.set(NimbusFeatureFlagIsSet.freespokeBookmarks.rawValue, forKey: NimbusFeatureFlagIsSet.freespokeBookmarks.rawValue)
+        }
+        
+        setValues(isHome: true, isNewTab: false, isSearching: false)
+    }
+    
+    private func addFreespokeCustomLinksToBookmarks() {
+        addBookmarkWithoutEditToast(url: "https://freespoke.com/join/step-1", title: "Join")
+        addBookmarkWithoutEditToast(url: Constants.freespokeBlogURL.rawValue, title: "Blog")
+        addBookmarkWithoutEditToast(url: Constants.getInTouchURL.rawValue, title: "Contact")
+        addBookmarkWithoutEditToast(url: Constants.freespokeURL.rawValue, title: "Freespoke")
+        
+        homepageViewController?.freespokeHomepageView.reloadAllItems()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -621,7 +642,6 @@ class BrowserViewController: UIViewController {
         showQueuedAlertIfAvailable()
 
         prepareURLOnboardingContextualHint()
-        //showBookamrksAlert()
     }
     
     func showBookamrksAlert() {
@@ -1019,6 +1039,7 @@ class BrowserViewController: UIViewController {
             profile: profile,
             tabManager: tabManager,
             urlBar: urlBar)
+        homepageViewController.delegate = self
         homepageViewController.homePanelDelegate = self
         homepageViewController.libraryPanelDelegate = self
         homepageViewController.sendToDeviceDelegate = self
@@ -1032,6 +1053,8 @@ class BrowserViewController: UIViewController {
     }
 
     func hideHomepage(completion: (() -> Void)? = nil) {
+        //urlBar.alpha = 1
+        
         guard let homepageViewController = self.homepageViewController else { return }
 
         self.homepageViewController?.view.layer.removeAllAnimations()
@@ -1071,11 +1094,13 @@ class BrowserViewController: UIViewController {
 
         if isAboutHomeURL {
             showHomepage(inline: true)
-
+                    
             if userHasPressedHomeButton {
                 userHasPressedHomeButton = false
+                
             } else if focusUrlBar && !contextHintVC.shouldPresentHint() {
-                enterOverlayMode()
+                //|     Don't show search mode active at first launch of homepage/new tab
+                //enterOverlayMode()
             }
         } else if !url.absoluteString.hasPrefix("\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)") {
             hideHomepage()
@@ -1093,14 +1118,14 @@ class BrowserViewController: UIViewController {
             viewcontroller.onViewDismissed = { [weak self] in
                 let shouldEnterOverlay = self?.tabManager.selectedTab?.url.flatMap { InternalURL($0)?.isAboutHomeURL } ?? false
                 if shouldEnterOverlay {
-                    self?.urlBar.enterOverlayMode(nil, pasted: false, search: false)
+                    //self?.urlBar.enterOverlayMode(nil, pasted: false, search: false)
                 }
             }
         } else if presentedViewController is OnboardingViewControllerProtocol {
             // leave from overlay mode while in onboarding is displayed on iPad
-            leaveOverlayMode(didCancel: false)
+            //leaveOverlayMode(didCancel: false)
         } else {
-            self.urlBar.enterOverlayMode(nil, pasted: false, search: false)
+            //self.urlBar.enterOverlayMode(nil, pasted: false, search: false)
         }
     }
 
@@ -1345,7 +1370,7 @@ class BrowserViewController: UIViewController {
         }
         
         isHome = false
-        
+
         navigationToolbar.updateNavigationButtonsState(.search)
         
         if traitCollection.horizontalSizeClass == .compact {
@@ -1359,6 +1384,36 @@ class BrowserViewController: UIViewController {
             urlBar.locationView.reloadButton.reloadButtonState = isLoading ? .stop : .reload
         }
         currentMiddleButtonState = state
+    }
+    
+    func setValues(isHome: Bool, isNewTab: Bool, isSearching: Bool) {
+        /*
+        if isHome {
+            if !isNewTab {
+                if isSearching {
+                    urlBar.alpha = 1
+                }
+                else {
+                    if UIDevice.current.userInterfaceIdiom == .phone {
+                        urlBar.alpha = 0
+                    } else {
+                        urlBar.alpha = 1
+                    }
+                }
+            }
+            else {
+                urlBar.alpha = 1
+            }
+        }
+        else {
+            urlBar.alpha = 1
+        }
+        */
+        
+        homepageViewController?.isHome = isHome
+        homepageViewController?.isNewTab = isNewTab
+        homepageViewController?.isSearching = isSearching
+        homepageViewController?.checkFreespokeHomepage()
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -2046,6 +2101,32 @@ extension BrowserViewController: RecentlyClosedPanelDelegate {
     }
 }
 
+// MARK: FreespokeHomepageViewDelegate
+extension BrowserViewController: FreespokeHomepageDelegate {
+    func didPressBookmarks() {
+        showLibrary(panel: .bookmarks)
+    }
+    
+    func didPressRecentlyViewed() {
+        showLibrary(panel: .history)
+    }
+
+    func didPressSearch() {
+        homepageViewController?.isHome = true
+        homepageViewController?.isNewTab = false
+        homepageViewController?.isSearching = true
+        homepageViewController?.checkFreespokeHomepage()
+        
+        //urlBar.alpha = 1
+        
+        focusLocationTextField(forTab: tabManager.selectedTab)
+    }
+    
+    func showURL(url: String) {
+        openLinkURL(url)
+    }
+}
+
 // MARK: HomePanelDelegate
 extension BrowserViewController: HomePanelDelegate {
     func homePanelDidRequestToOpenLibrary(panel: LibraryPanelType) {
@@ -2259,8 +2340,31 @@ extension BrowserViewController: TabManagerDelegate {
     func tabManager(_ tabManager: TabManager, didAddTab tab: Tab, placeNextToParentTab: Bool, isRestoring: Bool) {
         // If we are restoring tabs then we update the count once at the end
         tabManager.didAddNewTab = true
+
         if !isRestoring {
             updateTabCountUsingTabManager(tabManager)
+            
+            isNewTab = true
+            isSearching = false
+            
+            let count = tab.isPrivate ? tabManager.privateTabs.count : tabManager.normalTabs.count
+            
+            if count == 1 {
+                //|     Return to Freespoke homepage instead Firefox homepage
+                isNewTab = false
+                isSearching = false
+            }
+            else {
+                isNewTab = true
+                isSearching = false
+            }
+            
+            setValues(isHome: isHome, isNewTab: isNewTab, isSearching: isSearching)
+
+            //|     Bug on new tab color of multi state home button
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.applyTheme()
+            }
         }
         tab.tabDelegate = self
     }

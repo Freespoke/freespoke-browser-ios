@@ -8,6 +8,7 @@ import Shared
 import Storage
 import Sync
 import UserNotifications
+import BranchSDK
 
 class NotificationService: UNNotificationServiceExtension {
     var display: SyncDataDisplay?
@@ -19,45 +20,49 @@ class NotificationService: UNNotificationServiceExtension {
     // AppDelegate.application(_:didReceiveRemoteNotification:completionHandler:)
     // Once the notification is tapped, then the same userInfo is passed to the same method in the AppDelegate.
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-//        let userInfo = request.content.userInfo
-//
-//        let content = request.content.mutableCopy() as! UNMutableNotificationContent
-//
-//        if self.profile == nil {
-//            self.profile = ExtensionProfile(localName: "profile")
-//        }
-//
-//        guard let profile = self.profile else {
-//            self.didFinish(with: .noProfile)
-//            return
-//        }
-//
-//        let queue = profile.queue
-//        let display = SyncDataDisplay(content: content, contentHandler: contentHandler, tabQueue: queue)
-//        self.display = display
-//        profile.syncDelegate = display
-//
-//        let handler = FxAPushMessageHandler(with: profile)
-//
-//        handler.handle(userInfo: userInfo).upon { res in
-//            guard res.isSuccess, let events = res.successValue, let firstEvent = events.first else {
-//                self.didFinish(nil, with: res.failureValue as? PushMessageError)
-//                return
-//            }
-//            // We pass the first event to the notification handler, and add the rest directly
-//            // to our own handling of send tab if they are send tabs so users don't miss them
-//            for (idx, event) in events.enumerated() {
-//                if  idx != 0,
-//                    case let .commandReceived(tab) = event,
-//                    let urlString = tab["url"],
-//                    let url = URL(string: urlString),
-//                    url.isWebPage(),
-//                    let title = tab["title"] {
-//                    self.profile?.syncDelegate?.displaySentTab(for: url, title: title, from: tab["deviceName"])
-//                }
-//            }
-//            self.didFinish(firstEvent)
-//        }
+        Branch.getInstance().handlePushNotification(userInfo)
+        
+        /*
+        let userInfo = request.content.userInfo
+
+        let content = request.content.mutableCopy() as! UNMutableNotificationContent
+
+        if self.profile == nil {
+            self.profile = ExtensionProfile(localName: "profile")
+        }
+
+        guard let profile = self.profile else {
+            self.didFinish(with: .noProfile)
+            return
+        }
+
+        let queue = profile.queue
+        let display = SyncDataDisplay(content: content, contentHandler: contentHandler, tabQueue: queue)
+        self.display = display
+        profile.syncDelegate = display
+
+        let handler = FxAPushMessageHandler(with: profile)
+
+        handler.handle(userInfo: userInfo).upon { res in
+            guard res.isSuccess, let events = res.successValue, let firstEvent = events.first else {
+                self.didFinish(nil, with: res.failureValue as? PushMessageError)
+                return
+            }
+            // We pass the first event to the notification handler, and add the rest directly
+            // to our own handling of send tab if they are send tabs so users don't miss them
+            for (idx, event) in events.enumerated() {
+                if  idx != 0,
+                    case let .commandReceived(tab) = event,
+                    let urlString = tab["url"],
+                    let url = URL(string: urlString),
+                    url.isWebPage(),
+                    let title = tab["title"] {
+                    self.profile?.syncDelegate?.displaySentTab(for: url, title: title, from: tab["deviceName"])
+                }
+            }
+            self.didFinish(firstEvent)
+        }
+        */
     }
 
     func didFinish(_ what: PushMessage? = nil, with error: PushMessageError? = nil) {

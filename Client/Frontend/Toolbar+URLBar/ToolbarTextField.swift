@@ -31,7 +31,8 @@ class ToolbarTextField: AutocompleteTextField {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        guard let image = UIImage.templateImageNamed("topTabs-closeTabs") else { return }
+        guard let image = UIImage.templateImageNamed("close-all-text") else { return }//topTabs-closeTabs
+        
         if tintedClearImage == nil {
             if let clearButtonTintColor = clearButtonTintColor {
                 tintedClearImage = image.tinted(withColor: clearButtonTintColor)
@@ -63,10 +64,20 @@ class ToolbarTextField: AutocompleteTextField {
 
 extension ToolbarTextField: NotificationThemeable {
     func applyTheme() {
-        backgroundColor = UIColor.legacyTheme.textField.backgroundInOverlay
-        textColor = UIColor.legacyTheme.textField.textAndTint
-        clearButtonTintColor = textColor
-        tintColor = AutocompleteTextField.textSelectionColor.textFieldMode
+        backgroundColor = .clear//UIColor.legacyTheme.textField.backgroundInOverlay
+        //textColor = UIColor.legacyTheme.textField.textAndTint
+        //clearButtonTintColor = textColor
+        clearButtonTintColor = Utils.hexStringToUIColor(hex: "#9AA2B2")
+        
+        switch LegacyThemeManager.instance.currentName {
+        case .normal:
+            textColor = .blackColor
+            
+        case .dark:
+            textColor = .white
+        }
+        
+        tintColor = .redHomeToolbar
     }
 
     // ToolbarTextField is created on-demand, so the textSelectionColor is a static prop for use when created

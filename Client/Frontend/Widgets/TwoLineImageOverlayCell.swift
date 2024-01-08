@@ -46,12 +46,14 @@ class TwoLineImageOverlayCell: UITableViewCell,
     }
 
     lazy var titleLabel: UILabel = .build { label in
-        label.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .body, size: 16)
+        //label.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .body, size: 16)
+        label.font = UIFont(name: "SourceSansPro-SemiBold", size: 15)
         label.textAlignment = .natural
     }
 
     lazy var descriptionLabel: UILabel = .build { label in
-        label.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .body, size: 14)
+        //label.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .body, size: 14)
+        label.font = UIFont(name: "SourceSansPro-Regular", size: 14)
         label.textAlignment = .natural
     }
 
@@ -114,10 +116,22 @@ class TwoLineImageOverlayCell: UITableViewCell,
     }
 
     func applyTheme(theme: Theme) {
-        backgroundColor = theme.colors.layer5
+        //theme.colors.layer5
+        switch LegacyThemeManager.instance.currentName {
+        case .normal:
+            backgroundColor = .gray7
+            titleLabel.textColor = .blackColor
+            descriptionLabel.textColor = .blackColor
+            
+        case .dark:
+            backgroundColor = .darkBackground
+            titleLabel.textColor = .white
+            descriptionLabel.textColor = .white
+        }
+        
+        //titleLabel.textColor = theme.colors.textPrimary
+        //descriptionLabel.textColor = theme.colors.textSecondary
         selectedView.backgroundColor = theme.colors.layer5Hover
-        titleLabel.textColor = theme.colors.textPrimary
-        descriptionLabel.textColor = theme.colors.textSecondary
         leftImageView.layer.borderColor = theme.colors.borderPrimary.cgColor
     }
 

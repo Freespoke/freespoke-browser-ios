@@ -33,6 +33,7 @@ class SiteTableViewController: UIViewController,
         table.register(OneLineTableViewCell.self, forCellReuseIdentifier: OneLineTableViewCell.cellIdentifier)
         table.register(SiteTableViewHeader.self, forHeaderFooterViewReuseIdentifier: SiteTableViewHeader.cellIdentifier)
         table.layoutMargins = .zero
+        table.separatorStyle = .none
         table.keyboardDismissMode = .onDrag
         table.accessibilityIdentifier = "SiteTable"
         table.cellLayoutMarginsFollowReadableWidth = false
@@ -122,7 +123,7 @@ class SiteTableViewController: UIViewController,
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TwoLineImageOverlayCell.cellIdentifier, for: indexPath)
         if self.tableView(tableView, hasFullWidthSeparatorForRowAtIndexPath: indexPath) {
-            cell.separatorInset = .zero
+            //cell.separatorInset = .zero
         }
         cell.textLabel?.textColor = themeManager.currentTheme.colors.textPrimary
         return cell
@@ -134,8 +135,18 @@ class SiteTableViewController: UIViewController,
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let header = view as? UITableViewHeaderFooterView {
-            header.textLabel?.textColor = themeManager.currentTheme.colors.textPrimary
-            header.contentView.backgroundColor = themeManager.currentTheme.colors.layer1
+            //header.textLabel?.textColor = themeManager.currentTheme.colors.textPrimary
+            //header.contentView.backgroundColor = themeManager.currentTheme.colors.layer1
+            
+            switch LegacyThemeManager.instance.currentName {
+            case .normal:
+                header.textLabel?.textColor = .blackColor
+                header.contentView.backgroundColor = .gray7
+                
+            case .dark:
+                header.textLabel?.textColor = .white
+                header.contentView.backgroundColor = .darkBackground
+            }
         }
     }
 
@@ -157,8 +168,16 @@ class SiteTableViewController: UIViewController,
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: themeManager.currentTheme.colors.textPrimary]
         setNeedsStatusBarAppearanceUpdate()
 
-        tableView.backgroundColor = themeManager.currentTheme.colors.layer6
-        tableView.separatorColor = themeManager.currentTheme.colors.borderPrimary
+        switch LegacyThemeManager.instance.currentName {
+        case .normal:
+            tableView.backgroundColor = .gray7
+            
+        case .dark:
+            tableView.backgroundColor = .darkBackground
+        }
+        
+        //themeManager.currentTheme.colors.layer6
+        //tableView.separatorColor = .red//themeManager.currentTheme.colors.borderPrimary
         tableView.reloadData()
     }
 }

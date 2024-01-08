@@ -76,7 +76,7 @@ class HomePageSettingViewController: SettingsTableViewController, FeatureFlaggab
         }
 
         //return [startAtHomeSection, customizeFirefoxHomeSection, customizeHomePageSection]
-        return [startAtHomeSection, customizeFirefoxHomeSection]
+        return [customizeFirefoxHomeSection]
     }
 
     private func customizeHomeSettingSection() -> SettingSection {

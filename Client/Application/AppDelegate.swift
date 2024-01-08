@@ -8,6 +8,8 @@ import CoreSpotlight
 import UIKit
 import Common
 import OneSignal
+import BranchSDK
+import MatomoTracker
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let logger = DefaultLogger.shared
@@ -102,7 +104,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    level: .info,
                    category: .lifecycle)
         
-        //FeatureFlagsManager.shared.set(feature: .startAtHome, to: Client.StartAtHomeSetting.always)
+        FeatureFlagsManager.shared.set(feature: .startAtHome, to: Client.StartAtHomeSetting.afterFourHours)
+        FeatureFlagsManager.shared.set(feature: .searchBarPosition, to: SearchBarPosition.bottom)
+        
+        //|     Change homepage & new tab configurations from scope 2.0.0
+        profile.prefs.setString("", forKey: PrefsKeys.HomeButtonHomePageURL)
+        profile.prefs.setString("", forKey: PrefsKeys.KeyDefaultHomePageURL)
+        profile.prefs.setString(NewTabPage.topSites.rawValue, forKey: NewTabAccessors.HomePrefKey)
         
         if UserDefaults.standard.string(forKey: NimbusFeatureFlagIsSet.searchBarPosition.rawValue) == nil {
             FeatureFlagsManager.shared.set(feature: .searchBarPosition, to: SearchBarPosition.bottom)
@@ -135,9 +143,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //|     Ask for setup notification setting
         OneSignal.promptForPushNotifications(userResponse: { accepted in
-                 print("User accepted notification: \(accepted)")
+            print("User accepted notification: \(accepted)")
         })
         
+        //|     Branch init
+        Branch.getInstance().initSession(launchOptions: launchOptions) { (params, error) in
+            print(params as? [String: AnyObject] ?? {})
+        }
+        
+        MatomoTracker.shared.isOptedOut = false
+        
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appEntry.rawValue, action: MatomoCategory.appEntry.rawValue, name: MatomoName.open.rawValue, value: nil)
+        
+        return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        Branch.getInstance().application(app, open: url, options: options)
+        return true
+    }
+
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        // Handler for Universal Links
+        Branch.getInstance().continue(userActivity)
         return true
     }
 
@@ -230,6 +258,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     struct AppUtility {
         static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
             if let delegate = UIApplication.shared.delegate as? AppDelegate {
+                
                 delegate.orientationLock = orientation
             }
         }
@@ -313,3 +342,6 @@ extension AppDelegate {
     }
 }
 
+extension MatomoTracker {
+    static let shared: MatomoTracker = MatomoTracker(siteId: Matomo.productionSiteId.rawValue, baseURL: URL(string: Matomo.baseURL.rawValue)!)
+}

@@ -101,7 +101,7 @@ class HistoryPanel: UIViewController,
 
     lazy var searchbar: UISearchBar = .build { searchbar in
         searchbar.searchTextField.placeholder = self.viewModel.searchHistoryPlaceholder
-        searchbar.returnKeyType = .go
+        searchbar.returnKeyType = .search
         searchbar.delegate = self
     }
 

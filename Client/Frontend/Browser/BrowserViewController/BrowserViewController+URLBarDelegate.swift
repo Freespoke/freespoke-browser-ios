@@ -100,11 +100,22 @@ extension BrowserViewController: URLBarDelegate {
                 self.removeBookmark(url: tabUrl.absoluteString)
             }
             
-//            presentShareSheet(tabUrl,
-//                              tab: selectedtab,
-//                              sourceView: shareView,
-//                              sourceRect: CGRect.null,
-//                              arrowDirection: isBottomSearchBar ? .down : .up)
+            //            presentShareSheet(tabUrl,
+            //                              tab: selectedtab,
+            //                              sourceView: shareView,
+            //                              sourceRect: CGRect.null,
+            //                              arrowDirection: isBottomSearchBar ? .down : .up)
+        }
+    }
+    
+    func urlBarPressShare(_ tabLocationView: TabLocationView, urlBar: URLBarView, shareView: UIView) {
+        if let selectedtab = tabManager.selectedTab, let tabUrl = selectedtab.canonicalURL?.displayURL {
+
+            presentShareSheet(tabUrl,
+                              tab: selectedtab,
+                              sourceView: shareView,
+                              sourceRect: CGRect.null,
+                              arrowDirection: isBottomSearchBar ? .down : .up)
         }
     }
     
@@ -385,10 +396,14 @@ extension BrowserViewController: URLBarDelegate {
             }
 
             showHomepage(inline: false)
+            
+            setValues(isHome: isHome, isNewTab: isNewTab, isSearching: true)
         }
     }
 
     func urlBarDidLeaveOverlayMode(_ urlBar: URLBarView) {
+        setValues(isHome: isHome, isNewTab: isNewTab, isSearching: false)
+        
         destroySearchController()
         updateInContentHomePanel(tabManager.selectedTab?.url as URL?)
     }

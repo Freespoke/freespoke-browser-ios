@@ -16,8 +16,8 @@ class TopSiteItemCell: UICollectionViewCell, ReusableCell {
 
     struct UX {
         static let titleOffset: CGFloat = 4
-        static let iconSize = CGSize(width: 36, height: 36)
-        static let imageBackgroundSize = CGSize(width: 60, height: 60)
+        static let iconSize = CGSize(width: 20, height: 20)
+        static let imageBackgroundSize = CGSize(width: 50, height: 50)
         static let pinAlignmentSpacing: CGFloat = 2
         static let pinIconSize: CGSize = CGSize(width: 12, height: 12)
         static let textSafeSpace: CGFloat = 6
@@ -63,8 +63,10 @@ class TopSiteItemCell: UICollectionViewCell, ReusableCell {
 
     private lazy var titleLabel: UILabel = .build { titleLabel in
         titleLabel.textAlignment = .center
-        titleLabel.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .caption1,
-                                                                        size: UX.titleFontSize)
+        //titleLabel.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .caption1,
+                                                                        //size: UX.titleFontSize)
+        titleLabel.font = UIFont(name: "SourceSansPro-Regular", size: 10)
+        
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.preferredMaxLayoutWidth = UX.imageBackgroundSize.width + HomepageViewModel.UX.shadowRadius
         titleLabel.backgroundColor = .clear

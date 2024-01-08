@@ -13,12 +13,12 @@ private struct URLBarViewUX {
 
     static let LocationLeftPadding: CGFloat = 8
     static let Padding: CGFloat = 10
-    static let LocationHeight: CGFloat = 40
-    static let ButtonHeight: CGFloat = 44
+    static let LocationHeight: CGFloat = 44
+    static let ButtonHeight: CGFloat = 48
     static let LocationContentOffset: CGFloat = 8
     static let TextFieldCornerRadius: CGFloat = 8
     static let TextFieldBorderWidth: CGFloat = 0
-    static let TextFieldBorderWidthSelected: CGFloat = 4
+    static let TextFieldBorderWidthSelected: CGFloat = 0//4
     static let ProgressBarHeight: CGFloat = 3
     static let SearchIconImageWidth: CGFloat = 30
     static let TabsButtonRotationOffset: CGFloat = 1.5
@@ -49,6 +49,7 @@ protocol URLBarDelegate: AnyObject {
     func urlBarDisplayTextForURL(_ url: URL?) -> (String?, Bool)
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView)
     func urlBarDidPressShare(_ tabLocationView: TabLocationView, urlBar: URLBarView, shareView: UIView)
+    func urlBarPressShare(_ tabLocationView: TabLocationView, urlBar: URLBarView, shareView: UIView)
 }
 
 protocol URLBarViewProtocol {
@@ -146,18 +147,23 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         cancelButton.accessibilityLabel = AccessibilityIdentifiers.GeneralizedIdentifiers.back
         cancelButton.addTarget(self, action: #selector(didClickCancel), for: .touchUpInside)
         cancelButton.alpha = 0
+        cancelButton.layer.cornerRadius = 4
         return cancelButton
     }()
 
     fileprivate lazy var showQRScannerButton: InsetButton = {
         let button = InsetButton()
-        button.setImage(UIImage.templateImageNamed(ImageIdentifiers.menuShare), for: .normal)
+        //button.setImage(UIImage.templateImageNamed(ImageIdentifiers.menuShare), for: .normal)
+        button.setImage(UIImage.templateImageNamed(ImageIdentifiers.libraryPanelSearch), for: .normal)
         button.accessibilityIdentifier = AccessibilityIdentifiers.Browser.UrlBar.scanQRCodeButton
         button.accessibilityLabel = .ScanQRCodeViewTitle
         button.clipsToBounds = false
         button.addTarget(self, action: #selector(showQRScanner), for: .touchUpInside)
         button.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
         button.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
+        button.backgroundColor = .redHomeToolbar
+        button.tintColor = .white
+        button.layer.cornerRadius = 4
         return button
     }()
 
@@ -246,7 +252,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
 
         [scrollToTopButton, line, tabsButton, progressBar, cancelButton, showQRScannerButton,
          homeButton, bookmarksButton, appMenuButton, addNewTabButton, forwardButton, backButton,
-         multiStateButton, locationContainer, searchIconImageView].forEach {
+         multiStateButton, locationContainer].forEach {
             addSubview($0)
         }
 
@@ -274,9 +280,9 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         }
 
         cancelButton.snp.makeConstraints { make in
-            make.leading.equalTo(self.safeArea.leading)
+            make.leading.equalTo(self.safeArea.leading).inset(4)
             make.centerY.equalTo(self.locationContainer)
-            make.size.equalTo(URLBarViewUX.ButtonHeight)
+            make.size.equalTo(URLBarViewUX.ButtonHeight - 4)
         }
 
         backButton.snp.makeConstraints { make in
@@ -291,13 +297,13 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
             make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
 
-        searchIconImageView.snp.remakeConstraints { make in
-            let heightMin = URLBarViewUX.LocationHeight + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
-            make.height.greaterThanOrEqualTo(heightMin)
-            make.centerY.equalTo(self)
-            make.leading.equalTo(self.cancelButton.snp.trailing).offset(URLBarViewUX.LocationLeftPadding)
-            make.width.equalTo(URLBarViewUX.SearchIconImageWidth)
-        }
+//        searchIconImageView.snp.remakeConstraints { make in
+//            let heightMin = URLBarViewUX.LocationHeight + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
+//            make.height.greaterThanOrEqualTo(heightMin)
+//            make.centerY.equalTo(self)
+//            make.leading.equalTo(self.cancelButton.snp.trailing).offset(URLBarViewUX.LocationLeftPadding)
+//            make.width.equalTo(URLBarViewUX.SearchIconImageWidth)
+//        }
 
         multiStateButton.snp.makeConstraints { make in
             make.leading.equalTo(self.forwardButton.snp.trailing)
@@ -336,9 +342,9 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         }
 
         showQRScannerButton.snp.makeConstraints { make in
-            make.trailing.equalTo(self.safeArea.trailing)
+            make.trailing.equalTo(self.safeArea.trailing).inset(4)
             make.centerY.equalTo(self.locationContainer)
-            make.size.equalTo(URLBarViewUX.ButtonHeight)
+            make.size.equalTo(URLBarViewUX.ButtonHeight - 4)
         }
 
         privateModeBadge.layout(onButton: tabsButton)
@@ -372,7 +378,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         }
 
         if inOverlayMode {
-            searchIconImageView.alpha = 1
+            //searchIconImageView.alpha = 1
             // In overlay mode, we always show the location view full width
             self.locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidthSelected
             self.locationContainer.snp.remakeConstraints { make in
@@ -382,15 +388,15 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
                 make.leading.equalTo(self.cancelButton.snp.trailing)
                 make.centerY.equalTo(self)
             }
-            self.locationView.snp.remakeConstraints { make in
-                make.top.bottom.trailing.equalTo(self.locationContainer).inset(UIEdgeInsets(equalInset: URLBarViewUX.TextFieldBorderWidthSelected))
-                make.leading.equalTo(self.searchIconImageView.snp.trailing)
-            }
+//            self.locationView.snp.remakeConstraints { make in
+//                make.top.bottom.trailing.equalTo(self.locationContainer).inset(UIEdgeInsets(equalInset: URLBarViewUX.TextFieldBorderWidthSelected))
+//                make.leading.equalTo(self.searchIconImageView.snp.trailing)
+//            }
             self.locationTextField?.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationView).inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding, bottom: 0, right: URLBarViewUX.LocationLeftPadding))
             }
         } else {
-            searchIconImageView.alpha = 0
+            //searchIconImageView.alpha = 0
             self.locationContainer.snp.remakeConstraints { make in
                 if self.toolbarIsShowing {
                     // If we are showing a toolbar, show the text field next to the forward button
@@ -415,8 +421,16 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     }
 
     @objc func showQRScanner() {
-        self.delegate?.urlBarDidPressQRButton(self, button: showQRScannerButton)
+        //self.delegate?.urlBarDidPressQRButton(self, button: showQRScannerButton)
         //self.delegate?.urlBarDidPressShareFreespokeButton(showQRScannerButton)
+
+        guard let locationTextField = locationTextField else { return }
+
+        if let locationTextFieldText = locationTextField.text, !locationTextFieldText.isEmpty {
+            locationTextField.endEditing(true)
+            
+            delegate?.urlBar(self, didSubmitText: locationTextFieldText)
+        }
     }
 
     func createLocationTextField() {
@@ -426,15 +440,16 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
 
         guard let locationTextField = locationTextField else { return }
 
-        locationTextField.font = UIFont.preferredFont(forTextStyle: .body)
+        locationTextField.font = UIFont (name: "SourceSansPro-Regular", size: 17)
         locationTextField.adjustsFontForContentSizeCategory = true
         locationTextField.clipsToBounds = true
         locationTextField.translatesAutoresizingMaskIntoConstraints = false
         locationTextField.autocompleteDelegate = self
-        locationTextField.keyboardType = .webSearch
+        locationTextField.returnKeyType = .search
+        locationTextField.keyboardType = .default
         locationTextField.autocorrectionType = .no
         locationTextField.autocapitalizationType = .none
-        locationTextField.returnKeyType = .go
+        
         locationTextField.clearButtonMode = .whileEditing
         locationTextField.textAlignment = .left
         locationTextField.accessibilityIdentifier = AccessibilityIdentifiers.Browser.UrlBar.searchTextField
@@ -567,7 +582,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     func prepareOverlayAnimation() {
         // Make sure everything is showing during the transition (we'll hide it afterwards).
         bringSubviewToFront(self.locationContainer)
-        bringSubviewToFront(self.searchIconImageView)
+        //bringSubviewToFront(self.searchIconImageView)
         cancelButton.isHidden = false
         showQRScannerButton.isHidden = false
         progressBar.isHidden = false
@@ -785,9 +800,12 @@ extension URLBarView: TabLocationViewDelegate {
     func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView) {
         delegate?.urlBarDidPressReaderMode(self)
     }
+    
+    func tabLocationViewTapShare(_ tabLocationView: TabLocationView, button: UIButton) {
+        delegate?.urlBarPressShare(tabLocationView, urlBar: self, shareView: button)
+    }
 
     func tabLocationViewDidTapShare(_ tabLocationView: TabLocationView, button: UIButton) {
-        //tabLocationView.shareButton.setImage(<#T##image: UIImage?##UIImage?#>, for: <#T##UIControl.State#>)
         delegate?.urlBarDidPressShare(tabLocationView, urlBar: self, shareView: button)
     }
 
@@ -859,12 +877,25 @@ extension URLBarView: NotificationThemeable {
         addNewTabButton.applyTheme()
 
         cancelTintColor = UIColor.legacyTheme.browser.tint
-        showQRButtonTintColor = UIColor.legacyTheme.browser.tint
-        backgroundColor = UIColor.legacyTheme.browser.background
+        //showQRButtonTintColor = UIColor.legacyTheme.browser.tint
+        
         line.backgroundColor = UIColor.legacyTheme.browser.urlBarDivider
+        
+        switch LegacyThemeManager.instance.currentName {
+        case .normal:
+            backgroundColor = .gray7
+            locationView.backgroundColor = inOverlayMode ? UIColor.gray7 : UIColor.legacyTheme.textField.background
+            cancelButton.backgroundColor = Utils.hexStringToUIColor(hex: "EDF0F5")
+            
+        case .dark:
+            cancelButton.backgroundColor = .white.withAlphaComponent(0.05)
+            backgroundColor = .darkBackground
+            locationView.backgroundColor = inOverlayMode ? UIColor.darkBackground : UIColor.white.withAlphaComponent(0.05)//legacyTheme.textField.background
+        }
 
         locationBorderColor = UIColor.legacyTheme.urlbar.border
-        locationView.backgroundColor = inOverlayMode ? UIColor.legacyTheme.textField.backgroundInOverlay : UIColor.legacyTheme.textField.background
+        //locationView.backgroundColor = inOverlayMode ? UIColor.legacyTheme.textField.backgroundInOverlay : UIColor.legacyTheme.textField.background
+         //UIColor.white.withAlphaComponent(0.05)
         locationContainer.backgroundColor = UIColor.legacyTheme.textField.background
 
         privateModeBadge.badge.tintBackground(color: UIColor.legacyTheme.browser.background)

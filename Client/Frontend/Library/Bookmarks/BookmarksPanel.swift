@@ -368,7 +368,7 @@ class BookmarksPanel: SiteTableViewController,
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let node = viewModel.bookmarkNodes[safe: indexPath.row] else {
+            guard let node = viewModel.bookmarkNodes[safe: indexPath.row] else {
             return super.tableView(tableView, cellForRowAt: indexPath)
         }
 

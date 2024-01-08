@@ -7,6 +7,7 @@ import Storage
 import Shared
 import Foundation
 import Dispatch
+import MatomoTracker
 
 protocol MenuControllerDelegate: class {
     func didSelectOption(curCellType: MenuCellType)
@@ -35,21 +36,6 @@ class MenuController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        //|     Look portrait only for phone only becuase of UX
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            AppDelegate.AppUtility.lockOrientation(.portrait)
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        AppDelegate.AppUtility.lockOrientation(.all)
     }
     
     override func didReceiveMemoryWarning() {
@@ -104,16 +90,16 @@ class MenuController: UIViewController {
     
     func applyTheme() {
         if let theme = currentTheme {
-            viewBackground.backgroundColor = theme.colors.layer1
+            //viewBackground.backgroundColor = theme.colors.layer1
             
             switch theme.type {
             case .dark:
-                let color = UIColor(colorString: "2F3644")
+                viewBackground.backgroundColor = .darkBackground
                 
-                btnTwitter.backgroundColor = color
-                btnLinkedin.backgroundColor = color
-                btnInstagram.backgroundColor = color
-                btnFacebook.backgroundColor = color
+                btnTwitter.backgroundColor = .blackColor
+                btnLinkedin.backgroundColor = .blackColor
+                btnInstagram.backgroundColor = .blackColor
+                btnFacebook.backgroundColor = .blackColor
                 btnTwitter.tintColor = .white
                 btnLinkedin.tintColor = .white
                 btnInstagram.tintColor = .white
@@ -125,18 +111,19 @@ class MenuController: UIViewController {
                 
             case .light:
                 let color = UIColor(colorString: "EDF0F5")
-                let color1 = UIColor(colorString: "2F3644")
+                
+                viewBackground.backgroundColor = theme.colors.layer1
                 
                 btnTwitter.backgroundColor = color
                 btnLinkedin.backgroundColor = color
                 btnInstagram.backgroundColor = color
                 btnFacebook.backgroundColor = color
-                btnTwitter.tintColor = color1
-                btnLinkedin.tintColor = color1
-                btnInstagram.tintColor = color1
-                btnFacebook.tintColor = color1
+                btnTwitter.tintColor = .blackColor
+                btnLinkedin.tintColor = .blackColor
+                btnInstagram.tintColor = .blackColor
+                btnFacebook.tintColor = .blackColor
                 
-                btnBack.tintColor = color1
+                btnBack.tintColor = .blackColor
                 
                 imgViewLogo.image = UIImage(named: "Freespoke Torch - Light Mode")!
             }
@@ -243,3 +230,6 @@ extension MenuController: MenuCellDelegate {
         }
     }
 }
+
+
+

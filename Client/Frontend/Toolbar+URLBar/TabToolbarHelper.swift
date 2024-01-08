@@ -4,6 +4,7 @@
 
 import UIKit
 import Shared
+import MatomoTracker
 
 protocol TabToolbarProtocol: AnyObject {
     var tabToolbarDelegate: TabToolbarDelegate? { get set }
@@ -63,7 +64,7 @@ open class TabToolbarHelper: NSObject {
     let ImageHome = UIImage.templateImageNamed("icon-menu-Home")
     let ImageTabs = UIImage.templateImageNamed("icon-tabs")
     
-    let ImageShop = UIImage.templateImageNamed("icon-shop")
+    let ImageShop = UIImage.templateImageNamed("icon-election")
     let ImageNews = UIImage.templateImageNamed("icon-news")
     let ImageBack = UIImage.templateImageNamed("nav-back")?.imageFlippedForRightToLeftLayoutDirection()
     let ImageForward = UIImage.templateImageNamed("nav-forward")?.imageFlippedForRightToLeftLayoutDirection()
@@ -101,16 +102,56 @@ open class TabToolbarHelper: NSObject {
             toolbar.forwardButton.setImage(ImageShop, for: .normal)
             toolbar.backButton.setImage(ImageNews, for: .normal)
             
+            toolbar.forwardButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
+            toolbar.forwardButton.setTitle("ELECTION", for: .normal)
+            toolbar.forwardButton.alignTextBelow()
+            
+            toolbar.backButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
+            toolbar.backButton.setTitle("NEWS", for: .normal)
+            toolbar.backButton.alignTextBelow()
+            
             toolbar.backButton.tag = 1
             toolbar.forwardButton.tag = 1
+            
+            toolbar.homeButton.isHome = true
+            
+            switch LegacyThemeManager.instance.currentName {
+            case .normal:
+                toolbar.homeButton.setTitleColor(UIColor.redHomeToolbar, for: .normal)
+                toolbar.homeButton.tintColor = UIColor.redHomeToolbar
+                
+            case .dark:
+                toolbar.homeButton.setTitleColor(UIColor.white, for: .normal)
+                toolbar.homeButton.tintColor = UIColor.white
+            }
             
         case (.search, _):
             toolbar.forwardButton.setImage(ImageForward, for: .normal)
             toolbar.backButton.setImage(ImageBack, for: .normal)
             
+            toolbar.forwardButton.setTitle("FORWARD", for: .normal)
+            toolbar.forwardButton.alignTextBelow()
+            toolbar.forwardButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
+            
+            toolbar.backButton.setTitle("BACK", for: .normal)
+            toolbar.backButton.alignTextBelow()
+            toolbar.backButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
+            
             toolbar.backButton.tag = 0
             toolbar.forwardButton.tag = 0
-
+            
+            toolbar.homeButton.isHome = false
+            
+            switch LegacyThemeManager.instance.currentName {
+            case .normal:
+                toolbar.homeButton.setTitleColor(UIColor.legacyTheme.browser.tint, for: .normal)
+                toolbar.homeButton.tintColor = UIColor.legacyTheme.browser.tint
+                
+            case .dark:
+                toolbar.homeButton.setTitleColor(UIColor.inactiveToolbar, for: .normal)
+                toolbar.homeButton.tintColor = UIColor.inactiveToolbar
+            }
+            
         default:
             break
         }
@@ -132,12 +173,18 @@ open class TabToolbarHelper: NSObject {
         let longPressGestureBackButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBack))
         toolbar.backButton.addGestureRecognizer(longPressGestureBackButton)
         toolbar.backButton.addTarget(self, action: #selector(didClickBack), for: .touchUpInside)
+        
+        toolbar.backButton.setTitle("NEWS", for: .normal)
+        toolbar.backButton.alignTextBelow()
 
         toolbar.forwardButton.setImage(UIImage.templateImageNamed("nav-forward")?.imageFlippedForRightToLeftLayoutDirection(), for: .normal)
         toolbar.forwardButton.accessibilityLabel = .TabToolbarForwardAccessibilityLabel
         let longPressGestureForwardButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressForward))
         toolbar.forwardButton.addGestureRecognizer(longPressGestureForwardButton)
         toolbar.forwardButton.addTarget(self, action: #selector(didClickForward), for: .touchUpInside)
+        
+        toolbar.forwardButton.setTitle("ELECTION", for: .normal)
+        toolbar.forwardButton.alignTextBelow()
 
         if UIDevice.current.userInterfaceIdiom == .phone {
             toolbar.multiStateButton.setImage(UIImage.templateImageNamed("icon-menu-Home"), for: .normal)
@@ -157,6 +204,8 @@ open class TabToolbarHelper: NSObject {
         toolbar.tabsButton.addTarget(self, action: #selector(didClickTabs), for: .touchUpInside)
         let longPressGestureTabsButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressTabs))
         toolbar.tabsButton.addGestureRecognizer(longPressGestureTabsButton)
+        toolbar.tabsButton.setTitle("TABS", for: .normal)
+        toolbar.tabsButton.alignTextBelow()
 
         toolbar.addNewTabButton.contentMode = .center
         toolbar.addNewTabButton.setImage(UIImage.templateImageNamed("menu-NewTab"), for: .normal)
@@ -170,12 +219,29 @@ open class TabToolbarHelper: NSObject {
         toolbar.appMenuButton.addTarget(self, action: #selector(didClickMenu), for: .touchUpInside)
         toolbar.appMenuButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.settingsMenuButton
         
+        toolbar.appMenuButton.setTitle(" ", for: .normal)
+        toolbar.appMenuButton.alignTextBelow()
+        
         toolbar.homeButton.contentMode = .center
         toolbar.homeButton.setImage(UIImage.templateImageNamed("icon-menu-Home"), for: .normal)
         toolbar.homeButton.accessibilityLabel = .AppMenu.Toolbar.HomeMenuButtonAccessibilityLabel
         toolbar.homeButton.addTarget(self, action: #selector(didClickHome), for: .touchUpInside)
         toolbar.homeButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.homeButton
-
+        toolbar.homeButton.setTitle("HOME", for: .normal)
+        toolbar.homeButton.alignTextBelow()
+        
+        toolbar.homeButton.tag = 2
+        
+        switch LegacyThemeManager.instance.currentName {
+        case .normal:
+            toolbar.homeButton.setTitleColor(UIColor.redHomeToolbar, for: .normal)
+            toolbar.homeButton.tintColor = UIColor.redHomeToolbar
+            
+        case .dark:
+            toolbar.homeButton.setTitleColor(UIColor.white, for: .normal)
+            toolbar.homeButton.tintColor = UIColor.white
+        }
+        
         toolbar.bookmarksButton.contentMode = .center
         toolbar.bookmarksButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.bookmarks), for: .normal)
         toolbar.bookmarksButton.accessibilityLabel = .AppMenu.Toolbar.BookmarksButtonAccessibilityLabel
@@ -223,6 +289,8 @@ open class TabToolbarHelper: NSObject {
     }
 
     func didClickHome() {
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Home", name: MatomoName.click.rawValue, value: nil)
+        
         toolbar.tabToolbarDelegate?.tabToolbarDidPressHome(toolbar, button: toolbar.appMenuButton)
     }
 
@@ -232,6 +300,7 @@ open class TabToolbarHelper: NSObject {
 
     func didClickAddNewTab() {
         TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .addNewTabButton)
+        
         toolbar.tabToolbarDelegate?.tabToolbarDidPressAddNewTab(toolbar, button: toolbar.addNewTabButton)
     }
 
@@ -241,7 +310,7 @@ open class TabToolbarHelper: NSObject {
             toolbar.tabToolbarDelegate?.tabToolbarDidPressHome(toolbar, button: toolbar.multiStateButton)
         case .search:
             TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .startSearchButton)
-            toolbar.tabToolbarDelegate?.tabToolbarDidPressSearch(toolbar, button: toolbar.multiStateButton)
+            //toolbar.tabToolbarDelegate?.tabToolbarDidPressSearch(toolbar, button: toolbar.multiStateButton)
         case .stop:
             toolbar.tabToolbarDelegate?.tabToolbarDidPressStop(toolbar, button: toolbar.multiStateButton)
         case .reload:
@@ -258,5 +327,28 @@ open class TabToolbarHelper: NSObject {
                 toolbar.tabToolbarDelegate?.tabToolbarDidLongPressReload(toolbar, button: toolbar.multiStateButton)
             }
         }
+    }
+}
+
+extension UIButton {
+    func alignTextBelow(spacing: CGFloat = 6.0) {
+        guard let image = self.imageView?.image else {
+            return
+        }
+
+        guard let titleLabel = self.titleLabel else {
+            return
+        }
+
+        guard let titleText = titleLabel.text else {
+            return
+        }
+
+        let titleSize = titleText.size(withAttributes: [
+            NSAttributedString.Key.font: UIFont(name: "SourceSansPro-SemiBold", size: 10)
+        ])
+
+        titleEdgeInsets = UIEdgeInsets(top: spacing, left: -image.size.width, bottom: -image.size.height, right: 0)
+        imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0, bottom: 0, right: -titleSize.width)
     }
 }

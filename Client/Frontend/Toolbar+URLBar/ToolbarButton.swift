@@ -10,13 +10,26 @@ class ToolbarButton: UIButton {
     var selectedTintColor: UIColor!
     var unselectedTintColor: UIColor!
     var disabledTintColor = UIColor.Photon.Grey50
+    
+    var isHome = false
 
     // Optionally can associate a separator line that hide/shows along with the button
     weak var separatorLine: UIView?
 
     override open var isHighlighted: Bool {
         didSet {
-            self.tintColor = isHighlighted ? selectedTintColor : unselectedTintColor
+            if self.tag == 2 && isHome {
+                switch LegacyThemeManager.instance.currentName {
+                case .normal:
+                    self.tintColor = UIColor.redHomeToolbar
+                    
+                case .dark:
+                    self.tintColor = UIColor.white
+                }
+            }
+            else {
+                self.tintColor = isHighlighted ? selectedTintColor : unselectedTintColor
+            }
         }
     }
 
@@ -28,7 +41,8 @@ class ToolbarButton: UIButton {
 
     override var tintColor: UIColor! {
         didSet {
-            self.imageView?.tintColor = self.tintColor
+            imageView?.tintColor = self.tintColor
+            setTitleColor(tintColor, for: .normal)
         }
     }
 
@@ -43,6 +57,7 @@ class ToolbarButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         adjustsImageWhenHighlighted = false
+        titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
         selectedTintColor = tintColor
         unselectedTintColor = tintColor
         imageView?.contentMode = .scaleAspectFit
@@ -58,9 +73,44 @@ class ToolbarButton: UIButton {
 extension ToolbarButton: NotificationThemeable {
     func applyTheme() {
         selectedTintColor = UIColor.legacyTheme.toolbarButton.selectedTint
-        disabledTintColor = UIColor.legacyTheme.toolbarButton.disabledTint
-        unselectedTintColor = UIColor.legacyTheme.browser.tint
-        tintColor = isEnabled ? unselectedTintColor : disabledTintColor
+        //disabledTintColor = UIColor.legacyTheme.toolbarButton.disabledTint
+        disabledTintColor = UIColor.Photon.Grey50
+        //unselectedTintColor = UIColor.legacyTheme.browser.tint
+        
+        switch LegacyThemeManager.instance.currentName {
+        case .normal:
+            unselectedTintColor = UIColor.legacyTheme.browser.tint
+            
+        case .dark:
+            unselectedTintColor = UIColor.inactiveToolbar
+        }
+        
+        if tag == 2 && isHome {
+            switch LegacyThemeManager.instance.currentName {
+            case .normal:
+                tintColor = UIColor.redHomeToolbar
+                
+            case .dark:
+                tintColor = UIColor.white
+            }
+        }
+        else {
+            tintColor = isEnabled ? unselectedTintColor : disabledTintColor
+        }
+        
+        if tag == 2 {
+            switch LegacyThemeManager.instance.currentName {
+            case .normal:
+                selectedTintColor = UIColor.redHomeToolbar
+                
+            case .dark:
+                selectedTintColor = UIColor.white
+            }
+        }
+        
         imageView?.tintColor = tintColor
+        titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
+        setTitleColor(selectedTintColor, for: .highlighted)
+        setTitleColor(tintColor, for: .normal)
     }
 }

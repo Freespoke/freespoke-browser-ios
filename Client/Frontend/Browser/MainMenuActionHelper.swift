@@ -9,6 +9,7 @@ import Storage
 import UIKit
 import SwiftUI
 import Common
+import MatomoTracker
 
 protocol ToolBarActionMenuDelegate: AnyObject {
     func updateToolbarState()
@@ -23,6 +24,7 @@ protocol ToolBarActionMenuDelegate: AnyObject {
     func showMenuPresenter(url: URL, tab: Tab, view: UIView)
     func showFindInPage()
     func showCustomizeHomePage()
+    func showDeviceSettings()
 }
 
 enum MenuButtonToastAction {
@@ -100,6 +102,8 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
             actions.append(contentsOf: [
                 getLibrarySection(),
                 firstMiscSection,
+                getFreespokeShareSection(),
+                getFreespokeSettingsSection(),
                 getLastSection()
             ])
 
@@ -112,6 +116,8 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
                     self.getLibrarySection(),
                     firstMiscSection,
                     self.getSecondMiscSection(),
+                    self.getFreespokeShareSection(),
+                    self.getFreespokeSettingsSection(),
                     self.getLastSection()
                 ])
 
@@ -217,6 +223,13 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         var section = [PhotonRowActions]()
 
         if !isHomePage && !isFileURL {
+            /*
+            if featureFlags.isFeatureEnabled(.zoomFeature, checking: .buildOnly) {
+                let zoomAction = getZoomAction()
+                append(to: &section, action: zoomAction)
+            }
+            */
+
             let findInPageAction = getFindInPageAction()
             append(to: &section, action: findInPageAction)
 
@@ -227,15 +240,15 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         let nightModeAction = getNightModeAction()
         append(to: &section, action: nightModeAction)
 
-        //|     Hide Passwords from Home
-        //let passwordsAction = getPasswordAction(navigationController: navigationController)
-        //append(to: &section, action: passwordsAction)
+        /*
+        let passwordsAction = getPasswordAction(navigationController: navigationController)
+        append(to: &section, action: passwordsAction)
 
         if !isHomePage && !isFileURL {
             let reportSiteIssueAction = getReportSiteIssueAction()
             append(to: &section, action: reportSiteIssueAction)
         }
-
+        */
         return section
     }
 
@@ -248,25 +261,58 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         } else {
             let shortAction = getShortcutAction()
             append(to: &section, action: shortAction)
-
+            
             // Feature flag for share sheet changes where we moved send to device and copy
             // away from hamburger menu to the actual system share sheet. When share sheet
             // changes flag is on we do not append items to the hamburger menu
-            if !featureFlags.isFeatureEnabled(.shareSheetChanges, checking: .buildOnly) {
-                let copyAction = getCopyAction()
-                append(to: &section, action: copyAction)
-
-                let sendToDeviceAction = getSendToDevice()
-                append(to: &section, action: sendToDeviceAction)
-            }
-
+            //if !featureFlags.isFeatureEnabled(.shareSheetChanges, checking: .buildOnly) {
+            let copyAction = getCopyAction()
+            append(to: &section, action: copyAction)
+            
+            //let sendToDeviceAction = getSendToDevice()
+            //append(to: &section, action: sendToDeviceAction)
+            //}
+            
             // Feature flag for toolbar share action changes where if the toolbar is showing
             // share action button then we do not show the share button in hamburger menu
-            if !featureFlags.isFeatureEnabled(.shareToolbarChanges, checking: .buildOnly) {
-                let shareAction = getShareAction()
-                append(to: &section, action: shareAction)
-            }
+            //if !featureFlags.isFeatureEnabled(.shareToolbarChanges, checking: .buildOnly) {
+            let shareAction = getShareAction()
+            append(to: &section, action: shareAction)
+            //}
         }
+
+        return section
+    }
+    
+    private func getFreespokeShareSection() -> [PhotonRowActions] {
+        var section = [PhotonRowActions]()
+
+        let getAboutAction = getAboutAction()
+        section.append(getAboutAction)
+        
+        let getBlogAction = getBlogAction()
+        section.append(getBlogAction)
+        
+        let getShareFreespokeAction = getShareFreespokeAction()
+        section.append(getShareFreespokeAction)
+        
+        let getSupportAction = getSupportAction()
+        section.append(getSupportAction)
+
+        return section
+    }
+    
+    private func getFreespokeSettingsSection() -> [PhotonRowActions] {
+        var section = [PhotonRowActions]()
+
+        let getDefaultBrowserAction = getDefaultBrowserAction()
+        section.append(getDefaultBrowserAction)
+        
+        let getNotificationsAction = getNotificationsAction()
+        section.append(getNotificationsAction)
+
+        let getPremiumAction = getPremiumAction()
+        section.append(getPremiumAction)
 
         return section
     }
@@ -279,8 +325,8 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
             //let whatsNewAction = getWhatsNewAction()
             //append(to: &section, action: whatsNewAction)
 
-            let helpAction = getHelpAction()
-            section.append(helpAction)
+            //let helpAction = getHelpAction()
+            //section.append(helpAction)
 
             let customizeHomePageAction = getCustomizeHomePageAction()
             append(to: &section, action: customizeHomePageAction)
@@ -318,6 +364,17 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
             TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .viewDownloadsPanel)
         }.items
     }
+    
+//    private func getZoomAction() -> PhotonRowActions? {
+//        guard let tab = selectedTab else { return nil }
+//        let zoomLevel = NumberFormatter.localizedString(from: NSNumber(value: tab.pageZoom), number: .percent)
+//        let title = String(format: .AppMenu.ZoomPageTitle, zoomLevel)
+//        let zoomAction = SingleActionViewModel(title: title,
+//                                               iconString: ImageIdentifiers.zoomIn) { _ in
+//            self.delegate?.showZoomPage(tab: tab)
+//        }.items
+//        return zoomAction
+//    }
 
     private func getFindInPageAction() -> PhotonRowActions {
         return SingleActionViewModel(title: .AppMenu.AppMenuFindInPageTitleString,
@@ -405,6 +462,76 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         return SingleActionViewModel(title: .AppMenu.Help,
                                      iconString: ImageIdentifiers.help) { _ in
             if let url = URL(string: "https://freespoke-support.freshdesk.com/support/home") {
+                self.delegate?.openURLInNewTab(url, isPrivate: false)
+            }
+            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
+        }.items
+    }
+    
+    private func getAboutAction() -> PhotonRowActions {
+        return SingleActionViewModel(title: "About Freespoke",
+                                     iconString: ImageIdentifiers.help) { _ in
+            if let url = URL(string: Constants.aboutFreespokeURL.rawValue) {
+                self.delegate?.openURLInNewTab(url, isPrivate: false)
+            }
+            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
+        }.items
+    }
+    
+    private func getBlogAction() -> PhotonRowActions {
+        return SingleActionViewModel(title: "Freespoke Blog",
+                                     iconString: "menu-blog") { _ in
+            if let url = URL(string: Constants.freespokeBlogURL.rawValue) {
+                self.delegate?.openURLInNewTab(url, isPrivate: false)
+            }
+            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
+        }.items
+    }
+    
+    private func getShareFreespokeAction() -> PhotonRowActions {
+        return SingleActionViewModel(title: "Share Freespoke",
+                                     iconString: "menu-share-freespoke") { _ in
+            
+            guard let url = URL(string: Constants.freespokeURL.rawValue),
+                  let presentableVC = self.menuActionDelegate as? PresentableVC
+            else { return }
+            
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appShare.rawValue, action: MatomoAction.appShareMenu.rawValue, name: MatomoName.click.rawValue, value: nil)
+
+            self.share(fileURL: url, buttonView: self.buttonView, presentableVC: presentableVC)
+        }.items
+    }
+    
+    private func getSupportAction() -> PhotonRowActions {
+        return SingleActionViewModel(title: "Get Support",
+                                     iconString: "get-in-touch") { _ in
+            if let url = URL(string: Constants.getInTouchURL.rawValue) {
+                self.delegate?.openURLInNewTab(url, isPrivate: false)
+            }
+            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
+        }.items
+    }
+    
+    private func getDefaultBrowserAction() -> PhotonRowActions {
+        return SingleActionViewModel(title: "Make Default Browser",
+                                     iconString: "menu-add-browser") { _ in
+            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .findInPage)
+            self.delegate?.showDeviceSettings()
+        }.items
+    }
+    
+    private func getNotificationsAction() -> PhotonRowActions {
+        return SingleActionViewModel(title: "Manage Notifications",
+                                     iconString: "menu-notifications") { _ in
+            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .findInPage)
+            self.delegate?.showDeviceSettings()
+        }.items
+    }
+    
+    private func getPremiumAction() -> PhotonRowActions {
+        return SingleActionViewModel(title: "Get Freespoke Premium",
+                                     iconString: "menu-premium") { _ in
+            if let url = URL(string: Constants.freespokePremiumURL.rawValue) {
                 self.delegate?.openURLInNewTab(url, isPrivate: false)
             }
             TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)

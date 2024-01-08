@@ -4,6 +4,7 @@
 
 import Shared
 import Storage
+import MatomoTracker
 
 class TabTrayViewModel {
     enum Segment: Int, CaseIterable {
@@ -100,6 +101,8 @@ extension TabTrayViewModel {
     }
 
     @objc func didTapAddTab(_ sender: UIBarButtonItem) {
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appTabs.rawValue, action: MatomoAction.appTabsNewTab.rawValue, name: MatomoName.click.rawValue, value: nil)
+        
         tabTrayView.performToolbarAction(.addTab, sender: sender)
     }
 

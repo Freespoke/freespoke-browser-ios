@@ -27,7 +27,7 @@ class OneLineTableViewCell: UITableViewCell,
         static let borderViewMargin: CGFloat = 16
         static let labelFontSize: CGFloat = 17
         static let verticalMargin: CGFloat = 8
-        static let leftImageViewSize: CGFloat = 28
+        static let leftImageViewSize: CGFloat = 20
         static let separatorViewHeight: CGFloat = 0.7
         static let labelMargin: CGFloat = 4
         static let shortLeadingMargin: CGFloat = 5
@@ -44,8 +44,9 @@ class OneLineTableViewCell: UITableViewCell,
     lazy var leftImageView: FaviconImageView = .build { _ in }
 
     lazy var titleLabel: UILabel = .build { label in
-        label.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .body,
-                                                                   size: UX.labelFontSize)
+        label.font = UIFont (name: "SourceSansPro-Regular", size: 16)
+        //label.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .body,
+                                                                           //size: UX.labelFontSize)
         label.textAlignment = .natural
     }
 
@@ -73,12 +74,13 @@ class OneLineTableViewCell: UITableViewCell,
     }
 
     private func setupLayout() {
-        separatorInset = defaultSeparatorInset
+        //separatorInset = defaultSeparatorInset
+        //separatorInset = nil
         selectionStyle = .default
 
         containerView.addSubviews(leftImageView,
-                                  titleLabel,
-                                  bottomSeparatorView)
+                                  titleLabel)
+                                  //bottomSeparatorView)
 
         contentView.addSubview(containerView)
         bringSubviewToFront(containerView)
@@ -96,11 +98,11 @@ class OneLineTableViewCell: UITableViewCell,
 
             leftImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             leftImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
-                                                   constant: UX.borderViewMargin),
+                                                   constant: 20),
             leftImageView.widthAnchor.constraint(equalToConstant: UX.leftImageViewSize),
             leftImageView.heightAnchor.constraint(equalToConstant: UX.leftImageViewSize),
             leftImageView.trailingAnchor.constraint(equalTo: titleLabel.leadingAnchor,
-                                                    constant: -midViewLeadingMargin),
+                                                    constant: -20),
 
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor,
                                             constant: UX.labelMargin),
@@ -109,10 +111,10 @@ class OneLineTableViewCell: UITableViewCell,
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
                                                  constant: -UX.verticalMargin),
 
-            bottomSeparatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            bottomSeparatorView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            bottomSeparatorView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            bottomSeparatorView.heightAnchor.constraint(equalToConstant: UX.separatorViewHeight)
+            //bottomSeparatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            //bottomSeparatorView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            //bottomSeparatorView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            //bottomSeparatorView.heightAnchor.constraint(equalToConstant: UX.separatorViewHeight)
         ])
 
         selectedBackgroundView = selectedView
@@ -122,7 +124,7 @@ class OneLineTableViewCell: UITableViewCell,
         super.prepareForReuse()
 
         selectionStyle = .default
-        separatorInset = defaultSeparatorInset
+        //separatorInset = defaultSeparatorInset
         titleLabel.text = nil
         leftImageView.image = nil
     }
@@ -146,8 +148,17 @@ class OneLineTableViewCell: UITableViewCell,
 
     func applyTheme(theme: Theme) {
         selectedView.backgroundColor = theme.colors.layer5Hover
-        backgroundColor = theme.colors.layer5
         titleLabel.textColor = theme.colors.textPrimary
-        bottomSeparatorView.backgroundColor = theme.colors.borderPrimary
+        
+        switch LegacyThemeManager.instance.currentName {
+        case .normal:
+            backgroundColor = .gray7
+            titleLabel.textColor = .blackColor
+            
+        case .dark:
+            backgroundColor = .darkBackground
+            titleLabel.textColor = .white
+        }
+        //bottomSeparatorView.backgroundColor = theme.colors.borderPrimary
     }
 }

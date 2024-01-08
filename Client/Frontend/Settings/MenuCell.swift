@@ -59,23 +59,16 @@ class MenuCell: UITableViewCell {
             
             switch theme.type {
             case .dark:
-                let color1 = UIColor(colorString: "2F3644")
-                let color2 = UIColor(colorString: "606671")
-                
-                setupBackgroundLayerWith(color: color1)
-                imgViewOption.tintColor = color2
+                setupBackgroundLayerWith(color: .blackColor)
+                imgViewOption.tintColor = .gray2
                 imgViewRightArrow.tintColor = .white
                 btnBackground.setTitleColor(.white, for: .normal)
                 
             case .light:
-                let color1 = UIColor(colorString: "2F3644")
-                let color3 = UIColor(colorString: "9AA2B2")
-                let color5 = UIColor(colorString: "E1E5EB")
-                
-                setupBackgroundLayerWith(color: color5)
-                imgViewOption.tintColor = color3
-                imgViewRightArrow.tintColor = color1
-                btnBackground.setTitleColor(color1, for: .normal)
+                setupBackgroundLayerWith(color: .whiteColor)
+                imgViewOption.tintColor = .inactiveToolbar
+                imgViewRightArrow.tintColor = .blackColor
+                btnBackground.setTitleColor(.blackColor, for: .normal)
             }
         }
     }

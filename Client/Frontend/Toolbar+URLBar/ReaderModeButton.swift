@@ -10,7 +10,7 @@ class ReaderModeButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         adjustsImageWhenHighlighted = false
-        setImage(UIImage.templateImageNamed("reader"), for: .normal)
+        setImage(UIImage.templateImageNamed(ImageIdentifiers.share), for: .normal)
         imageView?.contentMode = .scaleAspectFit
         contentHorizontalAlignment = .center
         applyTheme()

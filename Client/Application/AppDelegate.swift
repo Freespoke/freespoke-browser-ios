@@ -142,9 +142,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         
         //|     Ask for setup notification setting
-        OneSignal.promptForPushNotifications(userResponse: { accepted in
-            print("User accepted notification: \(accepted)")
-        })
+        //OneSignal.promptForPushNotifications(userResponse: { accepted in
+        //    print("User accepted notification: \(accepted)")
+        //})
         
         //|     Branch init
         Branch.getInstance().initSession(launchOptions: launchOptions) { (params, error) in
@@ -153,7 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         MatomoTracker.shared.isOptedOut = false
         
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appEntry.rawValue, action: MatomoCategory.appEntry.rawValue, name: MatomoName.open.rawValue, value: nil)
+        //MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appEntry.rawValue, action: MatomoCategory.appEntry.rawValue, name: MatomoName.open.rawValue, value: nil)
         
         return true
     }

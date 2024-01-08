@@ -439,7 +439,8 @@ class FreespokeHomepage: UIView {
             MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.click.rawValue, value: nil)
         }
         
-        delegate?.showURL(url: urlSearch)
+        delegate?.didPressSearch()
+        //delegate?.showURL(url: urlSearch)
     }
     
     @IBAction func btnFreespokeWayMiddle(_ sender: UIButton) {
@@ -466,6 +467,8 @@ class FreespokeHomepage: UIView {
         //pageTrending = pageTrending + 1
         //getTrendngStory(page: pageTrending)
         
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeTrendingNewsStoryViewMore.rawValue, name: MatomoName.click.rawValue, value: nil)
+        
         delegate?.showURL(url: "https://freespoke.com/news/what-is-hot")
     }
     
@@ -476,6 +479,8 @@ class FreespokeHomepage: UIView {
     @IBAction func btnShopUsa(_ sender: Any) {
         //pageShoppping = pageShoppping + 1
         //getShopppingCollection(page: pageShoppping)
+        
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeShopViewMore.rawValue, name: MatomoName.click.rawValue, value: nil)
         
         delegate?.showURL(url: "https://freespoke.com/shop")
     }
@@ -723,7 +728,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
         case collectionViewTrendingNews:
             let story = arrTrendingStory[indexPath.row]
             
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeNews.rawValue, name: story.name, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeTrendingNewsStoryClick.rawValue, name: story.name, value: nil)
             
             delegate?.showURL(url: story.url)
             
@@ -739,7 +744,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
         case collectionViewShopUsa:
             let shop = arrShoppingCollection[indexPath.row]
             
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeShop.rawValue, name: shop.url, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeShopClick.rawValue, name: shop.url, value: nil)
             
             delegate?.showURL(url: shop.url)
             

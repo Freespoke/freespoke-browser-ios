@@ -283,7 +283,7 @@ class FreespokeHomepage: UIView {
                     }
                     
                     if let arrStory = data.array {
-                        if arrStory.count > 0 {
+                        if !arrStory.isEmpty {
                             
                             for story in arrStory {
                                 
@@ -351,7 +351,7 @@ class FreespokeHomepage: UIView {
                     let json = try JSON(data: data!)
                     
                     if let arrStory = json.array {
-                        if arrStory.count > 0 {
+                        if !arrStory.isEmpty {
                             self.arrTrendingStory = [TrendingStory]()
                             
                             for story in arrStory {
@@ -400,7 +400,7 @@ class FreespokeHomepage: UIView {
                     let collections = json["collections"]
  
                     if let arrShopping = collections.array {
-                        if arrShopping.count > 0 {
+                        if !arrShopping.isEmpty {
                             self.arrShoppingCollection = [Shopping]()
                             
                             for story in arrShopping {
@@ -491,7 +491,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
 
         switch collectionView {
         case collectionViewBookmarks:
-            if arrBookmarks.count == 0 {
+            if arrBookmarks.isEmpty {
                 constBookmarksHeight.constant = 0
             }
             else {
@@ -501,7 +501,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             return arrBookmarks.count
             
         case collectionViewTrendingNews:
-            if arrTrendingStory.count == 0 {
+            if arrTrendingStory.isEmpty {
                 constViewTrendingNewsHeight.constant = 0
             }
             else {
@@ -515,7 +515,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             return arrTrendingStory.count
             
         case collectionViewRecentlyViewd:
-            if arrRecenlyViewed.count == 0 {
+            if arrRecenlyViewed.isEmpty {
                 constRecentlyViewedHeight.constant = 0
             }
             else {
@@ -534,7 +534,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             return arrRecenlyViewed.count
             
         case collectionViewShopUsa:
-            if arrShoppingCollection.count == 0 {
+            if arrShoppingCollection.isEmpty {
                 constShopUsaHeight.constant = 0
             }
             else {

@@ -9,7 +9,7 @@ import Shared
 import OneSignal
 
 class OnboardingController: UIViewController, UIScrollViewDelegate {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!{
         didSet{
             scrollView.delegate = self
@@ -28,18 +28,10 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         syncDelegate: UIApplication.shared.syncDelegate
     )
     
-    let yourAttributes: [NSAttributedString.Key: Any] = [
-          .font: UIFont(name: "SourceSansPro-Regular", size: 18)!,
-          .underlineStyle: NSUnderlineStyle.single.rawValue]
-    
     var currentTheme: Theme?
     
     var index = 0
     var slides: [Slide] = []
-    
-    var breakingNews = true
-    var shopUSADiscounts = true
-    var generalAlerts = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +50,7 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         
         AppDelegate.AppUtility.lockOrientation(.all)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -69,9 +61,10 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    //  MARK: Custom Methods
+    // MARK: Custom Methods
     
     private func setupUI() {
+        guard let currentTheme = currentTheme else { return }
         slides = createSlides()
         setupSlideScrollView(slides: slides)
         
@@ -83,14 +76,33 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         btnNext.layer.cornerRadius     = 4
         btnNext.layer.masksToBounds    = true
         
-        //|     Set underline atribution button
-        let attributeString = NSMutableAttributedString(
-            string: "No, thanks. I prefer Big Tech bros\n      to decide my search results.",
-            attributes: yourAttributes
-        )
+        let firstLine = "Search better, browse better:"
         
-        btnSetAsDefault.setAttributedTitle(attributeString, for: .normal)
+        let foregroundColor = currentTheme.type == .light ? UIColor.blackColor : UIColor.whiteColor
+        let firstLineAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: "SourceSansPro-Bold", size: 18)!,
+            .foregroundColor: foregroundColor
+        ]
+        let firstLineAttributedString = NSAttributedString(string: firstLine, attributes: firstLineAttributes)
         
+        // Second line with underlined text
+        let secondLine = "\nSet Freespoke as your default browser."
+        let secondLineAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: "SourceSansPro-Regular", size: 18)!,
+            .underlineStyle: NSUnderlineStyle.single.rawValue,
+            .foregroundColor: foregroundColor
+        ]
+        let secondLineAttributedString = NSAttributedString(string: secondLine, attributes: secondLineAttributes)
+        
+        // Combine both lines into a single attributed string
+        let buttonText = NSMutableAttributedString()
+        buttonText.append(firstLineAttributedString)
+        buttonText.append(secondLineAttributedString)
+        
+        // Set the attributed text to the button
+        btnSetAsDefault.setAttributedTitle(buttonText, for: .normal)
+        btnSetAsDefault.titleLabel?.textAlignment = .center
+        btnSetAsDefault.alpha = 1
         applyTheme()
     }
     
@@ -102,7 +114,7 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
             case .dark:
                 btnSetAsDefault.setTitleColor(.white, for: .normal)
                 btnBack.tintColor = .white
-            
+                
                 pageControl.tintColor = .white
                 
                 viewBackground.backgroundColor = .onboardingDark
@@ -140,7 +152,7 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
             //btnSetAsDefault.tintColor = .white
             btnSetAsDefault.setTitleColor(.white, for: .normal)
             btnBack.tintColor = .white
-        
+            
             pageControl.tintColor = .white
             
             viewBackground.backgroundColor = .white
@@ -152,57 +164,72 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
     
     private func createSlides() -> [Slide] {
         if let currentTheme = currentTheme {
-            let slide1:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
+            let slide1: Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
+            slide1.imageView.image = currentTheme.type == .light ? UIImage(named: "onboarding") : UIImage(named: "onboarding-dark")
+            slide1.lblFirstTitle.text = "Welcome to \nFreespoke"
+            
+            // first part with regular text
+            let firstPart = "Get Full-Perspective and Full Anonymity When You Search.\n\n\n\n"
+            
+            let foregroundColor = currentTheme.type == .light ? UIColor.blackColor : UIColor.whiteColor
+            let firstPartAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont(name: "SourceSansPro-Regular", size: 16)!,
+                .foregroundColor: foregroundColor
+            ]
+            let firstPartAttributedString = NSAttributedString(string: firstPart, attributes: firstPartAttributes)
+            
+            // Second part with bold text
+            let secondPart = "Search you can trust."
+            let secondPartAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont(name: "SourceSansPro-Bold", size: 16)!,
+                .foregroundColor: foregroundColor
+            ]
+            let secondPartAttributedString = NSAttributedString(string: secondPart, attributes: secondPartAttributes)
+            
+            // Combine both lines into a single attributed string
+            let descText = NSMutableAttributedString()
+            descText.append(firstPartAttributedString)
+            descText.append(secondPartAttributedString)
+            // Set the attributed text to the label
+            slide1.lblFirstDesc.attributedText = descText
+            
+            slide1.lblFirstTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
+            slide1.lblFirstDesc.textColor = currentTheme.type == .light ? .blackColor : .whiteColor
+            slide1.imageView.isHidden = false
             slide1.viewSecondSlide.isHidden = true
             slide1.lblFirstTitle.isHidden = false
             slide1.lblFirstDesc.isHidden = false
-            slide1.lblFirstTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
-            slide1.lblFirstDesc.textColor = currentTheme.type == .light ? .blackColor : .whiteColor
             
-            let slide2:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            slide2.imageView.isHidden = true
-            slide2.viewSegments.isHidden = false
-            slide2.delegate = self
-            slide2.lblTitle.text = "First things first..."
-            slide2.lblDesc.text = "We only want to send you the stuff that lights a fire in you. Select the updates you want to receive from Freespoke."
+            let slide2: Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
+            //            slide2.delegate = self
+            slide2.imageView.image = currentTheme.type == .light ? UIImage(named: "onboarding0") : UIImage(named: "onboarding0-dark")
+            slide2.lblTitle.text = "Newsfeed"
+            slide2.lblDesc.text = "Navigating the news is tough. We help you quickly get the full story by labeling media sources so you can see stories covered from different perspectives."
             slide2.lblTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
             slide2.lblDesc.textColor = currentTheme.type == .light ? .blackColor : .whiteColor
+            slide2.imageView.isHidden = false
+            slide2.viewSegments.isHidden = false
             
-            slide2.lblTitleBreakingNews.textColor = currentTheme.type == .light ? .blackColor : .white
-            slide2.lblTitleShopUSA.textColor = currentTheme.type == .light ? .blackColor : .white
-            slide2.lblTitleGeneralAlerts.textColor = currentTheme.type == .light ? .blackColor : .white
-            
-            slide2.lblDescBreakingNews.textColor = currentTheme.type == .light ? .gray2 : .lightGray
-            slide2.lblDescUSA.textColor = currentTheme.type == .light ? .gray2 : .lightGray
-            slide2.lblDescGeneralAlerts.textColor = currentTheme.type == .light ? .gray2 : .lightGray
-            
-            slide2.viewBreakingNews.backgroundColor = currentTheme.type == .light ? .white : .darkBackground
-            slide2.viewShopUSA.backgroundColor = currentTheme.type == .light ? .white : .darkBackground
-            slide2.viewGeneralAlerts.backgroundColor = currentTheme.type == .light ? .white : .darkBackground
-            
-            slide2.viewBreakingNews.layer.borderColor = currentTheme.type == .light ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
-            slide2.viewShopUSA.layer.borderColor = currentTheme.type == .light ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
-            slide2.viewGeneralAlerts.layer.borderColor = currentTheme.type == .light ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
-            
-            let slide3:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
+            let slide3: Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
             slide3.imageView.image = currentTheme.type == .light ? UIImage(named: "onboarding1") : UIImage(named: "onboarding1-dark")
-            slide3.lblTitle.text = "Enable Notifications from Freespoke"
-            slide3.lblDesc.text = "Click “Next”, then select “Allow” to save and enable your previous selections."
+            slide3.lblTitle.text = "Elections"
+            slide3.lblDesc.text = "Explore the Freespoke election portal featuring the latest voting information, breaking news, and elections results."
             slide3.lblTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
             slide3.lblDesc.textColor = currentTheme.type == .light ? .blackColor : .whiteColor
             
-            let slide4:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
+            let slide4: Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
             slide4.imageView.image = currentTheme.type == .light ? UIImage(named: "onboarding2") : UIImage(named: "onboarding2-dark")
-            slide4.lblTitle.text = "Try Freespoke As Your Default Browser"
-            slide4.lblDesc.text = "Browse and search the internet in peace with data privacy, unbiased results, and more."
+            slide4.lblTitle.text = "Search"
+            slide4.lblDesc.text = "We provide quality search so you can easily find results from all perspectives, while protecting your privacy with every search."
             slide4.lblTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
             slide4.lblDesc.textColor = currentTheme.type == .light ? .blackColor : .whiteColor
             
-            let slide5:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
+            let slide5: Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
             slide5.imageView.image = currentTheme.type == .light ? UIImage(named: "onboarding3") : UIImage(named: "onboarding3-dark")
-            slide5.lblTitle.text = "You're ready to light this party up! Let's jump in..."
-            slide5.lblDesc.text = ""
+            slide5.lblTitle.text = "Tabs"
+            slide5.lblDesc.text = "Save your favorite content all in once place. Making it quicker to pick up where you left off, or frequent your favorite websites and search results. "
             slide5.lblTitle.textColor = currentTheme.type == .light ? .onboardingTitleDark : UIColor.white
+            slide5.lblDesc.textColor = currentTheme.type == .light ? .blackColor : .whiteColor
             
             return [slide1, slide2, slide3, slide4, slide5]
         }
@@ -210,7 +237,7 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         return []
     }
     
-    func setupSlideScrollView(slides : [Slide]) {
+    func setupSlideScrollView(slides: [Slide]) {
         scrollView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
         scrollView.contentSize = CGSize(width: view.frame.width * CGFloat(slides.count), height: view.frame.height)
         scrollView.isPagingEnabled = true
@@ -221,8 +248,8 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    //  MARK: UIScrollView Methods
-
+    // MARK: UIScrollView Methods
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageIndex = round(scrollView.contentOffset.x/view.frame.width)
         pageControl.currentPage = Int(pageIndex)
@@ -237,7 +264,7 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         
         let percentageHorizontalOffset: CGFloat = currentHorizontalOffset / maximumHorizontalOffset
         let percentageVerticalOffset: CGFloat = currentVerticalOffset / maximumVerticalOffset
-
+        
         /*
          * below code scales the imageview on paging the scrollview
          */
@@ -261,7 +288,7 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
             slides[4].viewBackground.transform = CGAffineTransform(scaleX: percentOffset.x, y: percentOffset.x)
         }
     }
-
+    
     func scrollView(_ scrollView: UIScrollView, didScrollToPercentageOffset percentageHorizontalOffset: CGFloat) {
         if(pageControl.currentPage == 0) {
             let pageUnselectedColor: UIColor = fade(fromRed: 255/255, fromGreen: 255/255, fromBlue: 255/255, fromAlpha: 1, toRed: 103/255, toGreen: 58/255, toBlue: 183/255, toAlpha: 1, withPercentage: percentageHorizontalOffset * 3)
@@ -294,15 +321,9 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
         return UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
     
-    //  MARK: Action Methods
+    // MARK: Action Methods
     
     @IBAction func btnNext(_ sender: Any) {
-        
-        if index == 3 {
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])
-            
-            return
-        }
         
         index += 1
         
@@ -315,51 +336,22 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
                            options: .curveEaseOut,
                            animations: {
                 self.btnNext.setTitle("Next", for: .normal)
+                self.imgViewBackground.alpha = 0
             })
             
-//        case 2:
-//            if breakingNews {
-//                OneSignal.sendTag("News", value: "1")
-//            } else {
-//                OneSignal.sendTag("News", value: "0")
-//            }
-//
-//            if shopUSADiscounts {
-//                OneSignal.sendTag("Shop", value: "1")
-//            } else {
-//                OneSignal.sendTag("Shop", value: "0")
-//            }
-//
-//            if generalAlerts {
-//                OneSignal.sendTag("General Alerts", value: "1")
-//            } else {
-//                OneSignal.sendTag("General Alerts", value: "0")
-//            }
-            
-        case 3:
+        case 4:
             //|     Ask for setup notification setting
             OneSignal.promptForPushNotifications(userResponse: { accepted in
                 print("User accepted notification: \(accepted)")
             })
-            
-            UIView.animate(withDuration: 0.5,
-                           delay: 0,
-                           usingSpringWithDamping: 0.7,
-                           initialSpringVelocity: 1,
-                           options: .curveEaseOut,
-                           animations: {
-                self.btnSetAsDefault.alpha = 1
-                self.btnNext.setTitle("Set as Default Browser", for: .normal)
-            })
-            
         default:
             break
         }
-
+        
         if index == 5 {
             profile.prefs.setInt(1, forKey: PrefsKeys.IntroSeen)
             
-            dismiss(animated: true)
+            self.dismiss(animated: true)
         }
         else {
             scrollView.setContentOffset(CGPoint(x: view.frame.width * CGFloat(index), y: 0), animated: true)
@@ -369,43 +361,14 @@ class OnboardingController: UIViewController, UIScrollViewDelegate {
     @IBAction func btnBack(_ sender: Any) {
         profile.prefs.setInt(1, forKey: PrefsKeys.IntroSeen)
         
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
     
     @IBAction func btnSetDefaultBrowser(_ sender: Any) {
-        index += 1
-        
-        UIView.animate(withDuration: 0.5,
-                       delay: 0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 1,
-                       options: .curveEaseOut,
-                       animations: {
-            self.btnSetAsDefault.alpha = 0
-            self.btnNext.setTitle("Start Searching", for: .normal)
-        })
-        
-        scrollView.setContentOffset(CGPoint(x: view.frame.width * CGFloat(index), y: 0), animated: true)
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])
     }
     
     @IBAction func pageControlAction(_ sender: UIPageControl) {
         scrollView.setContentOffset(CGPoint(x: view.frame.width * CGFloat(sender.currentPage), y: 0), animated: true)
     }
 }
-
-extension OnboardingController: SlideDelegate {
-    func didSelectBreakingNews(value: Bool) {
-        breakingNews = value
-    }
-    
-    func didSelectShopUSADiscounts(value: Bool) {
-        shopUSADiscounts = value
-    }
-    
-    func didSelectGeneralAlerts(value: Bool) {
-        generalAlerts = value
-    }
-}
-
-
-

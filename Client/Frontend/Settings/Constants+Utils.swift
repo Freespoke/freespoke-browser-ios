@@ -86,8 +86,8 @@ class Utils {
 
 enum Matomo: String {
     case baseURL            = "https://example.com/matomo.php"
-    case staggingSiteId     = "1"
     case productionSiteId   = "1"
+    case staggingSiteId     = "2"
 }
 
 enum MatomoCategory: String {

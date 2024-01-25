@@ -62,6 +62,22 @@ enum Constants: String {
     case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
     case electionURL = "https://freespoke.com/election/2024"
+    
+    // MARK: - One Signal
+
+    enum OneSignalConstants {
+        static var oneSignalId: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                // TODO: should be replaced to production app id. For now will be used staging app id
+                return "de8ebc15-f8ef-427a-b1c1-f312ce831eea"
+            case .staging:
+                // one signall app id (stagincId = "de8ebc15-f8ef-427a-b1c1-f312ce831eea")
+                return "de8ebc15-f8ef-427a-b1c1-f312ce831eea"
+            }
+        }
+    }
+
 }
 
 extension UIColor {

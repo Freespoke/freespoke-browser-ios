@@ -1656,6 +1656,7 @@
 
 /* Begin PBXFileReference section */
 		00B144CD8BEF73CF75ED7639 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Menu.strings; sourceTree = "<group>"; };
+		016B6DF92B62796A00AA65EE /* Fennec_Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Fennec_Staging.xcconfig; path = Configuration/Fennec_Staging.xcconfig; sourceTree = "<group>"; };
 		03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelativeDatesTests.swift; sourceTree = "<group>"; };
 		0430A544203B372D00FDF76D /* IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
 		047F9B2724E1FE1C00CD7DF7 /* WidgetKitExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetKitExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -5752,9 +5753,10 @@
 			isa = PBXGroup;
 			children = (
 				8A2B1A5B28216C4C0061216B /* Common.xcconfig */,
+				E60961861B62B8A700DD640F /* Fennec.xcconfig */,
+				016B6DF92B62796A00AA65EE /* Fennec_Staging.xcconfig */,
 				8A2B1A5A28216C4C0061216B /* Debug.xcconfig */,
 				8A2B1A5C28216C4D0061216B /* Release.xcconfig */,
-				E60961861B62B8A700DD640F /* Fennec.xcconfig */,
 				E6DCC1ED1DCBB6AA00CEC4B7 /* Fennec.enterprise.xcconfig */,
 				E6FCC43C1C40565200DF6113 /* FirefoxBeta.xcconfig */,
 				E60961891B62B8C800DD640F /* Firefox.xcconfig */,
@@ -9288,23 +9290,24 @@
 /* Begin XCBuildConfiguration section */
 		01CA94952B61552B00210B06 /* Fennec_Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E60961861B62B8A700DD640F /* Fennec.xcconfig */;
+			baseConfigurationReference = 016B6DF92B62796A00AA65EE /* Fennec_Staging.xcconfig */;
 			buildSettings = {
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-Xlinker",
 					"-no_application_extension",
 				);
-				OTHER_SWIFT_FLAGS = "$(OTHER_SWIFT_FLAGS_common) -DMOZ_CHANNEL_FENNEC -D STAGING";
+				OTHER_SWIFT_FLAGS = "${OTHER_SWIFT_FLAGS}";
 				VALIDATE_WORKSPACE = YES;
 			};
 			name = Fennec_Staging;
 		};
 		01CA94962B61552B00210B06 /* Fennec_Staging */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 016B6DF92B62796A00AA65EE /* Fennec_Staging.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Developer;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_STAGING;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -9317,8 +9320,8 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = 2.0.0;
-				MOZ_BUNDLE_DISPLAY_NAME = Freespoke;
-				MOZ_BUNDLE_ID = com.freespoke.app;
+				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
+				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
@@ -10558,6 +10561,7 @@
 					"-Xlinker",
 					"-no_application_extension",
 				);
+				OTHER_SWIFT_FLAGS = "${OTHER_SWIFT_FLAGS}";
 				VALIDATE_WORKSPACE = YES;
 			};
 			name = Firefox;
@@ -10578,6 +10582,8 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = 2.0.0;
+				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
+				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
@@ -10864,6 +10870,7 @@
 					"-Xlinker",
 					"-no_application_extension",
 				);
+				OTHER_SWIFT_FLAGS = "${OTHER_SWIFT_FLAGS}";
 				VALIDATE_WORKSPACE = YES;
 			};
 			name = Fennec_Enterprise;
@@ -10872,7 +10879,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Developer;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_DEVELOP;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 205;
@@ -10885,6 +10892,8 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = 2.0.0;
+				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
+				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
@@ -11135,6 +11144,7 @@
 					"-Xlinker",
 					"-no_application_extension",
 				);
+				OTHER_SWIFT_FLAGS = "${OTHER_SWIFT_FLAGS}";
 				VALIDATE_WORKSPACE = YES;
 			};
 			name = FirefoxBeta;
@@ -11143,7 +11153,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Beta;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_BETA;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 205;
@@ -11155,6 +11165,8 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = 2.0.0;
+				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
+				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
@@ -11633,15 +11645,17 @@
 					"-Xlinker",
 					"-no_application_extension",
 				);
+				OTHER_SWIFT_FLAGS = "${OTHER_SWIFT_FLAGS}";
 				VALIDATE_WORKSPACE = YES;
 			};
 			name = Fennec;
 		};
 		F84B21DE1A090F8100AAB793 /* Fennec */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E60961861B62B8A700DD640F /* Fennec.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Developer;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -11654,8 +11668,8 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = 2.0.0;
-				MOZ_BUNDLE_DISPLAY_NAME = Freespoke;
-				MOZ_BUNDLE_ID = com.freespoke.app;
+				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
+				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",

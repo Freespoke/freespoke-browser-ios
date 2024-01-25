@@ -410,7 +410,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Fennec_Staging"
+      buildConfiguration = "Fennec"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"

@@ -5,6 +5,21 @@
 import Foundation
 import UIKit
 
+// MARK: - Environment
+
+enum FreespokeEnvironment {
+    case production
+    case staging
+    
+    static var current: FreespokeEnvironment {
+    #if STAGING
+        return .staging
+    #else
+        return .production
+    #endif
+    }
+}
+
 enum MenuCellType: String {
     case addAsDefault       = "Add as Default Browser"
     case shareFreespoke     = "Share Freespoke"

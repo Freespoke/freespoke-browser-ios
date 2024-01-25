@@ -44,6 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         willFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        
+        print("TEST: current environment: ", FreespokeEnvironment.current)
+        
         // Configure app information for BrowserKit, needed for logger
         BrowserKitInformation.shared.configure(buildChannel: AppConstants.buildChannel,
                                                nightlyAppVersion: AppConstants.nightlyAppVersion,

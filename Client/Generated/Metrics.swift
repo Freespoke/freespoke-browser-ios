@@ -25,7 +25,7 @@ extension GleanMetrics {
             // Intentionally left private, no external user can instantiate a new global object.
         }
 
-        public static let info = BuildInfo(buildDate: DateComponents(calendar: Calendar.current, timeZone: TimeZone(abbreviation: "UTC"), year: 2023, month: 7, day: 10, hour: 18, minute: 30, second: 30))
+        public static let info = BuildInfo(buildDate: DateComponents(calendar: Calendar.current, timeZone: TimeZone(abbreviation: "UTC"), year: 2024, month: 1, day: 24, hour: 19, minute: 45, second: 18))
     }
 
     enum Accessibility {
@@ -869,7 +869,7 @@ extension GleanMetrics {
                 name: "autofill_settings_tapped",
                 sendInPings: ["events"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
             , []
         )
@@ -1842,7 +1842,7 @@ extension GleanMetrics {
                 name: "clicked",
                 sendInPings: ["events"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
             , ["action_uuid", "message_key"]
         )
@@ -1854,7 +1854,7 @@ extension GleanMetrics {
                 name: "dismissed",
                 sendInPings: ["events"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
             , ["message_key"]
         )
@@ -1866,7 +1866,7 @@ extension GleanMetrics {
                 name: "expired",
                 sendInPings: ["events"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
             , ["message_key"]
         )
@@ -1878,7 +1878,7 @@ extension GleanMetrics {
                 name: "malformed",
                 sendInPings: ["events"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
             , ["message_key"]
         )
@@ -1890,7 +1890,7 @@ extension GleanMetrics {
                 name: "shown",
                 sendInPings: ["events"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
             , ["message_key"]
         )
@@ -2288,7 +2288,7 @@ extension GleanMetrics {
                 name: "duration",
                 sendInPings: ["metrics"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
             , .millisecond
         )
@@ -2300,7 +2300,7 @@ extension GleanMetrics {
                 name: "migration_ended_rate",
                 sendInPings: ["metrics"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
         )
 
@@ -2311,7 +2311,7 @@ extension GleanMetrics {
                 name: "migration_error_rate",
                 sendInPings: ["metrics"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
         )
 
@@ -2322,7 +2322,7 @@ extension GleanMetrics {
                 name: "num_migrated",
                 sendInPings: ["metrics"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
         )
 
@@ -2333,7 +2333,7 @@ extension GleanMetrics {
                 name: "num_to_migrate",
                 sendInPings: ["metrics"],
                 lifetime: .ping,
-                disabled: false
+                disabled: true
             )
         )
 

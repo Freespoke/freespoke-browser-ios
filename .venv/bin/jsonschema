@@ -1,4 +1,4 @@
-#!/Users/abelanca/Work/freespoke-browser-ios/.venv/bin/python3
+#!/Users/nick/Documents/projects/freespoke-browser-ios/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

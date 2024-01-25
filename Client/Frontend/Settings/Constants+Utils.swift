@@ -48,6 +48,15 @@ enum MenuCellImageType: String {
 }
 
 enum Constants: String {
+    static var apiBaseURL: String {
+        switch FreespokeEnvironment.current {
+        case .production:
+            return "https://api.freespoke.com/v2"
+        case .staging:
+            return "https://api.staging.freespoke.com/v2"
+        }
+    }
+    
     case freespokeURL = "https://freespoke.com/"
     case twitterURL = "https://twitter.com/FreespokeSearch/"
     case linkedinURL = "https://www.linkedin.com/company/freespoke-search/"

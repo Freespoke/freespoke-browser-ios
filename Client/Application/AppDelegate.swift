@@ -346,5 +346,6 @@ extension AppDelegate {
 }
 
 extension MatomoTracker {
-    static let shared: MatomoTracker = MatomoTracker(siteId: Matomo.productionSiteId.rawValue, baseURL: URL(string: Matomo.baseURL.rawValue)!)
+    static let shared: MatomoTracker = MatomoTracker(siteId: Matomo.productionSiteId,
+                                                     baseURL: URL(string: Matomo.baseURL)!)
 }

@@ -10,7 +10,5 @@ UserInterfaceState.xcuserstate
 
 #Pods
 Pods/
-Generated/
-*/Generated/
 !Pods/Manifest.lock
 .DS_Store

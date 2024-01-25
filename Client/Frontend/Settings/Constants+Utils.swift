@@ -99,10 +99,18 @@ class Utils {
     }
 }
 
-enum Matomo: String {
-    case baseURL            = "https://example.com/matomo.php"
-    case productionSiteId   = "1"
-    case staggingSiteId     = "2"
+enum Matomo {
+    static var baseURL: String {
+        switch FreespokeEnvironment.current {
+        case .production:
+            return "https://example.com/matomo.php"
+        case .staging:
+            return "https://example.com/matomo.php"
+        }
+    }
+    
+    static var productionSiteId   = "1" // Android has 6
+    static var staggingSiteId     = "2" // Android has 7
 }
 
 enum MatomoCategory: String {

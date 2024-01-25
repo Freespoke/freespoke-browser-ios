@@ -139,24 +139,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         OneSignal.initWithLaunchOptions(launchOptions)
         OneSignal.setLaunchURLsInApp(true)
         
-        //     One Signal Secret Key
+        // One Signal Secret Key
         OneSignal.setAppId(Constants.OneSignalConstants.oneSignalId)
         
         UNUserNotificationCenter.current().delegate = self
         
-        //|     Ask for setup notification setting
+        // Ask for setup notification setting
         OneSignal.promptForPushNotifications(userResponse: { accepted in
             print("User accepted notification: \(accepted)")
         })
         
-        //|     Branch init
-        Branch.getInstance().initSession(launchOptions: launchOptions) { (params, error) in
-            print(params as? [String: AnyObject] ?? {})
-        }
+        // Branch init
+        self.setupBranchSDK(launchOptions: launchOptions)
         
+        // Matomo tracker
         MatomoTracker.shared.isOptedOut = false
         
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appEntry.rawValue, action: MatomoCategory.appEntry.rawValue, name: MatomoName.open.rawValue, value: nil)
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appEntry.rawValue, 
+                                   action: MatomoCategory.appEntry.rawValue,
+                                   name: MatomoName.open.rawValue,
+                                   value: nil)
         
         return true
     }
@@ -344,6 +346,25 @@ extension AppDelegate {
         return configuration
     }
 }
+
+// MARK: - Setup BranchSDK
+
+extension AppDelegate {
+    private func setupBranchSDK(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        switch FreespokeEnvironment.current {
+        case .production:
+            Branch.setUseTestBranchKey(false)
+        case .staging:
+            Branch.setUseTestBranchKey(true)
+        }
+        
+        Branch.getInstance().initSession(launchOptions: launchOptions) { (params, error) in
+            print("TEST: setupBranchSDK with params: ", params as? [String: AnyObject] ?? {})
+        }
+    }
+}
+
+// MARK: - MatomoTracker
 
 extension MatomoTracker {
     static let shared: MatomoTracker = MatomoTracker(siteId: Matomo.productionSiteId,

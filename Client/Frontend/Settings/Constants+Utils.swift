@@ -64,7 +64,7 @@ enum Constants: String {
     case electionURL = "https://freespoke.com/election/2024"
     
     // MARK: - One Signal
-
+    
     enum OneSignalConstants {
         static var oneSignalId: String {
             switch FreespokeEnvironment.current {
@@ -77,7 +77,6 @@ enum Constants: String {
             }
         }
     }
-
 }
 
 extension UIColor {

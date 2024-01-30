@@ -133,8 +133,8 @@ enum Matomo {
         }
     }
     
-    static var productionSiteId   = "1" // Android has 6
-    static var staggingSiteId     = "2" // Android has 7
+    static var productionSiteId   = "6"
+    static var staggingSiteId     = "7"
 }
 
 enum MatomoCategory: String {

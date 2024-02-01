@@ -89,6 +89,9 @@ opt_in_rules: # some rules are only opt-in
   - vertical_whitespace_opening_braces
   - yoda_condition
 
+trailing_whitespace:
+  ignores_empty_lines: true
+
 analyzer_rules: # Rules run by `swiftlint analyze`
   - unused_import
 

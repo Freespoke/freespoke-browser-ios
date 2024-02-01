@@ -385,20 +385,18 @@ class FreespokeHomepage: UIView {
     }
     
     func getShopppingCollection(page: Int, completion: (() -> Void)? = nil) {
-        //let url = NSURL(string: "https://api.staging.freespoke.com/v2/shop/collections?page=\(page)&per_page=4")
-        let url = NSURL(string: "https://api.freespoke.com/v2/shop/collections?page=\(page)&per_page=4")
+        let url = NSURL(string: "\(Constants.apiBaseURL)/shop/collections?page=\(page)&per_page=4")
         let request = NSMutableURLRequest(url: url! as URL)
         request.httpMethod = "GET"
         let session = URLSession(configuration:URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
         let dataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
             
             if error != nil {
-            }
-            else {
+            } else {
                 do {
                     let json = try JSON(data: data!)
                     let collections = json["collections"]
- 
+                    
                     if let arrShopping = collections.array {
                         if !arrShopping.isEmpty {
                             self.arrShoppingCollection = [Shopping]()

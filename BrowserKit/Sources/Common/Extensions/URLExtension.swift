@@ -183,7 +183,6 @@ extension URL {
         } else {
             baseDomain = suffix
         }
-
         return baseDomain
     }
 

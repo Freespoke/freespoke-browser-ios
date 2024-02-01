@@ -5,6 +5,21 @@
 import Foundation
 import UIKit
 
+// MARK: - Environment
+
+enum FreespokeEnvironment {
+    case production
+    case staging
+    
+    static var current: FreespokeEnvironment {
+    #if STAGING
+        return .staging
+    #else
+        return .production
+    #endif
+    }
+}
+
 enum MenuCellType: String {
     case addAsDefault       = "Add as Default Browser"
     case shareFreespoke     = "Share Freespoke"
@@ -33,6 +48,15 @@ enum MenuCellImageType: String {
 }
 
 enum Constants: String {
+    static var apiBaseURL: String {
+        switch FreespokeEnvironment.current {
+        case .production:
+            return "https://api.freespoke.com/v2"
+        case .staging:
+            return "https://api.staging.freespoke.com/v2"
+        }
+    }
+    
     case freespokeURL = "https://freespoke.com/"
     case twitterURL = "https://twitter.com/FreespokeSearch/"
     case linkedinURL = "https://www.linkedin.com/company/freespoke-search/"
@@ -47,6 +71,21 @@ enum Constants: String {
     case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
     case electionURL = "https://freespoke.com/election/2024"
+    
+    // MARK: - One Signal
+    
+    enum OneSignalConstants {
+        static var oneSignalId: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                // TODO: should be replaced to production app id. For now will be used staging app id
+                return "de8ebc15-f8ef-427a-b1c1-f312ce831eea"
+            case .staging:
+                // one signall app id (stagincId = "de8ebc15-f8ef-427a-b1c1-f312ce831eea")
+                return "de8ebc15-f8ef-427a-b1c1-f312ce831eea"
+            }
+        }
+    }
 }
 
 extension UIColor {
@@ -84,10 +123,18 @@ class Utils {
     }
 }
 
-enum Matomo: String {
-    case baseURL            = "https://example.com/matomo.php"
-    case productionSiteId   = "1"
-    case staggingSiteId     = "2"
+enum Matomo {
+    static var baseURL: String {
+        switch FreespokeEnvironment.current {
+        case .production:
+            return "https://example.com/matomo.php"
+        case .staging:
+            return "https://example.com/matomo.php"
+        }
+    }
+    
+    static var productionSiteId   = "6"
+    static var staggingSiteId     = "7"
 }
 
 enum MatomoCategory: String {

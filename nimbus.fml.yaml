@@ -12,6 +12,8 @@ channels:
   - developer
   - beta
   - release
+  - Fennec_Staging
+
 include:
   - nimbus-features/contextualHintFeature.yaml
   - nimbus-features/creditCardAutofillFeature.yaml

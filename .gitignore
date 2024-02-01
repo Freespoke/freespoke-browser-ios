@@ -1,2 +1,12 @@
-.venv
+## Build generated
+##build/
+##DerivedData/
 UserInterfaceState.xcuserstate
+*/xcuserdata/*
+
+.venv
+
+#Pods
+Pods/
+!Pods/Manifest.lock
+.DS_Store

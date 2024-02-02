@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		012D06202B6D78EC00BC854A /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 012D061F2B6D78EC00BC854A /* AppAuth */; };
+		012D06222B6D78EC00BC854A /* AppAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 012D06212B6D78EC00BC854A /* AppAuthCore */; };
 		03CCC9181AF05E7300DBF30D /* RelativeDatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */; };
 		0430A545203B372D00FDF76D /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0430A544203B372D00FDF76D /* IntegrationTests.swift */; };
 		047F9B2924E1FE1C00CD7DF7 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAD46F3524A1606C001B3967 /* SwiftUI.framework */; };
@@ -3136,7 +3138,9 @@
 				C8E18F20222EDED000E30E52 /* SafariServices.framework in Frameworks */,
 				C8E18F1E222EDE4500E30E52 /* Accelerate.framework in Frameworks */,
 				2F7E234C2A09084300E11726 /* OneSignalExtension in Frameworks */,
+				012D06202B6D78EC00BC854A /* AppAuth in Frameworks */,
 				F8324A7C2649A5A5007E4BFA /* AuthenticationServices.framework in Frameworks */,
+				012D06222B6D78EC00BC854A /* AppAuthCore in Frameworks */,
 				E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */,
 				E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */,
 				2FB655DC2A24FAC100FE660F /* Glean in Frameworks */,
@@ -6846,6 +6850,8 @@
 				2FA2741F2A5C9A2000818760 /* BranchSDK */,
 				2FE7CAA72A817D71008F4181 /* MatomoTracker */,
 				2F745E4B2A8FB40200A4085B /* Kingfisher */,
+				012D061F2B6D78EC00BC854A /* AppAuth */,
+				012D06212B6D78EC00BC854A /* AppAuthCore */,
 			);
 			productName = Client;
 			productReference = F84B21BE1A090F8100AAB793 /* Client.app */;
@@ -7088,6 +7094,7 @@
 				2FA2741E2A5C9A2000818760 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */,
 				2FE7CAA62A817D71008F4181 /* XCRemoteSwiftPackageReference "matomo-sdk-ios" */,
 				2F745E4A2A8FB40200A4085B /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				012D061E2B6D78EC00BC854A /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 			);
 			productRefGroup = F84B21BF1A090F8100AAB793 /* Products */;
 			projectDirPath = "";
@@ -12011,6 +12018,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		012D061E2B6D78EC00BC854A /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/openid/AppAuth-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.2;
+			};
+		};
 		1B3D99EF270E89D0006E1264 /* XCRemoteSwiftPackageReference "telemetry-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mozilla-mobile/telemetry-ios";
@@ -12134,6 +12149,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		012D061F2B6D78EC00BC854A /* AppAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 012D061E2B6D78EC00BC854A /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
+			productName = AppAuth;
+		};
+		012D06212B6D78EC00BC854A /* AppAuthCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 012D061E2B6D78EC00BC854A /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
+			productName = AppAuthCore;
+		};
 		1B0DFD24274856D60008EB0A /* SwiftyJSON */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1BDA1F8327113788006B2FAB /* XCRemoteSwiftPackageReference "SwiftyJSON" */;

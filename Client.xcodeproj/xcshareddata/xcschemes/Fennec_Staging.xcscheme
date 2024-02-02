@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F84B21BD1A090F8100AAB793"
-               BuildableName = "Client.app"
-               BlueprintName = "Client"
+               BlueprintIdentifier = "01BD23372B6CF7EB00B8B9EB"
+               BuildableName = "Fennec_Staging.app"
+               BlueprintName = "Fennec_Staging"
                ReferencedContainer = "container:Client.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,9 +43,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F84B21BD1A090F8100AAB793"
-            BuildableName = "Client.app"
-            BlueprintName = "Client"
+            BlueprintIdentifier = "01BD23372B6CF7EB00B8B9EB"
+            BuildableName = "Fennec_Staging.app"
+            BlueprintName = "Fennec_Staging"
             ReferencedContainer = "container:Client.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -60,9 +60,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F84B21BD1A090F8100AAB793"
-            BuildableName = "Client.app"
-            BlueprintName = "Client"
+            BlueprintIdentifier = "01BD23372B6CF7EB00B8B9EB"
+            BuildableName = "Fennec_Staging.app"
+            BlueprintName = "Fennec_Staging"
             ReferencedContainer = "container:Client.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -8,6 +8,7 @@ import Storage
 import SyncTelemetry
 import MozillaAppServices
 import Common
+import AppAuth
 
 class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, Themeable {
     // MARK: - Typealiases
@@ -157,6 +158,47 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
 
         listenForThemeChange(view)
         applyTheme()
+        
+        print("TEST: HomePageViewcontroller was loaded!!!")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: { [weak self] in
+            guard let self = self else { return }
+            self.performLoginWithOAuth2(successCompletion: { authModel in
+                print("TEST: successCompletion with authModel: ", authModel)
+            })
+        })
+    }
+    
+    private func performLoginWithOAuth2(successCompletion: (( _ apiAuthModel: ApiAuthModel?) -> Void)?) {
+        
+        // MARK: AppAuth pod from github: https://github.com/openid/AppAuth-iOS
+        
+        let openIdIssuer = "https://auth.staging.freespoke.com/realms/freespoke-staging"
+        
+        guard let issuer = URL(string: openIdIssuer),
+                let callBackURL = URL(string: OAuthCallBackURLConstants.callBackURLOAuthLogin) else {
+            return
+        }
+        
+        AuthenticationManager.shared.clearCache()
+        
+        OIDAuthorizationService.discoverConfiguration(forDiscoveryURL: issuer) { [weak self] configuration, error in
+            guard let self = self else { return }
+            guard let config = configuration else { return }
+            
+            let request = OIDAuthorizationRequest(configuration: config,
+                                                  clientId: "mobile",
+                                                  clientSecret: "",
+                                                  scopes: [],
+                                                  redirectURL: callBackURL,
+                                                  responseType: OIDResponseTypeCode,
+                                                  additionalParameters: nil)
+            
+            let vc = OAuthLoginVC()
+            vc.request = request
+            vc.oAuthAuthorizaionSucessfullCompletion = successCompletion
+            self.present(vc, animated: true, completion: nil)
+        }
     }
     
     func checkFreespokeHomepage() {

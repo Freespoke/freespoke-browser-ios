@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		012D06202B6D78EC00BC854A /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 012D061F2B6D78EC00BC854A /* AppAuth */; };
 		012D06222B6D78EC00BC854A /* AppAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 012D06212B6D78EC00BC854A /* AppAuthCore */; };
+		016390A52B6D7CFD00481C6E /* OAuthLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016390A42B6D7CFD00481C6E /* OAuthLoginVC.swift */; };
 		03CCC9181AF05E7300DBF30D /* RelativeDatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */; };
 		0430A545203B372D00FDF76D /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0430A544203B372D00FDF76D /* IntegrationTests.swift */; };
 		047F9B2924E1FE1C00CD7DF7 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAD46F3524A1606C001B3967 /* SwiftUI.framework */; };
@@ -1658,6 +1659,7 @@
 
 /* Begin PBXFileReference section */
 		00B144CD8BEF73CF75ED7639 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Menu.strings; sourceTree = "<group>"; };
+		016390A42B6D7CFD00481C6E /* OAuthLoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthLoginVC.swift; sourceTree = "<group>"; };
 		016B6DF92B62796A00AA65EE /* Fennec_Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Fennec_Staging.xcconfig; path = Configuration/Fennec_Staging.xcconfig; sourceTree = "<group>"; };
 		03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelativeDatesTests.swift; sourceTree = "<group>"; };
 		0430A544203B372D00FDF76D /* IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
@@ -3313,6 +3315,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		016390A32B6D7CFD00481C6E /* OAuthLoginVC */ = {
+			isa = PBXGroup;
+			children = (
+				016390A42B6D7CFD00481C6E /* OAuthLoginVC.swift */,
+			);
+			path = OAuthLoginVC;
+			sourceTree = "<group>";
+		};
 		047F9B2A24E1FE1C00CD7DF7 /* WidgetKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -6283,6 +6293,7 @@
 		F84B21F11A0910F600AAB793 /* Frontend */ = {
 			isa = PBXGroup;
 			children = (
+				016390A32B6D7CFD00481C6E /* OAuthLoginVC */,
 				2FAE439529DD6FD70073C68E /* Onboarding */,
 				8AD40FB827BAD1DD00672675 /* TabContentsScripts */,
 				8AD40FB727BAD1D600672675 /* Toolbar+URLBar */,
@@ -8206,6 +8217,7 @@
 				C8A4137428BE58C900D8EFEA /* WallpaperMetadataCodableProtocol.swift in Sources */,
 				8A93080927BFE88F0052167D /* PhotonActionSheetContainerCell.swift in Sources */,
 				2F18E17829C9A80C00F222A3 /* MenuController.swift in Sources */,
+				016390A52B6D7CFD00481C6E /* OAuthLoginVC.swift in Sources */,
 				2F745E482A8E858500A4085B /* RecentlyViewedCollectionViewCell.swift in Sources */,
 				F85C7F0E2711C556004BDBA4 /* SettingsViewController.swift in Sources */,
 				C8B509E3293FA39900AC013C /* AppVersionUpdateCheckerProtocol.swift in Sources */,

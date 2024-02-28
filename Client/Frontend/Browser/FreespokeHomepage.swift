@@ -70,12 +70,16 @@ class FreespokeHomepage: UIView {
     @IBOutlet weak var btnFreespokeWayMiddle: UIButton!
     @IBOutlet weak var btnFreespokeWayDown: UIButton!
     
+    private var profileIconView = ProfileIconView()
+    
+    var profileIconTapClosure: (() -> Void)?
+    
     var delegate: FreespokeHomepageDelegate?
     
     private var bookmarksHandler: BookmarksHandler?
     
     var profile: Profile!
-    
+    private var currentTheme: Theme?
     var arrBookmarks = [Site]()
     var arrRecenlyViewed = [HighlightItem]()
     var arrTrendingStory = [TrendingStory]()
@@ -89,16 +93,16 @@ class FreespokeHomepage: UIView {
     var pageShoppping = 1
     
     let yourAttributes: [NSAttributedString.Key: Any] = [
-          .font: UIFont(name: "SourceSansPro-Regular", size: 14)!,
-          .underlineStyle: NSUnderlineStyle.single.rawValue]
+        .font: UIFont(name: "SourceSansPro-Regular", size: 14)!,
+        .underlineStyle: NSUnderlineStyle.single.rawValue]
     
     let margin: CGFloat = 8
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
-        
         setUI()
+        addProfileIconView()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -111,6 +115,34 @@ class FreespokeHomepage: UIView {
         contentView.fixInView(self)
         
         initCollectionView()
+    }
+    
+    func setCurrentTheme(currentTheme: Theme) {
+        self.currentTheme = currentTheme
+        
+        self.profileIconView.configureTheme(currentTheme: currentTheme)
+    }
+    
+    func addProfileIconView() {
+        self.contentView.addSubview(self.profileIconView)
+        self.profileIconView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.profileIconView.topAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.topAnchor, constant: UIDevice.current.isPad ? 20 : 0),
+            self.profileIconView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20)
+        ])
+        
+        profileIconView.tapClosure = { [weak self] in
+            self?.profileIconTapClosure?()
+        }
+        
+        if let theme = self.currentTheme {
+            self.profileIconView.configureTheme(currentTheme: theme)
+        }
+    }
+    
+    func updateView(decodedJWTToken: FreespokeJWTDecodeModel?) {
+        self.profileIconView.updateView(decodedJWTToken: decodedJWTToken)
     }
     
     private func initCollectionView() {
@@ -248,12 +280,12 @@ class FreespokeHomepage: UIView {
             guard let bookmarkItems = result.successValue else {
                 return
             }
-
+            
             let sites = bookmarkItems.map({ Site(url: $0.url, title: $0.title, bookmarked: true, guid: $0.guid) }).reversed()
             
             self.arrBookmarks = [Site]()
             self.arrBookmarks.append(contentsOf: sites)
-
+            
             DispatchQueue.main.async {
                 self.collectionViewBookmarks.reloadData()
             }
@@ -423,7 +455,7 @@ class FreespokeHomepage: UIView {
         }
         dataTask.resume()
     }
-
+    
     // MARK: - Action Methods
     
     @IBAction func btnSearch(_ sender: Any) {
@@ -455,7 +487,7 @@ class FreespokeHomepage: UIView {
         
         delegate?.showURL(url: urlTrending)
     }
-
+    
     @IBAction func btnBookmarks(_ sender: Any) {
         delegate?.didPressBookmarks()
     }
@@ -481,7 +513,7 @@ class FreespokeHomepage: UIView {
 
 extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
+        
         switch collectionView {
         case collectionViewBookmarks:
             if arrBookmarks.isEmpty {
@@ -551,7 +583,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "bookmarkCellIdentifier", for: indexPath) as? BookmarkCollectionViewCell {
                 
                 let bookmark = arrBookmarks[indexPath.row]
-
+                
                 let url = URL(string: "http://www.google.com/s2/favicons?sz=\(32)&domain=\(bookmark.tileURL.absoluteString)")
                 
                 //let url = URL(string: "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://freespoke-support.freshdesk.com/support/tickets/new&size=32")
@@ -568,7 +600,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
                 
                 return cell
             }
-        
+            
         case collectionViewTrendingNews:
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trendingNewsCellIdentifier", for: indexPath) as? TrendingNewsCollectionViewCell {
                 
@@ -717,7 +749,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             let site = arrBookmarks[indexPath.row]
             
             delegate?.showURL(url: site.url)
-        
+            
         case collectionViewTrendingNews:
             let story = arrTrendingStory[indexPath.row]
             
@@ -747,11 +779,11 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+        
         switch collectionView {
         case collectionViewBookmarks:
             return CGSize(width: 81, height: 77)
-        
+            
         case collectionViewTrendingNews:
             var noOfCellsInRow = 1
             
@@ -762,7 +794,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             }
             let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
             let totalSpace = flowLayout.sectionInset.left + flowLayout.sectionInset.right + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
-
+            
             let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
             return CGSize(width: size, height: 296)
             
@@ -780,7 +812,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             
             let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
             let totalSpace = flowLayout.sectionInset.left + flowLayout.sectionInset.right + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
-
+            
             let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
             return CGSize(width: size, height: 213)
             
@@ -822,7 +854,7 @@ class TrendingStory: Equatable, Hashable {
     var mainImageUrl: String
     var mainImageAttribution: String
     var publisher_icons: [JSON]
-
+    
     init(ID: Int, url: String, name: String, updated_at: String, sources: Int, bias_left: Int, bias_middle: Int, bias_right: Int, mainImageUrl: String, mainImageAttribution: String, publisher_icons: [JSON]) {
         self.ID = ID
         self.url = url
@@ -853,7 +885,7 @@ class Shopping: Equatable, Hashable {
     var title: String
     var url: String
     var thumbnail: String
-
+    
     init(ID: Int, url: String, title: String, thumbnail: String) {
         self.ID = ID
         self.title = title

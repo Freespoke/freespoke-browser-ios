@@ -48,6 +48,12 @@ enum MenuCellImageType: String {
 }
 
 enum Constants: String {
+    
+    enum UI {
+        static let contentWidthConstraintForIpad: CGFloat = 550
+        static let buttonsWidthConstraintForIpad: CGFloat = 500
+    }
+    
     static var apiBaseURL: String {
         switch FreespokeEnvironment.current {
         case .production:
@@ -56,6 +62,8 @@ enum Constants: String {
             return "https://api.staging.freespoke.com/v2"
         }
     }
+    
+    // MARK: - URLs
     
     case freespokeURL = "https://freespoke.com/"
     case twitterURL = "https://twitter.com/FreespokeSearch/"
@@ -71,6 +79,12 @@ enum Constants: String {
     case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
     case electionURL = "https://freespoke.com/election/2024"
+    case accounntProfileProd = "https://freespoke.com/account/profile"
+    case accounntProfileStaging = "https://staging.freespoke.com/account/profile"
+    case appleNativeSubscriptions = "itms-apps://apps.apple.com/account/subscriptions"
+    case androidNativeSubscriptions = "https://play.google.com/store/games?pli=1" // TODO: Add correct link
+    case webSubscriptions = "https://google.com" // TODO: Add correct link
+
     
     // MARK: - One Signal
     
@@ -97,6 +111,10 @@ extension UIColor {
     static let darkBackground = Utils.hexStringToUIColor(hex: "161616")
     static let gray7 = Utils.hexStringToUIColor(hex: "F8F9FB")
     static let gray2 = Utils.hexStringToUIColor(hex: "606671")
+    static let onboardingDark = Utils.hexStringToUIColor(hex: "#1D1D1D")
+    static let onboardingTitleDark = Utils.hexStringToUIColor(hex: "#081A33")
+    static let greenColor = Utils.hexStringToUIColor(hex: "#149590")
+    static let lavenderGreyColor = Utils.hexStringToUIColor(hex: "#E6E8EF")
 }
 
 class Utils {

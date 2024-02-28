@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "img_signIn_with_apple_light.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

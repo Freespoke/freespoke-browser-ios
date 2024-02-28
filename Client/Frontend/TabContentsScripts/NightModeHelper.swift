@@ -32,13 +32,13 @@ class NightModeHelper: TabContentScript {
     }
 
     static func toggle(_ userDefaults: UserDefaultsInterface = UserDefaults.standard,
-                       tabManager: TabManager) {
+                       tabManager: TabManagerProtocol) {
         let isActive = userDefaults.bool(forKey: NightModeKeys.Status)
         setNightMode(userDefaults, tabManager: tabManager, enabled: !isActive)
     }
 
     static func setNightMode(_ userDefaults: UserDefaultsInterface = UserDefaults.standard,
-                             tabManager: TabManager,
+                             tabManager: TabManagerProtocol,
                              enabled: Bool) {
         userDefaults.set(enabled, forKey: NightModeKeys.Status)
         for tab in tabManager.tabs {

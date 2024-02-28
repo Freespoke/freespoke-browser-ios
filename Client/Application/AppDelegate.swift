@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var themeManager: ThemeManager = DefaultThemeManager()
     lazy var ratingPromptManager = RatingPromptManager(profile: profile)
-    lazy var appSessionManager: AppSessionProvider = AppSessionManager()
+    private lazy var appSessionManager: AppSessionProvider = AppSessionManager.shared
     
     private var shutdownWebServer: DispatchSourceTimer?
     private var webServerUtil: WebServerUtil?
@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var backgroundSyncUtil: BackgroundSyncUtil?
     private var widgetManager: TopSitesWidgetManager?
     private var menuBuilderHelper: MenuBuilderHelper?
+    private var inAppManager = InAppManager()
     
     func application(
         _ application: UIApplication,
@@ -70,6 +71,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logger.log("willFinishLaunchingWithOptions end",
                    level: .info,
                    category: .lifecycle)
+        Task {
+            await self.inAppManager.refreshPurchasedProducts()
+        }
         
         return true
     }
@@ -83,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    level: .info,
                    category: .lifecycle)
         
-        //pushNotificationSetup()
+        // pushNotificationSetup()
         appLaunchUtil?.setUpPostLaunchDependencies()
         backgroundSyncUtil = BackgroundSyncUtil(profile: profile, application: application)
         
@@ -107,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FeatureFlagsManager.shared.set(feature: .startAtHome, to: Client.StartAtHomeSetting.afterFourHours)
         FeatureFlagsManager.shared.set(feature: .searchBarPosition, to: SearchBarPosition.bottom)
         
-        //|     Change homepage & new tab configurations from scope 2.0.0
+        // Change homepage & new tab configurations from scope 2.0.0
         profile.prefs.setString("", forKey: PrefsKeys.HomeButtonHomePageURL)
         profile.prefs.setString("", forKey: PrefsKeys.KeyDefaultHomePageURL)
         profile.prefs.setString(NewTabPage.topSites.rawValue, forKey: NewTabAccessors.HomePrefKey)
@@ -141,10 +145,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UNUserNotificationCenter.current().delegate = self
         
-        // Ask for setup notification setting
-        OneSignal.promptForPushNotifications(userResponse: { accepted in
-            print("User accepted notification: \(accepted)")
-        })
+//        // Ask for setup notification setting
+//        OneSignal.promptForPushNotifications(userResponse: { accepted in
+//            print("User accepted notification: \(accepted)")
+//        })
         
         // Branch init
         self.setupBranchSDK(launchOptions: launchOptions)
@@ -152,7 +156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Matomo tracker
         MatomoTracker.shared.isOptedOut = false
         
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appEntry.rawValue, 
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appEntry.rawValue,
                                    action: MatomoCategory.appEntry.rawValue,
                                    name: MatomoName.open.rawValue,
                                    value: nil)
@@ -160,7 +164,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         Branch.getInstance().application(app, open: url, options: options)
         return true
     }
@@ -256,11 +260,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    //|     Look Orientation in some screens for UX
+    // Look Orientation in some screens for UX
     struct AppUtility {
         static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
             if let delegate = UIApplication.shared.delegate as? AppDelegate {
-                
                 delegate.orientationLock = orientation
             }
         }

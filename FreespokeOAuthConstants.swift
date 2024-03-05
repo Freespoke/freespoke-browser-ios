@@ -9,7 +9,8 @@ final class OAuthConstants {
         get {
             switch FreespokeEnvironment.current {
             case .production:
-                return "https://auth.freespoke.com/realms/freespoke"
+                return "https://auth.staging.freespoke.com/realms/freespoke-staging"
+//                return "https://auth.freespoke.com/realms/freespoke"
             case .staging:
                 return "https://auth.staging.freespoke.com/realms/freespoke-staging"
             }

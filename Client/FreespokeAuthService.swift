@@ -98,9 +98,11 @@ class FreespokeAuthService {
         
         OIDAuthorizationService.discoverConfiguration(forIssuer: issuer,
                                                       completion: { configuration, error in
-            guard let configuration = configuration else { return }
-            
-            guard let refreshToken = Keychain.authInfo?.refreshToken else { return } // TODO: force logout if authInfo is nil
+            guard let configuration = configuration,
+                    let refreshToken = Keychain.authInfo?.refreshToken else {
+                AppSessionManager.shared.performFreespokeForceLogout()
+                return
+            }
             
             let request = OIDTokenRequest(
                 configuration: configuration,

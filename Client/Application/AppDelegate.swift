@@ -30,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var themeManager: ThemeManager = DefaultThemeManager()
     lazy var ratingPromptManager = RatingPromptManager(profile: profile)
-    private lazy var appSessionManager: AppSessionProvider = AppSessionManager.shared
     
     private var shutdownWebServer: DispatchSourceTimer?
     private var webServerUtil: WebServerUtil?
@@ -38,13 +37,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var backgroundSyncUtil: BackgroundSyncUtil?
     private var widgetManager: TopSitesWidgetManager?
     private var menuBuilderHelper: MenuBuilderHelper?
-    private var inAppManager = InAppManager()
     
     func application(
         _ application: UIApplication,
         willFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        self.refreshFreespokeTokenIfPossible()
+        
         // Configure app information for BrowserKit, needed for logger
         BrowserKitInformation.shared.configure(buildChannel: AppConstants.buildChannel,
                                                nightlyAppVersion: AppConstants.nightlyAppVersion,
@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    level: .info,
                    category: .lifecycle)
         Task {
-            await self.inAppManager.refreshPurchasedProducts()
+            await InAppManager.shared.refreshPurchasedProducts()
         }
         
         return true
@@ -162,6 +162,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                    value: nil)
         
         return true
+    }
+    
+    private func refreshFreespokeTokenIfPossible() {
+        if let refreshToken = Keychain.authInfo?.refreshToken {
+            AppSessionManager.shared.performRefreshFreespokeToken(completion: nil)
+        }
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {

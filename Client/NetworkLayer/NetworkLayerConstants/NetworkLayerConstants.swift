@@ -6,7 +6,8 @@ enum NetworkLayerConstants {
     static var xClientSecretValue: String {
         switch FreespokeEnvironment.current {
         case .production:
-            return ""
+            return "cce90e80e99383e2fe5c39b42f73b5c3"
+//            return ""
         case .staging:
             return "cce90e80e99383e2fe5c39b42f73b5c3"
         }
@@ -18,7 +19,8 @@ enum NetworkLayerConstants {
         static var baseServerUrl: String {
             switch FreespokeEnvironment.current {
             case .production:
-                return "https://api.freespoke.com"
+                return "https://api.staging.freespoke.com"
+//                return "https://api.freespoke.com"
             case .staging:
                 return "https://api.staging.freespoke.com"
             }
@@ -27,7 +29,8 @@ enum NetworkLayerConstants {
         static var oAuthBaseUrl: String {
             switch FreespokeEnvironment.current {
             case .production:
-                return "https://auth.freespoke.com"
+                return "https://auth.staging.freespoke.com"
+//                return "https://auth.freespoke.com"
             case .staging:
                 return "https://auth.staging.freespoke.com"
             }
@@ -49,7 +52,8 @@ enum NetworkLayerConstants {
         static var logoutPath: String {
             switch FreespokeEnvironment.current {
             case .production:
-                return "/realms/freespoke/protocol/openid-connect/logout"
+                return "/realms/freespoke-staging/protocol/openid-connect/logout"
+//                return "/realms/freespoke/protocol/openid-connect/logout"
             case .staging:
                 return "/realms/freespoke-staging/protocol/openid-connect/logout"
             }

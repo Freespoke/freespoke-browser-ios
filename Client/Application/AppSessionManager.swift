@@ -92,7 +92,11 @@ struct AppSessionManager: AppSessionProvider {
     // MARK: Refresh Freespoke Token
     func performRefreshFreespokeToken(completion: (( _ apiAuthModel: FreespokeAuthModel?, _ error: Error?) -> Void)?) {
         self.authService.refreshToken(completion: { apiAuthModel, error in
-            Keychain.authInfo = apiAuthModel
+            if let apiAuthModel = apiAuthModel {
+                Keychain.authInfo = apiAuthModel
+            } else {
+                AppSessionManager.shared.performFreespokeForceLogout()
+            }
             completion?(apiAuthModel, error)
         })
     }

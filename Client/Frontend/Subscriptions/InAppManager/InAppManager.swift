@@ -66,7 +66,8 @@ protocol InAppManagerServiceProtocol {
 }
 
 class InAppManager: NSObject, InAppManagerServiceProtocol {
-    private(set) var products = [Product]()
+    public static var shared = InAppManager()
+    private var products = [Product]()
     var transactionCompletionStatus: Bool = false
     
     private let productIds = [ProductIdentifiers.monthlySubscription,
@@ -95,6 +96,10 @@ class InAppManager: NSObject, InAppManagerServiceProtocol {
     
     func getProductIds() -> [String] {
         return self.productIds
+    }
+    
+    func getProduct() -> [Product] {
+        return self.products
     }
     
     /// Get all of the in-app products
@@ -234,7 +239,7 @@ extension InAppManager: SKPaymentTransactionObserver {
         for transaction in transactions {
 #if DEBUG
             print("transactionState.rawValue => ", transaction.transactionState.rawValue)
-            print("Transaction status: ", transaction.transactionState.status(),"\n", "product_identifier: ", transaction.payment.productIdentifier)
+            print("Transaction status: ", transaction.transactionState.status(), "\n", "product_identifier: ", transaction.payment.productIdentifier)
 #endif
             switch transaction.transactionState {
             case .purchased:

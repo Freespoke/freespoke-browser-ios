@@ -90,13 +90,12 @@ extension Keychain {
                     try setObject(newValue, forKey: .authInfo)
                     NotificationCenter.default.post(name: Notification.Name.freespokeUserAuthChanged, object: nil, userInfo: nil)
                 }
+                print("TEST: Keychain authInfo: ", newValue)
             } catch {
                 print("Unable to save object to keychain")
             }
         }
     }
-    
-    
 }
 
 // MARK: - ObjectSavable

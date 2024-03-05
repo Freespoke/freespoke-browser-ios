@@ -4,13 +4,13 @@
 
 import UIKit
 import Shared
+import StoreKit
 
 class SubscriptionsVC: OnboardingBaseViewController {
     private let viewModel: SubscriptionsVCViewModel
-    private var inAppManager = InAppManager()
     private let scrollView = UIScrollView()
     private var scrollableContentView: SubscriptionsContentView!
-    
+
     // MARK: Bottom buttons view
     
     private var lblDescription: UILabel = {
@@ -102,8 +102,8 @@ class SubscriptionsVC: OnboardingBaseViewController {
         self.setupBottomButtonsView()
         
         self.applyTheme()
-        self.btnRestorePurchases.tapClosure = { [weak self] in
-            self?.inAppManager.restorePurchases(completionHandler: { status in
+        self.btnRestorePurchases.tapClosure = {
+            InAppManager.shared.restorePurchases(completionHandler: { status in
                 switch status {
                 case .canNotMakePayments:
                     UIUtils.showOkAlert(title: status.userMessage, message: "")
@@ -119,7 +119,7 @@ class SubscriptionsVC: OnboardingBaseViewController {
             })
         }
     }
-    
+
     private func applyTheme() {
         if let theme = currentTheme {
             switch theme.type {
@@ -184,9 +184,9 @@ extension SubscriptionsVC {
             self.btnMonthlySubscription.stopIndicator()
             return
         }
-        if let product = self.inAppManager.products.first(where: { $0.id == ProductIdentifiers.monthlySubscription }) {
+        if let product = InAppManager.shared.getProduct().first(where: { $0.id == ProductIdentifiers.monthlySubscription }) {
             Task {
-                if await self.inAppManager.purchase(product, appAccountToken: appAccountToken) {
+                if await InAppManager.shared.purchase(product, appAccountToken: appAccountToken) {
                     AppSessionManager.shared.performRefreshFreespokeToken(completion: nil)
                     self.btnMonthlySubscription.stopIndicator()
                     self.openPremiumUnlockedScreen()
@@ -203,9 +203,9 @@ extension SubscriptionsVC {
             self.btnYearlySubscription.stopIndicator()
             return
         }
-        if let product = self.inAppManager.products.first(where: { $0.id == ProductIdentifiers.yearlySubscription }) {
+        if let product = InAppManager.shared.getProduct().first(where: { $0.id == ProductIdentifiers.yearlySubscription }) {
             Task {
-                if await self.inAppManager.purchase(product, appAccountToken: appAccountToken) {
+                if await InAppManager.shared.purchase(product, appAccountToken: appAccountToken) {
                     AppSessionManager.shared.performRefreshFreespokeToken(completion: nil)
                     self.btnYearlySubscription.stopIndicator()
                     self.openPremiumUnlockedScreen()
@@ -318,10 +318,7 @@ extension SubscriptionsVC {
     private func setupBottomButtonsView() {
         self.lblDescription.text = self.viewModel.descriptionText
         self.bottomButtonsView.updateButtonsSpacing(to: 16)
-        
-        self.btnMonthlySubscription.setAttributedTitle(self.makeAttributedTextForPriceButton(price: "5.00", period: "MONTH"), for: .normal)
-        self.btnYearlySubscription.setAttributedTitle(self.makeAttributedTextForPriceButton(price: "30.00", period: "YEAR"), for: .normal)
-        
+        self.setSubscriptionButtonsTitle()
         self.btnUpdateSubscription.setTitle("Update Plan", for: .normal)
         self.btnCancelSubscription.setTitle("Cancel Plan", for: .normal)
         
@@ -357,13 +354,26 @@ extension SubscriptionsVC {
         self.bottomButtonsView.configure(currentTheme: self.currentTheme)
     }
     
+    private func setSubscriptionButtonsTitle() {
+        let monthProduct = InAppManager.shared.getProduct().first(where: { $0.id == ProductIdentifiers.monthlySubscription })
+        let yearProduct = InAppManager.shared.getProduct().first(where: { $0.id == ProductIdentifiers.yearlySubscription })
+        
+        let monthPrice = monthProduct?.displayPrice ?? ""
+        let yearPrice = yearProduct?.displayPrice ?? ""
+        self.btnMonthlySubscription.setAttributedTitle(self.makeAttributedTextForPriceButton(price: monthPrice,
+                                                                                             period: "MONTH"),
+                                                       for: .normal)
+        self.btnYearlySubscription.setAttributedTitle(self.makeAttributedTextForPriceButton(price: yearPrice,
+                                                                                            period: "YEAR"),
+                                                      for: .normal)
+    }
+    
     private func makeAttributedTextForPriceButton(price: String, period: String) -> NSMutableAttributedString {
-        let priceMonth = "$\(price)"
-        let attributedString = NSMutableAttributedString(string: "\(priceMonth) / \(period)")
+        let attributedString = NSMutableAttributedString(string: "\(price) / \(period)")
         let boldAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.sourceSansProFont(.bold, size: 18)
         ]
-        let range = (attributedString.string as NSString).range(of: priceMonth)
+        let range = (attributedString.string as NSString).range(of: price)
         attributedString.addAttributes(boldAttributes, range: range)
         
         let regularAttributes: [NSAttributedString.Key: Any] = [

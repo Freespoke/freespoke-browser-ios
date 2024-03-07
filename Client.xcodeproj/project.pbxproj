@@ -849,6 +849,55 @@
 		0BF0DB941A8545800039F300 /* URLBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF0DB931A8545800039F300 /* URLBarView.swift */; };
 		0BF1B7E31AC60DEA00A7B407 /* InsetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF1B7E21AC60DEA00A7B407 /* InsetButton.swift */; };
 		0BF8F8DA1AEFF1C900E90BC2 /* noTitle.html in Resources */ = {isa = PBXBuildFile; fileRef = 0BF8F8D91AEFF1C900E90BC2 /* noTitle.html */; };
+		0E0DAA012B98A63600EADBD0 /* WhiteListTVC + Headers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0DAA002B98A63600EADBD0 /* WhiteListTVC + Headers.swift */; };
+		0E0DAA032B98A64300EADBD0 /* WhiteListTVC + Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0DAA022B98A64300EADBD0 /* WhiteListTVC + Cells.swift */; };
+		0E0DAA042B98A6C600EADBD0 /* WhiteListTVC + Headers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0DAA002B98A63600EADBD0 /* WhiteListTVC + Headers.swift */; };
+		0E0DAA052B98A6CA00EADBD0 /* WhiteListTVC + Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0DAA022B98A64300EADBD0 /* WhiteListTVC + Cells.swift */; };
+		0E0DAA082B98ACE500EADBD0 /* AdBlockerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0DAA072B98ACE500EADBD0 /* AdBlockerCell.swift */; };
+		0E0DAA092B98ACE500EADBD0 /* AdBlockerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0DAA072B98ACE500EADBD0 /* AdBlockerCell.swift */; };
+		0E2B7D762B9737AC00DE04A9 /* WhiteListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2B7D752B9737AC00DE04A9 /* WhiteListTVC.swift */; };
+		0E2B7D772B9737AC00DE04A9 /* WhiteListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2B7D752B9737AC00DE04A9 /* WhiteListTVC.swift */; };
+		0E6379E62B8CE92600667DBF /* BlockerAdsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6379E52B8CE92600667DBF /* BlockerAdsCell.swift */; };
+		0E6379E72B8CE99800667DBF /* BlockerAdsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6379E52B8CE92600667DBF /* BlockerAdsCell.swift */; };
+		0E6379EA2B8CEDE800667DBF /* LocalizationConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6379E92B8CEDE800667DBF /* LocalizationConstants.swift */; };
+		0E6379EB2B8CEDE800667DBF /* LocalizationConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6379E92B8CEDE800667DBF /* LocalizationConstants.swift */; };
+		0EB329502B8BC99900326992 /* AddDelegate + Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB3294F2B8BC99900326992 /* AddDelegate + Filters.swift */; };
+		0EB3295C2B8BCC4A00326992 /* ultimateAdBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329532B8BCC4800326992 /* ultimateAdBlock.json */; };
+		0EB3295D2B8BCC4A00326992 /* adaway.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329542B8BCC4800326992 /* adaway.json */; };
+		0EB3295F2B8BCC4A00326992 /* tracker.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329562B8BCC4800326992 /* tracker.json */; };
+		0EB329602B8BCC4A00326992 /* blackHosts.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329572B8BCC4900326992 /* blackHosts.json */; };
+		0EB329612B8BCC4A00326992 /* simpleAds.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329582B8BCC4900326992 /* simpleAds.json */; };
+		0EB329622B8BCC4A00326992 /* adServerHosts.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329592B8BCC4900326992 /* adServerHosts.json */; };
+		0EB329632B8BCC4A00326992 /* camelon.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB3295A2B8BCC4900326992 /* camelon.json */; };
+		0EB329642B8BCC4A00326992 /* zeus.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB3295B2B8BCC4900326992 /* zeus.json */; };
+		0EB329682B8BCEE700326992 /* AdBlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB329672B8BCEE700326992 /* AdBlockManager.swift */; };
+		0EB329692B8BCEF900326992 /* AdBlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB329672B8BCEE700326992 /* AdBlockManager.swift */; };
+		0EB3296A2B8BCEFF00326992 /* adaway.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329542B8BCC4800326992 /* adaway.json */; };
+		0EB3296B2B8BCF0700326992 /* blackHosts.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329572B8BCC4900326992 /* blackHosts.json */; };
+		0EB3296C2B8BCF1600326992 /* malwareHosts.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329552B8BCC4800326992 /* malwareHosts.json */; };
+		0EB3296D2B8BCF1700326992 /* malwareHosts.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329552B8BCC4800326992 /* malwareHosts.json */; };
+		0EB3296E2B8BCF1D00326992 /* simpleAds.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329582B8BCC4900326992 /* simpleAds.json */; };
+		0EB3296F2B8BCF2000326992 /* tracker.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329562B8BCC4800326992 /* tracker.json */; };
+		0EB329702B8BCF2600326992 /* ultimateAdBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329532B8BCC4800326992 /* ultimateAdBlock.json */; };
+		0EB329712B8BCF2900326992 /* zeus.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB3295B2B8BCC4900326992 /* zeus.json */; };
+		0EB329722B8BCF3B00326992 /* camelon.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB3295A2B8BCC4900326992 /* camelon.json */; };
+		0EB329742B8BD4A300326992 /* Tab + AdBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB329732B8BD4A300326992 /* Tab + AdBlock.swift */; };
+		0EB329752B8BD4A300326992 /* Tab + AdBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB329732B8BD4A300326992 /* Tab + AdBlock.swift */; };
+		0EB329772B8BD5AA00326992 /* Notification + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB329762B8BD5AA00326992 /* Notification + Extensions.swift */; };
+		0EB329782B8BD5AA00326992 /* Notification + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB329762B8BD5AA00326992 /* Notification + Extensions.swift */; };
+		0EB329792B8BD6DF00326992 /* AddDelegate + Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB3294F2B8BC99900326992 /* AddDelegate + Filters.swift */; };
+		0EFC44B02B97AE3200821B36 /* WhiteListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44AF2B97AE3200821B36 /* WhiteListViewModel.swift */; };
+		0EFC44B12B97AE3200821B36 /* WhiteListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44AF2B97AE3200821B36 /* WhiteListViewModel.swift */; };
+		0EFC44B32B97AE4600821B36 /* WhiteListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44B22B97AE4600821B36 /* WhiteListDelegate.swift */; };
+		0EFC44B42B97AE4600821B36 /* WhiteListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44B22B97AE4600821B36 /* WhiteListDelegate.swift */; };
+		0EFC44B92B97AEE200821B36 /* WhiteListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44B82B97AEE200821B36 /* WhiteListHeaderView.swift */; };
+		0EFC44BA2B97AEE200821B36 /* WhiteListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44B82B97AEE200821B36 /* WhiteListHeaderView.swift */; };
+		0EFC44BC2B97AEF400821B36 /* WhiteListBtnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44BB2B97AEF400821B36 /* WhiteListBtnCell.swift */; };
+		0EFC44BD2B97AEF400821B36 /* WhiteListBtnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44BB2B97AEF400821B36 /* WhiteListBtnCell.swift */; };
+		0EFC44BF2B97AF0400821B36 /* WhiteListDomainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44BE2B97AF0400821B36 /* WhiteListDomainCell.swift */; };
+		0EFC44C02B97AF0400821B36 /* WhiteListDomainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44BE2B97AF0400821B36 /* WhiteListDomainCell.swift */; };
+		0EFC44C32B97CE6500821B36 /* WhiteListSectionsType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44C22B97CE6500821B36 /* WhiteListSectionsType.swift */; };
+		0EFC44C42B97CE6500821B36 /* WhiteListSectionsType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC44C22B97CE6500821B36 /* WhiteListSectionsType.swift */; };
 		158241282820698B00956B39 /* RustRemoteTabsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158241272820698B00956B39 /* RustRemoteTabsTests.swift */; };
 		15DE98FD27FCED4F00F1ECDB /* RustRemoteTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DE98FC27FCED4F00F1ECDB /* RustRemoteTabs.swift */; };
 		1B0DFD25274856D60008EB0A /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 1B0DFD24274856D60008EB0A /* SwiftyJSON */; };
@@ -2665,6 +2714,31 @@
 		0BF0DB931A8545800039F300 /* URLBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLBarView.swift; sourceTree = "<group>"; };
 		0BF1B7E21AC60DEA00A7B407 /* InsetButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsetButton.swift; sourceTree = "<group>"; };
 		0BF8F8D91AEFF1C900E90BC2 /* noTitle.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = noTitle.html; sourceTree = "<group>"; };
+		0E0DAA002B98A63600EADBD0 /* WhiteListTVC + Headers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WhiteListTVC + Headers.swift"; sourceTree = "<group>"; };
+		0E0DAA022B98A64300EADBD0 /* WhiteListTVC + Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WhiteListTVC + Cells.swift"; sourceTree = "<group>"; };
+		0E0DAA072B98ACE500EADBD0 /* AdBlockerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBlockerCell.swift; sourceTree = "<group>"; };
+		0E2B7D752B9737AC00DE04A9 /* WhiteListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteListTVC.swift; sourceTree = "<group>"; };
+		0E6379E52B8CE92600667DBF /* BlockerAdsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockerAdsCell.swift; sourceTree = "<group>"; };
+		0E6379E92B8CEDE800667DBF /* LocalizationConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstants.swift; sourceTree = "<group>"; };
+		0EB3294F2B8BC99900326992 /* AddDelegate + Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddDelegate + Filters.swift"; sourceTree = "<group>"; };
+		0EB329532B8BCC4800326992 /* ultimateAdBlock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ultimateAdBlock.json; sourceTree = "<group>"; };
+		0EB329542B8BCC4800326992 /* adaway.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = adaway.json; sourceTree = "<group>"; };
+		0EB329552B8BCC4800326992 /* malwareHosts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = malwareHosts.json; sourceTree = "<group>"; };
+		0EB329562B8BCC4800326992 /* tracker.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tracker.json; sourceTree = "<group>"; };
+		0EB329572B8BCC4900326992 /* blackHosts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blackHosts.json; sourceTree = "<group>"; };
+		0EB329582B8BCC4900326992 /* simpleAds.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = simpleAds.json; sourceTree = "<group>"; };
+		0EB329592B8BCC4900326992 /* adServerHosts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = adServerHosts.json; sourceTree = "<group>"; };
+		0EB3295A2B8BCC4900326992 /* camelon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = camelon.json; sourceTree = "<group>"; };
+		0EB3295B2B8BCC4900326992 /* zeus.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = zeus.json; sourceTree = "<group>"; };
+		0EB329672B8BCEE700326992 /* AdBlockManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdBlockManager.swift; sourceTree = "<group>"; };
+		0EB329732B8BD4A300326992 /* Tab + AdBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tab + AdBlock.swift"; sourceTree = "<group>"; };
+		0EB329762B8BD5AA00326992 /* Notification + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification + Extensions.swift"; sourceTree = "<group>"; };
+		0EFC44AF2B97AE3200821B36 /* WhiteListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteListViewModel.swift; sourceTree = "<group>"; };
+		0EFC44B22B97AE4600821B36 /* WhiteListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteListDelegate.swift; sourceTree = "<group>"; };
+		0EFC44B82B97AEE200821B36 /* WhiteListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteListHeaderView.swift; sourceTree = "<group>"; };
+		0EFC44BB2B97AEF400821B36 /* WhiteListBtnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteListBtnCell.swift; sourceTree = "<group>"; };
+		0EFC44BE2B97AF0400821B36 /* WhiteListDomainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteListDomainCell.swift; sourceTree = "<group>"; };
+		0EFC44C22B97CE6500821B36 /* WhiteListSectionsType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteListSectionsType.swift; sourceTree = "<group>"; };
 		103245ACA6170E5314CCAC06 /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/ErrorPages.strings"; sourceTree = "<group>"; };
 		149C4A2A90EB137DCD917726 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Search.strings; sourceTree = "<group>"; };
 		158241272820698B00956B39 /* RustRemoteTabsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RustRemoteTabsTests.swift; sourceTree = "<group>"; };
@@ -4671,6 +4745,128 @@
 			path = SearchQuickLinksMedium;
 			sourceTree = "<group>";
 		};
+		0E0DAA062B98ACCA00EADBD0 /* AdBlokerCell */ = {
+			isa = PBXGroup;
+			children = (
+				0E0DAA072B98ACE500EADBD0 /* AdBlockerCell.swift */,
+			);
+			path = AdBlokerCell;
+			sourceTree = "<group>";
+		};
+		0E2B7D742B97377100DE04A9 /* WhiteListTVC */ = {
+			isa = PBXGroup;
+			children = (
+				0EFC44C12B97CE4800821B36 /* Additions */,
+				0E2B7D7A2B97387300DE04A9 /* Protocols */,
+				0E2B7D792B97386C00DE04A9 /* Views */,
+				0E2B7D782B9737CE00DE04A9 /* ViewModel */,
+				0E2B7D752B9737AC00DE04A9 /* WhiteListTVC.swift */,
+				0E0DAA002B98A63600EADBD0 /* WhiteListTVC + Headers.swift */,
+				0E0DAA022B98A64300EADBD0 /* WhiteListTVC + Cells.swift */,
+			);
+			path = WhiteListTVC;
+			sourceTree = "<group>";
+		};
+		0E2B7D782B9737CE00DE04A9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0EFC44AF2B97AE3200821B36 /* WhiteListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0E2B7D792B97386C00DE04A9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0E0DAA062B98ACCA00EADBD0 /* AdBlokerCell */,
+				0EFC44B72B97AEB500821B36 /* WhiteListDomainCell */,
+				0EFC44B62B97AE8B00821B36 /* WhiteListBtnCell */,
+				0EFC44B52B97AE7B00821B36 /* WhiteListHeaderView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0E2B7D7A2B97387300DE04A9 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				0EFC44B22B97AE4600821B36 /* WhiteListDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		0E6379E82B8CEDCF00667DBF /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				0E6379E92B8CEDE800667DBF /* LocalizationConstants.swift */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		0EB329522B8BCB3700326992 /* AdBlockFilters */ = {
+			isa = PBXGroup;
+			children = (
+				0EB329542B8BCC4800326992 /* adaway.json */,
+				0EB329592B8BCC4900326992 /* adServerHosts.json */,
+				0EB329572B8BCC4900326992 /* blackHosts.json */,
+				0EB3295A2B8BCC4900326992 /* camelon.json */,
+				0EB329552B8BCC4800326992 /* malwareHosts.json */,
+				0EB329582B8BCC4900326992 /* simpleAds.json */,
+				0EB329562B8BCC4800326992 /* tracker.json */,
+				0EB329532B8BCC4800326992 /* ultimateAdBlock.json */,
+				0EB3295B2B8BCC4900326992 /* zeus.json */,
+			);
+			path = AdBlockFilters;
+			sourceTree = "<group>";
+		};
+		0EB329652B8BCE8B00326992 /* AdBlock */ = {
+			isa = PBXGroup;
+			children = (
+				0EB329662B8BCEB900326992 /* Singletons */,
+				0EB329522B8BCB3700326992 /* AdBlockFilters */,
+			);
+			path = AdBlock;
+			sourceTree = "<group>";
+		};
+		0EB329662B8BCEB900326992 /* Singletons */ = {
+			isa = PBXGroup;
+			children = (
+				0EB329672B8BCEE700326992 /* AdBlockManager.swift */,
+			);
+			path = Singletons;
+			sourceTree = "<group>";
+		};
+		0EFC44B52B97AE7B00821B36 /* WhiteListHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				0EFC44B82B97AEE200821B36 /* WhiteListHeaderView.swift */,
+			);
+			path = WhiteListHeaderView;
+			sourceTree = "<group>";
+		};
+		0EFC44B62B97AE8B00821B36 /* WhiteListBtnCell */ = {
+			isa = PBXGroup;
+			children = (
+				0EFC44BB2B97AEF400821B36 /* WhiteListBtnCell.swift */,
+			);
+			path = WhiteListBtnCell;
+			sourceTree = "<group>";
+		};
+		0EFC44B72B97AEB500821B36 /* WhiteListDomainCell */ = {
+			isa = PBXGroup;
+			children = (
+				0EFC44BE2B97AF0400821B36 /* WhiteListDomainCell.swift */,
+			);
+			path = WhiteListDomainCell;
+			sourceTree = "<group>";
+		};
+		0EFC44C12B97CE4800821B36 /* Additions */ = {
+			isa = PBXGroup;
+			children = (
+				0EFC44C22B97CE6500821B36 /* WhiteListSectionsType.swift */,
+			);
+			path = Additions;
+			sourceTree = "<group>";
+		};
 		1DA3CE5B24EEE71B00422BB2 /* OpenTabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -4932,6 +5128,7 @@
 				0181A4092B851ABC005BE1F6 /* UIApplication + Extensions.swift */,
 				01B1EEB72B8BD7C100899E53 /* Notification.Name + Extensions.swift */,
 				01823F9C2B8E09FE00986B73 /* UIDevice + Extensions.swift */,
+				0EB329762B8BD5AA00326992 /* Notification + Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -5428,6 +5625,7 @@
 		44481A552B7A264C003BBD6E /* FreefolkProfile */ = {
 			isa = PBXGroup;
 			children = (
+				0E2B7D742B97377100DE04A9 /* WhiteListTVC */,
 				44481A592B7D2FE2003BBD6E /* FreefolkProfileVC */,
 				014F38B02B8D3C6000001DD6 /* ProfileIconView */,
 			);
@@ -5450,6 +5648,7 @@
 			children = (
 				44481A5E2B7D8430003BBD6E /* ProfileCell.swift */,
 				44AA16D92B891B9F001D8E06 /* LogoutCell.swift */,
+				0E6379E52B8CE92600667DBF /* BlockerAdsCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -5726,6 +5925,7 @@
 				1DA3CE6224EEE83200422BB2 /* SavedTab+ConfigureExtension.swift */,
 				74C027441B2A348C001B1E88 /* SessionData.swift */,
 				D3A994961A3686BD008AD1AC /* Tab.swift */,
+				0EB329732B8BD4A300326992 /* Tab + AdBlock.swift */,
 				C82CDD45233E8996002E2743 /* Tab+ChangeUserAgent.swift */,
 				1DA3CE5E24EEE7C600422BB2 /* TabDataRetriever.swift */,
 				8A03309428C2653600286539 /* TabFileManager.swift */,
@@ -7220,6 +7420,7 @@
 				967A028D28FA026F003C35E3 /* SceneDelegate.swift */,
 				5A70EF1E295E3DFC00790249 /* UnitTestAppDelegate.swift */,
 				5A70EF20295E3E0B00790249 /* UnitTestSceneDelegate.swift */,
+				0EB3294F2B8BC99900326992 /* AddDelegate + Filters.swift */,
 			);
 			name = Delegates;
 			sourceTree = "<group>";
@@ -7502,6 +7703,7 @@
 		F84B21C01A090F8100AAB793 /* Client */ = {
 			isa = PBXGroup;
 			children = (
+				0EB329652B8BCE8B00326992 /* AdBlock */,
 				01B1EEB62B8A9E4B00899E53 /* ClientFennec.entitlements */,
 				01ADAA552B86A5BF0009754E /* NetworkLayer */,
 				F84B21E41A0910F600AAB793 /* Application */,
@@ -7662,6 +7864,7 @@
 		F84B21F11A0910F600AAB793 /* Frontend */ = {
 			isa = PBXGroup;
 			children = (
+				0E6379E82B8CEDCF00667DBF /* Localization */,
 				2FAE439529DD6FD70073C68E /* Onboarding */,
 				01FF01FA2B7D2BF70027845D /* Authentication */,
 				014840F82B7E3414005CD610 /* Subscriptions */,
@@ -8573,6 +8776,8 @@
 				01BD25742B6CF7EB00B8B9EB /* CertError.html in Resources */,
 				01BD25752B6CF7EB00B8B9EB /* DownloadHelper.js in Resources */,
 				01BD25762B6CF7EB00B8B9EB /* TrackingProtectionStats.js in Resources */,
+				0EB329712B8BCF2900326992 /* zeus.json in Resources */,
+				0EB3296B2B8BCF0700326992 /* blackHosts.json in Resources */,
 				01BD25772B6CF7EB00B8B9EB /* NetError.css in Resources */,
 				01BD25782B6CF7EB00B8B9EB /* TopSites in Resources */,
 				01BD25792B6CF7EB00B8B9EB /* Images.xcassets in Resources */,
@@ -8582,6 +8787,7 @@
 				01BD257D2B6CF7EB00B8B9EB /* Intro.xcassets in Resources */,
 				01BD257E2B6CF7EB00B8B9EB /* WebcompatAllFramesAtDocumentStart.js in Resources */,
 				01BD257F2B6CF7EB00B8B9EB /* SourceSerifPro-Black.otf in Resources */,
+				0EB329722B8BCF3B00326992 /* camelon.json in Resources */,
 				01BD25802B6CF7EB00B8B9EB /* SourceSansPro-Italic.ttf in Resources */,
 				01BD25812B6CF7EB00B8B9EB /* SourceSerifPro-Light.otf in Resources */,
 				01BD25822B6CF7EB00B8B9EB /* NewYorkMedium-Bold.otf in Resources */,
@@ -8602,6 +8808,7 @@
 				01BD25912B6CF7EB00B8B9EB /* SourceSansPro-Light.ttf in Resources */,
 				01BD25922B6CF7EB00B8B9EB /* Licenses.html in Resources */,
 				01BD25932B6CF7EB00B8B9EB /* Smoketest3.xctestplan in Resources */,
+				0EB3296E2B8BCF1D00326992 /* simpleAds.json in Resources */,
 				01BD25942B6CF7EB00B8B9EB /* Reader.css in Resources */,
 				01BD25952B6CF7EB00B8B9EB /* AllFramesAtDocumentEnd.js in Resources */,
 				01BD25962B6CF7EB00B8B9EB /* disconnect-block-cookies-analytics.json in Resources */,
@@ -8620,6 +8827,7 @@
 				01BD25A32B6CF7EB00B8B9EB /* FreespokeHomepage.xib in Resources */,
 				01BD25A42B6CF7EB00B8B9EB /* MailSchemes.plist in Resources */,
 				01BD25A52B6CF7EB00B8B9EB /* SourceSansPro-SemiBold.ttf in Resources */,
+				0EB329702B8BCF2600326992 /* ultimateAdBlock.json in Resources */,
 				01BD25A62B6CF7EB00B8B9EB /* SourceSansPro-ExtraLight.ttf in Resources */,
 				01BD25A72B6CF7EB00B8B9EB /* SourceSansPro-ExtraLightItalic.ttf in Resources */,
 				01ADAA542B86A51F0009754E /* Fennec_Staging-Info.plist in Resources */,
@@ -8647,16 +8855,19 @@
 				01BD25BC2B6CF7EB00B8B9EB /* SendTo.xcassets in Resources */,
 				01BD25BD2B6CF7EB00B8B9EB /* UnitTest.xctestplan in Resources */,
 				01BD25BE2B6CF7EB00B8B9EB /* SourceSansPro-Black.ttf in Resources */,
+				0EB3296A2B8BCEFF00326992 /* adaway.json in Resources */,
 				01BD25BF2B6CF7EB00B8B9EB /* SyncIntegrationTestPlan.xctestplan in Resources */,
 				01BD25C02B6CF7EB00B8B9EB /* LoginsHelper.js in Resources */,
 				01BD25C12B6CF7EB00B8B9EB /* disconnect-block-cookies-advertising.json in Resources */,
 				01BD25C22B6CF7EB00B8B9EB /* Release.xcconfig in Resources */,
 				01BD25C32B6CF7EB00B8B9EB /* SourceSansPro-LightItalic.ttf in Resources */,
+				0EB3296C2B8BCF1600326992 /* malwareHosts.json in Resources */,
 				01BD25C42B6CF7EB00B8B9EB /* FxASignIn.js in Resources */,
 				01BD25C52B6CF7EB00B8B9EB /* SourceSerifPro-Bold.otf in Resources */,
 				01BD25C62B6CF7EB00B8B9EB /* SourceSansPro-BoldItalic.ttf in Resources */,
 				01BD25C72B6CF7EB00B8B9EB /* Common.xcconfig in Resources */,
 				01BD25C82B6CF7EB00B8B9EB /* SpotlightHelper.js in Resources */,
+				0EB3296F2B8BCF2000326992 /* tracker.json in Resources */,
 				01BD25CA2B6CF7EB00B8B9EB /* MainFrameAtDocumentEnd.js in Resources */,
 				01BD25CB2B6CF7EB00B8B9EB /* disconnect-block-cryptomining.json in Resources */,
 				01BD25CC2B6CF7EB00B8B9EB /* SourceSansPro-Regular.ttf in Resources */,
@@ -8795,7 +9006,9 @@
 				E49943F71AE69EDD00BF9DE4 /* Intro.xcassets in Resources */,
 				4336FAD2264B169000A6B076 /* WebcompatAllFramesAtDocumentStart.js in Resources */,
 				2F18F8972A55ED430061D517 /* SourceSerifPro-Black.otf in Resources */,
+				0EB3295C2B8BCC4A00326992 /* ultimateAdBlock.json in Resources */,
 				2F0F06F429B279CB00A89B37 /* SourceSansPro-Italic.ttf in Resources */,
+				0EB329632B8BCC4A00326992 /* camelon.json in Resources */,
 				2F18F8932A55ED430061D517 /* SourceSerifPro-Light.otf in Resources */,
 				23BEA767251A99ED00A014BF /* NewYorkMedium-Bold.otf in Resources */,
 				2F18F88E2A55ED430061D517 /* SourceSerifPro-ExtraLightIt.otf in Resources */,
@@ -8810,6 +9023,9 @@
 				E1AF3567286DE5F800960045 /* PerformanceTestPlan.xctestplan in Resources */,
 				2F0F06EB29B279CB00A89B37 /* SourceSansPro-Bold.ttf in Resources */,
 				23BEA76A251A99ED00A014BF /* NewYorkMedium-RegularItalic.otf in Resources */,
+				0EB3295F2B8BCC4A00326992 /* tracker.json in Resources */,
+				0EB3296D2B8BCF1700326992 /* malwareHosts.json in Resources */,
+				0EB329612B8BCC4A00326992 /* simpleAds.json in Resources */,
 				0B1346942954202C0064DF45 /* CreditCardHelper.js in Resources */,
 				7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */,
 				2F0F06ED29B279CB00A89B37 /* SourceSansPro-Light.ttf in Resources */,
@@ -8821,10 +9037,12 @@
 				D37524871C6E8B5A00A5F6C2 /* topdomains.txt in Resources */,
 				7B4980A81CE363ED0017547C /* Settings.xcassets in Resources */,
 				39F4C0FA2045D87400746155 /* FocusHelper.js in Resources */,
+				0EB329602B8BCC4A00326992 /* blackHosts.json in Resources */,
 				E1AF3562286DE5F800960045 /* Smoketest2.xctestplan in Resources */,
 				2F44FB2C1A9D5D8500FD20CC /* Library.xcassets in Resources */,
 				43175DB626B8774D00C41C31 /* Ads.js in Resources */,
 				D0FCF8081FE4772D004A7995 /* MainFrameAtDocumentStart.js in Resources */,
+				0EB329642B8BCC4A00326992 /* zeus.json in Resources */,
 				2F18F8952A55ED430061D517 /* SourceSerifPro-Semibold.otf in Resources */,
 				2F0F06E929B279CB00A89B37 /* SourceSansPro-SemiBoldItalic.ttf in Resources */,
 				EBC9D38722D4D56F0011D881 /* disconnect-block-cookies-content.json in Resources */,
@@ -8859,6 +9077,7 @@
 				E4A961381AC06FA50069AD6F /* ReaderViewLoading.html in Resources */,
 				EBE7635820ADCB7600E27F2D /* SendTo.xcassets in Resources */,
 				E1AF3565286DE5F800960045 /* UnitTest.xctestplan in Resources */,
+				0EB329622B8BCC4A00326992 /* adServerHosts.json in Resources */,
 				2F0F06EE29B279CB00A89B37 /* SourceSansPro-Black.ttf in Resources */,
 				E1AF3564286DE5F800960045 /* SyncIntegrationTestPlan.xctestplan in Resources */,
 				8AEE62C92756BA34003207D1 /* LoginsHelper.js in Resources */,
@@ -8869,6 +9088,7 @@
 				2F18F8902A55ED430061D517 /* SourceSerifPro-Bold.otf in Resources */,
 				2F0F06F129B279CB00A89B37 /* SourceSansPro-BoldItalic.ttf in Resources */,
 				8A2B1A5E28216C4D0061216B /* Common.xcconfig in Resources */,
+				0EB3295D2B8BCC4A00326992 /* adaway.json in Resources */,
 				39A35AED1C0662A3006B9E87 /* SpotlightHelper.js in Resources */,
 				D0FCF8071FE4772D004A7995 /* MainFrameAtDocumentEnd.js in Resources */,
 				EB84945822D4FA8A0004C2E2 /* disconnect-block-cryptomining.json in Resources */,
@@ -9259,7 +9479,9 @@
 				01BD23822B6CF7EB00B8B9EB /* MockPocketSponsoredStoriesProvider.swift in Sources */,
 				01BD23832B6CF7EB00B8B9EB /* OnboardingViewControllerProtocol.swift in Sources */,
 				01BD23842B6CF7EB00B8B9EB /* UserScriptManager.swift in Sources */,
+				0EFC44B12B97AE3200821B36 /* WhiteListViewModel.swift in Sources */,
 				01BD23852B6CF7EB00B8B9EB /* HomepageViewModelProtocol.swift in Sources */,
+				0EB329752B8BD4A300326992 /* Tab + AdBlock.swift in Sources */,
 				01ADAA7C2B86A5C10009754E /* ParameterEncoding.swift in Sources */,
 				0181A4142B8559C7005BE1F6 /* ResponseErrorModel.swift in Sources */,
 				01BD23862B6CF7EB00B8B9EB /* SyncedTabCell.swift in Sources */,
@@ -9308,7 +9530,9 @@
 				01BD23AD2B6CF7EB00B8B9EB /* OpenTabNotificationObject.swift in Sources */,
 				01BD23AE2B6CF7EB00B8B9EB /* FeatureFlagUserPrefsMigrationUtility.swift in Sources */,
 				01BD23AF2B6CF7EB00B8B9EB /* LocalRequestHelper.swift in Sources */,
+				0EB329792B8BD6DF00326992 /* AddDelegate + Filters.swift in Sources */,
 				01BD23B02B6CF7EB00B8B9EB /* LegacyWallpaperResourceManager.swift in Sources */,
+				0E0DAA052B98A6CA00EADBD0 /* WhiteListTVC + Cells.swift in Sources */,
 				01BD23B12B6CF7EB00B8B9EB /* ReaderModeHandlers.swift in Sources */,
 				01BD23B22B6CF7EB00B8B9EB /* SearchEngines.swift in Sources */,
 				01ADAAA02B86A5C20009754E /* NSNutableData + Extension.swift in Sources */,
@@ -9356,6 +9580,7 @@
 				01BD23D52B6CF7EB00B8B9EB /* NSAttributedString+Extension.swift in Sources */,
 				01BD23D62B6CF7EB00B8B9EB /* SceneDelegate.swift in Sources */,
 				01BD23D72B6CF7EB00B8B9EB /* NimbusFlaggableFeature.swift in Sources */,
+				0E0DAA042B98A6C600EADBD0 /* WhiteListTVC + Headers.swift in Sources */,
 				01BD23D82B6CF7EB00B8B9EB /* Clearables.swift in Sources */,
 				01BD23D92B6CF7EB00B8B9EB /* DefaultBrowserOnboardingViewModel.swift in Sources */,
 				01BD23DA2B6CF7EB00B8B9EB /* LegacyWallpaperStorageUtility.swift in Sources */,
@@ -9375,6 +9600,7 @@
 				01BD23E42B6CF7EB00B8B9EB /* WallpaperNetworkModule.swift in Sources */,
 				01BD23E52B6CF7EB00B8B9EB /* UIPasteboard+Extension.swift in Sources */,
 				01BD23E62B6CF7EB00B8B9EB /* WallpaperMetadataCodableProtocol.swift in Sources */,
+				0E0DAA092B98ACE500EADBD0 /* AdBlockerCell.swift in Sources */,
 				01BD23E72B6CF7EB00B8B9EB /* PhotonActionSheetContainerCell.swift in Sources */,
 				01BD23E82B6CF7EB00B8B9EB /* MenuController.swift in Sources */,
 				01BD23E92B6CF7EB00B8B9EB /* RecentlyViewedCollectionViewCell.swift in Sources */,
@@ -9429,6 +9655,7 @@
 				01BD24132B6CF7EB00B8B9EB /* OpenWithSettingsViewController.swift in Sources */,
 				0181A41B2B8606EF005BE1F6 /* FreespokeAuthService.swift in Sources */,
 				01BD24142B6CF7EB00B8B9EB /* WallpaperMetadataUtility.swift in Sources */,
+				0EFC44C02B97AF0400821B36 /* WhiteListDomainCell.swift in Sources */,
 				01BD24152B6CF7EB00B8B9EB /* PocketSponsoredStoriesProvider.swift in Sources */,
 				01BD24162B6CF7EB00B8B9EB /* InstructionsView.swift in Sources */,
 				01BD24172B6CF7EB00B8B9EB /* FindInPageBar.swift in Sources */,
@@ -9536,6 +9763,7 @@
 				01BD24752B6CF7EB00B8B9EB /* BreachAlertsDetailView.swift in Sources */,
 				01BD24762B6CF7EB00B8B9EB /* Blurrable.swift in Sources */,
 				01BD24772B6CF7EB00B8B9EB /* NavigationRouter.swift in Sources */,
+				0EFC44B42B97AE4600821B36 /* WhiteListDelegate.swift in Sources */,
 				01BD24782B6CF7EB00B8B9EB /* Wallpaper.swift in Sources */,
 				01BD24792B6CF7EB00B8B9EB /* EnhancedTrackingProtectionVM.swift in Sources */,
 				01BD247A2B6CF7EB00B8B9EB /* FormPostHelper.swift in Sources */,
@@ -9566,6 +9794,7 @@
 				01BD248F2B6CF7EB00B8B9EB /* LegacyWallpaper.swift in Sources */,
 				01BD24902B6CF7EB00B8B9EB /* MenuHelper.swift in Sources */,
 				01BD24912B6CF7EB00B8B9EB /* Constants+Utils.swift in Sources */,
+				0EFC44BD2B97AEF400821B36 /* WhiteListBtnCell.swift in Sources */,
 				01ADAA782B86A5C10009754E /* Tools.swift in Sources */,
 				01BD24922B6CF7EB00B8B9EB /* HomePanelType.swift in Sources */,
 				01BD24932B6CF7EB00B8B9EB /* SendToDeviceActivity.swift in Sources */,
@@ -9598,6 +9827,7 @@
 				01BD24AC2B6CF7EB00B8B9EB /* TopTabFader.swift in Sources */,
 				01BD24AD2B6CF7EB00B8B9EB /* CustomizeHomepageSectionCell.swift in Sources */,
 				01BD24AE2B6CF7EB00B8B9EB /* WallpaperStorageUtility.swift in Sources */,
+				0E6379E72B8CE99800667DBF /* BlockerAdsCell.swift in Sources */,
 				01BD24AF2B6CF7EB00B8B9EB /* LoginRecordExtension.swift in Sources */,
 				01BD24B02B6CF7EB00B8B9EB /* SettingsTableViewController.swift in Sources */,
 				01BD24B12B6CF7EB00B8B9EB /* FxBookmarkNode.swift in Sources */,
@@ -9637,6 +9867,7 @@
 				01ADAAB42B8781110009754E /* OAuthLoginVC.swift in Sources */,
 				01BD24CC2B6CF7EB00B8B9EB /* RemoteTabsErrorDataSource.swift in Sources */,
 				01BD24CD2B6CF7EB00B8B9EB /* Profile.swift in Sources */,
+				0EFC44C42B97CE6500821B36 /* WhiteListSectionsType.swift in Sources */,
 				01BD24CE2B6CF7EB00B8B9EB /* HistoryHighlightsViewModel.swift in Sources */,
 				01BD24CF2B6CF7EB00B8B9EB /* WallpaperFilePathProvider.swift in Sources */,
 				01BD24D02B6CF7EB00B8B9EB /* UIView+Extension.swift in Sources */,
@@ -9646,6 +9877,7 @@
 				01BD24D32B6CF7EB00B8B9EB /* GeneralizedImageFetcher.swift in Sources */,
 				01BD24D42B6CF7EB00B8B9EB /* SearchTelemetry.swift in Sources */,
 				01BD24D52B6CF7EB00B8B9EB /* DynamicFontHelper.swift in Sources */,
+				0E6379EB2B8CEDE800667DBF /* LocalizationConstants.swift in Sources */,
 				01BD24D62B6CF7EB00B8B9EB /* Tab+ChangeUserAgent.swift in Sources */,
 				01BD24D72B6CF7EB00B8B9EB /* TabTrayButtonExtensions.swift in Sources */,
 				01BD24D82B6CF7EB00B8B9EB /* FxAWebViewTelemetry.swift in Sources */,
@@ -9683,6 +9915,7 @@
 				01BD24F32B6CF7EB00B8B9EB /* BookmarkDetailPanel.swift in Sources */,
 				01BD24F42B6CF7EB00B8B9EB /* UIImageColors.swift in Sources */,
 				01BD24F52B6CF7EB00B8B9EB /* ASGroup.swift in Sources */,
+				0EB329692B8BCEF900326992 /* AdBlockManager.swift in Sources */,
 				01BD24F62B6CF7EB00B8B9EB /* NewTabAccessors.swift in Sources */,
 				01BD24F72B6CF7EB00B8B9EB /* JumpBackInCell.swift in Sources */,
 				0141287C2B7A750000283449 /* BaseButtonStyle.swift in Sources */,
@@ -9700,6 +9933,7 @@
 				01BD25022B6CF7EB00B8B9EB /* PocketFeedStory.swift in Sources */,
 				01BD25032B6CF7EB00B8B9EB /* ContileProvider.swift in Sources */,
 				01BD25042B6CF7EB00B8B9EB /* LegacyWallpaperManager.swift in Sources */,
+				0EB329782B8BD5AA00326992 /* Notification + Extensions.swift in Sources */,
 				01BD25052B6CF7EB00B8B9EB /* ToolbarBadge.swift in Sources */,
 				012C3AC02B80E872007EC4AF /* SignInWithAppleItemView.swift in Sources */,
 				01BD25062B6CF7EB00B8B9EB /* ImageButtonWithLabel.swift in Sources */,
@@ -9716,6 +9950,7 @@
 				01BD25102B6CF7EB00B8B9EB /* TopSitesSettingsViewController.swift in Sources */,
 				01ADAA902B86A5C10009754E /* HTTPTask.swift in Sources */,
 				01BD25112B6CF7EB00B8B9EB /* RatingPromptManager.swift in Sources */,
+				0EFC44BA2B97AEE200821B36 /* WhiteListHeaderView.swift in Sources */,
 				01BD25122B6CF7EB00B8B9EB /* TopSitesViewModel.swift in Sources */,
 				01BD25132B6CF7EB00B8B9EB /* WidgetIntents.intentdefinition in Sources */,
 				01BD25142B6CF7EB00B8B9EB /* DownloadFileFetcher.swift in Sources */,
@@ -9771,6 +10006,7 @@
 				01ADAA8E2B86A5C10009754E /* ErrorProcessing.swift in Sources */,
 				01BD25442B6CF7EB00B8B9EB /* InactiveTabCell.swift in Sources */,
 				01BD25452B6CF7EB00B8B9EB /* HomeLogoHeaderCell.swift in Sources */,
+				0E2B7D772B9737AC00DE04A9 /* WhiteListTVC.swift in Sources */,
 				01BD25462B6CF7EB00B8B9EB /* GroupedTabCell.swift in Sources */,
 				01BD25472B6CF7EB00B8B9EB /* FSReadingList.m in Sources */,
 				01BD25482B6CF7EB00B8B9EB /* SearchBarSettingsViewController.swift in Sources */,
@@ -10346,6 +10582,7 @@
 				E571EE772875694C0051D9AA /* MockPocketSponsoredStoriesProvider.swift in Sources */,
 				2109478928AFD24C00B73D44 /* OnboardingViewControllerProtocol.swift in Sources */,
 				D0FCF7F51FE45842004A7995 /* UserScriptManager.swift in Sources */,
+				0EFC44B02B97AE3200821B36 /* WhiteListViewModel.swift in Sources */,
 				8AB8573027D94CAD0075C173 /* HomepageViewModelProtocol.swift in Sources */,
 				01ADAA7B2B86A5C10009754E /* ParameterEncoding.swift in Sources */,
 				0181A4132B8559C7005BE1F6 /* ResponseErrorModel.swift in Sources */,
@@ -10372,6 +10609,7 @@
 				D0152245229855A8009DE753 /* OneLineTableViewCell.swift in Sources */,
 				F018F84C2719AE8300B9A52D /* ThemedDefaultNavigationController.swift in Sources */,
 				8ADED7EE276A7750009C19E6 /* CumulativeDaysOfUseCounter.swift in Sources */,
+				0EB329502B8BC99900326992 /* AddDelegate + Filters.swift in Sources */,
 				4346FF08295BA6A300F4D220 /* CreditCardSettingsViewController.swift in Sources */,
 				E19B38B528A42EBC00D8C541 /* WallpaperCellViewModel.swift in Sources */,
 				5A3A7DCE2886F7880065F81A /* RecentlySavedDataAdaptor.swift in Sources */,
@@ -10397,6 +10635,7 @@
 				C87DC85C27B2C94D006EFCE2 /* LegacyWallpaperResourceManager.swift in Sources */,
 				E4B423DD1ABA0318007E66C8 /* ReaderModeHandlers.swift in Sources */,
 				D308E4E41A5306F500842685 /* SearchEngines.swift in Sources */,
+				0E0DAA032B98A64300EADBD0 /* WhiteListTVC + Cells.swift in Sources */,
 				0141288B2B7A7DDE00283449 /* OnboardingWelcomeScreenContentView.swift in Sources */,
 				01ADAA9F2B86A5C20009754E /* NSNutableData + Extension.swift in Sources */,
 				048B4C8924A53F81001B56E8 /* UIButtonExtensions.swift in Sources */,
@@ -10444,6 +10683,7 @@
 				967A028E28FA026F003C35E3 /* SceneDelegate.swift in Sources */,
 				C8B07A4128199500000AFCE7 /* NimbusFlaggableFeature.swift in Sources */,
 				0B62EFD21AD63CD100ACB9CD /* Clearables.swift in Sources */,
+				0E0DAA012B98A63600EADBD0 /* WhiteListTVC + Headers.swift in Sources */,
 				431C0CA925C890E500395CE4 /* DefaultBrowserOnboardingViewModel.swift in Sources */,
 				8A05123927D17EC3009930CC /* LegacyWallpaperStorageUtility.swift in Sources */,
 				DFACBF81277B916B003D5F41 /* ConfigurableGradientView.swift in Sources */,
@@ -10463,6 +10703,7 @@
 				E1442FD8294782D9003680B0 /* UIPasteboard+Extension.swift in Sources */,
 				C8A4137428BE58C900D8EFEA /* WallpaperMetadataCodableProtocol.swift in Sources */,
 				8A93080927BFE88F0052167D /* PhotonActionSheetContainerCell.swift in Sources */,
+				0E0DAA082B98ACE500EADBD0 /* AdBlockerCell.swift in Sources */,
 				2F18E17829C9A80C00F222A3 /* MenuController.swift in Sources */,
 				2F745E482A8E858500A4085B /* RecentlyViewedCollectionViewCell.swift in Sources */,
 				F85C7F0E2711C556004BDBA4 /* SettingsViewController.swift in Sources */,
@@ -10517,6 +10758,7 @@
 				0181A41A2B8606EF005BE1F6 /* FreespokeAuthService.swift in Sources */,
 				C84656012887A0F700861B4A /* WallpaperMetadataUtility.swift in Sources */,
 				E571EE782875694C0051D9AA /* PocketSponsoredStoriesProvider.swift in Sources */,
+				0EFC44BF2B97AF0400821B36 /* WhiteListDomainCell.swift in Sources */,
 				E1B04A9D28E20A8300670E54 /* InstructionsView.swift in Sources */,
 				D3B6923D1B9F9444004B87A4 /* FindInPageBar.swift in Sources */,
 				2F44FC721A9E840300FD20CC /* SettingsNavigationController.swift in Sources */,
@@ -10624,6 +10866,7 @@
 				435D7CC5246209AA0043ACB9 /* IntroViewController.swift in Sources */,
 				CA4ACE4924C8C91600F55894 /* BreachAlertsDetailView.swift in Sources */,
 				C834ACD128D3ACA900203AD1 /* Blurrable.swift in Sources */,
+				0EFC44B32B97AE4600821B36 /* WhiteListDelegate.swift in Sources */,
 				D8EFFA0C1FF5B1FA001D3A09 /* NavigationRouter.swift in Sources */,
 				C84655E22887388F00861B4A /* Wallpaper.swift in Sources */,
 				C849E46326B9C3AF00260F0B /* EnhancedTrackingProtectionVM.swift in Sources */,
@@ -10654,6 +10897,7 @@
 				E65075611E37F77D006961AC /* MenuHelper.swift in Sources */,
 				01ADAA772B86A5C10009754E /* Tools.swift in Sources */,
 				2FFF6BE129CC9AEB000A2F74 /* Constants+Utils.swift in Sources */,
+				0EFC44BC2B97AEF400821B36 /* WhiteListBtnCell.swift in Sources */,
 				8AB8574827D97CD40075C173 /* HomePanelType.swift in Sources */,
 				2128E27B292E624400FB91BE /* SendToDeviceActivity.swift in Sources */,
 				4403FF6C2B83F4BD003D7131 /* InAppManager.swift in Sources */,
@@ -10671,6 +10915,7 @@
 				C82A94F3269F68F300624AA7 /* CoreFlaggableFeature.swift in Sources */,
 				F84B22241A09122500AAB793 /* LibraryViewController.swift in Sources */,
 				39455F771FC83F430088A22C /* TabEventHandler.swift in Sources */,
+				0EB329742B8BD4A300326992 /* Tab + AdBlock.swift in Sources */,
 				215B458227DA420400E5E800 /* TabMetadataManager.swift in Sources */,
 				E47616C71AB74CA600E7DD25 /* ReaderModeBarView.swift in Sources */,
 				D821E90E2141B71C00452C55 /* SiriSettingsViewController.swift in Sources */,
@@ -10685,6 +10930,7 @@
 				D83822001FC7961D00303C12 /* DispatchQueueHelper.swift in Sources */,
 				EBC486992195F46B00CDA48D /* InternalSchemeHandler.swift in Sources */,
 				E18BAAFD28E4A44500098AE2 /* TopTabFader.swift in Sources */,
+				0E6379E62B8CE92600667DBF /* BlockerAdsCell.swift in Sources */,
 				C8656D79270F866700E199EA /* CustomizeHomepageSectionCell.swift in Sources */,
 				C84655FB28879FC600861B4A /* WallpaperStorageUtility.swift in Sources */,
 				6025B10D267B6C5400F59F6B /* LoginRecordExtension.swift in Sources */,
@@ -10724,6 +10970,7 @@
 				210E0EB8298D9D4500BB4F33 /* DefaultSearchEngineProvider.swift in Sources */,
 				8AE80BBA2891C0C300BC12EA /* JumpBackInSectionLayout.swift in Sources */,
 				21357F2D293FDB60004BF9FD /* RemoteTabsErrorDataSource.swift in Sources */,
+				0EFC44C32B97CE6500821B36 /* WhiteListSectionsType.swift in Sources */,
 				D34DC8531A16C40C00D49B7B /* Profile.swift in Sources */,
 				DFACDFAA274D489B00A94EEC /* HistoryHighlightsViewModel.swift in Sources */,
 				C84655FF2887A06B00861B4A /* WallpaperFilePathProvider.swift in Sources */,
@@ -10733,6 +10980,7 @@
 				C869912D28917688007ACC5C /* WallpaperImageLoader.swift in Sources */,
 				96A5F73829928B3700234E5F /* GeneralizedImageFetcher.swift in Sources */,
 				43F7952525795F69005AEE40 /* SearchTelemetry.swift in Sources */,
+				0E6379EA2B8CEDE800667DBF /* LocalizationConstants.swift in Sources */,
 				E65075541E37F6FC006961AC /* DynamicFontHelper.swift in Sources */,
 				C82CDD47233E8996002E2743 /* Tab+ChangeUserAgent.swift in Sources */,
 				C4E3984C1D21F2FD004E89BA /* TabTrayButtonExtensions.swift in Sources */,
@@ -10805,6 +11053,7 @@
 				8A8DDEBF276259A900E7B97A /* RatingPromptManager.swift in Sources */,
 				8AB8571D27D929350075C173 /* TopSitesViewModel.swift in Sources */,
 				D59431ED25E9912900F0BA82 /* WidgetIntents.intentdefinition in Sources */,
+				0EFC44B92B97AEE200821B36 /* WhiteListHeaderView.swift in Sources */,
 				213778632980448C00D01309 /* DownloadFileFetcher.swift in Sources */,
 				F85C7EDF2710B4DD004BDBA4 /* LoginOnboarding.swift in Sources */,
 				C8B0F5F5283B7CCE007AE65D /* PocketSponsoredStory.swift in Sources */,
@@ -10860,6 +11109,7 @@
 				1D69FF8D27B17286001F660E /* HomeLogoHeaderCell.swift in Sources */,
 				439B008B26E6CE2300DFAF14 /* GroupedTabCell.swift in Sources */,
 				E4C358551AF144BA00299F7E /* FSReadingList.m in Sources */,
+				0E2B7D762B9737AC00DE04A9 /* WhiteListTVC.swift in Sources */,
 				8AE1E1CB27B18F560024C45E /* SearchBarSettingsViewController.swift in Sources */,
 				8AD40FC527BADC1F00672675 /* TabToolbarHelper.swift in Sources */,
 				01ADAA892B86A5C10009754E /* EndPoint + Headers.swift in Sources */,
@@ -10873,6 +11123,7 @@
 				96EB6C3C27D82AEA00A9D159 /* HistoryPanel+ContextMenuExtensions.swift in Sources */,
 				E1CD81C2290C62A600124B27 /* HostingTableViewCell.swift in Sources */,
 				43175DB826B87D2C00C41C31 /* AdsTelemetryHelper.swift in Sources */,
+				0EB329772B8BD5AA00326992 /* Notification + Extensions.swift in Sources */,
 				217AEF7828480844004EED37 /* ResizableButton.swift in Sources */,
 				E58368AA287D632F0087A449 /* StoryProvider.swift in Sources */,
 				E6327A641BF6438E008D12E0 /* DebugSettingsBundleOptions.swift in Sources */,
@@ -10889,6 +11140,7 @@
 				59A68D66379CFA85C4EAF00B /* TwoLineImageOverlayCell.swift in Sources */,
 				8A04136928258DF600D20B10 /* SponsoredTileTelemetry.swift in Sources */,
 				01ADAA7D2B86A5C10009754E /* URLParameterEncoding.swift in Sources */,
+				0EB329682B8BCEE700326992 /* AdBlockManager.swift in Sources */,
 				D04CD718215EBD85004FF5B0 /* SettingsLoadingView.swift in Sources */,
 				5A70EF1F295E3DFC00790249 /* UnitTestAppDelegate.swift in Sources */,
 				2128E27E2934F78600FB91BE /* CustomAppActivity.swift in Sources */,

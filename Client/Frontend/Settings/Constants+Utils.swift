@@ -115,6 +115,13 @@ extension UIColor {
     static let onboardingTitleDark = Utils.hexStringToUIColor(hex: "#081A33")
     static let greenColor = Utils.hexStringToUIColor(hex: "#149590")
     static let lavenderGreyColor = Utils.hexStringToUIColor(hex: "#E6E8EF")
+    static let neutralsGray5 = Utils.hexStringToUIColor(hex: "#E1E5EB")
+    static let blackFS = Utils.hexStringToUIColor(hex: "#E1E5EB")
+    static let neutralsGray06 = Utils.hexStringToUIColor(hex: "#EDF0F5")
+    static let neutralsGray01 = Utils.hexStringToUIColor(hex: "#2F3644")
+    static let neutralsGray05 = Utils.hexStringToUIColor(hex: "#E1E5EB")
+
+
 }
 
 class Utils {

@@ -129,6 +129,8 @@ class ProfileCell: UITableViewCell {
             self.iconImageView.isHidden = true
             self.arrowImageView.isHidden = true
             self.darkModeSwitch.isHidden = true
+        case .adBlocker:
+            break
         }
         self.iconImageView.image = iconImage
         switch cellType {
@@ -152,6 +154,8 @@ class ProfileCell: UITableViewCell {
             self.titleLabel.isHidden = false
             self.arrowImageView.isHidden = true
             self.darkModeSwitch.isHidden = true
+        case .adBlocker:
+            break
         }
     }
     

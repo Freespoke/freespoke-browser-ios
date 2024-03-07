@@ -71,9 +71,9 @@ class CustomTitleView: UIView {
         profileIconView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 7),
             backButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            profileIconView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            profileIconView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
             profileIconView.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }

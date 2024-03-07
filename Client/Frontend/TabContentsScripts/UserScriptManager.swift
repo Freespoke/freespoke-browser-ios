@@ -87,5 +87,33 @@ class UserScriptManager {
         if noImageMode {
             tab.webView?.configuration.userContentController.addUserScript(noImageModeUserScript)
         }
+        
+        let script = """
+        const elements = [
+          ".ad-300x600",
+          ".ad-458x80",
+          ".ad-bottom",
+          ".ad-column",
+          ".ad-manager/$~stylesheet",
+          ".ad-right",
+          ".ad-sidebar",
+          ".ad-unit",
+          ".ad-util",
+          ".ad.jpg.pagespeed",
+          ".ad.jpg?",
+          ".adbanner",
+          ".ads-banner"
+        ];
+
+        for (const element of elements) {
+          const els = document.querySelectorAll(element);
+          for (const el of els) {
+            el.parentNode.removeChild(el);
+          }
+        }
+        """
+        let userScript = WKUserScript(source: script, injectionTime: .atDocumentStart, forMainFrameOnly: true)
+        tab.webView?.configuration.userContentController.addUserScript(userScript)
+        
     }
 }

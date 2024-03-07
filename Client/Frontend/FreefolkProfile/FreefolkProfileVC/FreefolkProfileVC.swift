@@ -58,6 +58,19 @@ class FreefolkProfileVC: UIViewController {
         self.customTitleView.updateProfileIcon(freespokeJWTDecodeModel: self.viewModel.freespokeJWTDecodeModel)
     }
     
+    private func setupTableView() {
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.register(ProfileCell.self, forCellReuseIdentifier: ProfileCell.identifier)
+        self.tableView.register(LogoutCell.self, forCellReuseIdentifier: LogoutCell.identifier)
+        self.tableView.register(BlockerAdsCell.self, forCellReuseIdentifier: BlockerAdsCell.reuseIdentifier)
+        self.tableView.separatorStyle = .none
+        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+        self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.estimatedRowHeight = 44
+        self.tableView.allowsSelection = false
+    }
+    
     private func addingViews() {
         self.view.addSubview(self.contentView)
         self.contentView.addSubview(customTitleView)
@@ -95,8 +108,8 @@ class FreefolkProfileVC: UIViewController {
         }
         NSLayoutConstraint.activate([
             self.customTitleView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 0),
-            self.customTitleView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-            self.customTitleView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            self.customTitleView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40),
+            self.customTitleView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -40),
             self.customTitleView.heightAnchor.constraint(equalToConstant: 60),
             
             self.titleLbl.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
@@ -123,22 +136,9 @@ class FreefolkProfileVC: UIViewController {
                 self.titleLbl.textColor = .blackColor
             }
         }
-        
         self.tableView.reloadData()
     }
-    
-    private func setupTableView() {
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.tableView.register(ProfileCell.self, forCellReuseIdentifier: ProfileCell.identifier)
-        self.tableView.register(LogoutCell.self, forCellReuseIdentifier: LogoutCell.identifier)
-        self.tableView.separatorStyle = .none
-        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = 44
-        self.tableView.allowsSelection = false
-    }
-    
+        
     func subscribeClosures() {
         self.customTitleView.backButtonTapClosure = { [weak self] in
             self?.motionDismissViewController(animated: true)
@@ -192,6 +192,15 @@ class FreefolkProfileVC: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    private func navigateToDomainsVC() {
+        guard let currentTheme = self.currentTheme else { return }
+        let vc = WhiteListTVC(currentTheme: currentTheme)
+        vc.closureTappedOnBtnSwitch = { [weak self] in
+            self?.reloadTableView()
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     private func shareFreespoke() {
         guard let url = URL(string: Constants.freespokeURL.rawValue) else { return }
         let helper = ShareExtensionHelper(url: url, tab: nil)
@@ -235,9 +244,27 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
             return getProfileCell(for: cellType, at: indexPath)
         case .logout:
             return getLogoutCell(at: indexPath)
+        case .adBlocker:
+            return self.gerAdBlockerCell(tableView, cellForRowAt: indexPath)
         }
     }
     // TODO: Move function to the viewModel
+    private func gerAdBlockerCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BlockerAdsCell.reuseIdentifier, for: indexPath) as? BlockerAdsCell else { return UITableViewCell() }
+        cell.closureTappedOnBtnSwitch = { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.updateTableView()
+        }
+        
+        cell.closureTappedOnBtnManage = { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.navigateToDomainsVC()
+        }
+        cell.setCurrentTheme(currentTheme: self.currentTheme)
+        cell.checkAdBlockerStatus()
+        return cell
+    }
+    
     private func getProfileCell(for cellType: CellType, at indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell.identifier, for: indexPath) as? ProfileCell else {
             return UITableViewCell()
@@ -255,7 +282,7 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         self.configureLogoutCell(cell)
         return cell
     }
-    
+
     private func configureProfileCell(_ cell: ProfileCell, for cellType: CellType) {
         cell.configure(with: cellType, currentTheme: currentTheme)
         
@@ -306,6 +333,12 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         cell.setDarkModeSwich(isOn: nightModeEnabled)
         cell.darkModeSwitchClosure = { [weak self] isOn in
             self?.darkModeSwitchClosure?(isOn)
+        }
+    }
+    
+    private func updateTableView() {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.tableView.performBatchUpdates(nil)
         }
     }
 }

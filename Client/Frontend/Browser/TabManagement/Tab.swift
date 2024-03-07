@@ -466,6 +466,7 @@ class Tab: NSObject {
             self.webView?.addObserver(self, forKeyPath: KVOConstants.title.rawValue, options: .new, context: nil)
             UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
             tabDelegate?.tab?(self, didCreateWebView: webView)
+            self.prepareBlocker()
         }
     }
 

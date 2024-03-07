@@ -13,6 +13,7 @@ protocol FreefolkProfileViewModelProtocol: AnyObject {
 enum CellType {
     case premium
     case account
+    case adBlocker
     case darkMode
     case manageDefaultBrowser
     case manageNotifications
@@ -24,6 +25,7 @@ enum CellType {
         switch self {
         case .premium: return "Premium"
         case .account: return "Account"
+        case .adBlocker: return ""
         case .darkMode: return "Dark Mode"
         case .manageDefaultBrowser: return "Manage Default Browser"
         case .manageNotifications: return "Manage Notifications"
@@ -61,6 +63,7 @@ class FreefolkProfileViewModel {
         if self.freespokeJWTDecodeModel != nil {
             self.cellTypes = [.premium,
                               .account,
+                              .adBlocker,
                               .darkMode,
                               .manageDefaultBrowser,
                               .manageNotifications,
@@ -71,6 +74,7 @@ class FreefolkProfileViewModel {
         } else {
             self.cellTypes = [.premium,
                               .account,
+                              .adBlocker,
                               .darkMode,
                               .manageDefaultBrowser,
                               .manageNotifications,

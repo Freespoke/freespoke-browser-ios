@@ -42,7 +42,9 @@ class TabLocationView: UIView, FeatureFlaggable {
     private let menuBadge = BadgeWithBackdrop(imageName: ImageIdentifiers.menuBadge, backdropCircleSize: 32)
 
     @objc dynamic var baseURLFontColor: UIColor = UX.baseURLFontColor {
-        didSet { updateTextWithURL() }
+        didSet {
+            updateTextWithURL()
+        }
     }
 
     var url: URL? {

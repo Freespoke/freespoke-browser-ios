@@ -37,6 +37,12 @@ extension UIView {
             self.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -insets.bottom)
         ])
     }
+
+    func setSizeToView(width: CGFloat? = nil, height: CGFloat? = nil) {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        if let width = width { self.widthAnchor.constraint(equalToConstant: width).isActive = true }
+        if let height = height { self.heightAnchor.constraint(equalToConstant: height).isActive = true }
+    }
     
     /** Get the Parent View Controller */
     var parentViewController: UIViewController? {

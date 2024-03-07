@@ -88,6 +88,7 @@ extension Keychain {
                     NotificationCenter.default.post(name: Notification.Name.freespokeUserAuthChanged, object: nil, userInfo: nil)
                 } else {
                     try setObject(newValue, forKey: .authInfo)
+                    AppSessionManager.shared.startAccessTokenExpirationHandler()
                     NotificationCenter.default.post(name: Notification.Name.freespokeUserAuthChanged, object: nil, userInfo: nil)
                 }
                 print("TEST: Keychain authInfo: ", newValue)

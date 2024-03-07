@@ -30,7 +30,7 @@ protocol AppSessionProvider {
 ///
 /// DO NOT treat this as your go to solution for session property management. It will turn this session manager
 /// into a smörgåsbord of countless properties. Consider all options before adding it here, but if it makes sense, go for it.
-struct AppSessionManager: AppSessionProvider {
+class AppSessionManager: AppSessionProvider {
     static let shared = AppSessionManager()
     
     var tabUpdateState: TabUpdateState = .coldStart
@@ -53,6 +53,10 @@ struct AppSessionManager: AppSessionProvider {
             return .unauthorized
         }
     }
+    
+    // MARK: Authentication
+    
+    private var accessTokenRefreshTimer: Timer?
     
     private var authService = FreespokeAuthService()
     
@@ -106,7 +110,6 @@ struct AppSessionManager: AppSessionProvider {
         self.authService.performLogoutFreespokeUser(completion: { error in
             print("TEST: Logout error: ", error?.localizedDescription ?? "logout error")
         })
-        Keychain.authInfo = nil
         self.performFreespokeForceLogout()
     }
     
@@ -119,7 +122,38 @@ struct AppSessionManager: AppSessionProvider {
         }
     }
     
+    // MARK: Access Token Expiration Handler
+    func startAccessTokenExpirationHandler() {
+        guard let accessTokenExpirationDate = self.decodedJWTToken?.exp else { return }
+        
+        // Calculate the time interval until expiration
+        let timeIntervalUntilExpiration = accessTokenExpirationDate.timeIntervalSince(Date())
+        
+        // Create a timer to trigger token refresh when the access token expires
+        self.accessTokenRefreshTimer = Timer.scheduledTimer(withTimeInterval: timeIntervalUntilExpiration, repeats: false) { [weak self] timer in
+            self?.handleTokenExpiration()
+        }
+    }
+    
+    // MARK: Handle Token Expiration
+    private func handleTokenExpiration() {
+        // Check if the expiration date is in the past
+        guard let expirationDate = self.decodedJWTToken?.exp, expirationDate < Date() else {
+            // Token is still valid, no action needed
+            return
+        }
+        
+        // Call the refresh token API
+        self.performRefreshFreespokeToken(completion: nil)
+    }
+    
+    private func stopAccessTokenRefreshTimer() {
+        self.accessTokenRefreshTimer?.invalidate()
+        self.accessTokenRefreshTimer = nil
+    }
+    
     private func clearFreespokeAccountData() {
+        self.stopAccessTokenRefreshTimer()
         Keychain.authInfo = nil
     }
     

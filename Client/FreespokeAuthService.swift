@@ -117,15 +117,24 @@ class FreespokeAuthService {
                 additionalParameters: nil)
             
             OIDAuthorizationService.perform(request, callback: { tokenResponse, error in
-                guard let tokenResponse = tokenResponse else { return }
-                guard let idToken = tokenResponse.idToken else { return }
-                guard let accessToken = tokenResponse.accessToken else { return }
-                guard let refreshToken = tokenResponse.refreshToken else { return }
+                guard let tokenResponse = tokenResponse,
+                      let idToken = tokenResponse.idToken,
+                      let accessToken = tokenResponse.accessToken,
+                      let refreshToken = tokenResponse.refreshToken
+                else {
+                    AppSessionManager.shared.performFreespokeForceLogout()
+                    return
+                }
                 
                 let apiAuth = FreespokeAuthModel(id: idToken,
                                                  accessToken: accessToken,
                                                  refreshToken: refreshToken)
-                completion?(apiAuth, error)
+                if let error = error {
+                    AppSessionManager.shared.performFreespokeForceLogout()
+                    completion?(nil, error)
+                } else {
+                    completion?(apiAuth, nil)
+                }
             })
         })
     }

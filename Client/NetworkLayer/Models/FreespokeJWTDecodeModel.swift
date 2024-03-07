@@ -14,6 +14,7 @@ struct FreespokeJWTDecodeModel {
     let email: String
     var externalAccountId: UUID?
     let subscription: SubscriptionInfo?
+    let exp: Date?
     
     var isPremium: Bool {
         switch self.subscription?.subscriptionType {
@@ -46,6 +47,7 @@ extension FreespokeJWTDecodeModel: Codable {
         case email = "email"
         case externalAccountId = "external_account_id"
         case subscription = "subscription"
+        case exp = "exp"
     }
 }
 

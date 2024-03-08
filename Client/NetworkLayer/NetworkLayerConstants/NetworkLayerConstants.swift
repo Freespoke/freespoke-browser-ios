@@ -7,7 +7,6 @@ enum NetworkLayerConstants {
         switch FreespokeEnvironment.current {
         case .production:
             return "cce90e80e99383e2fe5c39b42f73b5c3"
-//            return ""
         case .staging:
             return "cce90e80e99383e2fe5c39b42f73b5c3"
         }
@@ -30,7 +29,7 @@ enum NetworkLayerConstants {
             switch FreespokeEnvironment.current {
             case .production:
                 return "https://auth.staging.freespoke.com"
-//                return "https://auth.freespoke.com"
+//                return "https://accounts.freespoke.com"
             case .staging:
                 return "https://auth.staging.freespoke.com"
             }

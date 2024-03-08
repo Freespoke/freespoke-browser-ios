@@ -8,7 +8,7 @@ import Shared
 // MARK: - ProfileCell
 class ProfileCell: UITableViewCell {
     static let identifier = String(describing: type(of: ProfileCell.self))
-
+    
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -18,6 +18,7 @@ class ProfileCell: UITableViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.sourceSansProFont(.semiBold, size: 19)
+        label.textColor = .blackColor
         return label
     }()
     
@@ -49,6 +50,8 @@ class ProfileCell: UITableViewCell {
         darkModeSwitch.onTintColor = .greenColor
         return darkModeSwitch
     }()
+    
+    var currentTheme: Theme?
     
     var tapClosure: (() -> Void)?
     var darkModeSwitchClosure: ((_ isOn: Bool) -> Void)?
@@ -100,6 +103,7 @@ class ProfileCell: UITableViewCell {
     }
     
     func configure(with cellType: CellType, currentTheme: Theme?) {
+        self.currentTheme = currentTheme
         self.titleLabel.text = cellType.title
         var iconImage: UIImage?
         switch cellType {
@@ -129,6 +133,8 @@ class ProfileCell: UITableViewCell {
             self.iconImageView.isHidden = true
             self.arrowImageView.isHidden = true
             self.darkModeSwitch.isHidden = true
+        case .verifyEmail:
+            break
         }
         self.iconImageView.image = iconImage
         switch cellType {
@@ -152,13 +158,23 @@ class ProfileCell: UITableViewCell {
             self.titleLabel.isHidden = false
             self.arrowImageView.isHidden = true
             self.darkModeSwitch.isHidden = true
+        case .verifyEmail:
+            break
+        }
+        
+        self.applyTheme()
+    }
+    
+    private func applyTheme() {
+        if let theme = currentTheme {
+            self.titleLabel.textColor = (theme.type == .light) ? .blackColor : .white
         }
     }
     
     func setDarkModeSwich(isOn: Bool) {
         self.darkModeSwitch.isOn = isOn
     }
-     
+    
     @objc private func darkModeSwitchChanged(_ sender: UISwitch) {
         if sender.isOn {
             self.darkModeSwitchClosure?(sender.isOn)

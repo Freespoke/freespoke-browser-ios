@@ -18,6 +18,7 @@ class ProfileIconView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = UIColor.onboardingTitleDark
         return label
     }()
     
@@ -147,10 +148,12 @@ class ProfileIconView: UIView {
                 self.avatarImageView.image = UIImage(named: "img_avatar_icon_dark")
                 self.backgroundColor = .black
                 self.starImageView.image = UIImage(named: "img_premium_star_dark")
+                self.initialsLabel.textColor = UIColor.white
             case .light:
                 self.avatarImageView.image = UIImage(named: "img_avatar_icon_light")
                 self.backgroundColor = .white
                 self.starImageView.image = UIImage(named: "img_premium_star_light")
+                self.initialsLabel.textColor = UIColor.onboardingTitleDark
             }
         }
     }

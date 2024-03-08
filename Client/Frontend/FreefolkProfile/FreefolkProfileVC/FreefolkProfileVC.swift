@@ -13,6 +13,8 @@ class FreefolkProfileVC: UIViewController {
         return cv
     }()
     
+    private var customTitleView = CustomTitleView()
+    
     private var titleLbl: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = "FREEFOLK PROFILE"
@@ -23,7 +25,6 @@ class FreefolkProfileVC: UIViewController {
     }()
     
     private var tableView = UITableView()
-    private var customTitleView = CustomTitleView()
     private var currentTheme: Theme?
     
     var getInTouchClosure: (() -> Void)?
@@ -130,6 +131,7 @@ class FreefolkProfileVC: UIViewController {
     private func setupTableView() {
         self.tableView.dataSource = self
         self.tableView.delegate = self
+        self.tableView.register(VerifyEmailCell.self, forCellReuseIdentifier: VerifyEmailCell.identifier)
         self.tableView.register(ProfileCell.self, forCellReuseIdentifier: ProfileCell.identifier)
         self.tableView.register(LogoutCell.self, forCellReuseIdentifier: LogoutCell.identifier)
         self.tableView.separatorStyle = .none
@@ -231,12 +233,23 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         let cellType = self.viewModel.getCellTypes()[indexPath.row]
         
         switch cellType {
+        case .verifyEmail:
+            return self.prepareVerifyEmailCell(with: cellType.title, at: indexPath)
         case .premium, .account, .manageDefaultBrowser, .manageNotifications, .getInTouch, .shareFreespoke, .darkMode:
-            return getProfileCell(for: cellType, at: indexPath)
+            return self.getProfileCell(for: cellType, at: indexPath)
         case .logout:
-            return getLogoutCell(at: indexPath)
+            return self.getLogoutCell(at: indexPath)
         }
     }
+    
+    private func prepareVerifyEmailCell(with title: String, at indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: VerifyEmailCell.identifier, for: indexPath) as? VerifyEmailCell else {
+            return UITableViewCell()
+        }
+        cell.configure(title: title, subtitle: "Check your email for a message to confirm your account.", currentTheme: self.currentTheme)
+        return cell
+    }
+   
     // TODO: Move function to the viewModel
     private func getProfileCell(for cellType: CellType, at indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell.identifier, for: indexPath) as? ProfileCell else {
@@ -285,8 +298,10 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
                 self?.shareFreespoke()
             }
         case .darkMode:
+            cell.tapClosure = { }
             self.configureDarkModeCell(cell)
         default:
+            cell.tapClosure = { }
             break
         }
     }

@@ -11,6 +11,7 @@ protocol FreefolkProfileViewModelProtocol: AnyObject {
 }
 
 enum CellType {
+    case verifyEmail
     case premium
     case account
     case darkMode
@@ -22,6 +23,7 @@ enum CellType {
     
     var title: String {
         switch self {
+        case .verifyEmail: return "Verify Email"
         case .premium: return "Premium"
         case .account: return "Account"
         case .darkMode: return "Dark Mode"
@@ -58,20 +60,23 @@ class FreefolkProfileViewModel {
     }
     
     func getCellTypes() -> [CellType] {
-        if self.freespokeJWTDecodeModel != nil {
+        if let freespokeJWTDecodeModel = self.freespokeJWTDecodeModel {
             self.cellTypes = [.premium,
                               .account,
-                              .darkMode,
+//                              .darkMode, // dark mode is hidden for now
                               .manageDefaultBrowser,
                               .manageNotifications,
                               .getInTouch,
                               .shareFreespoke,
                               .logout]
+            if !freespokeJWTDecodeModel.emailVerified {
+                self.cellTypes.insert(.verifyEmail, at: 0)
+            }
             return self.cellTypes
         } else {
             self.cellTypes = [.premium,
                               .account,
-                              .darkMode,
+//                              .darkMode, // dark mode is hidden for now
                               .manageDefaultBrowser,
                               .manageNotifications,
                               .getInTouch,

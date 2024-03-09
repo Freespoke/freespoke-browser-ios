@@ -120,8 +120,8 @@ extension UIColor {
     static let neutralsGray06 = Utils.hexStringToUIColor(hex: "#EDF0F5")
     static let neutralsGray01 = Utils.hexStringToUIColor(hex: "#2F3644")
     static let neutralsGray05 = Utils.hexStringToUIColor(hex: "#E1E5EB")
-
-
+    static let charcoalGrayColor = Utils.hexStringToUIColor(hex: "#292929")
+    static let gunmetalGrayColor = Utils.hexStringToUIColor(hex: "#525252")
 }
 
 class Utils {

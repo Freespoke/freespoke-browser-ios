@@ -11,3 +11,5 @@ build/
 Pods/
 !Pods/Manifest.lock
 .DS_Store
+**/.DS_Store
+*/Generated/*

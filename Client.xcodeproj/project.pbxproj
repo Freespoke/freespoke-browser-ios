@@ -90,6 +90,8 @@
 		01823F9B2B8DFE9F00986B73 /* EmailTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01823F992B8DFE9F00986B73 /* EmailTextField.swift */; };
 		01823F9D2B8E09FE00986B73 /* UIDevice + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01823F9C2B8E09FE00986B73 /* UIDevice + Extensions.swift */; };
 		01823F9E2B8E09FE00986B73 /* UIDevice + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01823F9C2B8E09FE00986B73 /* UIDevice + Extensions.swift */; };
+		018247D82B99AB5900334C48 /* VerifyEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018247D72B99AB5900334C48 /* VerifyEmailCell.swift */; };
+		018247D92B99AB5900334C48 /* VerifyEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018247D72B99AB5900334C48 /* VerifyEmailCell.swift */; };
 		01ADAA532B86A51F0009754E /* Fennec_Staging-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01ADAA522B86A51F0009754E /* Fennec_Staging-Info.plist */; };
 		01ADAA542B86A51F0009754E /* Fennec_Staging-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01ADAA522B86A51F0009754E /* Fennec_Staging-Info.plist */; };
 		01ADAA772B86A5C10009754E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ADAA572B86A5BF0009754E /* Tools.swift */; };
@@ -2645,6 +2647,7 @@
 		01823F962B8DF7C700986B73 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		01823F992B8DFE9F00986B73 /* EmailTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTextField.swift; sourceTree = "<group>"; };
 		01823F9C2B8E09FE00986B73 /* UIDevice + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice + Extensions.swift"; sourceTree = "<group>"; };
+		018247D72B99AB5900334C48 /* VerifyEmailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmailCell.swift; sourceTree = "<group>"; };
 		01ADAA522B86A51F0009754E /* Fennec_Staging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Fennec_Staging-Info.plist"; sourceTree = SOURCE_ROOT; };
 		01ADAA572B86A5BF0009754E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		01ADAA582B86A5BF0009754E /* NetworkLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
@@ -5649,6 +5652,7 @@
 				44481A5E2B7D8430003BBD6E /* ProfileCell.swift */,
 				44AA16D92B891B9F001D8E06 /* LogoutCell.swift */,
 				0E6379E52B8CE92600667DBF /* BlockerAdsCell.swift */,
+				018247D72B99AB5900334C48 /* VerifyEmailCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -9443,6 +9447,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				018247D92B99AB5900334C48 /* VerifyEmailCell.swift in Sources */,
 				01ADAA822B86A5C10009754E /* NetworkManager.swift in Sources */,
 				01BD23652B6CF7EB00B8B9EB /* PinnedSite.swift in Sources */,
 				01BD23662B6CF7EB00B8B9EB /* URLSessionProtocol.swift in Sources */,
@@ -10546,6 +10551,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				018247D82B99AB5900334C48 /* VerifyEmailCell.swift in Sources */,
 				01ADAA812B86A5C10009754E /* NetworkManager.swift in Sources */,
 				45D5EDD2292D89A200311934 /* PinnedSite.swift in Sources */,
 				8A4AC0EC28C929D700439F83 /* URLSessionProtocol.swift in Sources */,
@@ -11910,6 +11916,7 @@
 				DEVELOPMENT_TEAM = 5BK5Z66P7D;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = "Fennec_Staging-Info.plist";
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -11947,6 +11954,7 @@
 				DEVELOPMENT_TEAM = 5BK5Z66P7D;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = "Fennec_Staging-Info.plist";
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -11982,6 +11990,7 @@
 				DEVELOPMENT_TEAM = "";
 				EXCLUDED_SOURCE_FILE_NAMES = CredentialProvider.appex;
 				INFOPLIST_FILE = "Fennec_Staging-Info.plist";
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -12016,6 +12025,7 @@
 				CURRENT_PROJECT_VERSION = 234;
 				DEVELOPMENT_TEAM = 43AQ936H96;
 				INFOPLIST_FILE = "Fennec_Staging-Info.plist";
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -12049,6 +12059,7 @@
 				CURRENT_PROJECT_VERSION = 234;
 				DEVELOPMENT_TEAM = 43AQ936H96;
 				INFOPLIST_FILE = "Fennec_Staging-Info.plist";
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -12076,6 +12087,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 016B6DF92B62796A00AA65EE /* Fennec_Staging.xcconfig */;
 			buildSettings = {
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-Xlinker",
@@ -12095,16 +12107,17 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 234;
+				CURRENT_PROJECT_VERSION = 336;
 				DEVELOPMENT_TEAM = 5BK5Z66P7D;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
@@ -13359,6 +13372,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E60961891B62B8C800DD640F /* Firefox.xcconfig */;
 			buildSettings = {
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-Xlinker",
@@ -13376,16 +13390,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 234;
+				CURRENT_PROJECT_VERSION = 336;
 				DEVELOPMENT_TEAM = 43AQ936H96;
 				INFOPLIST_FILE = Client/Info.plist;
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
@@ -13670,6 +13685,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E6DCC1ED1DCBB6AA00CEC4B7 /* Fennec.enterprise.xcconfig */;
 			buildSettings = {
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-Xlinker",
@@ -13687,17 +13703,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_DEVELOP;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 234;
+				CURRENT_PROJECT_VERSION = 336;
 				DEVELOPMENT_TEAM = "";
 				EXCLUDED_SOURCE_FILE_NAMES = CredentialProvider.appex;
 				INFOPLIST_FILE = Client/Info.plist;
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
@@ -13949,6 +13966,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E6FCC43C1C40565200DF6113 /* FirefoxBeta.xcconfig */;
 			buildSettings = {
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-Xlinker",
@@ -13966,16 +13984,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_BETA;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 234;
+				CURRENT_PROJECT_VERSION = 336;
 				DEVELOPMENT_TEAM = 43AQ936H96;
 				INFOPLIST_FILE = Client/Info.plist;
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
@@ -14455,6 +14474,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E60961861B62B8A700DD640F /* Fennec.xcconfig */;
 			buildSettings = {
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-Xlinker",
@@ -14475,16 +14495,17 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 234;
+				CURRENT_PROJECT_VERSION = 336;
 				DEVELOPMENT_TEAM = 5BK5Z66P7D;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (

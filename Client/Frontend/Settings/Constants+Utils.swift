@@ -64,6 +64,17 @@ enum Constants: String {
     
     // MARK: - URLs
     
+    enum URLs {
+        static var accountProfileURL: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                return "https://freespoke.com/account/profile"
+            case .staging:
+                return "https://staging.freespoke.com/account/profile"
+            }
+        }
+    }
+    
     case freespokeURL = "https://freespoke.com/"
     case twitterURL = "https://twitter.com/FreespokeSearch/"
     case linkedinURL = "https://www.linkedin.com/company/freespoke-search/"
@@ -78,8 +89,6 @@ enum Constants: String {
     case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
     case electionURL = "https://freespoke.com/election/2024"
-    case accounntProfileProd = "https://freespoke.com/account/profile"
-    case accounntProfileStaging = "https://staging.freespoke.com/account/profile"
     case appleNativeSubscriptions = "itms-apps://apps.apple.com/account/subscriptions"
     
     // MARK: - One Signal

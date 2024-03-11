@@ -179,17 +179,11 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             
             profileVC.accountTouchClosure = { [weak self] in
                 guard let  self = self else { return }
-                switch FreespokeEnvironment.current {
-                case .production:
-                    self.showURL(url: Constants.accounntProfileProd.rawValue)
-                    TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
-                    profileVC.motionDismissViewController()
-                case .staging:
-                    self.showURL(url: Constants.accounntProfileStaging.rawValue)
-                    TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
-                    profileVC.motionDismissViewController()
-                }
+                self.showURL(url: Constants.URLs.accountProfileURL)
+                TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
+                profileVC.motionDismissViewController()
             }
+            
             profileVC.darkModeSwitchClosure = { [weak self] isOn in
                 guard let  self = self else { return }
                 let nightModeEnabled = NightModeHelper.isActivated()

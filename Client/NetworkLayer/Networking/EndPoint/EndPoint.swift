@@ -3,12 +3,14 @@ import Foundation
 enum EndPoint {
     case registerFreespokeUser(firstName: String, lastName: String, email: String, password: String)
     case logoutFreespokeUser
+    case getLinkForManagingSubscription
 }
 
 extension EndPoint: EndPointType {
     var baseURL: URL {
         switch self {
-        case .registerFreespokeUser:
+        case .registerFreespokeUser,
+                .getLinkForManagingSubscription:
             guard let url = URL(string: NetworkLayerConstants.BaseURL.baseServerUrl) else {
                 fatalError("baseServerUrl could not be configured.")
             }
@@ -27,6 +29,8 @@ extension EndPoint: EndPointType {
             return NetworkLayerConstants.PathURLs.registerPath
         case .logoutFreespokeUser:
             return NetworkLayerConstants.PathURLs.logoutPath
+        case .getLinkForManagingSubscription:
+            return NetworkLayerConstants.PathURLs.getLinkForManagingSubscriptionPath
         }
     }
     
@@ -34,6 +38,8 @@ extension EndPoint: EndPointType {
         switch self {
         case .registerFreespokeUser, .logoutFreespokeUser:
             return .post
+        case .getLinkForManagingSubscription:
+            return .get
         }
     }
 }

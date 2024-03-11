@@ -805,6 +805,10 @@
 		01BD25FE2B6CF7EB00B8B9EB /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		01BD25FF2B6CF7EB00B8B9EB /* RustMozillaAppServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43BE578A278BA4D900491291 /* RustMozillaAppServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		01BD26002B6CF7EB00B8B9EB /* Sync.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2827315E1ABC9BE600AA1954 /* Sync.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		01DDC24C2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */; };
+		01DDC24D2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */; };
+		01DDC24F2B9F024D00B06189 /* ManagingSubscriptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */; };
+		01DDC2502B9F024D00B06189 /* ManagingSubscriptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */; };
 		01E9F5152B7F94520034DE09 /* PremiumUnlockedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E9F5142B7F94520034DE09 /* PremiumUnlockedVC.swift */; };
 		01E9F5162B7F94520034DE09 /* PremiumUnlockedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E9F5142B7F94520034DE09 /* PremiumUnlockedVC.swift */; };
 		01E9F5192B7F958F0034DE09 /* PremiumUnlockedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E9F5182B7F958F0034DE09 /* PremiumUnlockedContentView.swift */; };
@@ -2627,6 +2631,8 @@
 		01B1EEB62B8A9E4B00899E53 /* ClientFennec.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ClientFennec.entitlements; sourceTree = "<group>"; };
 		01B1EEB72B8BD7C100899E53 /* Notification.Name + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name + Extensions.swift"; sourceTree = "<group>"; };
 		01BD26072B6CF7EB00B8B9EB /* Fennec_Staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fennec_Staging.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLinkForManagingSubscription.swift; sourceTree = "<group>"; };
+		01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagingSubscriptionModel.swift; sourceTree = "<group>"; };
 		01E9F5142B7F94520034DE09 /* PremiumUnlockedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumUnlockedVC.swift; sourceTree = "<group>"; };
 		01E9F5182B7F958F0034DE09 /* PremiumUnlockedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumUnlockedContentView.swift; sourceTree = "<group>"; };
 		01FF01FC2B7D2C240027845D /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
@@ -4521,6 +4527,7 @@
 			children = (
 				01ADAA622B86A5BF0009754E /* RegisterFreespokeUser.swift */,
 				01823F902B8D592700986B73 /* LogoutFreespokeUser.swift */,
+				01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */,
 			);
 			path = "NetworkManager + Extensions";
 			sourceTree = "<group>";
@@ -4571,6 +4578,7 @@
 				01ADAA712B86A5BF0009754E /* EmptyModel.swift */,
 				0181A41C2B861CF7005BE1F6 /* FreespokeJWTDecodeModel.swift */,
 				0181A4162B855D3A005BE1F6 /* FreespokeAuthModel.swift */,
+				01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -9518,6 +9526,7 @@
 				01BD24612B6CF7EB00B8B9EB /* ContextualHintPrefsKeysProvider.swift in Sources */,
 				01BD24622B6CF7EB00B8B9EB /* SponsoredContentFilterUtility.swift in Sources */,
 				01BD24632B6CF7EB00B8B9EB /* SearchGroupedItemsViewModel.swift in Sources */,
+				01DDC24D2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift in Sources */,
 				01BD24642B6CF7EB00B8B9EB /* TopSitesWidgetManager.swift in Sources */,
 				014128882B7A7A2E00283449 /* UIView + Extensions.swift in Sources */,
 				01BD24652B6CF7EB00B8B9EB /* AppDelegate.swift in Sources */,
@@ -9806,6 +9815,7 @@
 				01BD255E2B6CF7EB00B8B9EB /* WebServer.swift in Sources */,
 				01BD255F2B6CF7EB00B8B9EB /* TwoLineImageOverlayCell.swift in Sources */,
 				01BD25602B6CF7EB00B8B9EB /* SponsoredTileTelemetry.swift in Sources */,
+				01DDC2502B9F024D00B06189 /* ManagingSubscriptionModel.swift in Sources */,
 				01ADAA7E2B86A5C10009754E /* URLParameterEncoding.swift in Sources */,
 				01BD25612B6CF7EB00B8B9EB /* SettingsLoadingView.swift in Sources */,
 				01BD25622B6CF7EB00B8B9EB /* UnitTestAppDelegate.swift in Sources */,
@@ -10606,6 +10616,7 @@
 				C8F457A81F1FD75A000CB895 /* BrowserViewController+WebViewDelegates.swift in Sources */,
 				964FA97728A2A55C0024BB3B /* ContextualHintPrefsKeysProvider.swift in Sources */,
 				8A1E3BDF28CBA81E003388C4 /* SponsoredContentFilterUtility.swift in Sources */,
+				01DDC24C2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift in Sources */,
 				96EB6C4327DC205D00A9D159 /* SearchGroupedItemsViewModel.swift in Sources */,
 				8A5BD95F2878B7B6000FE773 /* TopSitesWidgetManager.swift in Sources */,
 				014128872B7A7A2E00283449 /* UIView + Extensions.swift in Sources */,
@@ -10894,6 +10905,7 @@
 				E40FAB0C1A7ABB77009CB80D /* WebServer.swift in Sources */,
 				59A68D66379CFA85C4EAF00B /* TwoLineImageOverlayCell.swift in Sources */,
 				8A04136928258DF600D20B10 /* SponsoredTileTelemetry.swift in Sources */,
+				01DDC24F2B9F024D00B06189 /* ManagingSubscriptionModel.swift in Sources */,
 				01ADAA7D2B86A5C10009754E /* URLParameterEncoding.swift in Sources */,
 				D04CD718215EBD85004FF5B0 /* SettingsLoadingView.swift in Sources */,
 				5A70EF1F295E3DFC00790249 /* UnitTestAppDelegate.swift in Sources */,

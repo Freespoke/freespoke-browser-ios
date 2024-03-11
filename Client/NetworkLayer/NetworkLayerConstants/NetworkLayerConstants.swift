@@ -19,7 +19,7 @@ enum NetworkLayerConstants {
             switch FreespokeEnvironment.current {
             case .production:
                 return "https://api.staging.freespoke.com"
-//                return "https://api.freespoke.com"
+                //                return "https://api.freespoke.com"
             case .staging:
                 return "https://api.staging.freespoke.com"
             }
@@ -29,7 +29,7 @@ enum NetworkLayerConstants {
             switch FreespokeEnvironment.current {
             case .production:
                 return "https://auth.staging.freespoke.com"
-//                return "https://accounts.freespoke.com"
+                //                return "https://accounts.freespoke.com"
             case .staging:
                 return "https://auth.staging.freespoke.com"
             }
@@ -55,6 +55,15 @@ enum NetworkLayerConstants {
 //                return "/realms/freespoke/protocol/openid-connect/logout"
             case .staging:
                 return "/realms/freespoke-staging/protocol/openid-connect/logout"
+            }
+        }
+        
+        static var getLinkForManagingSubscriptionPath: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                return "/accounts/profile"
+            case .staging:
+                return "/accounts/profile"
             }
         }
     }

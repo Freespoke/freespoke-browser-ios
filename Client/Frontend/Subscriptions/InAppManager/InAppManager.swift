@@ -47,7 +47,8 @@ struct ProductIdentifiers {
         case .production:
             "premium_monthly"
         case .staging:
-            "MonthlyRenewableSubscription_staging"
+            "premium_monthly"  // TODO: remove before upload staging build
+//            "MonthlyRenewableSubscription_staging"   // TODO: uncommit before upload staging build
         }
     }
     
@@ -56,7 +57,8 @@ struct ProductIdentifiers {
         case .production:
             "premium_annual"
         case .staging:
-            "YearlyRenewableSubscription_staging"
+            "premium_annual"  // TODO: remove before upload staging build
+//            "YearlyRenewableSubscription_staging"   // TODO: uncommit before upload staging build
         }
     }
 }

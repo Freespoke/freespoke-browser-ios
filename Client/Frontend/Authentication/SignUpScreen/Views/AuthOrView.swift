@@ -17,7 +17,7 @@ final class AuthOrView: UIView {
         lbl.text = "OR"
         lbl.textColor = self.currentTheme?.type == .dark ? UIColor.white : UIColor.blackColor
         lbl.textAlignment = .center
-        lbl.font = .sourceSansProFont(.regular, size: 12)
+        lbl.font = .sourceSansProFont(.semiBold, size: 12)
         return lbl
     }()
     

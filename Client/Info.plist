@@ -56,7 +56,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>336</string>
+	<string>338</string>
 	<key>INIntentsSupported</key>
 	<array>
 		<string>QuickActionIntent</string>
@@ -125,6 +125,18 @@
 	<string>$(SENTRY_CLOUD_DSN)</string>
 	<key>UIAppFonts</key>
 	<array>
+        <string>SourceSerifPro-Black.otf</string>
+        <string>SourceSerifPro-BlackIt.otf</string>
+        <string>SourceSerifPro-Bold.otf</string>
+        <string>SourceSerifPro-BoldIt.otf</string>
+        <string>SourceSerifPro-ExtraLight.otf</string>
+        <string>SourceSerifPro-ExtraLightIt.otf</string>
+        <string>SourceSerifPro-It.otf</string>
+        <string>SourceSerifPro-Light.otf</string>
+        <string>SourceSerifPro-LightIt.otf</string>
+        <string>SourceSerifPro-Regular.otf</string>
+        <string>SourceSerifPro-Semibold.otf</string>
+        <string>SourceSerifPro-SemiboldIt.otf</string>
 		<string>SourceSansPro-SemiBoldItalic.ttf</string>
 		<string>SourceSansPro-SemiBold.ttf</string>
 		<string>SourceSansPro-Regular.ttf</string>

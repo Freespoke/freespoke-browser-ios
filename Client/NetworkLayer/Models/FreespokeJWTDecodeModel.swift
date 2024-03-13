@@ -60,8 +60,6 @@ struct SubscriptionInfo: Codable {
     
     enum SubscriptionSource: String {
         case ios = "ios-native"
-        case android = "android-native"
-        case web = "web-recurly"
     }
     
     private let subscriptionName: String

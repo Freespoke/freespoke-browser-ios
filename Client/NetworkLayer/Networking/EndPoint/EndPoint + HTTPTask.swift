@@ -24,6 +24,11 @@ extension EndPoint {
                                                 bodyEncoding: .formUrlencoded,
                                                 urlParameters: nil,
                                                 additionHeaders: self.headers)
+        case .getLinkForManagingSubscription:
+            return .requestParametersAndHeaders(bodyParameters: nil,
+                                                bodyEncoding: .urlEncoding(urlEncodingType: .none),
+                                                urlParameters: nil,
+                                                additionHeaders: self.headers)
         }
     }
 }

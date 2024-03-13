@@ -3,7 +3,9 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import Foundation
-protocol SubscriptionsVCViewModelProtocol: AnyObject {}
+protocol SubscriptionsVCViewModelDelegate: AnyObject {
+    
+}
 class SubscriptionsVCViewModel {
     enum State {
         case startTrialSubscription(isOnboarding: Bool)
@@ -11,13 +13,13 @@ class SubscriptionsVCViewModel {
         case updatePlan
         case cancelPlanNotOriginalOS
     }
-    weak var delegate: SubscriptionsVCViewModelProtocol?
+    weak var delegate: SubscriptionsVCViewModelDelegate?
     var state: State
     
     var titleText: String {
         switch state {
         case .startTrialSubscription:
-            return "Start your 30 day free trial"
+            return "Start your 30 day \n free trial"
         case .trialExpired:
             return "Select a Plan"
         case .updatePlan:
@@ -66,7 +68,21 @@ class SubscriptionsVCViewModel {
         }
     }
     
+    private var networkManager = NetworkManager()
+    
     init(state: State) {
         self.state = state
+    }
+    
+    func getLinkForManagingSubscription(onSuccess: @escaping((_ managingSubscriptionModel: ManagingSubscriptionModel) -> Void), onFailure: @escaping((_ error: CustomError) -> Void)) {
+        self.networkManager.getLinkForManagingSubscription(completion: { managingSubscriptionModel, error in
+            if let managingSubscriptionModel = managingSubscriptionModel {
+                onSuccess(managingSubscriptionModel)
+            } else if let error = error {
+                onFailure(error)
+            } else {
+                onFailure(CustomError.somethingWentWrong)
+            }
+        })
     }
 }

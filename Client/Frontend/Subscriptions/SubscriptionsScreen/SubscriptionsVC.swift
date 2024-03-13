@@ -231,28 +231,42 @@ extension SubscriptionsVC {
             if let appStoreSubscriptionURL = URL(string: Constants.appleNativeSubscriptions.rawValue) {
                 UIApplication.shared.open(appStoreSubscriptionURL, options: [:], completionHandler: nil)
             }
-        case .android:
-            return
-        case .web:
-            return
         }
     }
     
     @objc private func btnCancelSubscriptionTapped(_ sender: UIButton) {
-        guard let subscriptionSource = AppSessionManager.shared.decodedJWTToken?.subscription?.subscriptionSource else { return }
+        let subscriptionSource = AppSessionManager.shared.decodedJWTToken?.subscription?.subscriptionSource
         switch subscriptionSource {
         case .ios:
             if let appStoreSubscriptionURL = URL(string: Constants.appleNativeSubscriptions.rawValue) {
                 UIApplication.shared.open(appStoreSubscriptionURL, options: [:], completionHandler: nil)
             }
-        case .android:
-            if let appStoreSubscriptionURL = URL(string: Constants.androidNativeSubscriptions.rawValue) {
-                UIApplication.shared.open(appStoreSubscriptionURL, options: [:], completionHandler: nil)
-            }
-        case .web:
-            if let appStoreSubscriptionURL = URL(string: Constants.webSubscriptions.rawValue) {
-                UIApplication.shared.open(appStoreSubscriptionURL, options: [:], completionHandler: nil)
-            }
+        default:
+            self.btnCancelSubscription.startIndicator()
+            self.viewModel.getLinkForManagingSubscription(onSuccess: { [weak self] managingSubscriptionModel in
+                guard let self = self else { return }
+                self.btnCancelSubscription.stopIndicator()
+                if let linkString = managingSubscriptionModel.manageSubscriptionLink,
+                    let linkForManagingSubscription = URL(string: linkString) {
+                    DispatchQueue.main.async {
+                        UIApplication.shared.open(linkForManagingSubscription, options: [:], completionHandler: nil)
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { [weak self] in
+                        guard let self = self else { return }
+                        self.motionDismissViewController(animated: true)
+                    })
+                } else {
+                    let error = CustomError.somethingWentWrong
+                    UIUtils.showOkAlert(title: error.errorName, message: error.errorDescription)
+                }
+            },
+                                                          onFailure: { [weak self] error in
+                guard let self = self else { return }
+                self.btnCancelSubscription.stopIndicator()
+                DispatchQueue.main.async {
+                    UIUtils.showOkAlert(title: error.errorName, message: error.errorDescription)
+                }
+            })
         }
     }
     
@@ -401,4 +415,6 @@ extension SubscriptionsVC {
     }
 }
 
-extension SubscriptionsVC: SubscriptionsVCViewModelProtocol {}
+extension SubscriptionsVC: SubscriptionsVCViewModelDelegate {
+    
+}

@@ -18,7 +18,7 @@ class SignInWithAppleButton: UIButton {
         let lbl = UILabel()
         lbl.textAlignment = .left
         lbl.textColor = UIColor.blackColor
-        lbl.font = UIFont.sourceSansProFont(.semiBold, size: 22)
+        lbl.font = UIFont.sourceSansProFont(.semiBold, size: 16)
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         lbl.text = "Sign In with Apple"

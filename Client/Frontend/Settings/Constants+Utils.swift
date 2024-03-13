@@ -12,11 +12,11 @@ enum FreespokeEnvironment {
     case staging
     
     static var current: FreespokeEnvironment {
-    #if STAGING
+#if STAGING
         return .staging
-    #else
+#else
         return .production
-    #endif
+#endif
     }
 }
 
@@ -48,7 +48,6 @@ enum MenuCellImageType: String {
 }
 
 enum Constants: String {
-    
     enum UI {
         static let contentWidthConstraintForIpad: CGFloat = 550
         static let buttonsWidthConstraintForIpad: CGFloat = 500
@@ -65,6 +64,17 @@ enum Constants: String {
     
     // MARK: - URLs
     
+    enum URLs {
+        static var accountProfileURL: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                return "https://freespoke.com/account/profile"
+            case .staging:
+                return "https://staging.freespoke.com/account/profile"
+            }
+        }
+    }
+    
     case freespokeURL = "https://freespoke.com/"
     case twitterURL = "https://twitter.com/FreespokeSearch/"
     case linkedinURL = "https://www.linkedin.com/company/freespoke-search/"
@@ -79,12 +89,7 @@ enum Constants: String {
     case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
     case electionURL = "https://freespoke.com/election/2024"
-    case accounntProfileProd = "https://freespoke.com/account/profile"
-    case accounntProfileStaging = "https://staging.freespoke.com/account/profile"
     case appleNativeSubscriptions = "itms-apps://apps.apple.com/account/subscriptions"
-    case androidNativeSubscriptions = "https://play.google.com/store/games?pli=1" // TODO: Add correct link
-    case webSubscriptions = "https://google.com" // TODO: Add correct link
-
     
     // MARK: - One Signal
     
@@ -126,19 +131,19 @@ extension UIColor {
 
 class Utils {
     class func hexStringToUIColor (hex:String) -> UIColor {
-        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-
+        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
         if (cString.hasPrefix("#")) {
             cString.remove(at: cString.startIndex)
         }
-
+        
         if ((cString.count) != 6) {
             return UIColor.gray
         }
-
-        var rgbValue:UInt64 = 0
+        
+        var rgbValue: UInt64 = 0
         Scanner(string: cString).scanHexInt64(&rgbValue)
-
+        
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,

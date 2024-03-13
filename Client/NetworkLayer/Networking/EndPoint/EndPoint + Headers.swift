@@ -9,6 +9,10 @@ extension EndPoint {
             return [NetworkLayerConstants.HeaderKeys.authorization: "\(NetworkLayerConstants.HeaderKeys.bearer) \(Keychain.authInfo?.accessToken ?? "")",
                     NetworkLayerConstants.HeaderKeys.contentType: NetworkLayerConstants.HeaderValue.applicationFormUrlencoded
             ]
+        case .getLinkForManagingSubscription:
+            return [NetworkLayerConstants.HeaderKeys.authorization: "\(NetworkLayerConstants.HeaderKeys.bearer) \(Keychain.authInfo?.accessToken ?? "")",
+                    NetworkLayerConstants.HeaderKeys.contentType: NetworkLayerConstants.HeaderValue.applicationFormUrlencoded
+            ]
         }
     }
 }

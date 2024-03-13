@@ -35,6 +35,8 @@ final class WhiteListTVC: UIViewController {
         self.addingViews()
         self.setupConstraints()
         self.subscribeClosures()
+        self.subscribeNotifications()
+        self.hideKeyboardWhenTappedAround()
     }
     
     private func prepareUI() {
@@ -56,6 +58,7 @@ final class WhiteListTVC: UIViewController {
         self.tableView.register(WhiteListDomainCell.self, forCellReuseIdentifier: WhiteListDomainCell.reuseIdentifier)
         self.tableView.register(WhiteListBtnCell.self, forCellReuseIdentifier: WhiteListBtnCell.reuseIdentifier)
         self.tableView.register(AdBlockerCell.self, forCellReuseIdentifier: AdBlockerCell.reuseIdentifier)
+        self.tableView.register(DomainTxtCell.self, forCellReuseIdentifier: DomainTxtCell.reuseIdentifier)
     }
     
     private func addingViews() {
@@ -115,7 +118,34 @@ extension WhiteListTVC: UITableViewDelegate, UITableViewDataSource {
 }
 // MARK: View model delegate
 extension WhiteListTVC: WhiteListDelegate {
+    func showErrorAlert(message: String) {
+        let alert = UIAlertController.wrongEnteredDomainAlert(message: message)
+        self.present(alert, animated: true)
+    }
+    
+    func showConfirmAlertForDeleteDomain(completion: @escaping (() -> Void)) {
+        let alert = UIAlertController.deleteDomainAlert({ _ in completion() })
+        self.present(alert, animated: true)
+    }
+    
     func reloadTableView() {
         self.tableView.reloadData()
+    }
+}
+
+extension WhiteListTVC {
+    private func subscribeNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        }
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 }

@@ -3585,6 +3585,16 @@ extension String {
         tableName: "LoginManager",
         value: nil,
         comment: "Prompt title when deleting logins")
+    public static let DeleteDomainAlertTitle = MZLocalizedString(
+        "Delete Website",
+        tableName: "AdBlocker",
+        value: nil,
+        comment: "Delete domain from white list")
+    public static let DomainTitleForAlert = MZLocalizedString(
+        "Domain",
+        tableName: "Ad blocker",
+        value: nil,
+        comment: "User did not eter the domain")
     public static let DeleteLoginAlertSyncedMessage = MZLocalizedString(
         "Logins will be removed from all connected devices.",
         tableName: "LoginManager",
@@ -3595,6 +3605,11 @@ extension String {
         tableName: "LoginManager",
         value: nil,
         comment: "Prompt message warning the user that deleting non-synced logins will permanently remove them")
+    public static let DeleteDomainAlertLocalMessage = MZLocalizedString(
+        "Deleting this website will permanently remoce the site from your whitelist.",
+        tableName: "AdBlocker",
+        value: nil,
+        comment: "Prompt message when user want to delete domain from whitelist")
     public static let DeleteLoginAlertCancel = MZLocalizedString(
         "Cancel",
         tableName: "LoginManager",

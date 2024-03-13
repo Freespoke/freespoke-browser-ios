@@ -11,6 +11,14 @@
     }
   },
   {
+    "trigger": {
+      "url-filter": "://googleads\\\\.g\\\\.doubleclick\\\\.net.*"
+    },
+    "action": {
+      "type": "block"
+    }
+  },
+  {
     "action" : {
       "type" : "block"
     },

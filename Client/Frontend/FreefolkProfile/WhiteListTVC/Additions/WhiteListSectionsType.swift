@@ -23,6 +23,7 @@ enum BlockAdsCellsType {
 }
 
 enum WhiteListCellsType {
+    case enterDomainCell(placeholder: String, domain: String?)
     case btnActionCell(title: String)
     case domainCell(domain: String, index: Int)
 }

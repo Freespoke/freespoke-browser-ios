@@ -63,28 +63,37 @@ class FreefolkProfileViewModel {
     
     func getCellTypes() -> [CellType] {
         if let freespokeJWTDecodeModel = self.freespokeJWTDecodeModel {
-            self.cellTypes = [.premium,
-                              .account,
-                              .adBlocker,
-//                              .darkMode, // dark mode is hidden for now
-                              .manageDefaultBrowser,
-                              .manageNotifications,
-                              .getInTouch,
-                              .shareFreespoke,
-                              .logout]
+            self.cellTypes = [
+                .premium,
+                .account,
+                .adBlocker,
+                //.darkMode, // dark mode is hidden for now
+                .manageDefaultBrowser,
+                .manageNotifications,
+                .getInTouch,
+                .shareFreespoke,
+                .logout
+            ]
             if !freespokeJWTDecodeModel.emailVerified {
                 self.cellTypes.insert(.verifyEmail, at: 0)
             }
             return self.cellTypes
         } else {
-            self.cellTypes = [.premium,
-                              .account,
-                              .adBlocker,
-//                              .darkMode, // dark mode is hidden for now
-                              .manageDefaultBrowser,
-                              .manageNotifications,
-                              .getInTouch,
-                              .shareFreespoke]
+            self.cellTypes = [
+                .premium,
+                .account,
+                .adBlocker,
+                //.darkMode, // dark mode is hidden for now
+                .manageDefaultBrowser,
+                .manageNotifications,
+                .getInTouch,
+                .shareFreespoke
+            ]
+            if AppSessionManager.shared.userType != .premium {
+                for (index, cell) in self.cellTypes.enumerated() where cell == .adBlocker {
+                    self.cellTypes.remove(at: index)
+                }
+            }
             return self.cellTypes
         }
     }

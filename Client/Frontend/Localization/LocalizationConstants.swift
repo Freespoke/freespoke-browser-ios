@@ -10,4 +10,8 @@ struct LocalizationConstants {
     static let whiteListStr = "White list"
     static let descriptionStr = "This is a description."
     static let addWebsiteToWhiteListStr = "Add website to white list"
+    static let plaeseEnterDomainStr = "Plaese enter domain"
+    static let pleaseEnterDomainStr = "Please enter a domain"
+    static let pleaseEnterTheCorrectDomainStr = "Please enter the correct domain"
+    static let blockAdsOn = "Block ads on:"
 }

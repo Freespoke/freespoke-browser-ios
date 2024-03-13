@@ -7,4 +7,7 @@ import Foundation
 extension Notification.Name {
     // MARK: Authentication
     static let freespokeUserAuthChanged = Notification.Name("freespoke_user_auth_changed")
+    static let adBlockSettingsChanged = Notification.Name("adBlockSettingsChanged")
+    static let domainWasRemoved = Notification.Name("domainWasRemoved")
+    static let disableAdBlockerForCurrentDomain = Notification.Name("disableAdBlockerForCurrentDomain")
 }

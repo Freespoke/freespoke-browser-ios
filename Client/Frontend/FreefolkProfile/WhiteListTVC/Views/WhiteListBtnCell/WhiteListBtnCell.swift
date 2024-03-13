@@ -20,6 +20,8 @@ final class WhiteListBtnCell: UITableViewCell {
         }
     }
     
+    var closureTappedonBtnAction: (() -> Void)?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.prepareUI()
@@ -35,6 +37,7 @@ final class WhiteListBtnCell: UITableViewCell {
         self.selectionStyle = .none
         self.contentView.backgroundColor = .clear
         self.backgroundColor = .clear
+        self.btnAction.addTarget(self, action: #selector(self.tappedonBtnAction), for: .touchUpInside)
     }
     
     private func addingViews() {
@@ -50,4 +53,7 @@ final class WhiteListBtnCell: UITableViewCell {
         self.btnAction.setTitle(title, for: .normal)
     }
     
+    @objc private func tappedonBtnAction() {
+        self.closureTappedonBtnAction?()
+    }
 }

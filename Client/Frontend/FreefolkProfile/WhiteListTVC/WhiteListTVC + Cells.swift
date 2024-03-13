@@ -34,6 +34,8 @@ extension WhiteListTVC {
     // MARK: Cells for white list section
     private func prepareCellsForWhiteListSection(_ tableView: UITableView, cellForRowAt indexPath: IndexPath, cells: [WhiteListCellsType]) -> UITableViewCell {
         switch cells[indexPath.row] {
+        case .enterDomainCell(let placeholder, let domain):
+            return prepareTxtDomainCell(tableView, cellForRowAt: indexPath, placeholder: placeholder, domain: domain)
         case .btnActionCell(let title):
             return self.prepareBtnActionCell(tableView, cellForRowAt: indexPath, title: title)
         case .domainCell(let domain, let index):
@@ -41,9 +43,23 @@ extension WhiteListTVC {
         }
     }
     
+    private func prepareTxtDomainCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath, placeholder: String, domain: String?) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DomainTxtCell.reuseIdentifier, for: indexPath) as? DomainTxtCell else { return UITableViewCell() }
+        cell.setData(placeholder: placeholder, domain: domain)
+        cell.closureTxtDidEndEditing = { [weak self] domain in
+            guard let sSelf = self else { return }
+            sSelf.whiteListViewModel.setDomain(domain: domain)
+        }
+        return cell
+    }
+    
     private func prepareBtnActionCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath, title: String) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WhiteListBtnCell.reuseIdentifier, for: indexPath) as? WhiteListBtnCell else { return UITableViewCell() }
         cell.setData(currentTheme: self.currentTheme, title: title)
+        cell.closureTappedonBtnAction = { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.whiteListViewModel.checkAndSaveDomain()
+        }
         return cell
     }
     

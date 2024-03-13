@@ -546,6 +546,11 @@ class BrowserViewController: UIViewController {
             name: .OpenTabNotification,
             object: nil)
     }
+    
+    let adBlockerSwitcherView: AdBlockerSwitcherView = {
+        let view = AdBlockerSwitcherView()
+        return view
+    }()
 
     func addSubviews() {
         webViewContainerBackdrop = UIView()
@@ -570,8 +575,9 @@ class BrowserViewController: UIViewController {
         urlBar.translatesAutoresizingMaskIntoConstraints = false
         urlBar.delegate = self
         urlBar.tabToolbarDelegate = self
+        isBottomSearchBar ? overKeyboardContainer.addArrangedSubview(adBlockerSwitcherView) : header.addSubviews(adBlockerSwitcherView)
+        urlBar.addToParent(parent: isBottomSearchBar ? overKeyboardContainer : header, addToTop: false)
         
-        urlBar.addToParent(parent: isBottomSearchBar ? overKeyboardContainer : header)
         view.addSubview(header)
         view.addSubview(bottomContentStackView)
         view.addSubview(overKeyboardContainer)
@@ -580,7 +586,7 @@ class BrowserViewController: UIViewController {
         bottomContainer.addArrangedSubview(toolbar)
         view.addSubview(bottomContainer)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // On iPhone, if we are about to show the On-Boarding, blank out the tab so that it does
@@ -2035,6 +2041,10 @@ extension BrowserViewController: TabDelegate {
 
     func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar) {
         bottomContentStackView.removeArrangedView(bar)
+    }
+    
+    func tab(_ currentURL: URL?) {
+        self.adBlockerSwitcherView.setDomain(domain: currentURL)
     }
 }
 

@@ -35,6 +35,7 @@ protocol TabDelegate {
     func tab(_ tab: Tab, didSelectSearchWithFirefoxForSelection selection: String)
     @objc optional func tab(_ tab: Tab, didCreateWebView webView: WKWebView)
     @objc optional func tab(_ tab: Tab, willDeleteWebView webView: WKWebView)
+    func tab(_ currentURL: URL?)
 }
 
 @objc
@@ -466,6 +467,7 @@ class Tab: NSObject {
             self.webView?.addObserver(self, forKeyPath: KVOConstants.title.rawValue, options: .new, context: nil)
             UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
             tabDelegate?.tab?(self, didCreateWebView: webView)
+            AdBlockManager.shared.disableAdBlock(forWebView: webView)
             self.prepareBlocker()
         }
     }
@@ -567,6 +569,7 @@ class Tab: NSObject {
     @discardableResult func loadRequest(_ request: URLRequest) -> WKNavigation? {
         if let webView = webView {
             // Convert about:reader?url=http://example.com URLs to local ReaderMode URLs
+            AdBlockManager.shared.shouldAddBlockRuleList(isShouldAddBlockList: self.shouldEnableAdBlocker(url: request.url), forWebView: webView)
             if let url = request.url,
                let syncedReaderModeURL = url.decodeReaderModeURL,
                let localReaderModeURL = syncedReaderModeURL.encodeReaderModeURL(WebServer.sharedInstance.baseReaderModeURL()) {
@@ -575,6 +578,8 @@ class Tab: NSObject {
                 return webView.load(readerModeRequest)
             }
             lastRequest = request
+            print("request test: \(request)")
+            self.tabDelegate?.tab(request.url)
             if let url = request.url, url.isFileURL, request.isPrivileged {
                 return webView.loadFileURL(url, allowingReadAccessTo: url)
             }
@@ -585,6 +590,13 @@ class Tab: NSObject {
 
     func stop() {
         webView?.stopLoading()
+    }
+    
+    func shouldEnableAdBlocker(url: URL?) -> Bool {
+        guard AppSessionManager.shared.userType == .premium else { return false }
+        guard let url = url, let host = url.host else { return false }
+        guard let domains = UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String] else { return true }
+        return !domains.contains(where: { $0 == host })
     }
 
     func reload(bypassCache: Bool = false) {

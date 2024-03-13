@@ -8,7 +8,8 @@ extension Tab {
     
     func prepareBlocker() {
         // MARK: For ad blocker
-        NotificationCenter.default.addObserver(self, selector: #selector(adBlockChanged), name: NSNotification.Name.adBlockSettingsChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(adBlockChanged), name: Notification.Name.adBlockSettingsChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(shouldDisableAdBlockerFor), name: Notification.Name.disableAdBlockerForCurrentDomain, object: nil)
         self.loadAdBlocking { [weak self] in
             if self?.webView?.url == nil {
                 let _ = self?.webView?.load(URLRequest(url: URL(string: "http://localhost:8080")!))
@@ -17,7 +18,7 @@ extension Tab {
     }
     
     func loadAdBlocking(completion: @escaping (() -> ())) {
-        if #available(iOS 11.0, *), AdBlockManager.shared.shouldBlockAds() {
+        if AdBlockManager.shared.shouldBlockAds() {
             let group = DispatchGroup()
             
             for hostFile in HostFileNames.allValues {
@@ -41,7 +42,6 @@ extension Tab {
     }
     
     @objc func adBlockChanged() {
-        guard #available(iOS 11.0, *) else { return }
         guard let webView = self.webView else { return }
         let currentRequest = URLRequest(url: webView.url!)
         if AdBlockManager.shared.shouldBlockAds() {
@@ -52,6 +52,19 @@ extension Tab {
             AdBlockManager.shared.disableAdBlock(forWebView: webView)
             webView.load(currentRequest)
         }
+    }
+    
+    @objc private func shouldDisableAdBlockerFor() {
+        guard let webView = self.webView else { return }
+        let domains: [String] = (UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String]) ?? []
+        if let url = webView.url, let domain = url.host {
+            let isContainsDomain = domains.contains(where: { $0 == domain })
+            AdBlockManager.shared.shouldAddBlockRuleList(isShouldAddBlockList: !isContainsDomain, forWebView: webView)
+        } else {
+            AdBlockManager.shared.shouldAddBlockRuleList(isShouldAddBlockList: true, forWebView: webView)
+        }
+        let currentRequest = URLRequest(url: webView.url!)
+        webView.load(currentRequest)
     }
     
 }

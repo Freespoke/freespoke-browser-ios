@@ -77,7 +77,7 @@ class CustomTextField: UITextField {
         self.layer.borderWidth = 1.0
         self.layer.cornerRadius = 4.0
         self.layer.borderColor = UIColor.whiteColor.cgColor
-        self.font = UIFont.sourceSansProFont(.semiBold, size: 22)
+        self.font = UIFont.sourceSansProFont(.regular, size: 16)
     }
     
     func setIcon(_ image: UIImage?) {

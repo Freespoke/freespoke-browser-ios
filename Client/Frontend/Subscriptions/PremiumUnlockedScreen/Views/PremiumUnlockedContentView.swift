@@ -17,7 +17,7 @@ class PremiumUnlockedContentView: UIView {
         let lbl = UILabel()
         lbl.textAlignment = .center
         lbl.textColor = UIColor.onboardingTitleDark
-        lbl.font = UIFont.sourceSansProFont(.semiBold, size: 28)
+        lbl.font = UIFont.sourceSerifProFontFont(.semiBold, size: 28)
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         lbl.translatesAutoresizingMaskIntoConstraints = false

@@ -19,7 +19,7 @@ class SubscriptionsVCViewModel {
     var titleText: String {
         switch state {
         case .startTrialSubscription:
-            return "Start your 30 day free trial"
+            return "Start your 30 day \n free trial"
         case .trialExpired:
             return "Select a Plan"
         case .updatePlan:

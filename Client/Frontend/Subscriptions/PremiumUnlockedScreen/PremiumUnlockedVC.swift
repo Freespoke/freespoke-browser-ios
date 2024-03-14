@@ -61,7 +61,8 @@ class PremiumUnlockedVC: OnboardingBaseViewController {
         self.topContentView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.topContentView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 50),
+//            self.topContentView.topAnchor.constraint(equalTo: self.btnClose.bottomAnchor, constant: UIDevice.current.isPad ? 15 : 0),
+            self.topContentView.topAnchor.constraint(equalTo: self.btnClose.bottomAnchor, constant: 0),
             self.topContentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.topContentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
         ])

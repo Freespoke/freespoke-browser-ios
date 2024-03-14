@@ -54,7 +54,7 @@ class OnboardingFinishViewController: OnboardingBaseViewController {
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.contentView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 60),
+            self.contentView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: UIDevice.current.isPad ? 90 : 60),
             self.contentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.contentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.contentView.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomButtonsView.topAnchor, constant: -10)

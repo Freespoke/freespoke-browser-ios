@@ -89,7 +89,7 @@ class OnboardingWelcomeScreen: OnboardingBaseViewController {
         // MARK: constraints are set depending on the type of device iPad or iPhone
         if UIDevice.current.isPad {
             NSLayoutConstraint.activate([
-                self.topContentView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 50),
+                self.topContentView.topAnchor.constraint(equalTo: self.btnClose.bottomAnchor, constant: 15),
                 self.topContentView.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor, constant: 0),
                 self.topContentView.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: 0),
                 self.topContentView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
@@ -97,7 +97,7 @@ class OnboardingWelcomeScreen: OnboardingBaseViewController {
             ])
         } else {
             NSLayoutConstraint.activate([
-                self.topContentView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 50),
+                self.topContentView.topAnchor.constraint(equalTo: self.btnClose.bottomAnchor, constant: 5),
                 self.topContentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                 self.topContentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
             ])

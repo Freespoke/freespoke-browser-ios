@@ -85,8 +85,11 @@ class OnboardingBaseViewController: UIViewController {
     private func addCloseButtonConstraints() {
         self.btnClose.translatesAutoresizingMaskIntoConstraints = false
         
+        let statusBarHeight = UIWindow.statusBarHeight
+        let topOffsetForCloseButton: CGFloat = UIDevice.current.isPad ? 60 : statusBarHeight
+        
         NSLayoutConstraint.activate([
-            self.btnClose.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            self.btnClose.topAnchor.constraint(equalTo: self.view.topAnchor, constant: topOffsetForCloseButton),
             self.btnClose.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
             self.btnClose.heightAnchor.constraint(equalToConstant: 52),
             self.btnClose.widthAnchor.constraint(equalToConstant: 52)

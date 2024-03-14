@@ -7,42 +7,7 @@ import UIKit
 import Shared
 
 class SubscriptionsContentView: UIView {
-    private var iconImageView: UIImageView = {
-        let imgView = UIImageView()
-        imgView.image = UIImage(named: "onboarding_logo_torch")
-        imgView.contentMode = .scaleToFill
-        return imgView
-    }()
-    
-    private var labelsStackView: UIStackView = {
-        let sv = UIStackView()
-        sv.axis = .vertical
-        sv.distribution = .fill
-        sv.spacing = 8
-        return sv
-    }()
-    
-    private var lblTitle: UILabel = {
-        let lbl = UILabel()
-        lbl.textAlignment = .center
-        lbl.textColor = UIColor.onboardingTitleDark
-        lbl.font = UIFont.sourceSerifProFontFont(.semiBold, size: 28)
-        lbl.numberOfLines = 0
-        lbl.lineBreakMode = .byWordWrapping
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        return lbl
-    }()
-    
-    private var lblSubtitle: UILabel = {
-        let lbl = UILabel()
-        lbl.textAlignment = .center
-        lbl.textColor = UIColor.blackColor
-        lbl.font = UIFont.sourceSansProFont(.regular, size: 16)
-        lbl.numberOfLines = 0
-        lbl.lineBreakMode = .byWordWrapping
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        return lbl
-    }()
+    private lazy var topTitleView = OnboardingTopTitleView()
     
     private var lineView: UIView = {
         let view = UIView()
@@ -82,20 +47,15 @@ class SubscriptionsContentView: UIView {
             
             switch theme.type {
             case .dark:
-                self.lblTitle.textColor = UIColor.whiteColor
-                self.lblSubtitle.textColor = UIColor.whiteColor
                 self.lineView.backgroundColor = UIColor.blackColor
             case .light:
-                self.lblTitle.textColor = UIColor.blackColor
-                self.lblSubtitle.textColor = UIColor.blackColor
                 self.lineView.backgroundColor = UIColor.whiteColor
             }
         }
     }
     
     private func addingViews() {
-        self.addSubview(self.iconImageView)
-        self.addSubview(self.labelsStackView)
+        self.addSubview(self.topTitleView)
         self.addSubview(self.lineView)
         self.addSubview(self.privilegesStackView)
         self.addPrivilegesItems()
@@ -141,22 +101,17 @@ class SubscriptionsContentView: UIView {
     }
     
     private func setupConstraints() {
-        self.iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        self.labelsStackView.translatesAutoresizingMaskIntoConstraints = false
+        self.topTitleView.translatesAutoresizingMaskIntoConstraints = false
         self.lineView.translatesAutoresizingMaskIntoConstraints = false
         self.privilegesStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.iconImageView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50),
-            self.iconImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
-            self.iconImageView.heightAnchor.constraint(equalToConstant: 32),
-            self.iconImageView.widthAnchor.constraint(equalToConstant: 32),
+            self.topTitleView.topAnchor.constraint(equalTo: self.topAnchor, constant: UIDevice.current.isPad ? 120 : 105),
+            self.topTitleView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
+            self.topTitleView.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor),
+            self.topTitleView.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
             
-            self.labelsStackView.topAnchor.constraint(equalTo: self.iconImageView.bottomAnchor, constant: 8),
-            self.labelsStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30),
-            self.labelsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
-            
-            self.lineView.topAnchor.constraint(equalTo: self.labelsStackView.bottomAnchor, constant: UIDevice.current.isPad ? 32 : 16),
+            self.lineView.topAnchor.constraint(equalTo: self.topTitleView.bottomAnchor, constant: UIDevice.current.isPad ? 32 : 16),
             self.lineView.heightAnchor.constraint(equalToConstant: 1),
             self.lineView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.lineView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
@@ -182,18 +137,9 @@ class SubscriptionsContentView: UIView {
     }
     
     func configure(currentTheme: Theme?, lblTitleText: String, lblSubtitleText: String?) {
-        self.labelsStackView.arrangedSubviews.forEach({ [weak self] in
-            guard let self = self else { return }
-            self.labelsStackView.removeArrangedSubview($0)
-            $0.removeFromSuperview()
-        })
-        
-        self.lblTitle.text = lblTitleText
-        self.labelsStackView.addArrangedSubview(self.lblTitle)
-        
-        if let subtitleText = lblSubtitleText {
-            self.lblSubtitle.text = subtitleText
-            self.labelsStackView.addArrangedSubview(self.lblSubtitle)
-        }
+        self.topTitleView.configure(currentTheme: currentTheme,
+                                    lblTitleText: lblTitleText,
+                                    lblSubtitleText: lblSubtitleText,
+                                    logoIsHidden: false)
     }
 }

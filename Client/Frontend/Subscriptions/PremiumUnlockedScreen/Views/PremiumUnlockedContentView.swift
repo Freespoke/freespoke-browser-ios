@@ -6,34 +6,7 @@ import UIKit
 import Shared
 
 class PremiumUnlockedContentView: UIView {
-    private var iconImageView: UIImageView = {
-        let imgView = UIImageView()
-        imgView.image = UIImage(named: "onboarding_logo_torch")
-        imgView.contentMode = .scaleAspectFit
-        return imgView
-    }()
-    
-    private var lblTitle: UILabel = {
-        let lbl = UILabel()
-        lbl.textAlignment = .center
-        lbl.textColor = UIColor.onboardingTitleDark
-        lbl.font = UIFont.sourceSerifProFontFont(.semiBold, size: 28)
-        lbl.numberOfLines = 0
-        lbl.lineBreakMode = .byWordWrapping
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        return lbl
-    }()
-    
-    private var lblSubtitle: UILabel = {
-        let lbl = UILabel()
-        lbl.textAlignment = .center
-        lbl.textColor = UIColor.blackColor
-        lbl.font = UIFont.sourceSansProFont(.regular, size: 16)
-        lbl.numberOfLines = 0
-        lbl.lineBreakMode = .byWordWrapping
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        return lbl
-    }()
+    private lazy var topTitleView = OnboardingTopTitleView()
     
     private var premiumBadgeImageView: UIImageView = {
         let imgView = UIImageView()
@@ -46,7 +19,7 @@ class PremiumUnlockedContentView: UIView {
         let lbl = UILabel()
         lbl.textAlignment = .center
         lbl.textColor = UIColor.blackColor
-        lbl.font = UIFont.sourceSansProFont(.regular, size: 16)
+        lbl.font = UIDevice.current.isPad ? UIFont.sourceSansProFont(.regular, size: 20) : UIFont.sourceSansProFont(.regular, size: 16)
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -77,49 +50,33 @@ class PremiumUnlockedContentView: UIView {
             
             switch theme.type {
             case .dark:
-                self.lblTitle.textColor = UIColor.whiteColor
-                self.lblSubtitle.textColor = UIColor.whiteColor
                 self.lblSecondSubtitle.textColor = UIColor.whiteColor
             case .light:
-                self.lblTitle.textColor = UIColor.blackColor
-                self.lblSubtitle.textColor = UIColor.blackColor
                 self.lblSecondSubtitle.textColor = UIColor.blackColor
             }
         }
     }
     
     private func addingViews() {
-        self.addSubview(self.iconImageView)
-        self.addSubview(self.lblTitle)
-        self.addSubview(self.lblSubtitle)
+        self.addSubview(self.topTitleView)
         self.addSubviews(self.premiumBadgeImageView)
         self.addSubview(self.lblSecondSubtitle)
     }
     
     private func setupConstraints() {
-        self.iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        self.lblTitle.translatesAutoresizingMaskIntoConstraints = false
-        self.lblSubtitle.translatesAutoresizingMaskIntoConstraints = false
+        self.topTitleView.translatesAutoresizingMaskIntoConstraints = false
         self.premiumBadgeImageView.translatesAutoresizingMaskIntoConstraints = false
         self.lblSecondSubtitle.translatesAutoresizingMaskIntoConstraints = false
         
         let badgeImageViewTopOffset: CGFloat = UIScreen.main.bounds.height < 750 ? 30 : 70
         
         NSLayoutConstraint.activate([
-            self.iconImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-            self.iconImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
-            self.iconImageView.heightAnchor.constraint(equalToConstant: 32),
-            self.iconImageView.widthAnchor.constraint(equalToConstant: 32),
+            self.topTitleView.topAnchor.constraint(equalTo: self.topAnchor, constant: UIDevice.current.isPad ? 15 : 0),
+            self.topTitleView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
+            self.topTitleView.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor),
+            self.topTitleView.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
             
-            self.lblTitle.topAnchor.constraint(equalTo: self.iconImageView.bottomAnchor, constant: 8),
-            self.lblTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30),
-            self.lblTitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
-            
-            self.lblSubtitle.topAnchor.constraint(equalTo: self.lblTitle.bottomAnchor, constant: 8),
-            self.lblSubtitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30),
-            self.lblSubtitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
-            
-            self.premiumBadgeImageView.topAnchor.constraint(greaterThanOrEqualTo: self.lblSubtitle.bottomAnchor,
+            self.premiumBadgeImageView.topAnchor.constraint(greaterThanOrEqualTo: self.topTitleView.bottomAnchor,
                                                             constant: badgeImageViewTopOffset),
             self.premiumBadgeImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
             
@@ -131,8 +88,11 @@ class PremiumUnlockedContentView: UIView {
     }
     
     func configure(currentTheme: Theme?, lblTitleText: String, lblSubtitleText: String, lblSecondSubtitleText: String) {
-        self.lblTitle.text = lblTitleText
-        self.lblSubtitle.text = lblSubtitleText
+        self.topTitleView.configure(currentTheme: currentTheme,
+                                    lblTitleText: lblTitleText,
+                                    lblSubtitleText: lblSubtitleText,
+                                    logoIsHidden: false)
+        
         self.lblSecondSubtitle.text = lblSecondSubtitleText
     }
 }

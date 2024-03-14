@@ -116,7 +116,7 @@ class FreespokeHomepage: UIView {
         
         initCollectionView()
     }
-    
+        
     func setCurrentTheme(currentTheme: Theme) {
         self.currentTheme = currentTheme
         

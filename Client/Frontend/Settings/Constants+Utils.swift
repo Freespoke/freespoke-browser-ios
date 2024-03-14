@@ -12,11 +12,11 @@ enum FreespokeEnvironment {
     case staging
     
     static var current: FreespokeEnvironment {
-    #if STAGING
+#if STAGING
         return .staging
-    #else
+#else
         return .production
-    #endif
+#endif
     }
 }
 
@@ -48,12 +48,30 @@ enum MenuCellImageType: String {
 }
 
 enum Constants: String {
+    enum UI {
+        static let contentWidthConstraintForIpad: CGFloat = 550
+        static let buttonsWidthConstraintForIpad: CGFloat = 500
+    }
+    
     static var apiBaseURL: String {
         switch FreespokeEnvironment.current {
         case .production:
             return "https://api.freespoke.com/v2"
         case .staging:
             return "https://api.staging.freespoke.com/v2"
+        }
+    }
+    
+    // MARK: - URLs
+    
+    enum URLs {
+        static var accountProfileURL: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                return "https://freespoke.com/account/profile"
+            case .staging:
+                return "https://staging.freespoke.com/account/profile"
+            }
         }
     }
     
@@ -71,6 +89,7 @@ enum Constants: String {
     case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
     case electionURL = "https://freespoke.com/election/2024"
+    case appleNativeSubscriptions = "itms-apps://apps.apple.com/account/subscriptions"
     
     // MARK: - One Signal
     
@@ -97,23 +116,29 @@ extension UIColor {
     static let darkBackground = Utils.hexStringToUIColor(hex: "161616")
     static let gray7 = Utils.hexStringToUIColor(hex: "F8F9FB")
     static let gray2 = Utils.hexStringToUIColor(hex: "606671")
+    static let onboardingDark = Utils.hexStringToUIColor(hex: "#1D1D1D")
+    static let onboardingTitleDark = Utils.hexStringToUIColor(hex: "#081A33")
+    static let greenColor = Utils.hexStringToUIColor(hex: "#149590")
+    static let lavenderGreyColor = Utils.hexStringToUIColor(hex: "#E6E8EF")
+    static let charcoalGrayColor = Utils.hexStringToUIColor(hex: "#292929")
+    static let gunmetalGrayColor = Utils.hexStringToUIColor(hex: "#525252")
 }
 
 class Utils {
     class func hexStringToUIColor (hex:String) -> UIColor {
-        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-
+        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
         if (cString.hasPrefix("#")) {
             cString.remove(at: cString.startIndex)
         }
-
+        
         if ((cString.count) != 6) {
             return UIColor.gray
         }
-
-        var rgbValue:UInt64 = 0
+        
+        var rgbValue: UInt64 = 0
         Scanner(string: cString).scanHexInt64(&rgbValue)
-
+        
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,

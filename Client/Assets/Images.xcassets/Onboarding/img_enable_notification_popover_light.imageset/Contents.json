@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "img_enable_notification_popover_light.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -5,8 +5,11 @@ UserInterfaceState.xcuserstate
 */xcuserdata/*
 
 .venv
+build/
 
 #Pods
 Pods/
 !Pods/Manifest.lock
 .DS_Store
+**/.DS_Store
+*/Generated/*

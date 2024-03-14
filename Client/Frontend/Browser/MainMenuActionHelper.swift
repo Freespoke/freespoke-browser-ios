@@ -237,9 +237,12 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
             append(to: &section, action: desktopSiteAction)
         }
 
+        // MARK: dark mode is hidden for now while it doesn't work correct
+        /*
         let nightModeAction = getNightModeAction()
         append(to: &section, action: nightModeAction)
-
+         */
+         
         /*
         let passwordsAction = getPasswordAction(navigationController: navigationController)
         append(to: &section, action: passwordsAction)

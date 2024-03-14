@@ -2532,13 +2532,11 @@ extension BrowserViewController {
         self.introVCPresentHelper(introViewController: introViewController)
         */
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "OnboardingController") as! OnboardingController
-        vc.currentTheme = themeManager.currentTheme
+        let vc = OnboardingWelcomeScreen(currentTheme: themeManager.currentTheme)
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
         
-        vc.modalPresentationStyle = .fullScreen
-        
-        present(vc, animated: true) {
+        present(navVC, animated: true) {
             self.setupHomepageOnBackground()
         }
     }

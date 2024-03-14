@@ -26,7 +26,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.2</string>
+	<string>2.2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -56,7 +56,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>234</string>
+	<string>1</string>
 	<key>INIntentsSupported</key>
 	<array>
 		<string>QuickActionIntent</string>
@@ -125,22 +125,34 @@
 	<string>$(SENTRY_CLOUD_DSN)</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>SourceSansPro-SemiBoldItalic.ttf</string>
-		<string>SourceSansPro-SemiBold.ttf</string>
-		<string>SourceSansPro-Regular.ttf</string>
-		<string>SourceSansPro-LightItalic.ttf</string>
-		<string>SourceSansPro-Light.ttf</string>
-		<string>SourceSansPro-Italic.ttf</string>
-		<string>SourceSansPro-ExtraLightItalic.ttf</string>
-		<string>SourceSansPro-ExtraLight.ttf</string>
-		<string>SourceSansPro-BoldItalic.ttf</string>
-		<string>SourceSansPro-Bold.ttf</string>
-		<string>SourceSansPro-BlackItalic.ttf</string>
-		<string>SourceSansPro-Black.ttf</string>
-		<string>NewYorkMedium-Bold.otf</string>
-		<string>NewYorkMedium-BoldItalic.otf</string>
-		<string>NewYorkMedium-Regular.otf</string>
-		<string>NewYorkMedium-RegularItalic.otf</string>
+        <string>SourceSerifPro-Black.otf</string>
+        <string>SourceSerifPro-BlackIt.otf</string>
+        <string>SourceSerifPro-Bold.otf</string>
+        <string>SourceSerifPro-BoldIt.otf</string>
+        <string>SourceSerifPro-ExtraLight.otf</string>
+        <string>SourceSerifPro-ExtraLightIt.otf</string>
+        <string>SourceSerifPro-It.otf</string>
+        <string>SourceSerifPro-Light.otf</string>
+        <string>SourceSerifPro-LightIt.otf</string>
+        <string>SourceSerifPro-Regular.otf</string>
+        <string>SourceSerifPro-Semibold.otf</string>
+        <string>SourceSerifPro-SemiboldIt.otf</string>
+        <string>SourceSansPro-SemiBoldItalic.ttf</string>
+        <string>SourceSansPro-SemiBold.ttf</string>
+        <string>SourceSansPro-Regular.ttf</string>
+        <string>SourceSansPro-LightItalic.ttf</string>
+        <string>SourceSansPro-Light.ttf</string>
+        <string>SourceSansPro-Italic.ttf</string>
+        <string>SourceSansPro-ExtraLightItalic.ttf</string>
+        <string>SourceSansPro-ExtraLight.ttf</string>
+        <string>SourceSansPro-BoldItalic.ttf</string>
+        <string>SourceSansPro-Bold.ttf</string>
+        <string>SourceSansPro-BlackItalic.ttf</string>
+        <string>SourceSansPro-Black.ttf</string>
+        <string>NewYorkMedium-Bold.otf</string>
+        <string>NewYorkMedium-BoldItalic.otf</string>
+        <string>NewYorkMedium-Regular.otf</string>
+        <string>NewYorkMedium-RegularItalic.otf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
@@ -250,5 +262,7 @@
 		<string>freespoke-alternate.app.link</string>
 		<string>freespoke.test-app.link</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>$(USER_INTERFACE_STYLE)</string>
 </dict>
 </plist>

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "img_onboarding_finish_screen_dark.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -6,27 +6,7 @@ import UIKit
 import Shared
 
 class OnboardingContrentView: UIView {
-    private var lblTitle: UILabel = {
-        let lbl = UILabel()
-        lbl.textAlignment = .center
-        lbl.textColor = UIColor.onboardingTitleDark
-        lbl.font = UIFont.sourceSerifProFontFont(.semiBold, size: 28)
-        lbl.numberOfLines = 0
-        lbl.lineBreakMode = .byWordWrapping
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        return lbl
-    }()
-    
-    private var lblSubtitle: UILabel = {
-        let lbl = UILabel()
-        lbl.textAlignment = .center
-        lbl.textColor = UIColor.blackColor
-        lbl.font = UIFont.sourceSansProFont(.regular, size: 16)
-        lbl.numberOfLines = 0
-        lbl.lineBreakMode = .byWordWrapping
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        return lbl
-    }()
+    private lazy var topTitleView = OnboardingTopTitleView()
     
     private var imageView: UIImageView = {
         let imgView = UIImageView()
@@ -52,17 +32,12 @@ class OnboardingContrentView: UIView {
     
     private func applyTheme() {
         if let theme = currentTheme {
-            //            self.backgroundColor = theme.colors.layer1
             self.backgroundColor = .clear
             
             switch theme.type {
             case .dark:
-                self.lblTitle.textColor = UIColor.whiteColor
-                self.lblSubtitle.textColor = UIColor.lightGray
                 self.imageView.image = self.imageDark
             case .light:
-                self.lblTitle.textColor = UIColor.onboardingTitleDark
-                self.lblSubtitle.textColor = UIColor.blackColor
                 self.imageView.image = self.imageLight
             }
         }
@@ -70,33 +45,30 @@ class OnboardingContrentView: UIView {
     
     private func addingViews() {
         self.addSubview(self.imageView)
-        self.addSubview(self.lblTitle)
-        self.addSubview(self.lblSubtitle)
+        self.addSubview(self.topTitleView)
     }
     
     private func setupConstraints() {
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
-        self.lblTitle.translatesAutoresizingMaskIntoConstraints = false
-        self.lblSubtitle.translatesAutoresizingMaskIntoConstraints = false
+        self.topTitleView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-            self.lblTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30),
-            self.lblTitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
+            self.topTitleView.topAnchor.constraint(equalTo: self.topAnchor, constant: UIDevice.current.isPad ? 15 : 0),
+            self.topTitleView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
+            self.topTitleView.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor),
+            self.topTitleView.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
             
-            self.lblSubtitle.topAnchor.constraint(equalTo: self.lblTitle.bottomAnchor, constant: 12),
-            self.lblSubtitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30),
-            self.lblSubtitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
-            
-            self.imageView.topAnchor.constraint(equalTo: self.lblSubtitle.bottomAnchor, constant: 32),
+            self.imageView.topAnchor.constraint(equalTo: self.topTitleView.bottomAnchor, constant: 32),
             self.imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
             self.imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     
     func configure(currentTheme: Theme?, lblTitleText: String, lblSubtitleText: String, imageLight: UIImage?, imageDark: UIImage?) {
-        self.lblTitle.text = lblTitleText
-        self.lblSubtitle.text = lblSubtitleText
+        self.topTitleView.configure(currentTheme: currentTheme,
+                                    lblTitleText: lblTitleText,
+                                    lblSubtitleText: lblSubtitleText,
+                                    logoIsHidden: true)
         self.imageLight = imageLight
         self.imageDark = imageDark
         

@@ -44,7 +44,7 @@ class OnboardingSetDefaultBrowserVC: OnboardingBaseViewController {
     
     private func setupUI() {
         self.contentView.configure(currentTheme: self.currentTheme,
-                                   lblTitleText: "Make Freespoke your favorite.",
+                                   lblTitleText: "Make Freespoke \n your favorite.",
                                    lblSubtitleText: "Set Freespoke as your default browser and break free from big tech.",
                                    imageLight: UIImage(named: "img_set_as_default_browser_light"),
                                    imageDark: UIImage(named: "img_set_as_default_browser_dark"))
@@ -78,7 +78,7 @@ class OnboardingSetDefaultBrowserVC: OnboardingBaseViewController {
         NSLayoutConstraint.activate([
             self.btnNoThanks.heightAnchor.constraint(equalToConstant: 30),
             
-            self.contentView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 60),
+            self.contentView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: UIDevice.current.isPad ? 90 : 60),
             self.contentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.contentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.contentView.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomButtonsView.topAnchor, constant: -10)

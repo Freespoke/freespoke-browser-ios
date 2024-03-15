@@ -18,7 +18,7 @@ class OnboardingWelcomeScreenContentView: UIView {
         let lbl = UILabel()
         lbl.textAlignment = .center
         lbl.textColor = UIColor.onboardingTitleDark
-        lbl.font = UIFont.sourceSerifProFontFont(.semiBold, size: 36)
+        lbl.font = UIDevice.current.isPad ? UIFont.sourceSerifProFontFont(.semiBold, size: 52) : UIFont.sourceSerifProFontFont(.semiBold, size: 36)
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +29,7 @@ class OnboardingWelcomeScreenContentView: UIView {
         let lbl = UILabel()
         lbl.textAlignment = .center
         lbl.textColor = UIColor.blackColor
-        lbl.font = UIFont.sourceSansProFont(.regular, size: 16)
+        lbl.font = UIDevice.current.isPad ? UIFont.sourceSansProFont(.regular, size: 20) : UIFont.sourceSansProFont(.regular, size: 16)
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -40,7 +40,7 @@ class OnboardingWelcomeScreenContentView: UIView {
         let lbl = UILabel()
         lbl.textAlignment = .center
         lbl.textColor = UIColor.blackColor
-        lbl.font = UIFont.sourceSansProFont(.bold, size: 16)
+        lbl.font = UIDevice.current.isPad ? UIFont.sourceSansProFont(.semiBold, size: 20) :  UIFont.sourceSansProFont(.bold, size: 16)
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -95,11 +95,13 @@ class OnboardingWelcomeScreenContentView: UIView {
         self.lblSubtitle.translatesAutoresizingMaskIntoConstraints = false
         self.lblSecondSubtitle.translatesAutoresizingMaskIntoConstraints = false
         
+        let iconImageViewHeight: CGFloat = UIDevice.current.isPad ? 52 : 32
+        
         NSLayoutConstraint.activate([
             self.iconImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
             self.iconImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
-            self.iconImageView.heightAnchor.constraint(equalToConstant: 32),
-            self.iconImageView.widthAnchor.constraint(equalToConstant: 32),
+            self.iconImageView.heightAnchor.constraint(equalToConstant: iconImageViewHeight),
+            self.iconImageView.widthAnchor.constraint(equalTo: self.iconImageView.heightAnchor),
             
             self.lblTitle.topAnchor.constraint(equalTo: self.iconImageView.bottomAnchor, constant: 32),
             self.lblTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30),

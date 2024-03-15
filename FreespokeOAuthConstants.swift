@@ -15,7 +15,7 @@ final class OAuthConstants {
             }
     }
     
-    static let clientId = "mobile"
+    static let clientId = "public"
     static var callBackURLOAuthLogin: String {
             switch FreespokeEnvironment.current {
             case .production:

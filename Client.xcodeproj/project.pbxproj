@@ -805,6 +805,8 @@
 		01BD25FE2B6CF7EB00B8B9EB /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		01BD25FF2B6CF7EB00B8B9EB /* RustMozillaAppServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43BE578A278BA4D900491291 /* RustMozillaAppServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		01BD26002B6CF7EB00B8B9EB /* Sync.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2827315E1ABC9BE600AA1954 /* Sync.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		01CB8B102BA328A300ADC323 /* OnboardingTopTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */; };
+		01CB8B112BA328A300ADC323 /* OnboardingTopTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */; };
 		01DDC24C2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */; };
 		01DDC24D2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */; };
 		01DDC24F2B9F024D00B06189 /* ManagingSubscriptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */; };
@@ -2682,6 +2684,7 @@
 		01B1EEB62B8A9E4B00899E53 /* ClientFennec.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ClientFennec.entitlements; sourceTree = "<group>"; };
 		01B1EEB72B8BD7C100899E53 /* Notification.Name + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name + Extensions.swift"; sourceTree = "<group>"; };
 		01BD26072B6CF7EB00B8B9EB /* Fennec_Staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fennec_Staging.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTopTitleView.swift; sourceTree = "<group>"; };
 		01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLinkForManagingSubscription.swift; sourceTree = "<group>"; };
 		01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagingSubscriptionModel.swift; sourceTree = "<group>"; };
 		01E9F5142B7F94520034DE09 /* PremiumUnlockedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumUnlockedVC.swift; sourceTree = "<group>"; };
@@ -4470,6 +4473,7 @@
 				0141288D2B7B66A000283449 /* OnboardingBottomButtonsView.swift */,
 				01567C2D2B7BAC1B0026066A /* LabelWithUnderlinedButtonView.swift */,
 				01567C3F2B7C24F80026066A /* OnboardingContrentView.swift */,
+				01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -9557,6 +9561,7 @@
 				01BD23AE2B6CF7EB00B8B9EB /* FeatureFlagUserPrefsMigrationUtility.swift in Sources */,
 				01BD23AF2B6CF7EB00B8B9EB /* LocalRequestHelper.swift in Sources */,
 				0EB329792B8BD6DF00326992 /* AddDelegate + Filters.swift in Sources */,
+				01CB8B112BA328A300ADC323 /* OnboardingTopTitleView.swift in Sources */,
 				01BD23B02B6CF7EB00B8B9EB /* LegacyWallpaperResourceManager.swift in Sources */,
 				0E0DAA052B98A6CA00EADBD0 /* WhiteListTVC + Cells.swift in Sources */,
 				01BD23B12B6CF7EB00B8B9EB /* ReaderModeHandlers.swift in Sources */,
@@ -10663,6 +10668,7 @@
 				C8D0D6F2281C182D00AFAED9 /* FeatureFlagUserPrefsMigrationUtility.swift in Sources */,
 				D3C3696E1CC6B78800348A61 /* LocalRequestHelper.swift in Sources */,
 				C87DC85C27B2C94D006EFCE2 /* LegacyWallpaperResourceManager.swift in Sources */,
+				01CB8B102BA328A300ADC323 /* OnboardingTopTitleView.swift in Sources */,
 				E4B423DD1ABA0318007E66C8 /* ReaderModeHandlers.swift in Sources */,
 				D308E4E41A5306F500842685 /* SearchEngines.swift in Sources */,
 				0E0DAA032B98A64300EADBD0 /* WhiteListTVC + Cells.swift in Sources */,

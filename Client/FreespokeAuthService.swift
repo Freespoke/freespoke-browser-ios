@@ -30,7 +30,7 @@ class FreespokeAuthService {
             
             let request = OIDAuthorizationRequest(configuration: configuration,
                                                   clientId: OAuthConstants.clientId,
-                                                  scopes: [OIDScopeOpenID],
+                                                  scopes: ["openid", "offline_access"],
                                                   redirectURL: callBackURL,
                                                   responseType: OIDResponseTypeCode,
                                                   additionalParameters: nil)
@@ -65,7 +65,7 @@ class FreespokeAuthService {
             
             let request = OIDAuthorizationRequest(configuration: configuration,
                                                   clientId: OAuthConstants.clientId,
-                                                  scopes: [OIDScopeOpenID],
+                                                  scopes: ["openid", "offline_access"],
                                                   redirectURL: callBackURL,
                                                   responseType: OIDResponseTypeCode,
                                                   additionalParameters: ["kc_idp_hint": "apple"])

@@ -55,7 +55,7 @@ class SignUpVC: OnboardingBaseViewController {
     
     private func setupUI() {
         self.scrollableContentView.configure(currentTheme: self.currentTheme,
-                                             lblTitleText: "Join the Freespoke revolution!",
+                                             lblTitleText: "Join the Freespoke \n revolution!",
                                              lblSubtitleText: "Take back control from big tech.")
         
         self.setupBottomButtonsView()

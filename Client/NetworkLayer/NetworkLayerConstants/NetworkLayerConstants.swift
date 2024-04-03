@@ -59,12 +59,11 @@ enum NetworkLayerConstants {
         }
         
         static var getLinkForManagingSubscriptionPath: String {
-            switch FreespokeEnvironment.current {
-            case .production:
-                return "/accounts/profile"
-            case .staging:
-                return "/accounts/profile"
-            }
+            return "/accounts/profile"
+        }
+        
+        static var restorePurchasePath: String {
+            return "/accounts/restore-purchase/ios"
         }
     }
     
@@ -92,5 +91,6 @@ enum NetworkLayerConstants {
         static let password = "password"
         static let clientId = "client_id"
         static let refreshToken = "refresh_token"
+        static let signedPayload = "signedPayload"
     }
 }

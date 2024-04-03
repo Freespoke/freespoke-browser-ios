@@ -50,10 +50,7 @@ class SubscriptionPrivilegesItem: UIView {
     private var subtitleText: String
     private var bottomLineVisible: Bool
     
-    private var currentTheme: Theme?
-    
-    required init(currentTheme: Theme?, image: UIImage?, titleText: String, subtitleText: String, bottomLineVisible: Bool) {
-        self.currentTheme = currentTheme
+    required init(image: UIImage?, titleText: String, subtitleText: String, bottomLineVisible: Bool) {
         self.image = image
         self.titleText = titleText
         self.subtitleText = subtitleText
@@ -71,23 +68,20 @@ class SubscriptionPrivilegesItem: UIView {
     
     func prepareUI() {
         self.configure()
-        self.applyTheme()
     }
     
-    private func applyTheme() {
-        if let theme = currentTheme {
-            self.backgroundColor = .clear
-            
-            switch theme.type {
-            case .dark:
-                self.lblTitle.textColor = UIColor.whiteColor
-                self.lblSubtitle.textColor = UIColor.lightGray
-                self.lineView.backgroundColor = UIColor.blackColor
-            case .light:
-                self.lblTitle.textColor = UIColor.blackColor
-                self.lblSubtitle.textColor = UIColor.gray2
-                self.lineView.backgroundColor = UIColor.whiteColor
-            }
+    func applyTheme(currentTheme: Theme) {
+        self.backgroundColor = .clear
+        
+        switch currentTheme.type {
+        case .dark:
+            self.lblTitle.textColor = UIColor.whiteColor
+            self.lblSubtitle.textColor = UIColor.lightGray
+            self.lineView.backgroundColor = UIColor.blackColor
+        case .light:
+            self.lblTitle.textColor = UIColor.blackColor
+            self.lblSubtitle.textColor = UIColor.gray2
+            self.lineView.backgroundColor = UIColor.whiteColor
         }
     }
     

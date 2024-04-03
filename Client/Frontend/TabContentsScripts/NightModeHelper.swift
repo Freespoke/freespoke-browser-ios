@@ -5,58 +5,42 @@
 import Foundation
 import WebKit
 import Shared
-import Common
 
 class NightModeHelper: TabContentScript {
-    private enum NightModeKeys {
-        static let Status = "profile.NightModeStatus"
-        static let DarkThemeEnabled = "NightModeEnabledDarkTheme"
-    }
-
     fileprivate weak var tab: Tab?
-
+    
     required init(tab: Tab) {
         self.tab = tab
     }
-
+    
     static func name() -> String {
         return "NightMode"
     }
-
+    
     func scriptMessageHandlerName() -> String? {
         return "NightMode"
     }
-
+    
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
         // Do nothing.
     }
-
-    static func toggle(_ userDefaults: UserDefaultsInterface = UserDefaults.standard,
-                       tabManager: TabManagerProtocol) {
-        let isActive = userDefaults.bool(forKey: NightModeKeys.Status)
-        setNightMode(userDefaults, tabManager: tabManager, enabled: !isActive)
+    
+    static func hasEnabledDarkTheme() -> Bool {
+        let theme = BuiltinThemeName(rawValue: LegacyThemeManager.instance.current.name) ?? .normal
+        let isNightMode = (theme == .dark) ? true : false
+        return isNightMode
     }
-
-    static func setNightMode(_ userDefaults: UserDefaultsInterface = UserDefaults.standard,
-                             tabManager: TabManagerProtocol,
-                             enabled: Bool) {
-        userDefaults.set(enabled, forKey: NightModeKeys.Status)
-        for tab in tabManager.tabs {
-            tab.nightMode = enabled
-            tab.webView?.scrollView.indicatorStyle = enabled ? .white : .default
+    
+    static func changeUserInterfaceStyle(to themeType: ThemeType, themeManager: ThemeManager) {
+        LegacyThemeManager.instance.systemThemeIsOn = false
+        themeManager.setSystemTheme(isOn: false)
+        switch themeType {
+        case .light:
+            LegacyThemeManager.instance.current = LegacyNormalTheme()
+            themeManager.changeCurrentTheme(.light)
+        case .dark:
+            LegacyThemeManager.instance.current = LegacyDarkTheme()
+            themeManager.changeCurrentTheme(.dark)
         }
-    }
-
-    static func setEnabledDarkTheme(_ userDefaults: UserDefaultsInterface = UserDefaults.standard,
-                                    darkTheme enabled: Bool) {
-        userDefaults.set(enabled, forKey: NightModeKeys.DarkThemeEnabled)
-    }
-
-    static func hasEnabledDarkTheme(_ userDefaults: UserDefaultsInterface = UserDefaults.standard) -> Bool {
-        return userDefaults.bool(forKey: NightModeKeys.DarkThemeEnabled)
-    }
-
-    static func isActivated(_ userDefaults: UserDefaultsInterface = UserDefaults.standard) -> Bool {
-        return userDefaults.bool(forKey: NightModeKeys.Status)
     }
 }

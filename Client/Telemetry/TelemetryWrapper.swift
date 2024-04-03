@@ -386,6 +386,7 @@ extension TelemetryWrapper {
         case searchText = "searchText"
         case whatsNew = "whats-new"
         case help = "menu-help"
+        case account = "profile-account"
         case customizeHomePage = "menu-customize-home-page"
         case dismissUpdateCoverSheetAndStartBrowsing = "dismissed-update-cover_sheet_and_start_browsing"
         case dismissedUpdateCoverSheet = "dismissed-update-cover-sheet"

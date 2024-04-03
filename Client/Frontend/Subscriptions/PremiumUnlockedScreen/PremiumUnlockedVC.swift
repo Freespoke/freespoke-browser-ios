@@ -9,7 +9,7 @@ class PremiumUnlockedVC: OnboardingBaseViewController {
     private var topContentView: PremiumUnlockedContentView!
     
     private lazy var btnNext: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
         btn.setTitle("Next", for: .normal)
         btn.height = 56
         return btn
@@ -17,10 +17,10 @@ class PremiumUnlockedVC: OnboardingBaseViewController {
     
     let isOnboarding: Bool
     
-    init(currentTheme: Theme?, isOnboarding: Bool) {
+    init(isOnboarding: Bool) {
         self.isOnboarding = isOnboarding
-        super.init(currentTheme: currentTheme)
-        self.topContentView = PremiumUnlockedContentView(currentTheme: self.currentTheme)
+        super.init()
+        self.topContentView = PremiumUnlockedContentView()
     }
     
     required init?(coder: NSCoder) {
@@ -34,6 +34,9 @@ class PremiumUnlockedVC: OnboardingBaseViewController {
         self.addingViews()
         self.setupConstraints()
         self.setupActions()
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,13 +44,15 @@ class PremiumUnlockedVC: OnboardingBaseViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    override func applyTheme() {
+        super.applyTheme()
+        self.topContentView.applyTheme(currentTheme: self.themeManager.currentTheme)
+    }
+    
     private func setupUI() {
-        self.topContentView.configure(currentTheme: self.currentTheme,
-                                      lblTitleText: "Success! You’ve Unlocked Freespoke Premium.",
+        self.topContentView.configure(lblTitleText: "Success! You’ve Unlocked Freespoke Premium.",
                                       lblSubtitleText: "Enjoy ad-free search and unbiased news.",
                                       lblSecondSubtitleText: "This badge shows when Premium is active.")
-        
-        self.bottomButtonsView.configure(currentTheme: self.currentTheme)
     }
     
     private func addingViews() {
@@ -61,7 +66,6 @@ class PremiumUnlockedVC: OnboardingBaseViewController {
         self.topContentView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-//            self.topContentView.topAnchor.constraint(equalTo: self.btnClose.bottomAnchor, constant: UIDevice.current.isPad ? 15 : 0),
             self.topContentView.topAnchor.constraint(equalTo: self.btnClose.bottomAnchor, constant: 0),
             self.topContentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.topContentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
@@ -87,7 +91,7 @@ extension PremiumUnlockedVC {
     }
     
     @objc private func btnNextOnboardingTapped(_ sender: UIButton) {
-        let vc = OnboardingSetDefaultBrowserVC(currentTheme: self.currentTheme)
+        let vc = OnboardingSetDefaultBrowserVC(source: .createAccount)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

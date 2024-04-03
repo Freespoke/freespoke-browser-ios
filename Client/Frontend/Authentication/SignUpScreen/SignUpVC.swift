@@ -12,7 +12,7 @@ class SignUpVC: OnboardingBaseViewController {
     private var scrollableContentView: SignUpContentView!
     
     private lazy var btnNext: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
         btn.setTitle("Next", for: .normal)
         btn.height = 56
         btn.isEnabled = false
@@ -21,11 +21,11 @@ class SignUpVC: OnboardingBaseViewController {
     
     private var btnLogin = LabelWithUnderlinedButtonView()
     
-    init(currentTheme: Theme?, viewModel: SignUpVCViewModel) {
+    init(viewModel: SignUpVCViewModel) {
         self.viewModel = viewModel
-        super.init(currentTheme: currentTheme)
+        super.init()
         
-        self.scrollableContentView = SignUpContentView(currentTheme: self.currentTheme)
+        self.scrollableContentView = SignUpContentView()
         self.scrollableContentView.delegate = self
     }
     
@@ -41,6 +41,9 @@ class SignUpVC: OnboardingBaseViewController {
         self.setupConstraints()
         self.setupActions()
         self.hideKeyboardWhenTappedAround()
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,15 +56,21 @@ class SignUpVC: OnboardingBaseViewController {
         self.updateScrollViewBottomContentInset(to: self.bottomButtonsView.frame.height)
     }
     
+    override func applyTheme() {
+        super.applyTheme()
+        
+        self.scrollableContentView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        self.btnLogin.applyTheme(currentTheme: self.themeManager.currentTheme)
+        self.bottomButtonsView.applyTheme(currentTheme: self.themeManager.currentTheme)
+    }
+    
     private func setupUI() {
-        self.scrollableContentView.configure(currentTheme: self.currentTheme,
-                                             lblTitleText: "Join the Freespoke \n revolution!",
+        self.scrollableContentView.configure(lblTitleText: "Join the Freespoke \n revolution!",
                                              lblSubtitleText: "Take back control from big tech.")
         
         self.setupBottomButtonsView()
         
-        self.btnLogin.configure(currentTheme: self.currentTheme,
-                                lblTitleText: "Already have an account?",
+        self.btnLogin.configure(lblTitleText: "Already have an account?",
                                 btnTitleText: "Log In")
     }
     
@@ -126,14 +135,11 @@ extension SignUpVC {
 
 extension SignUpVC {
     private func setupBottomButtonsView() {
-        self.btnLogin.configure(currentTheme: self.currentTheme,
-                                lblTitleText: "Already have an account?",
+        self.btnLogin.configure(lblTitleText: "Already have an account?",
                                 btnTitleText: "Log In")
         
         self.bottomButtonsView.addViews(views: [self.btnNext,
                                                 self.btnLogin])
-        
-        self.bottomButtonsView.configure(currentTheme: self.currentTheme)
     }
 }
 
@@ -145,7 +151,7 @@ extension SignUpVC {
             self.addOnboardingCloseAction()
         } else {
             self.btnClose.addTarget(self,
-                                    action: #selector(self.btnCloseNotOnboardingAction(_:)),
+                                    action: #selector(self.btnCloseNotOnboardingAction),
                                     for: .touchUpInside)
         }
         
@@ -158,10 +164,21 @@ extension SignUpVC {
                     self.scrollableContentView.signInWithAppleItem.errorMessage = "Unable to connect with Apple account."
                 } else {
                     guard let decodedJWTToken = AppSessionManager.shared.decodedJWTToken else { return }
-                    if decodedJWTToken.isPremium {
-                        self.onboardingCloseAction(animated: false)
-                    } else {
-                        self.openSubscriptionScreen()
+                    Task {
+                        if let subscriptionType = try? await decodedJWTToken.subscriptionType() {
+                            switch subscriptionType {
+                            case .trialExpired:
+                                self.openSubscriptionScreen()
+                            case .originalApple, .notApple:
+                                if self.viewModel.isOnboarding {
+                                    self.onboardingCloseAction(animated: false)
+                                } else {
+                                    self.btnCloseNotOnboardingAction()
+                                }
+                            }
+                        } else {
+                            self.openSubscriptionScreen()
+                        }
                     }
                 }
             })
@@ -181,17 +198,24 @@ extension SignUpVC {
         AppSessionManager.shared.performFreespokeLogin(parentVC: self,
                                                        successCompletion: { [weak self] authModel in
             guard let self = self else { return }
-            if self.viewModel.isOnboarding, AppSessionManager.shared.decodedJWTToken?.isPremium == true {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                    self.onboardingCloseAction(animated: false)
-                })
-            } else {
-                self.openSubscriptionScreen()
+            Task {
+                if self.viewModel.isOnboarding, let subscriptionType = try? await AppSessionManager.shared.decodedJWTToken?.subscriptionType() {
+                    switch subscriptionType {
+                    case .trialExpired:
+                        self.openSubscriptionScreen()
+                    case .originalApple, .notApple:
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                            self.onboardingCloseAction(animated: false)
+                        })
+                    }
+                } else {
+                    self.openSubscriptionScreen()
+                }
             }
         })
     }
     
-    @objc private func btnCloseNotOnboardingAction(_ sender: UIButton) {
+    @objc private func btnCloseNotOnboardingAction() {
         self.motionDismissViewController(animated: true)
     }
     
@@ -224,8 +248,7 @@ extension SignUpVC {
     private func openSubscriptionScreen() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            let vc = SubscriptionsVC(currentTheme: self.currentTheme,
-                                     viewModel: SubscriptionsVCViewModel(state: .startTrialSubscription(isOnboarding: self.viewModel.isOnboarding)))
+            let vc = SubscriptionsVC(viewModel: SubscriptionsVCViewModel(isOnboarding: self.viewModel.isOnboarding))
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

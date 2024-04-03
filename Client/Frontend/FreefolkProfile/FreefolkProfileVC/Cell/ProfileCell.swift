@@ -42,7 +42,14 @@ class ProfileCell: UITableViewCell {
         return stackView
     }()
     
-    private var borderView = UIView()
+    private var borderView: UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = UIColor.whiteColor.cgColor
+        view.layer.cornerRadius = 4.0
+        view.layer.masksToBounds = true
+        return view
+    }()
     
     private let darkModeSwitch: UISwitch = {
         let darkModeSwitch = UISwitch()
@@ -65,14 +72,6 @@ class ProfileCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.borderView.layer.borderWidth = 1.0
-        self.borderView.layer.borderColor = UIColor.lightGray.cgColor
-        self.borderView.layer.cornerRadius = 4.0
-        self.borderView.layer.masksToBounds = true
     }
     
     func prepareUI() {
@@ -168,19 +167,16 @@ class ProfileCell: UITableViewCell {
     private func applyTheme() {
         if let theme = currentTheme {
             self.titleLabel.textColor = (theme.type == .light) ? .blackColor : .white
+            self.borderView.layer.borderColor = (theme.type == .light) ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
         }
     }
     
-    func setDarkModeSwich(isOn: Bool) {
+    func setDarkModeSwitch(isOn: Bool) {
         self.darkModeSwitch.isOn = isOn
     }
     
     @objc private func darkModeSwitchChanged(_ sender: UISwitch) {
-        if sender.isOn {
-            self.darkModeSwitchClosure?(sender.isOn)
-        } else {
-            self.darkModeSwitchClosure?(!sender.isOn)
-        }
+        self.darkModeSwitchClosure?(sender.isOn)
     }
     
     @objc private func cellTapped() {

@@ -70,6 +70,9 @@ class FreespokeHomepage: UIView {
     @IBOutlet weak var btnFreespokeWayMiddle: UIButton!
     @IBOutlet weak var btnFreespokeWayDown: UIButton!
     
+    @IBOutlet weak var avatarView: UIView!
+    
+    
     private var profileIconView = ProfileIconView()
     
     var profileIconTapClosure: (() -> Void)?
@@ -79,7 +82,6 @@ class FreespokeHomepage: UIView {
     private var bookmarksHandler: BookmarksHandler?
     
     var profile: Profile!
-    private var currentTheme: Theme?
     var arrBookmarks = [Site]()
     var arrRecenlyViewed = [HighlightItem]()
     var arrTrendingStory = [TrendingStory]()
@@ -116,28 +118,19 @@ class FreespokeHomepage: UIView {
         
         initCollectionView()
     }
-        
-    func setCurrentTheme(currentTheme: Theme) {
-        self.currentTheme = currentTheme
-        
-        self.profileIconView.configureTheme(currentTheme: currentTheme)
+    
+    func applyTheme(currentTheme: Theme) {
+        self.profileIconView.applyTheme(currentTheme: currentTheme)
     }
     
     func addProfileIconView() {
-        self.contentView.addSubview(self.profileIconView)
+        self.avatarView.addSubview(self.profileIconView)
         self.profileIconView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            self.profileIconView.topAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.topAnchor, constant: UIDevice.current.isPad ? 20 : 0),
-            self.profileIconView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20)
-        ])
+        self.profileIconView.pinToView(view: self.avatarView)
         
         profileIconView.tapClosure = { [weak self] in
             self?.profileIconTapClosure?()
-        }
-        
-        if let theme = self.currentTheme {
-            self.profileIconView.configureTheme(currentTheme: theme)
         }
     }
     
@@ -466,7 +459,7 @@ class FreespokeHomepage: UIView {
     
     @IBAction func btnFreespokeWayUp(_ sender: UIButton) {
         if let text = sender.titleLabel?.text {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.click.rawValue, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.clickName.rawValue, value: nil)
         }
         
         delegate?.showURL(url: urlSearch)
@@ -474,7 +467,7 @@ class FreespokeHomepage: UIView {
     
     @IBAction func btnFreespokeWayMiddle(_ sender: UIButton) {
         if let text = sender.titleLabel?.text {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.click.rawValue, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.clickName.rawValue, value: nil)
         }
         
         delegate?.showURL(url: urlShopping)
@@ -482,7 +475,7 @@ class FreespokeHomepage: UIView {
     
     @IBAction func btnFreespokeWayDown(_ sender: UIButton) {
         if let text = sender.titleLabel?.text {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.click.rawValue, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.clickName.rawValue, value: nil)
         }
         
         delegate?.showURL(url: urlTrending)
@@ -744,7 +737,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch collectionView {
         case collectionViewBookmarks:
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeBookmarks.rawValue, name: MatomoName.click.rawValue, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeBookmarks.rawValue, name: MatomoName.clickName.rawValue, value: nil)
             
             let site = arrBookmarks[indexPath.row]
             
@@ -758,7 +751,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             delegate?.showURL(url: story.url)
             
         case collectionViewRecentlyViewd:
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeRecently.rawValue, name: MatomoName.click.rawValue, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeRecently.rawValue, name: MatomoName.clickName.rawValue, value: nil)
             
             let site = arrRecenlyViewed[indexPath.row]
             

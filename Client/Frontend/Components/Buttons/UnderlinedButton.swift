@@ -7,7 +7,7 @@ import UIKit
 class UnderlinedButton: UIButton {
     override func setTitle(_ title: String?, for state: UIControl.State) {
         super.setTitle(title, for: state)
-        self.underline()
+        self.underline(text: title)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -33,8 +33,8 @@ class UnderlinedButton: UIButton {
         }
     }
     
-    private func underline() {
-        guard let text = self.titleLabel?.text else { return }
+    private func underline(text: String?) {
+        guard let text = text else { return }
         
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(NSAttributedString.Key.underlineStyle,

@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import UIKit
+import Shared
 
 class CustomTextField: UITextField {
     // MARK: - Properties
@@ -28,6 +29,13 @@ class CustomTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func applyTheme(currentTheme: Theme) {
+        self.layer.borderColor = currentTheme.type == .dark ? UIColor.blackColor.cgColor : UIColor.whiteColor.cgColor
+        self.tintColor = currentTheme.type == .dark ? UIColor.white : UIColor.blackColor
+        self.textColor = currentTheme.type == .dark ? UIColor.white : UIColor.blackColor
+        self.backgroundColor = currentTheme.type == .dark ? UIColor.clear : UIColor.white
+    }
+        
     // MARK: - Layout Overrides
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -76,8 +84,7 @@ class CustomTextField: UITextField {
         // Setup Text Field
         self.layer.borderWidth = 1.0
         self.layer.cornerRadius = 4.0
-        self.layer.borderColor = UIColor.whiteColor.cgColor
-        self.font = UIFont.sourceSansProFont(.regular, size: 16)
+        self.font = UIDevice.current.isPad ? UIFont.sourceSansProFont(.regular, size: 18) : UIFont.sourceSansProFont(.regular, size: 16)
     }
     
     func setIcon(_ image: UIImage?) {

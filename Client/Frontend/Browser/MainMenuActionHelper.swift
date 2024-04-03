@@ -25,6 +25,7 @@ protocol ToolBarActionMenuDelegate: AnyObject {
     func showFindInPage()
     func showCustomizeHomePage()
     func showDeviceSettings()
+    func showFreespokeProfile()
 }
 
 enum MenuButtonToastAction {
@@ -314,8 +315,8 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         let getNotificationsAction = getNotificationsAction()
         section.append(getNotificationsAction)
 
-        let getPremiumAction = getPremiumAction()
-        section.append(getPremiumAction)
+        let freespokeAccountAction = freespokeAccountAction()
+        section.append(freespokeAccountAction)
 
         return section
     }
@@ -499,7 +500,7 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
                   let presentableVC = self.menuActionDelegate as? PresentableVC
             else { return }
             
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appShare.rawValue, action: MatomoAction.appShareMenu.rawValue, name: MatomoName.click.rawValue, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appShare.rawValue, action: MatomoAction.appShareMenu.rawValue, name: MatomoName.clickName.rawValue, value: nil)
 
             self.share(fileURL: url, buttonView: self.buttonView, presentableVC: presentableVC)
         }.items
@@ -531,13 +532,11 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         }.items
     }
     
-    private func getPremiumAction() -> PhotonRowActions {
-        return SingleActionViewModel(title: "Get Freespoke Premium",
-                                     iconString: "menu-premium") { _ in
-            if let url = URL(string: Constants.freespokePremiumURL.rawValue) {
-                self.delegate?.openURLInNewTab(url, isPrivate: false)
-            }
-            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
+    private func freespokeAccountAction() -> PhotonRowActions {
+        return SingleActionViewModel(title: "Freespoke Account",
+                                     iconString: "menu-freespoke-account") { _ in
+            self.delegate?.showFreespokeProfile()
+            TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .account)
         }.items
     }
 
@@ -577,40 +576,42 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         return openSettings
     }
 
+/*
     private func getNightModeAction() -> [PhotonRowActions] {
         var items: [PhotonRowActions] = []
-
-        let nightModeEnabled = NightModeHelper.isActivated()
+        
+        let nightModeEnabled = NightModeHelper.hasEnabledDarkTheme()
         let nightModeTitle: String = nightModeEnabled ? .AppMenu.AppMenuTurnOffNightMode : .AppMenu.AppMenuTurnOnNightMode
         let nightMode = SingleActionViewModel(title: nightModeTitle,
                                               iconString: ImageIdentifiers.nightMode,
                                               isEnabled: nightModeEnabled) { _ in
             NightModeHelper.toggle(tabManager: self.tabManager)
-
+            
             if nightModeEnabled {
                 TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .nightModeEnabled)
             } else {
                 TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .nightModeDisabled)
             }
-
+            
             // If we've enabled night mode and the theme is normal, enable dark theme
-            if NightModeHelper.isActivated(), LegacyThemeManager.instance.currentName == .normal {
+            if NightModeHelper.hasEnabledDarkTheme(), LegacyThemeManager.instance.currentName == .normal {
                 LegacyThemeManager.instance.current = LegacyDarkTheme()
                 self.themeManager.changeCurrentTheme(.dark)
                 NightModeHelper.setEnabledDarkTheme(darkTheme: true)
             }
-
+            
             // If we've disabled night mode and dark theme was activated by it then disable dark theme
-            if !NightModeHelper.isActivated(), NightModeHelper.hasEnabledDarkTheme(), LegacyThemeManager.instance.currentName == .dark {
+            if !NightModeHelper.hasEnabledDarkTheme(), NightModeHelper.hasEnabledDarkTheme(), LegacyThemeManager.instance.currentName == .dark {
                 LegacyThemeManager.instance.current = LegacyNormalTheme()
                 self.themeManager.changeCurrentTheme(.light)
                 NightModeHelper.setEnabledDarkTheme(darkTheme: false)
             }
         }.items
         items.append(nightMode)
-
+        
         return items
     }
+*/
 
     private func syncMenuButton(showFxA: @escaping (FXASyncClosure) -> Void) -> PhotonRowActions? {
         let action: (SingleActionViewModel) -> Void = { action in

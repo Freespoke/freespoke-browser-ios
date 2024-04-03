@@ -349,7 +349,7 @@ extension GridTabViewController {
     }
 
     func closeTabsTrayBackground() {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appTabs.rawValue, action: MatomoAction.appTabsCloseAllTabs.rawValue, name: MatomoName.click.rawValue, value: nil)
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appTabs.rawValue, action: MatomoAction.appTabsCloseAllTabs.rawValue, name: MatomoName.clickName.rawValue, value: nil)
         
         tabDisplayManager.removeAllTabsFromView()
 

@@ -62,6 +62,10 @@
 		01567C442B7CCB0A0026066A /* OnboardingEnableNotificationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01567C422B7CCB0A0026066A /* OnboardingEnableNotificationsVC.swift */; };
 		01567C482B7CCFCB0026066A /* OnboardingFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01567C472B7CCFCB0026066A /* OnboardingFinishViewController.swift */; };
 		01567C492B7CCFCB0026066A /* OnboardingFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01567C472B7CCFCB0026066A /* OnboardingFinishViewController.swift */; };
+		017D2DB72BB7391000A1B20C /* RestorePurchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D2DB62BB7391000A1B20C /* RestorePurchase.swift */; };
+		017D2DB82BB7391000A1B20C /* RestorePurchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D2DB62BB7391000A1B20C /* RestorePurchase.swift */; };
+		017D2DBA2BB7399B00A1B20C /* RestorePurchaseResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D2DB92BB7399B00A1B20C /* RestorePurchaseResponseModel.swift */; };
+		017D2DBB2BB7399B00A1B20C /* RestorePurchaseResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D2DB92BB7399B00A1B20C /* RestorePurchaseResponseModel.swift */; };
 		0181A4042B83B2CD005BE1F6 /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0181A4032B83B2CD005BE1F6 /* Validators.swift */; };
 		0181A4052B83B2CD005BE1F6 /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0181A4032B83B2CD005BE1F6 /* Validators.swift */; };
 		0181A4072B85148E005BE1F6 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0181A4062B85148E005BE1F6 /* UIUtils.swift */; };
@@ -80,6 +84,10 @@
 		0181A41E2B861CF7005BE1F6 /* FreespokeJWTDecodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0181A41C2B861CF7005BE1F6 /* FreespokeJWTDecodeModel.swift */; };
 		0181A4202B863702005BE1F6 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0181A41F2B863702005BE1F6 /* Keychain.swift */; };
 		0181A4212B863702005BE1F6 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0181A41F2B863702005BE1F6 /* Keychain.swift */; };
+		0181DA472BAE1296004B9801 /* freespoke_loader_torch_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0181DA452BAE1291004B9801 /* freespoke_loader_torch_dark.gif */; };
+		0181DA482BAE1296004B9801 /* freespoke_loader_torch_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0181DA452BAE1291004B9801 /* freespoke_loader_torch_dark.gif */; };
+		0181DA492BAE1296004B9801 /* freespoke_loader_torch_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0181DA462BAE1296004B9801 /* freespoke_loader_torch_light.gif */; };
+		0181DA4A2BAE1296004B9801 /* freespoke_loader_torch_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0181DA462BAE1296004B9801 /* freespoke_loader_torch_light.gif */; };
 		01823F912B8D592700986B73 /* LogoutFreespokeUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01823F902B8D592700986B73 /* LogoutFreespokeUser.swift */; };
 		01823F922B8D592700986B73 /* LogoutFreespokeUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01823F902B8D592700986B73 /* LogoutFreespokeUser.swift */; };
 		01823F942B8D6C6400986B73 /* FormDataUrlEncoded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01823F932B8D6C6400986B73 /* FormDataUrlEncoded.swift */; };
@@ -807,6 +815,12 @@
 		01BD26002B6CF7EB00B8B9EB /* Sync.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2827315E1ABC9BE600AA1954 /* Sync.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		01CB8B102BA328A300ADC323 /* OnboardingTopTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */; };
 		01CB8B112BA328A300ADC323 /* OnboardingTopTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */; };
+		01CE39362BB1F000009CEE9B /* InAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE39352BB1F000009CEE9B /* InAppManager.swift */; };
+		01CE39372BB1F000009CEE9B /* InAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE39352BB1F000009CEE9B /* InAppManager.swift */; };
+		01CE39392BB1F149009CEE9B /* InAppManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE39382BB1F149009CEE9B /* InAppManagerProtocol.swift */; };
+		01CE393A2BB1F149009CEE9B /* InAppManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE39382BB1F149009CEE9B /* InAppManagerProtocol.swift */; };
+		01CE393C2BB1F475009CEE9B /* CustomProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE393B2BB1F475009CEE9B /* CustomProduct.swift */; };
+		01CE393D2BB1F475009CEE9B /* CustomProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE393B2BB1F475009CEE9B /* CustomProduct.swift */; };
 		01DDC24C2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */; };
 		01DDC24D2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */; };
 		01DDC24F2B9F024D00B06189 /* ManagingSubscriptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */; };
@@ -1215,8 +1229,6 @@
 		43F7952525795F69005AEE40 /* SearchTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7952425795F69005AEE40 /* SearchTelemetry.swift */; };
 		43F93C2427A8681C009833D9 /* RustMozillaAppServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43BE578A278BA4D900491291 /* RustMozillaAppServices.framework */; };
 		43F93C2827A8683E009833D9 /* RustMozillaAppServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43BE578A278BA4D900491291 /* RustMozillaAppServices.framework */; };
-		4403FF6C2B83F4BD003D7131 /* InAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4403FF6B2B83F4BD003D7131 /* InAppManager.swift */; };
-		4403FF6D2B83F4BD003D7131 /* InAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4403FF6B2B83F4BD003D7131 /* InAppManager.swift */; };
 		4403FF842B855C1D003D7131 /* SubscriptionsStoreKitTest.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 4403FF832B855C1D003D7131 /* SubscriptionsStoreKitTest.storekit */; };
 		4403FF852B855C1D003D7131 /* SubscriptionsStoreKitTest.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 4403FF832B855C1D003D7131 /* SubscriptionsStoreKitTest.storekit */; };
 		44481A572B7A26BC003BBD6E /* ProfileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44481A562B7A26BC003BBD6E /* ProfileIconView.swift */; };
@@ -2590,6 +2602,8 @@
 		01567C422B7CCB0A0026066A /* OnboardingEnableNotificationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingEnableNotificationsVC.swift; sourceTree = "<group>"; };
 		01567C472B7CCFCB0026066A /* OnboardingFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFinishViewController.swift; sourceTree = "<group>"; };
 		016B6DF92B62796A00AA65EE /* Fennec_Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Fennec_Staging.xcconfig; path = Configuration/Fennec_Staging.xcconfig; sourceTree = "<group>"; };
+		017D2DB62BB7391000A1B20C /* RestorePurchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchase.swift; sourceTree = "<group>"; };
+		017D2DB92BB7399B00A1B20C /* RestorePurchaseResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchaseResponseModel.swift; sourceTree = "<group>"; };
 		0181A4032B83B2CD005BE1F6 /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
 		0181A4062B85148E005BE1F6 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		0181A4092B851ABC005BE1F6 /* UIApplication + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + Extensions.swift"; sourceTree = "<group>"; };
@@ -2599,6 +2613,8 @@
 		0181A4192B8606EF005BE1F6 /* FreespokeAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreespokeAuthService.swift; sourceTree = "<group>"; };
 		0181A41C2B861CF7005BE1F6 /* FreespokeJWTDecodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreespokeJWTDecodeModel.swift; sourceTree = "<group>"; };
 		0181A41F2B863702005BE1F6 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		0181DA452BAE1291004B9801 /* freespoke_loader_torch_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = freespoke_loader_torch_dark.gif; sourceTree = "<group>"; };
+		0181DA462BAE1296004B9801 /* freespoke_loader_torch_light.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = freespoke_loader_torch_light.gif; sourceTree = "<group>"; };
 		01823F902B8D592700986B73 /* LogoutFreespokeUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutFreespokeUser.swift; sourceTree = "<group>"; };
 		01823F932B8D6C6400986B73 /* FormDataUrlEncoded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDataUrlEncoded.swift; sourceTree = "<group>"; };
 		01823F962B8DF7C700986B73 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
@@ -2634,6 +2650,10 @@
 		01B1EEB72B8BD7C100899E53 /* Notification.Name + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name + Extensions.swift"; sourceTree = "<group>"; };
 		01BD26072B6CF7EB00B8B9EB /* Fennec_Staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fennec_Staging.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTopTitleView.swift; sourceTree = "<group>"; };
+		01CE39352BB1F000009CEE9B /* InAppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppManager.swift; sourceTree = "<group>"; };
+		01CE39382BB1F149009CEE9B /* InAppManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppManagerProtocol.swift; sourceTree = "<group>"; };
+		01CE393B2BB1F475009CEE9B /* CustomProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProduct.swift; sourceTree = "<group>"; };
+		01CE393E2BB23A54009CEE9B /* SubscriptionsStoreKitTest.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = SubscriptionsStoreKitTest.storekit; path = Client/Frontend/Subscriptions/SubscriptionsStoreKitTest.storekit; sourceTree = "<group>"; };
 		01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLinkForManagingSubscription.swift; sourceTree = "<group>"; };
 		01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagingSubscriptionModel.swift; sourceTree = "<group>"; };
 		01E9F5142B7F94520034DE09 /* PremiumUnlockedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumUnlockedVC.swift; sourceTree = "<group>"; };
@@ -3029,7 +3049,6 @@
 		43E69EAF254D064E00B591C2 /* SimpleTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTab.swift; sourceTree = "<group>"; };
 		43E7CB73292259DC008B4CCF /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/SearchHeaderTitle.strings"; sourceTree = "<group>"; };
 		43F7952425795F69005AEE40 /* SearchTelemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTelemetry.swift; sourceTree = "<group>"; };
-		4403FF6B2B83F4BD003D7131 /* InAppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppManager.swift; sourceTree = "<group>"; };
 		4403FF832B855C1D003D7131 /* SubscriptionsStoreKitTest.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = SubscriptionsStoreKitTest.storekit; sourceTree = "<group>"; };
 		44481A562B7A26BC003BBD6E /* ProfileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIconView.swift; sourceTree = "<group>"; };
 		44481A5A2B7D3008003BBD6E /* FreefolkProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreefolkProfileVC.swift; sourceTree = "<group>"; };
@@ -4472,6 +4491,15 @@
 			path = ErrorModels;
 			sourceTree = "<group>";
 		};
+		0181DA442BAE1243004B9801 /* GifImages */ = {
+			isa = PBXGroup;
+			children = (
+				0181DA452BAE1291004B9801 /* freespoke_loader_torch_dark.gif */,
+				0181DA462BAE1296004B9801 /* freespoke_loader_torch_light.gif */,
+			);
+			path = GifImages;
+			sourceTree = "<group>";
+		};
 		01ADAA552B86A5BF0009754E /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -4532,6 +4560,7 @@
 				01ADAA622B86A5BF0009754E /* RegisterFreespokeUser.swift */,
 				01823F902B8D592700986B73 /* LogoutFreespokeUser.swift */,
 				01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */,
+				017D2DB62BB7391000A1B20C /* RestorePurchase.swift */,
 			);
 			path = "NetworkManager + Extensions";
 			sourceTree = "<group>";
@@ -4583,6 +4612,7 @@
 				0181A41C2B861CF7005BE1F6 /* FreespokeJWTDecodeModel.swift */,
 				0181A4162B855D3A005BE1F6 /* FreespokeAuthModel.swift */,
 				01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */,
+				017D2DB92BB7399B00A1B20C /* RestorePurchaseResponseModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -5435,7 +5465,9 @@
 		4403FF672B8152E0003D7131 /* InAppManager */ = {
 			isa = PBXGroup;
 			children = (
-				4403FF6B2B83F4BD003D7131 /* InAppManager.swift */,
+				01CE393B2BB1F475009CEE9B /* CustomProduct.swift */,
+				01CE39382BB1F149009CEE9B /* InAppManagerProtocol.swift */,
+				01CE39352BB1F000009CEE9B /* InAppManager.swift */,
 			);
 			path = InAppManager;
 			sourceTree = "<group>";
@@ -7455,6 +7487,7 @@
 		F84B21B51A090F8100AAB793 = {
 			isa = PBXGroup;
 			children = (
+				01CE393E2BB23A54009CEE9B /* SubscriptionsStoreKitTest.storekit */,
 				01B1EEB52B8A9E2D00899E53 /* Fennec_StagingFennec.entitlements */,
 				962C6C39297054A700354BE8 /* Package.swift */,
 				962C6C3F2971F5D400354BE8 /* Dangerfile.swift */,
@@ -7651,6 +7684,7 @@
 		F84B21EB1A0910F600AAB793 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				0181DA442BAE1243004B9801 /* GifImages */,
 				D03F8F22200EAC1E003C2224 /* AllFramesAtDocumentStart.js */,
 				D0FCF8031FE4772C004A7995 /* AllFramesAtDocumentEnd.js */,
 				D0FCF8041FE4772D004A7995 /* MainFrameAtDocumentEnd.js */,
@@ -8598,6 +8632,7 @@
 				01BD257D2B6CF7EB00B8B9EB /* Intro.xcassets in Resources */,
 				01BD257E2B6CF7EB00B8B9EB /* WebcompatAllFramesAtDocumentStart.js in Resources */,
 				01BD257F2B6CF7EB00B8B9EB /* SourceSerifPro-Black.otf in Resources */,
+				0181DA482BAE1296004B9801 /* freespoke_loader_torch_dark.gif in Resources */,
 				01BD25802B6CF7EB00B8B9EB /* SourceSansPro-Italic.ttf in Resources */,
 				01BD25812B6CF7EB00B8B9EB /* SourceSerifPro-Light.otf in Resources */,
 				01BD25822B6CF7EB00B8B9EB /* NewYorkMedium-Bold.otf in Resources */,
@@ -8648,6 +8683,7 @@
 				01BD25AE2B6CF7EB00B8B9EB /* SourceSerifPro-It.otf in Resources */,
 				01BD25AF2B6CF7EB00B8B9EB /* SourceSerifPro-BoldIt.otf in Resources */,
 				01BD25B02B6CF7EB00B8B9EB /* Main.storyboard in Resources */,
+				0181DA4A2BAE1296004B9801 /* freespoke_loader_torch_light.gif in Resources */,
 				01BD25B12B6CF7EB00B8B9EB /* ShopUsaCollectionViewCell.xib in Resources */,
 				01BD25B22B6CF7EB00B8B9EB /* SmokeXCUITests.xctestplan in Resources */,
 				01BD25B32B6CF7EB00B8B9EB /* Update.xcassets in Resources */,
@@ -8811,6 +8847,7 @@
 				E49943F71AE69EDD00BF9DE4 /* Intro.xcassets in Resources */,
 				4336FAD2264B169000A6B076 /* WebcompatAllFramesAtDocumentStart.js in Resources */,
 				2F18F8972A55ED430061D517 /* SourceSerifPro-Black.otf in Resources */,
+				0181DA472BAE1296004B9801 /* freespoke_loader_torch_dark.gif in Resources */,
 				2F0F06F429B279CB00A89B37 /* SourceSansPro-Italic.ttf in Resources */,
 				2F18F8932A55ED430061D517 /* SourceSerifPro-Light.otf in Resources */,
 				23BEA767251A99ED00A014BF /* NewYorkMedium-Bold.otf in Resources */,
@@ -8861,6 +8898,7 @@
 				2F18F88D2A55ED430061D517 /* SourceSerifPro-It.otf in Resources */,
 				2F18F8962A55ED430061D517 /* SourceSerifPro-BoldIt.otf in Resources */,
 				2F18E17029C763B100F222A3 /* Main.storyboard in Resources */,
+				0181DA492BAE1296004B9801 /* freespoke_loader_torch_light.gif in Resources */,
 				2F745E412A8E11EB00A4085B /* ShopUsaCollectionViewCell.xib in Resources */,
 				E1AF3566286DE5F800960045 /* SmokeXCUITests.xctestplan in Resources */,
 				43A5643923CD1E1C00B6857D /* Update.xcassets in Resources */,
@@ -9265,6 +9303,7 @@
 				01BD23792B6CF7EB00B8B9EB /* Authenticator.swift in Sources */,
 				01BD237A2B6CF7EB00B8B9EB /* LoginDataSource.swift in Sources */,
 				01BD237B2B6CF7EB00B8B9EB /* ShopUsaCollectionViewCell.swift in Sources */,
+				01CE393A2BB1F149009CEE9B /* InAppManagerProtocol.swift in Sources */,
 				01ADAA882B86A5C10009754E /* EndPoint + HTTPTask.swift in Sources */,
 				01BD237C2B6CF7EB00B8B9EB /* HomepageSectionType.swift in Sources */,
 				01ADAA9A2B86A5C20009754E /* EmptyModel.swift in Sources */,
@@ -9543,6 +9582,7 @@
 				01BD246A2B6CF7EB00B8B9EB /* WallpaperSettingsHeaderView.swift in Sources */,
 				01BD246B2B6CF7EB00B8B9EB /* RemoteTabsPanel.swift in Sources */,
 				01BD246C2B6CF7EB00B8B9EB /* WidgetKitTopSiteModel.swift in Sources */,
+				01CE39372BB1F000009CEE9B /* InAppManager.swift in Sources */,
 				01BD246D2B6CF7EB00B8B9EB /* HistoryActionables.swift in Sources */,
 				01BD246E2B6CF7EB00B8B9EB /* ButtonToast.swift in Sources */,
 				01BD246F2B6CF7EB00B8B9EB /* NimbusFeatureFlagLayer.swift in Sources */,
@@ -9624,7 +9664,6 @@
 				01BD24B32B6CF7EB00B8B9EB /* CellWithRoundedButton.swift in Sources */,
 				01BD24B42B6CF7EB00B8B9EB /* HomePageSettingViewController.swift in Sources */,
 				0181A40B2B851ABC005BE1F6 /* UIApplication + Extensions.swift in Sources */,
-				4403FF6D2B83F4BD003D7131 /* InAppManager.swift in Sources */,
 				01BD24B52B6CF7EB00B8B9EB /* CustomizeHomepageSectionViewModel.swift in Sources */,
 				01BD24B62B6CF7EB00B8B9EB /* ErrorPageHelper.swift in Sources */,
 				01BD24B72B6CF7EB00B8B9EB /* WallpaperCollectionAvailability.swift in Sources */,
@@ -9745,11 +9784,13 @@
 				0181A4212B863702005BE1F6 /* Keychain.swift in Sources */,
 				01BD25192B6CF7EB00B8B9EB /* ThemeSettingsController.swift in Sources */,
 				01BD251A2B6CF7EB00B8B9EB /* FlaggableFeatureOptions.swift in Sources */,
+				017D2DB82BB7391000A1B20C /* RestorePurchase.swift in Sources */,
 				01BD251B2B6CF7EB00B8B9EB /* HomeLogoHeaderViewModel.swift in Sources */,
 				01BD251C2B6CF7EB00B8B9EB /* URIFixup.swift in Sources */,
 				01BD251D2B6CF7EB00B8B9EB /* HomepageMessageCardViewModel.swift in Sources */,
 				01BD251E2B6CF7EB00B8B9EB /* DevicePickerTableViewHeaderCell.swift in Sources */,
 				01BD251F2B6CF7EB00B8B9EB /* UIColor+Extension.swift in Sources */,
+				01CE393D2BB1F475009CEE9B /* CustomProduct.swift in Sources */,
 				01BD25202B6CF7EB00B8B9EB /* ReadabilityService.swift in Sources */,
 				01BD25212B6CF7EB00B8B9EB /* OnboardingViewModel.swift in Sources */,
 				01BD25222B6CF7EB00B8B9EB /* ReaderModeFontTypeButton.swift in Sources */,
@@ -9774,6 +9815,7 @@
 				01BD25362B6CF7EB00B8B9EB /* OrientationLockUtility.swift in Sources */,
 				01BD25372B6CF7EB00B8B9EB /* ExperimentsSettingsViewController.swift in Sources */,
 				01BD25382B6CF7EB00B8B9EB /* ShareExtensionHelper.swift in Sources */,
+				017D2DBB2BB7399B00A1B20C /* RestorePurchaseResponseModel.swift in Sources */,
 				01E9F51A2B7F958F0034DE09 /* PremiumUnlockedContentView.swift in Sources */,
 				01BD25392B6CF7EB00B8B9EB /* SessionRestoreHelper.swift in Sources */,
 				01BD253A2B6CF7EB00B8B9EB /* AppDelegate+SyncSentTabs.swift in Sources */,
@@ -10356,6 +10398,7 @@
 				D38F02D11C05127100175932 /* Authenticator.swift in Sources */,
 				CAA3B7E62497DCB60094E3C1 /* LoginDataSource.swift in Sources */,
 				2F745E402A8E11EB00A4085B /* ShopUsaCollectionViewCell.swift in Sources */,
+				01CE39392BB1F149009CEE9B /* InAppManagerProtocol.swift in Sources */,
 				01ADAA872B86A5C10009754E /* EndPoint + HTTPTask.swift in Sources */,
 				1DFE57FF27BAE3150025DE58 /* HomepageSectionType.swift in Sources */,
 				01ADAA992B86A5C20009754E /* EmptyModel.swift in Sources */,
@@ -10634,6 +10677,7 @@
 				9636D92A27F767EC00771F5E /* GleanPlumbMessageUtility.swift in Sources */,
 				E127313F28B6C194006F39D2 /* WallpaperSettingsHeaderView.swift in Sources */,
 				2FDE87FE1ABB3817005317B1 /* RemoteTabsPanel.swift in Sources */,
+				01CE39362BB1F000009CEE9B /* InAppManager.swift in Sources */,
 				435222C125882E3800FCA5B6 /* WidgetKitTopSiteModel.swift in Sources */,
 				96EB6C3E27D9266500A9D159 /* HistoryActionables.swift in Sources */,
 				C4F3B29A1CFCF93A00966259 /* ButtonToast.swift in Sources */,
@@ -10679,7 +10723,6 @@
 				2FFF6BE129CC9AEB000A2F74 /* Constants+Utils.swift in Sources */,
 				8AB8574827D97CD40075C173 /* HomePanelType.swift in Sources */,
 				2128E27B292E624400FB91BE /* SendToDeviceActivity.swift in Sources */,
-				4403FF6C2B83F4BD003D7131 /* InAppManager.swift in Sources */,
 				E63ED7D81BFCD9990097D08E /* LoginDetailTableViewCell.swift in Sources */,
 				66CE54A820FCF6CF00CC310B /* WebsiteDataManagementViewController.swift in Sources */,
 				C8E2E80E23D20FD2005AACE6 /* FxAWebViewController.swift in Sources */,
@@ -10836,11 +10879,13 @@
 				0181A4202B863702005BE1F6 /* Keychain.swift in Sources */,
 				EB9A178E20E525DF00B12184 /* ThemeSettingsController.swift in Sources */,
 				C8656D75270F834600E199EA /* FlaggableFeatureOptions.swift in Sources */,
+				017D2DB72BB7391000A1B20C /* RestorePurchase.swift in Sources */,
 				8AB8573727D951640075C173 /* HomeLogoHeaderViewModel.swift in Sources */,
 				D3C744CD1A687D6C004CE85D /* URIFixup.swift in Sources */,
 				21112968289480630082C08B /* HomepageMessageCardViewModel.swift in Sources */,
 				E1CD81BE290C5C7500124B27 /* DevicePickerTableViewHeaderCell.swift in Sources */,
 				E12BD0AC28AC37F00029AAF0 /* UIColor+Extension.swift in Sources */,
+				01CE393C2BB1F475009CEE9B /* CustomProduct.swift in Sources */,
 				E4A961181AC041C40069AD6F /* ReadabilityService.swift in Sources */,
 				21371FA428AA7A8D00BC3F37 /* OnboardingViewModel.swift in Sources */,
 				21A43CDD291461C700B1206D /* ReaderModeFontTypeButton.swift in Sources */,
@@ -10865,6 +10910,7 @@
 				C400467C1CF4E43E00B08303 /* BackForwardListViewController.swift in Sources */,
 				5A430D792853DFDD00782BFF /* OrientationLockUtility.swift in Sources */,
 				D5D237782640BBA600326204 /* ExperimentsSettingsViewController.swift in Sources */,
+				017D2DBA2BB7399B00A1B20C /* RestorePurchaseResponseModel.swift in Sources */,
 				D3972BF31C22412B00035B87 /* ShareExtensionHelper.swift in Sources */,
 				F35B8D2D1D6383E9008E3D61 /* SessionRestoreHelper.swift in Sources */,
 				EB98550124226EF70040F24B /* AppDelegate+SyncSentTabs.swift in Sources */,

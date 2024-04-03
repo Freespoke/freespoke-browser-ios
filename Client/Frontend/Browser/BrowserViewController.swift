@@ -737,7 +737,7 @@ class BrowserViewController: UIViewController {
     }
 
     private func updateLegacyTheme() {
-        if !NightModeHelper.isActivated() && LegacyThemeManager.instance.systemThemeIsOn {
+        if !NightModeHelper.hasEnabledDarkTheme() && LegacyThemeManager.instance.systemThemeIsOn {
             let userInterfaceStyle = traitCollection.userInterfaceStyle
             LegacyThemeManager.instance.current = userInterfaceStyle == .dark ? LegacyDarkTheme() : LegacyNormalTheme()
         }
@@ -2532,7 +2532,7 @@ extension BrowserViewController {
         self.introVCPresentHelper(introViewController: introViewController)
         */
         
-        let vc = OnboardingWelcomeScreen(currentTheme: themeManager.currentTheme)
+        let vc = OnboardingWelcomeScreen()
         let navVC = UINavigationController(rootViewController: vc)
         navVC.modalPresentationStyle = .fullScreen
         

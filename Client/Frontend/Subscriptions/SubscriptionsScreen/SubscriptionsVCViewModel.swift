@@ -3,75 +3,96 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import Foundation
+import Combine
+
 protocol SubscriptionsVCViewModelDelegate: AnyObject {
-    
+    func premiumSuccessfullyUnlocked()
 }
 class SubscriptionsVCViewModel {
-    enum State {
-        case startTrialSubscription(isOnboarding: Bool)
-        case trialExpired
-        case updatePlan
-        case cancelPlanNotOriginalOS
-    }
     weak var delegate: SubscriptionsVCViewModelDelegate?
-    var state: State
+    
+    @Published private(set) var subscriptionType: SubscriptionType?
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    var isOnboarding: Bool
     
     var titleText: String {
-        switch state {
-        case .startTrialSubscription:
-            return "Start your 30 day \n free trial"
+        switch subscriptionType {
         case .trialExpired:
             return "Select a Plan"
-        case .updatePlan:
+        case .originalApple:
             return "Update Plan"
-        case .cancelPlanNotOriginalOS:
+        case .notApple:
             return "Update Plan"
+        case nil:
+            return "Start your 30 day \n free trial"
         }
     }
     
     var subtitleText: String? {
-        switch state {
-        case .startTrialSubscription:
+        switch subscriptionType {
+        case .trialExpired,
+                .originalApple,
+                .notApple:
+            return "Cancel anytime."
+        case nil:
             return nil
-        case .trialExpired:
-            return "Cancel anytime."
-        case .updatePlan:
-            return "Cancel anytime."
-        case .cancelPlanNotOriginalOS:
-            return "Cancel anytime."
         }
     }
     
     var descriptionText: String? {
-        switch state {
-        case .startTrialSubscription:
+        switch subscriptionType {
+        case .trialExpired,
+                .originalApple,
+                .notApple:
+            return nil
+        case nil:
             return "By tapping below for monthly or yearly subscription you are enrolling in automatic payments after the 30-day trial period. You can cancel anytime, effective at end of billing period."
-        case .trialExpired:
-            return nil
-        case .updatePlan:
-            return nil
-        case .cancelPlanNotOriginalOS:
-            return nil
         }
     }
     
     var btnContinueTitleText: String? {
-        switch state {
-        case .startTrialSubscription:
-            return "Continue without premium"
+        switch subscriptionType {
         case .trialExpired:
             return "Continue without premium"
-        case .updatePlan:
+        case .originalApple,
+                .notApple:
             return "Continue without Updating"
-        case .cancelPlanNotOriginalOS:
-            return "Continue without Updating"
+        case nil:
+            return "Continue without premium"
         }
     }
     
     private var networkManager = NetworkManager()
     
-    init(state: State) {
-        self.state = state
+    var appAccountToken: UUID? {
+        return AppSessionManager.shared.decodedJWTToken?.externalAccountId
+    }
+    
+    var monthlySubscription: CustomProduct? {
+        InAppManager.shared.product(productId: ProductIdentifiers.monthlySubscription)
+    }
+    
+    var yearlySubscription: CustomProduct? {
+        InAppManager.shared.product(productId: ProductIdentifiers.yearlySubscription)
+    }
+    
+    init(isOnboarding: Bool) {
+        self.isOnboarding = isOnboarding
+        self.updateCurrentSubscriptionsState()
+        self.subscribeToProductsReceivedPublisher()
+        InAppManager.shared.requestProductsInfo()
+    }
+    
+    private func updateCurrentSubscriptionsState() {
+        Task {
+            if let subscriptionType = try? await AppSessionManager.shared.decodedJWTToken?.subscriptionType() {
+                self.subscriptionType = subscriptionType
+            } else {
+                self.subscriptionType = nil
+            }
+        }
     }
     
     func getLinkForManagingSubscription(onSuccess: @escaping((_ managingSubscriptionModel: ManagingSubscriptionModel) -> Void), onFailure: @escaping((_ error: CustomError) -> Void)) {
@@ -84,5 +105,89 @@ class SubscriptionsVCViewModel {
                 onFailure(CustomError.somethingWentWrong)
             }
         })
+    }
+    
+    func restorePurchases(completion: ((IAPManagerRestorationStatus) -> Void)? = nil) {
+        guard let appAccountToken = self.appAccountToken else {
+            UIUtils.showOkAlert(title: "appAccountToken is nil", message: "")
+            completion?(.restorePurchasesFailed(customMessage: "appAccountToken is nil"))
+            return
+        }
+        InAppManager.shared.restorePurchases(appAccountToken: appAccountToken,
+                                             completion: { status in
+            if let userMessage = status.userMessage {
+                UIUtils.showOkAlert(title: userMessage, message: "")
+            }
+            if case .restored = status {
+                AppSessionManager.shared.performRefreshFreespokeToken(completion: { authResponse, error in
+                    if error == nil {
+                        self.updateCurrentSubscriptionsState()
+                    }
+                })
+            }
+            completion?(status)
+        })
+    }
+}
+
+// MARK: Products Received Subscription
+
+extension SubscriptionsVCViewModel {
+    func subscribeToProductsReceivedPublisher() {
+        InAppManager.shared.getProductsFinishedAction
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] products in
+                guard let self = self else { return }
+                self.updateCurrentSubscriptionsState()
+            }
+            .store(in: &self.cancellables)
+    }
+}
+
+// MARK: Purchases
+
+extension SubscriptionsVCViewModel {
+    func purchaseMonthlySubscription(completion: @escaping((IAPManagerPurchasingStatus) -> Void)) {
+        guard let appAccountToken = self.appAccountToken else {
+            completion(.failed())
+            return
+        }
+        if let monthlySubscription = self.monthlySubscription {
+            InAppManager.shared.purchaseProduct(productIdentifier: monthlySubscription.productID,
+                                                appAccountToken: appAccountToken,
+                                                completion: { [weak self] status in
+                guard let self = self else { return }
+                
+                if case .subscribed(let product) = status {
+                    AppSessionManager.shared.performRefreshFreespokeToken(completion: nil)
+                    self.delegate?.premiumSuccessfullyUnlocked()
+                }
+                completion(status)
+            })
+        } else {
+            completion(.failed())
+        }
+    }
+    
+    func purchaseYearlySubscription(completion: @escaping((IAPManagerPurchasingStatus) -> Void)) {
+        guard let appAccountToken = self.appAccountToken else {
+            completion(.failed())
+            return
+        }
+        if let yearlySubscription = self.yearlySubscription {
+            InAppManager.shared.purchaseProduct(productIdentifier: yearlySubscription.productID,
+                                                appAccountToken: appAccountToken,
+                                                completion: { [weak self] status in
+                guard let self = self else { return }
+                
+                if case .subscribed(let product) = status {
+                    AppSessionManager.shared.performRefreshFreespokeToken(completion: nil)
+                    self.delegate?.premiumSuccessfullyUnlocked()
+                }
+                completion(status)
+            })
+        } else {
+            completion(.failed())
+        }
     }
 }

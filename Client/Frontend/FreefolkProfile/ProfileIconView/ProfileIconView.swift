@@ -11,6 +11,7 @@ class ProfileIconView: UIView {
     let starImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
         return imageView
     }()
     
@@ -19,6 +20,7 @@ class ProfileIconView: UIView {
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.textColor = UIColor.onboardingTitleDark
+        label.isHidden = true
         return label
     }()
     
@@ -26,6 +28,7 @@ class ProfileIconView: UIView {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "img_avatar_icon_light")
         imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
         return imageView
     }()
     
@@ -39,8 +42,6 @@ class ProfileIconView: UIView {
     private var stackViewLeadingConstraint: NSLayoutConstraint?
     private var stackViewTrailingConstraint: NSLayoutConstraint?
     
-    private var currentTheme: Theme?
-    
     var tapClosure: (() -> Void)?
     
     init() {
@@ -49,7 +50,6 @@ class ProfileIconView: UIView {
         self.addingViews()
         self.setupConstraints()
         self.addTapGesture()
-        self.applyTheme()
     }
     
     required init?(coder: NSCoder) {
@@ -61,11 +61,6 @@ class ProfileIconView: UIView {
         self.layer.cornerRadius = self.bounds.height / 2
     }
     
-    func configureTheme(currentTheme: Theme) {
-        self.currentTheme = currentTheme
-        self.applyTheme()
-    }
-    
     func updateView(decodedJWTToken: FreespokeJWTDecodeModel?) {
         self.decodedJWTToken = decodedJWTToken
         self.updateUI()
@@ -74,15 +69,18 @@ class ProfileIconView: UIView {
     private func updateUI() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            switch AppSessionManager.shared.userType {
-            case .authorizedWithoutPremium:
-                self.initialsLabel.text = AppSessionManager.shared.decodedJWTToken?.getInitialsLetters()
-                self.setAuthorizedWithoutPremiumUI()
-            case .premium:
-                self.initialsLabel.text = AppSessionManager.shared.decodedJWTToken?.getInitialsLetters()
-                self.setPremiumUI()
-            case .unauthorized:
-                self.setUnauthorizedUI()
+            Task {
+                let userType = try await AppSessionManager.shared.userType()
+                switch userType {
+                case .authorizedWithoutPremium:
+                    self.initialsLabel.text = AppSessionManager.shared.decodedJWTToken?.getInitialsLetters()
+                    self.setAuthorizedWithoutPremiumUI()
+                case .premium:
+                    self.initialsLabel.text = AppSessionManager.shared.decodedJWTToken?.getInitialsLetters()
+                    self.setPremiumUI()
+                case .unauthorized:
+                    self.setUnauthorizedUI()
+                }
             }
         }
     }
@@ -138,23 +136,21 @@ class ProfileIconView: UIView {
         ])
     }
     
-    private func applyTheme() {
+    func applyTheme(currentTheme: Theme) {
         self.layer.borderWidth = 1
         self.layer.masksToBounds = true
         self.layer.borderColor = UIColor.whiteColor.cgColor
-        if let theme = self.currentTheme {
-            switch theme.type {
-            case .dark:
-                self.avatarImageView.image = UIImage(named: "img_avatar_icon_dark")
-                self.backgroundColor = .black
-                self.starImageView.image = UIImage(named: "img_premium_star_dark")
-                self.initialsLabel.textColor = UIColor.white
-            case .light:
-                self.avatarImageView.image = UIImage(named: "img_avatar_icon_light")
-                self.backgroundColor = .white
-                self.starImageView.image = UIImage(named: "img_premium_star_light")
-                self.initialsLabel.textColor = UIColor.onboardingTitleDark
-            }
+        switch currentTheme.type {
+        case .dark:
+            self.avatarImageView.image = UIImage(named: "img_avatar_icon_dark")
+            self.backgroundColor = .black
+            self.starImageView.image = UIImage(named: "img_premium_star_dark")
+            self.initialsLabel.textColor = UIColor.white
+        case .light:
+            self.avatarImageView.image = UIImage(named: "img_avatar_icon_light")
+            self.backgroundColor = .white
+            self.starImageView.image = UIImage(named: "img_premium_star_light")
+            self.initialsLabel.textColor = UIColor.onboardingTitleDark
         }
     }
     

@@ -23,12 +23,26 @@ class SubscriptionsContentView: UIView {
         return sv
     }()
     
-    private var currentTheme: Theme?
+    private let item1 = SubscriptionPrivilegesItem(image: UIImage(named: "img_onboarding_ad_free_search_icon"),
+                                                   titleText: "Ad-Free",
+                                                   subtitleText: "Block unwanted ads while browsing",
+                                                   bottomLineVisible: true)
     
-    required init(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
+    private let item2 = SubscriptionPrivilegesItem(image: UIImage(named: "img_onboarding_without_bias_icon"),
+                                                   titleText: "Without Bias",
+                                                   subtitleText: "Get the unfiltered truth.",
+                                                   bottomLineVisible: true)
+    
+    private let item3 = SubscriptionPrivilegesItem(image: UIImage(named: "img_onboarding_porn_free_icon"),
+                                                   titleText: "Porn-Free",
+                                                   subtitleText: "Fight human trafficking.",
+                                                   bottomLineVisible: false)
+    
+    private let lineSeparator1 = UIView()
+    private let lineSeparator2 = UIView()
+    
+    required init() {
         super.init(frame: .zero)
-        self.prepareUI()
         self.addingViews()
         self.setupConstraints()
     }
@@ -37,20 +51,21 @@ class SubscriptionsContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func prepareUI() {
-        self.applyTheme()
-    }
-    
-    private func applyTheme() {
-        if let theme = currentTheme {
-            self.backgroundColor = .clear
-            
-            switch theme.type {
-            case .dark:
-                self.lineView.backgroundColor = UIColor.blackColor
-            case .light:
-                self.lineView.backgroundColor = UIColor.whiteColor
-            }
+    func applyTheme(currentTheme: Theme) {
+        self.topTitleView.applyTheme(currentTheme: currentTheme)
+        self.item1.applyTheme(currentTheme: currentTheme)
+        self.item2.applyTheme(currentTheme: currentTheme)
+        self.item3.applyTheme(currentTheme: currentTheme)
+        
+        self.backgroundColor = .clear
+        self.lineSeparator1.backgroundColor = currentTheme.type == .dark ? UIColor.blackColor : UIColor.whiteColor
+        self.lineSeparator2.backgroundColor = currentTheme.type == .dark ? UIColor.blackColor : UIColor.whiteColor
+        
+        switch currentTheme.type {
+        case .dark:
+            self.lineView.backgroundColor = UIColor.blackColor
+        case .light:
+            self.lineView.backgroundColor = UIColor.whiteColor
         }
     }
     
@@ -62,41 +77,24 @@ class SubscriptionsContentView: UIView {
     }
     
     private func addPrivilegesItems() {
-        let item1 = SubscriptionPrivilegesItem(currentTheme: self.currentTheme,
-                                               image: UIImage(named: "img_onboarding_ad_free_search_icon"),
-                                               titleText: "Ad Free Search",
-                                               subtitleText: "Block unwanted ads in search results",
-                                               bottomLineVisible: true)
-        let item2 = SubscriptionPrivilegesItem(currentTheme: self.currentTheme,
-                                               image: UIImage(named: "img_onboarding_without_bias_icon"),
-                                               titleText: "Without Bias",
-                                               subtitleText: "Get the unfiltered truth",
-                                               bottomLineVisible: true)
-        let item3 = SubscriptionPrivilegesItem(currentTheme: self.currentTheme,
-                                               image: UIImage(named: "img_onboarding_porn_free_icon"),
-                                               titleText: "Porn Free",
-                                               subtitleText: "Fight sextrafficking",
-                                               bottomLineVisible: false)
         self.privilegesStackView.addArrangedSubview(item1)
-        self.addLineViewToItem(item: item1)
+        self.addLineViewToItem(item: item1, lineSeparator: self.lineSeparator1)
         self.privilegesStackView.addArrangedSubview(item2)
-        self.addLineViewToItem(item: item2)
+        self.addLineViewToItem(item: item2, lineSeparator: self.lineSeparator2)
         self.privilegesStackView.addArrangedSubview(item3)
     }
     
-    private func addLineViewToItem(item: SubscriptionPrivilegesItem) {
-        let line = UIView()
-        line.backgroundColor = self.currentTheme?.type == .dark ? UIColor.blackColor : UIColor.whiteColor
+    private func addLineViewToItem(item: SubscriptionPrivilegesItem, lineSeparator: UIView) {
         
-        self.addSubviews(line)
+        self.addSubviews(lineSeparator)
         
-        line.translatesAutoresizingMaskIntoConstraints = false
+        lineSeparator.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            line.bottomAnchor.constraint(equalTo: item.bottomAnchor, constant: 0),
-            line.heightAnchor.constraint(equalToConstant: 1),
-            line.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
-            line.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40)
+            lineSeparator.bottomAnchor.constraint(equalTo: item.bottomAnchor, constant: 0),
+            lineSeparator.heightAnchor.constraint(equalToConstant: 1),
+            lineSeparator.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
+            lineSeparator.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40)
         ])
     }
     
@@ -136,9 +134,8 @@ class SubscriptionsContentView: UIView {
         }
     }
     
-    func configure(currentTheme: Theme?, lblTitleText: String, lblSubtitleText: String?) {
-        self.topTitleView.configure(currentTheme: currentTheme,
-                                    lblTitleText: lblTitleText,
+    func configure(lblTitleText: String, lblSubtitleText: String?) {
+        self.topTitleView.configure(lblTitleText: lblTitleText,
                                     lblSubtitleText: lblSubtitleText,
                                     logoIsHidden: false)
     }

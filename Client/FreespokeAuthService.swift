@@ -35,8 +35,8 @@ class FreespokeAuthService {
                                                   responseType: OIDResponseTypeCode,
                                                   additionalParameters: nil)
             DispatchQueue.main.async {
-                let vc = OAuthLoginVC()
-                vc.request = request
+                let vc = OAuthLoginVC(activityIndicatorEnabled: true, source: .generalLogin)
+                vc.authorizationRequest = request
                 
                 vc.oAuthAuthorizaionCompletion = { [weak vc] authModel, error in
                     if let authModel = authModel {
@@ -73,8 +73,8 @@ class FreespokeAuthService {
             print("TEST: OIDAuthorizationService perform request: ", request)
             
             DispatchQueue.main.async {
-                let vc = OAuthLoginVC()
-                vc.request = request
+                let vc = OAuthLoginVC(activityIndicatorEnabled: true, source: .signInWithApple)
+                vc.authorizationRequest = request
                 vc.oAuthAuthorizaionCompletion = { [weak vc] authModel, error in
                     if let authModel = authModel {
                         print("TEST: authModel: ", authModel)
@@ -94,13 +94,16 @@ class FreespokeAuthService {
     
     // MARK: - Refresh Token
     func refreshToken(completion: (( _ apiAuthModel: FreespokeAuthModel?, _ error: Error?) -> Void)?) {
-        guard let issuer = URL(string: OAuthConstants.openIdIssuer) else { return }
+        guard let issuer = URL(string: OAuthConstants.openIdIssuer) else {
+            completion?(nil, CustomError.refreshTokenFailed)
+            return
+        }
         
         OIDAuthorizationService.discoverConfiguration(forIssuer: issuer,
                                                       completion: { configuration, error in
             guard let configuration = configuration,
                     let refreshToken = Keychain.authInfo?.refreshToken else {
-                AppSessionManager.shared.performFreespokeForceLogout()
+                completion?(nil, CustomError.refreshTokenFailed)
                 return
             }
             
@@ -122,7 +125,7 @@ class FreespokeAuthService {
                       let accessToken = tokenResponse.accessToken,
                       let refreshToken = tokenResponse.refreshToken
                 else {
-                    AppSessionManager.shared.performFreespokeForceLogout()
+                    completion?(nil, CustomError.refreshTokenFailed)
                     return
                 }
                 
@@ -130,7 +133,6 @@ class FreespokeAuthService {
                                                  accessToken: accessToken,
                                                  refreshToken: refreshToken)
                 if let error = error {
-                    AppSessionManager.shared.performFreespokeForceLogout()
                     completion?(nil, error)
                 } else {
                     completion?(apiAuth, nil)

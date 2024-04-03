@@ -63,7 +63,7 @@ class FreefolkProfileViewModel {
         if let freespokeJWTDecodeModel = self.freespokeJWTDecodeModel {
             self.cellTypes = [.premium,
                               .account,
-//                              .darkMode, // dark mode is hidden for now
+                              .darkMode,
                               .manageDefaultBrowser,
                               .manageNotifications,
                               .getInTouch,
@@ -76,7 +76,7 @@ class FreefolkProfileViewModel {
         } else {
             self.cellTypes = [.premium,
                               .account,
-//                              .darkMode, // dark mode is hidden for now
+                              .darkMode,
                               .manageDefaultBrowser,
                               .manageNotifications,
                               .getInTouch,

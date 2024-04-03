@@ -4,8 +4,10 @@
 
 import UIKit
 import Shared
+import MatomoTracker
+import Common
 
-class OnboardingBaseViewController: UIViewController {
+class OnboardingBaseViewController: UIViewController, Themeable {
     var btnClose: UIButton = {
         let btn = UIButton()
         btn.layer.zPosition = 10
@@ -25,10 +27,14 @@ class OnboardingBaseViewController: UIViewController {
         syncDelegate: UIApplication.shared.syncDelegate
     )
     
-    var currentTheme: Theme?
+    var themeManager: ThemeManager
+    var notificationCenter: NotificationProtocol
+    var themeObserver: NSObjectProtocol?
     
-    init(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
+    init(themeManager: ThemeManager = AppContainer.shared.resolve(),
+         notificationCenter: NotificationProtocol = NotificationCenter.default) {
+        self.themeManager = themeManager
+        self.notificationCenter = notificationCenter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -39,7 +45,6 @@ class OnboardingBaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addCloseButton()
-        self.setupTheme()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,20 +57,20 @@ class OnboardingBaseViewController: UIViewController {
         self.view.bringSubviewToFront(self.btnClose)
     }
     
-    private func setupTheme() {
-        if let theme = currentTheme {
-            switch theme.type {
-            case .dark:
-                self.view.backgroundColor = UIColor.black
-                let closeImage = UIImage(named: "img_close_onboarding")?.withTintColor(.whiteColor, renderingMode: .alwaysOriginal)
-                self.btnClose.setImage(closeImage, for: .normal)
-                self.lineView.backgroundColor = UIColor.blackColor
-            case .light:
-                self.view.backgroundColor = UIColor.gray7
-                let closeImage = UIImage(named: "img_close_onboarding")?.withTintColor(.blackColor, renderingMode: .alwaysOriginal)
-                self.btnClose.setImage(closeImage, for: .normal)
-                self.lineView.backgroundColor = UIColor.whiteColor
-            }
+    func applyTheme() {
+        self.bottomButtonsView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        
+        switch self.themeManager.currentTheme.type {
+        case .dark:
+            self.view.backgroundColor = UIColor.black
+            let closeImage = UIImage(named: "img_close_onboarding")?.withTintColor(.whiteColor, renderingMode: .alwaysOriginal)
+            self.btnClose.setImage(closeImage, for: .normal)
+            self.lineView.backgroundColor = UIColor.blackColor
+        case .light:
+            self.view.backgroundColor = UIColor.gray7
+            let closeImage = UIImage(named: "img_close_onboarding")?.withTintColor(.blackColor, renderingMode: .alwaysOriginal)
+            self.btnClose.setImage(closeImage, for: .normal)
+            self.lineView.backgroundColor = UIColor.whiteColor
         }
     }
     
@@ -79,17 +84,22 @@ class OnboardingBaseViewController: UIViewController {
         self.view.addSubview(self.lineView)
         self.addBottomButtonsViewConstraints()
         self.addLineViewConstraints()
-        self.bottomButtonsView.configure(currentTheme: self.currentTheme)
     }
     
     private func addCloseButtonConstraints() {
         self.btnClose.translatesAutoresizingMaskIntoConstraints = false
         
-        let statusBarHeight = UIWindow.statusBarHeight
-        let topOffsetForCloseButton: CGFloat = UIDevice.current.isPad ? 60 : statusBarHeight
+        if UIDevice.current.isPad {
+            NSLayoutConstraint.activate([
+                self.btnClose.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 60)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                self.btnClose.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
+            ])
+        }
         
         NSLayoutConstraint.activate([
-            self.btnClose.topAnchor.constraint(equalTo: self.view.topAnchor, constant: topOffsetForCloseButton),
             self.btnClose.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
             self.btnClose.heightAnchor.constraint(equalToConstant: 52),
             self.btnClose.widthAnchor.constraint(equalToConstant: 52)
@@ -110,22 +120,11 @@ class OnboardingBaseViewController: UIViewController {
     private func addBottomButtonsViewConstraints() {
         self.bottomButtonsView.translatesAutoresizingMaskIntoConstraints = false
         
-        // MARK: constraints are set depending on the type of device iPad or iPhone
-        if UIDevice.current.isPad {
-            NSLayoutConstraint.activate([
-                self.bottomButtonsView.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor, constant: 0),
-                self.bottomButtonsView.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: 0),
-                self.bottomButtonsView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                self.bottomButtonsView.widthAnchor.constraint(equalToConstant: Constants.UI.buttonsWidthConstraintForIpad),
-                self.bottomButtonsView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-            ])
-        } else {
-            NSLayoutConstraint.activate([
-                self.bottomButtonsView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                self.bottomButtonsView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-                self.bottomButtonsView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-            ])
-        }
+        NSLayoutConstraint.activate([
+            self.bottomButtonsView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.bottomButtonsView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.bottomButtonsView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
     }
 }
 
@@ -137,9 +136,14 @@ extension OnboardingBaseViewController {
     }
     
     @objc func onboardingCloseAction(animated: Bool = true) {
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
+                                   action: MatomoAction.appOnbCloseClickAction.rawValue,
+                                   name: MatomoName.clickName.rawValue,
+                                   value: nil)
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.profile.prefs.setInt(1, forKey: PrefsKeys.IntroSeen)
+            OrientationLockUtility.lockOrientation(UIInterfaceOrientationMask.all)
             self.navigationController?.dismiss(animated: true)
         }
     }

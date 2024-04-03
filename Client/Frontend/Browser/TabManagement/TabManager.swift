@@ -532,7 +532,7 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
             }
         }
 
-        tab.nightMode = NightModeHelper.isActivated()
+        tab.nightMode = NightModeHelper.hasEnabledDarkTheme()
         tab.noImageMode = NoImageModeHelper.isActivated(profile.prefs)
 
         if flushToDisk {

@@ -44,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         self.refreshFreespokeTokenIfPossible()
+        InAppManager.shared.requestProductsInfo()
         
         // Configure app information for BrowserKit, needed for logger
         BrowserKitInformation.shared.configure(buildChannel: AppConstants.buildChannel,
@@ -71,9 +72,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logger.log("willFinishLaunchingWithOptions end",
                    level: .info,
                    category: .lifecycle)
-        Task {
-            await InAppManager.shared.refreshPurchasedProducts()
-        }
+//        Task {
+//            await InAppManager.shared.refreshPurchasedProducts()
+//        }
         
         return true
     }
@@ -157,7 +158,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         MatomoTracker.shared.isOptedOut = false
         
         MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appEntry.rawValue,
-                                   action: MatomoCategory.appEntry.rawValue,
+                                   action: MatomoAction.appEntryAction.rawValue,
                                    name: MatomoName.open.rawValue,
                                    value: nil)
         
@@ -373,6 +374,6 @@ extension AppDelegate {
 // MARK: - MatomoTracker
 
 extension MatomoTracker {
-    static let shared: MatomoTracker = MatomoTracker(siteId: Matomo.productionSiteId,
+    static let shared: MatomoTracker = MatomoTracker(siteId: Matomo.matomoSiteId,
                                                      baseURL: URL(string: Matomo.baseURL)!)
 }

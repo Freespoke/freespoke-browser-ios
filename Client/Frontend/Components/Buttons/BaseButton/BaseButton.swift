@@ -53,26 +53,29 @@ class BaseButton: UIButton {
     }
     
     func setStyle(style: BaseButtonStyle) {
-        self.style = style
-        
-        titleLabel?.font = style.settings.font
-        
-        switch self.isEnabled {
-        case true:
-            self.backgroundColor = self.style.settings.backgroundColorEnableState
-            self.setTitleColor(self.style.settings.fontColorEnableState, for: .normal)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.style = style
             
-            if let borderWidth = self.style.settings.borderWidthEnableState {
-                self.layer.borderWidth = borderWidth
-                self.layer.borderColor = self.style.settings.borderColorEnableState
-            }
-        case false:
-            self.backgroundColor = self.style.settings.backgroundColorNotEnableState
-            self.setTitleColor(self.style.settings.fontColorNotEnableState, for: .normal)
+            self.titleLabel?.font = style.settings.font
             
-            if let borderWidth = self.style.settings.borderWidthDisabledState {
-                self.layer.borderWidth = borderWidth
-                self.layer.borderColor = self.style.settings.borderColorNotEnableState
+            switch self.isEnabled {
+            case true:
+                self.backgroundColor = self.style.settings.backgroundColorEnableState
+                self.setTitleColor(self.style.settings.fontColorEnableState, for: .normal)
+                
+                if let borderWidth = self.style.settings.borderWidthEnableState {
+                    self.layer.borderWidth = borderWidth
+                    self.layer.borderColor = self.style.settings.borderColorEnableState
+                }
+            case false:
+                self.backgroundColor = self.style.settings.backgroundColorNotEnableState
+                self.setTitleColor(self.style.settings.fontColorNotEnableState, for: .normal)
+                
+                if let borderWidth = self.style.settings.borderWidthDisabledState {
+                    self.layer.borderWidth = borderWidth
+                    self.layer.borderColor = self.style.settings.borderColorNotEnableState
+                }
             }
         }
     }

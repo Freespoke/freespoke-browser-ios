@@ -3,16 +3,16 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import Foundation
+import Shared
 
 final class WhiteListDomainCell: UITableViewCell {
-    
     static let reuseIdentifier = String(describing: type(of: WhiteListDomainCell.self))
     
     private let borderView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 4
         view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.neutralsGray05.cgColor
+        view.layer.borderColor = UIColor.whiteColor.cgColor
         return view
     }()
     
@@ -25,10 +25,13 @@ final class WhiteListDomainCell: UITableViewCell {
     
     private let btnRemoveDomain: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "close-all-text"), for: .normal)
+        let image = UIImage(named: "close-all-text")?.withTintColor(UIColor.fxOffWhite1, renderingMode: .alwaysOriginal)
+        btn.setImage(image, for: .normal)
         btn.setSizeToView(width: 40)
         return btn
     }()
+    
+    private var currentTheme: Theme?
     
     var closureTappedOnBtnRemoveDomain: (() -> Void)?
     
@@ -60,7 +63,7 @@ final class WhiteListDomainCell: UITableViewCell {
         self.lblDomain.translatesAutoresizingMaskIntoConstraints = false
         self.btnRemoveDomain.translatesAutoresizingMaskIntoConstraints = false
         
-        self.borderView.pinToView(view: self.contentView, withInsets: UIEdgeInsets(top: 4, left: 40, bottom: 4, right: 40))
+        self.borderView.pinToView(view: self.contentView, withInsets: UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0))
         
         NSLayoutConstraint.activate([
             self.lblDomain.topAnchor.constraint(equalTo: self.borderView.topAnchor, constant: 10),
@@ -82,4 +85,14 @@ final class WhiteListDomainCell: UITableViewCell {
         self.lblDomain.text = domain
     }
     
+    func updateTheme(currentTheme: Theme?) {
+        self.currentTheme = currentTheme
+        self.applyTheme()
+    }
+    
+    private func applyTheme() {
+        if let theme = currentTheme {
+            self.borderView.layer.borderColor = (theme.type == .light) ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
+        }
+    }
 }

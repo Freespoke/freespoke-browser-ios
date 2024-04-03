@@ -5,13 +5,14 @@
 import Foundation
 
 struct LocalizationConstants {
-    static let adBlockStr = "Block Ads"
-    static let manageBlockStr = "Manage Ad block white list"
-    static let whiteListStr = "White list"
-    static let descriptionStr = "This is a description."
-    static let addWebsiteToWhiteListStr = "Add website to white list"
-    static let plaeseEnterDomainStr = "Plaese enter domain"
+    static let manageAdBlockScreenTitle = "Freespoke Ad Block"
+    static let blockAdsStr = "Block Ads"
+    static let manageBlockStr = "Manage Settings"
+    static let whiteListStr = "Whitelist"
+    static let adBlockDescriptionStr = "Adding a website to this list will turn ad blocking off. Use this if you want to see ads on a site, or if the ad blocker causes problems with a site."
+    static let addWebsiteToWhiteListStr = "Add website to whitelist"
     static let pleaseEnterDomainStr = "Please enter a domain"
+    static let adBlockEnterDomainPlaceholder = "Add website"
     static let pleaseEnterTheCorrectDomainStr = "Please enter the correct domain"
     static let blockAdsOn = "Block ads on:"
 }

@@ -4,23 +4,31 @@
 
 import UIKit
 import Shared
+import Common
 
-final class WhiteListTVC: UIViewController {
+final class WhiteListTVC: UIViewController, Themeable {
+    lazy var viewModel: WhiteListViewModel = WhiteListViewModel(delegate: self)
     
-    lazy var whiteListViewModel: WhiteListViewModel = WhiteListViewModel(delegate: self)
-    
-    var currentTheme: Theme
+    private var contentView: UIView = {
+        let cv = UIView()
+        return cv
+    }()
     
     private let navigationView = CustomTitleView()
     
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    let tableView = UITableView(frame: .zero, style: .grouped)
+    
+    var themeManager: ThemeManager
+    var notificationCenter: NotificationProtocol
+    var themeObserver: NSObjectProtocol?
     
     var closureTappedOnBtnSwitch: (() -> Void)?
         
-    init(currentTheme: Theme) {
-        self.currentTheme = currentTheme
+    init(themeManager: ThemeManager = AppContainer.shared.resolve(),
+         notificationCenter: NotificationProtocol = NotificationCenter.default) {
+        self.themeManager = themeManager
+        self.notificationCenter = notificationCenter
         super.init(nibName: nil, bundle: nil)
-        self.navigationView.setCurrentTheme(currentTheme: self.currentTheme)
     }
     
     required init?(coder: NSCoder) {
@@ -29,7 +37,6 @@ final class WhiteListTVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.prepareUI()
         self.prepareTableView()
         self.registerComponents()
         self.addingViews()
@@ -37,11 +44,16 @@ final class WhiteListTVC: UIViewController {
         self.subscribeClosures()
         self.subscribeNotifications()
         self.hideKeyboardWhenTappedAround()
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
     }
     
-    private func prepareUI() {
-        self.view.backgroundColor = .white
-        self.updateColorForUIItems()
+    func applyTheme() {
+        self.navigationView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        self.view.backgroundColor = (self.themeManager.currentTheme.type == .dark) ? UIColor.black : .gray7
+        self.tableView.backgroundColor = .clear
+        self.tableView.reloadData()
     }
     
     private func prepareTableView() {
@@ -49,6 +61,9 @@ final class WhiteListTVC: UIViewController {
         self.tableView.bounces = false
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.contentInset.bottom = self.view.safeAreaInsets.bottom
+        self.tableView.showsVerticalScrollIndicator = false
+        self.tableView.showsHorizontalScrollIndicator = false
     }
     
     private func registerComponents() {
@@ -62,50 +77,69 @@ final class WhiteListTVC: UIViewController {
     }
     
     private func addingViews() {
-        self.view.addSubview(self.tableView)
+        self.contentView.addSubview(self.tableView)
+        self.view.addSubview(self.contentView)
         self.view.addSubview(self.navigationView)
     }
     
     private func setupConstraints() {
         self.navigationView.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.navigationView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            self.navigationView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40),
-            self.navigationView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -40),
-            self.navigationView.heightAnchor.constraint(equalToConstant: 60),
-            
-            self.tableView.topAnchor.constraint(equalTo: self.navigationView.bottomAnchor, constant: 0),
-            self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
-            self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
-            self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
-        ])
+        
+        // MARK: constraints are set depending on the type of device iPad or iPhone
+        if UIDevice.current.isPad {
+            NSLayoutConstraint.activate([
+                self.navigationView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                self.navigationView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40),
+                self.navigationView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -40),
+                
+                self.contentView.topAnchor.constraint(equalTo: self.navigationView.bottomAnchor, constant: 20),
+                self.contentView.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor, constant: 40),
+                self.contentView.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: -40),
+                self.contentView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                self.contentView.widthAnchor.constraint(equalToConstant: Constants.DrawingSizes.iPadContentWidthStaticValue),
+                self.contentView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
+                
+                self.tableView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 0),
+                self.tableView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0),
+                self.tableView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0),
+                self.tableView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                self.navigationView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                self.navigationView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40),
+                self.navigationView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -40),
+                
+                self.contentView.topAnchor.constraint(equalTo: self.navigationView.bottomAnchor, constant: 20),
+                self.contentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40),
+                self.contentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -40),
+                self.contentView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
+                
+                self.tableView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 0),
+                self.tableView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0),
+                self.tableView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0),
+                self.tableView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0)
+            ])
+        }
     }
     
     private func subscribeClosures() {
-        self.navigationView.backButtonTapClosure = { [weak self] in
+        self.navigationView.backButtonTappedClosure = { [weak self] in
             self?.motionDismissViewController(animated: true)
         }
     }
-    
-    private func updateColorForUIItems() {
-        switch currentTheme.type {
-        case .dark:
-            self.view.backgroundColor = UIColor.black
-        case .light:
-            self.view.backgroundColor = .gray7
-        }
-        self.tableView.backgroundColor = .clear
-    }
 }
+
 // MARK: Table view delegates and datasource
 extension WhiteListTVC: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.whiteListViewModel.getNumberOfSection()
+        return self.viewModel.getNumberOfSection()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.whiteListViewModel.getNumberOfRowsInSection(section: section)
+        return self.viewModel.getNumberOfRowsInSection(section: section)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -123,8 +157,12 @@ extension WhiteListTVC: WhiteListDelegate {
         self.present(alert, animated: true)
     }
     
-    func showConfirmAlertForDeleteDomain(completion: @escaping (() -> Void)) {
-        let alert = UIAlertController.deleteDomainAlert({ _ in completion() })
+    func showConfirmAlertForDeleteDomain(domain: String, completion: @escaping (() -> Void)) {
+        let title = "Delete Website"
+        let message = "Removing <\(domain)> from the whitelist means you will see no longer see ads on this site unless you add it to your whitelist again."
+        let alert = UIAlertController.deleteDomainAlert(title: title,
+                                                        message: message,
+                                                        deleteCallback: { _ in completion() })
         self.present(alert, animated: true)
     }
     

@@ -16,16 +16,48 @@ class OnboardingBottomButtonsView: UIView {
         return sv
     }()
     
-    private var currentTheme: Theme?
+    private var widthConstraint: NSLayoutConstraint?
+    
+    deinit {
+       NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addingViews()
         self.setupConstraints()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.deviceOrientationDidChange),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+//    @objc private func deviceOrientationDidChange() {
+//        if UIDevice.current.isPad {
+//            if UIDevice.current.orientation.isLandscape {
+//                print("TEST: Landscape")
+//                let maxSide = max(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+//                self.widthConstraint?.constant = maxSide * Constants.DrawingSizes.iPadContentWidthFactorPortrait
+//                self.layoutIfNeeded()
+//            } else {
+//                let minSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+//                self.widthConstraint?.constant = minSide * Constants.DrawingSizes.iPadContentWidthFactorPortrait
+//                self.layoutIfNeeded()
+//                print("TEST: Portrait")
+//            }
+//        }
+//    }
+    
+    @objc private func deviceOrientationDidChange() {
+        if UIDevice.current.isPad {
+            let minSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+            self.widthConstraint?.constant = minSide * Constants.DrawingSizes.iPadContentWidthFactorPortrait
+            self.layoutIfNeeded()
+        }
     }
     
     private func commonInit() {
@@ -40,33 +72,45 @@ class OnboardingBottomButtonsView: UIView {
     private func setupConstraints() {
         btnsStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            btnsStackView.topAnchor.constraint(equalTo: self.self.topAnchor, constant: 32),
-            btnsStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
-            btnsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
-            btnsStackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32)
-        ])
+        // MARK: constraints are set depending on the type of device iPad or iPhone
+        if UIDevice.current.isPad {
+            let minSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+            self.widthConstraint = self.btnsStackView.widthAnchor.constraint(equalToConstant: (minSide * Constants.DrawingSizes.iPadContentWidthFactorPortrait))
+            self.widthConstraint?.isActive = true
+            
+            NSLayoutConstraint.activate([
+                btnsStackView.topAnchor.constraint(equalTo: self.self.topAnchor, constant: 32),
+                self.btnsStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                btnsStackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                btnsStackView.topAnchor.constraint(equalTo: self.self.topAnchor, constant: 32),
+                btnsStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
+                btnsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
+                btnsStackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32)
+            ])
+        }
     }
     
     func addViews(views: [UIView]) {
+        self.btnsStackView.arrangedSubviews.forEach({ [weak self] in
+            guard let self = self else { return }
+            self.btnsStackView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        })
+        
         views.forEach({ [weak self] in
             self?.btnsStackView.addArrangedSubview($0)
         })
     }
     
-    func configure(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
-        self.applyTheme()
-    }
-    
-    private func applyTheme() {
-        if let theme = currentTheme {
-            switch theme.type {
-            case .dark:
-                self.backgroundColor = .black
-            case .light:
-                self.backgroundColor = theme.colors.layer1
-            }
+    func applyTheme(currentTheme: Theme) {
+        switch currentTheme.type {
+        case .dark:
+            self.backgroundColor = .black
+        case .light:
+            self.backgroundColor = currentTheme.colors.layer1
         }
     }
     

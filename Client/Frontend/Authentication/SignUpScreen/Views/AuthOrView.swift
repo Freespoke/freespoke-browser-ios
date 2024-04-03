@@ -8,14 +8,12 @@ import Shared
 final class AuthOrView: UIView {
     private lazy var leftLineView: UIView = {
         let view = UIView()
-        view.backgroundColor = .whiteColor
         return view
     }()
     
     private lazy var lblOr: UILabel = {
         let lbl = UILabel()
         lbl.text = "OR"
-        lbl.textColor = self.currentTheme?.type == .dark ? UIColor.white : UIColor.blackColor
         lbl.textAlignment = .center
         lbl.font = .sourceSansProFont(.semiBold, size: 12)
         return lbl
@@ -23,21 +21,23 @@ final class AuthOrView: UIView {
     
     private lazy var rightLineView: UIView = {
         let view = UIView()
-        view.backgroundColor = .whiteColor
         return view
     }()
     
-    private var currentTheme: Theme?
-    
-    required init(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
+    required init() {
         super.init(frame: .zero)
-        addingViews()
-        setupConstraints()
+        self.addingViews()
+        self.setupConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func applyTheme(currentTheme: Theme) {
+        self.leftLineView.backgroundColor = currentTheme.type == .dark ? UIColor.blackColor : UIColor.whiteColor
+        self.lblOr.textColor = currentTheme.type == .dark ? UIColor.white : UIColor.blackColor
+        self.rightLineView.backgroundColor = currentTheme.type == .dark ? UIColor.blackColor : UIColor.whiteColor
     }
     
     private func addingViews() {

@@ -5,8 +5,10 @@
 import UIKit
 import Shared
 import MatomoTracker
+import OneSignal
+import Common
 
-class FreefolkProfileVC: UIViewController {
+class FreefolkProfileVC: UIViewController, Themeable {
     private var viewModel: FreefolkProfileViewModel
     private var contentView: UIView = {
         let cv = UIView()
@@ -25,14 +27,20 @@ class FreefolkProfileVC: UIViewController {
     }()
     
     private var tableView = UITableView()
-    private var currentTheme: Theme?
+    
+    var themeManager: ThemeManager
+    var notificationCenter: NotificationProtocol
+    var themeObserver: NSObjectProtocol?
     
     var getInTouchClosure: (() -> Void)?
-    var accountTouchClosure: (() -> Void)?
+    var accountClickedClosure: (() -> Void)?
     var darkModeSwitchClosure: ((_ isOn: Bool) -> Void)?
     
-    init(viewModel: FreefolkProfileViewModel) {
+    init(viewModel: FreefolkProfileViewModel, themeManager: ThemeManager = AppContainer.shared.resolve(),
+         notificationCenter: NotificationProtocol = NotificationCenter.default) {
         self.viewModel = viewModel
+        self.themeManager = themeManager
+        self.notificationCenter = notificationCenter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -48,37 +56,26 @@ class FreefolkProfileVC: UIViewController {
         self.setupTableView()
         self.subscribeClosures()
         self.viewModel.delegate = self
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
     }
     
-    func setCurrentTheme(currentTheme: Theme) {
-        self.currentTheme = currentTheme
-        self.applyTheme()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.reloadTableView()
+        self.customTitleView.updateProfileIcon(freespokeJWTDecodeModel: self.viewModel.freespokeJWTDecodeModel)
     }
     
     private func prepareUI() {
         self.customTitleView.updateProfileIcon(freespokeJWTDecodeModel: self.viewModel.freespokeJWTDecodeModel)
     }
     
-    private func setupTableView() {
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.tableView.register(VerifyEmailCell.self, forCellReuseIdentifier: VerifyEmailCell.identifier)
-        self.tableView.register(ProfileCell.self, forCellReuseIdentifier: ProfileCell.identifier)
-        self.tableView.register(LogoutCell.self, forCellReuseIdentifier: LogoutCell.identifier)
-        self.tableView.register(BlockerAdsCell.self, forCellReuseIdentifier: BlockerAdsCell.reuseIdentifier)
-        self.tableView.separatorStyle = .none
-        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = 44
-        self.tableView.allowsSelection = false
-    }
-    
     private func addingViews() {
         self.view.addSubview(self.contentView)
-        self.contentView.addSubview(customTitleView)
-        self.contentView.addSubview(titleLbl)
-        self.contentView.addSubview(tableView)
-        contentView.isUserInteractionEnabled = true
+        self.contentView.addSubview(self.titleLbl)
+        self.contentView.addSubview(self.tableView)
+        self.view.addSubview(self.customTitleView)
     }
     
     private func setupConstraints() {
@@ -94,7 +91,8 @@ class FreefolkProfileVC: UIViewController {
                 self.contentView.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor, constant: 0),
                 self.contentView.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: 0),
                 self.contentView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                self.contentView.widthAnchor.constraint(equalToConstant: Constants.UI.contentWidthConstraintForIpad),
+//                self.contentView.widthAnchor.constraint(equalToConstant: (self.view.frame.width * Constants.DrawingSizes.iPadContentWidthFactorPortrait)),
+                self.contentView.widthAnchor.constraint(equalToConstant: Constants.DrawingSizes.iPadContentWidthStaticValue),
                 self.contentView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
                 self.titleLbl.topAnchor.constraint(equalTo: customTitleView.bottomAnchor, constant: 50)
             ])
@@ -109,14 +107,13 @@ class FreefolkProfileVC: UIViewController {
             ])
         }
         NSLayoutConstraint.activate([
-            self.customTitleView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 0),
+            self.customTitleView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
             self.customTitleView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40),
             self.customTitleView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -40),
-            self.customTitleView.heightAnchor.constraint(equalToConstant: 60),
             
             self.titleLbl.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
             self.titleLbl.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20),
-        
+            
             self.tableView.topAnchor.constraint(equalTo: self.titleLbl.bottomAnchor, constant: 10),
             self.tableView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
             self.tableView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20),
@@ -124,82 +121,57 @@ class FreefolkProfileVC: UIViewController {
         ])
     }
     
-    private func applyTheme() {
-        if let theme = self.currentTheme {
-            self.customTitleView.setCurrentTheme(currentTheme: theme)
-            switch theme.type {
-            case .dark:
-                self.view.backgroundColor = UIColor.black
-                self.tableView.backgroundColor = .clear
-                self.titleLbl.textColor = .gray7
-            case .light:
-                self.view.backgroundColor = .gray7
-                self.tableView.backgroundColor = .gray7
-                self.titleLbl.textColor = .blackColor
-            }
+    func applyTheme() {
+        self.customTitleView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        
+        switch self.themeManager.currentTheme.type {
+        case .dark:
+            self.view.backgroundColor = UIColor.black
+            self.tableView.backgroundColor = .clear
+            self.titleLbl.textColor = .gray7
+        case .light:
+            self.view.backgroundColor = .gray7
+            self.tableView.backgroundColor = .gray7
+            self.titleLbl.textColor = .blackColor
         }
+        
         self.tableView.reloadData()
     }
     
+    private func setupTableView() {
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.register(VerifyEmailCell.self, forCellReuseIdentifier: VerifyEmailCell.identifier)
+        self.tableView.register(ProfileCell.self, forCellReuseIdentifier: ProfileCell.identifier)
+        self.tableView.register(LogoutCell.self, forCellReuseIdentifier: LogoutCell.identifier)
+        self.tableView.register(BlockerAdsCell.self, forCellReuseIdentifier: BlockerAdsCell.reuseIdentifier)
+        self.tableView.separatorStyle = .none
+        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+        self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.estimatedRowHeight = 44
+        self.tableView.allowsSelection = false
+        self.tableView.showsHorizontalScrollIndicator = false
+        self.tableView.showsVerticalScrollIndicator = false
+    }
+    
+    
     func subscribeClosures() {
-        self.customTitleView.backButtonTapClosure = { [weak self] in
+        self.customTitleView.backButtonTappedClosure = { [weak self] in
             self?.motionDismissViewController(animated: true)
         }
     }
     
-    private func navigateToSubscriptionsVC() {
-        if let freespokeJWTDecodeModel = self.viewModel.freespokeJWTDecodeModel {
-            if freespokeJWTDecodeModel.isPremium {
-                switch AppSessionManager.shared.decodedJWTToken?.subscription?.subscriptionSource {
-                case .ios:
-                    if let expiryDate = freespokeJWTDecodeModel.subscription?.subscriptionExpiry,
-                       expiryDate < Date() {
-                        self.navigateToSubscriptionTrialExpired()
-                    } else {
-                        self.navigateToSubscriptionUpdatePlan()
-                    }
-                default:
-                    self.navigateToSubscriptionCancelPlanNotOriginalOS()
-                }
-            } else {
-                self.navigateToSubscriptionStartTrial()
-            }
+    private func premiumClicked() {
+        if self.viewModel.freespokeJWTDecodeModel != nil {
+            self.navigateToSubscriptionScreen()
         } else {
-            let vc = SignUpVC(currentTheme: self.currentTheme, viewModel: SignUpVCViewModel(isOnboarding: false))
+            let vc = SignUpVC(viewModel: SignUpVCViewModel(isOnboarding: false))
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
-    private func navigateToSubscriptionStartTrial() {
-        let vc = SubscriptionsVC(currentTheme: self.currentTheme,
-                                 viewModel: SubscriptionsVCViewModel(state: .startTrialSubscription(isOnboarding: false)))
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    private func navigateToSubscriptionUpdatePlan() {
-        let vc = SubscriptionsVC(currentTheme: self.currentTheme,
-                                 viewModel: SubscriptionsVCViewModel(state: .updatePlan))
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    private func navigateToSubscriptionTrialExpired() {
-        let vc = SubscriptionsVC(currentTheme: self.currentTheme,
-                                 viewModel: SubscriptionsVCViewModel(state: .trialExpired))
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    private func navigateToSubscriptionCancelPlanNotOriginalOS() {
-        let vc = SubscriptionsVC(currentTheme: self.currentTheme,
-                                 viewModel: SubscriptionsVCViewModel(state: .cancelPlanNotOriginalOS))
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    private func navigateToDomainsVC() {
-        guard let currentTheme = self.currentTheme else { return }
-        let vc = WhiteListTVC(currentTheme: currentTheme)
-        vc.closureTappedOnBtnSwitch = { [weak self] in
-            self?.reloadTableView()
-        }
+    private func navigateToSubscriptionScreen() {
+        let vc = SubscriptionsVC(viewModel: SubscriptionsVCViewModel(isOnboarding: false))
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -214,7 +186,7 @@ class FreefolkProfileVC: UIViewController {
         }
         MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appShare.rawValue,
                                    action: MatomoAction.appShareMenu.rawValue,
-                                   name: MatomoName.click.rawValue,
+                                   name: MatomoName.clickName.rawValue,
                                    value: nil)
         TelemetryWrapper.recordEvent(category: .action,
                                      method: .tap,
@@ -222,8 +194,13 @@ class FreefolkProfileVC: UIViewController {
         self.presentWithModalDismissIfNeeded(controller, animated: true)
     }
     
-    private func showDeviceSettings() {
-        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])
+    private func showDeviceAppSettings() {
+        guard let appBundleIdentifier = Bundle.main.bundleIdentifier,
+              let url = URL(string: UIApplication.openSettingsURLString + appBundleIdentifier),
+              UIApplication.shared.canOpenURL(url) else { return }
+        DispatchQueue.main.async {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
 }
 
@@ -247,9 +224,9 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         case .premium, .account, .manageDefaultBrowser, .manageNotifications, .getInTouch, .shareFreespoke, .darkMode:
             return self.getProfileCell(for: cellType, at: indexPath)
         case .logout:
-            return getLogoutCell(at: indexPath)
+            return self.getLogoutCell(at: indexPath)
         case .adBlocker:
-            return self.gerAdBlockerCell(tableView, cellForRowAt: indexPath)
+            return self.getAdBlockerCell(tableView, cellForRowAt: indexPath)
         }
     }
     
@@ -257,27 +234,28 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: VerifyEmailCell.identifier, for: indexPath) as? VerifyEmailCell else {
             return UITableViewCell()
         }
-        cell.configure(title: title, subtitle: "Check your email for a message to confirm your account.", currentTheme: self.currentTheme)
-        return cell
-    }
-   
-    // TODO: Move function to the viewModel
-    private func gerAdBlockerCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: BlockerAdsCell.reuseIdentifier, for: indexPath) as? BlockerAdsCell else { return UITableViewCell() }
-        cell.closureTappedOnBtnSwitch = { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.updateTableView()
-        }
-        
-        cell.closureTappedOnBtnManage = { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.navigateToDomainsVC()
-        }
-        cell.setCurrentTheme(currentTheme: self.currentTheme)
-        cell.checkAdBlockerStatus()
+        cell.configure(title: title, subtitle: "Check your email for a message to confirm your account.", currentTheme: self.themeManager.currentTheme)
         return cell
     }
     
+    // TODO: Move function to the viewModel
+    private func getAdBlockerCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BlockerAdsCell.reuseIdentifier, for: indexPath) as? BlockerAdsCell else { return UITableViewCell() }
+        cell.closureTappedOnBtnSwitch = { [weak self] in
+            guard let self = self else { return }
+            self.updateTableView()
+        }
+        
+        cell.closureTappedOnBtnManage = { [weak self] in
+            guard let self = self else { return }
+            self.navigateToDomainsVC()
+        }
+        cell.configure()
+        cell.applyTheme(currentTheme: self.themeManager.currentTheme)
+        return cell
+    }
+    
+    // TODO: Move function to the viewModel
     private func getProfileCell(for cellType: CellType, at indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell.identifier, for: indexPath) as? ProfileCell else {
             return UITableViewCell()
@@ -295,27 +273,31 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         self.configureLogoutCell(cell)
         return cell
     }
-
+    
     private func configureProfileCell(_ cell: ProfileCell, for cellType: CellType) {
-        cell.configure(with: cellType, currentTheme: currentTheme)
+        cell.configure(with: cellType, currentTheme: self.themeManager.currentTheme)
         
-        if let theme = currentTheme {
-            cell.backgroundColor = (theme.type == .light) ? .gray7 : .clear
-        }
+        let theme = self.themeManager.currentTheme
+        cell.backgroundColor = (theme.type == .light) ? .gray7 : .clear
         
         switch cellType {
         case .premium:
             cell.tapClosure = { [weak self] in
-                self?.navigateToSubscriptionsVC()
+                self?.premiumClicked()
             }
         case .account:
             cell.tapClosure = { [weak self] in
-                self?.accountTouchClosure?()
+                self?.accountCellClicked()
             }
-        case .manageDefaultBrowser, .manageNotifications:
+        case .manageDefaultBrowser:
             cell.tapClosure = { [weak self] in
-                self?.showDeviceSettings()
+                self?.showDeviceAppSettings()
             }
+        case .manageNotifications:
+            cell.tapClosure = { [weak self] in
+                self?.manageNotificationClicked()
+            }
+            
         case .getInTouch:
             cell.tapClosure = { [weak self] in
                 self?.getInTouchClosure?()
@@ -333,22 +315,60 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    private func configureLogoutCell(_ cell: LogoutCell) {
-        if let theme = currentTheme {
-            cell.backgroundColor = (theme.type == .light) ? .gray7 : .clear
-            cell.configureCell(textColor: (theme.type == .light) ? .blackColor : .whiteColor)
+    private func manageNotificationClicked() {
+        UNUserNotificationCenter.current().getNotificationSettings { [weak self] notificationsSettings in
+            guard let self = self else { return }
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                switch notificationsSettings.authorizationStatus {
+                case .notDetermined:
+                    // Ask for setup notification setting
+                    OneSignal.promptForPushNotifications(userResponse: { accepted in
+                        print("User accepted notification: \(accepted)")
+                    })
+                default:
+                    self.showDeviceAppSettings()
+                }
+            }
         }
+    }
+    
+    private func accountCellClicked() {
+//        self.accountClickedClosure?()
+        guard let accountURL = URL(string: Constants.URLs.accountProfileURL) else { return }
+        
+        DispatchQueue.main.async {
+            let vc = OAuthLoginVC(activityIndicatorEnabled: false, source: .accountPage)
+            vc.startLoadingWebView(url: accountURL)
+            vc.isModalInPresentation = true
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    private func configureLogoutCell(_ cell: LogoutCell) {
+        let theme = self.themeManager.currentTheme
+        cell.backgroundColor = (theme.type == .light) ? .gray7 : .clear
+        cell.configureCell(textColor: (theme.type == .light) ? .blackColor : .whiteColor)
+        
         cell.tapClosure = { [weak self] in
             self?.viewModel.performLogout()
         }
     }
     
     private func configureDarkModeCell(_ cell: ProfileCell) {
-        let nightModeEnabled = NightModeHelper.isActivated()
-        cell.setDarkModeSwich(isOn: nightModeEnabled)
+        let nightModeEnabled = NightModeHelper.hasEnabledDarkTheme()
+        cell.setDarkModeSwitch(isOn: nightModeEnabled)
         cell.darkModeSwitchClosure = { [weak self] isOn in
             self?.darkModeSwitchClosure?(isOn)
         }
+    }
+    
+    private func navigateToDomainsVC() {
+        let vc = WhiteListTVC()
+        vc.closureTappedOnBtnSwitch = { [weak self] in
+            self?.reloadTableView()
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     private func updateTableView() {

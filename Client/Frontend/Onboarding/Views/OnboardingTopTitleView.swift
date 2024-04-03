@@ -52,8 +52,6 @@ class OnboardingTopTitleView: UIView {
     
     private var spaceBetweenImageAndLabelsConstraint: NSLayoutConstraint?
     
-    private var currentTheme: Theme?
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -65,18 +63,16 @@ class OnboardingTopTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func applyTheme() {
-        if let theme = currentTheme {
-            self.backgroundColor = .clear
-            
-            switch theme.type {
-            case .dark:
-                self.lblTitle.textColor = UIColor.whiteColor
-                self.lblSubtitle.textColor = UIColor.whiteColor
-            case .light:
-                self.lblTitle.textColor = UIColor.blackColor
-                self.lblSubtitle.textColor = UIColor.blackColor
-            }
+    func applyTheme(currentTheme: Theme) {
+        self.backgroundColor = .clear
+        
+        switch currentTheme.type {
+        case .dark:
+            self.lblTitle.textColor = UIColor.whiteColor
+            self.lblSubtitle.textColor = UIColor.whiteColor
+        case .light:
+            self.lblTitle.textColor = UIColor.blackColor
+            self.lblSubtitle.textColor = UIColor.blackColor
         }
     }
     
@@ -108,9 +104,7 @@ class OnboardingTopTitleView: UIView {
         ])
     }
     
-    func configure(currentTheme: Theme?, lblTitleText: String, lblSubtitleText: String?, logoIsHidden: Bool) {
-        self.currentTheme = currentTheme
-        self.applyTheme()
+    func configure(lblTitleText: String, lblSubtitleText: String?, logoIsHidden: Bool) {
         
         self.logoStackView.arrangedSubviews.forEach({ [weak self] in
             guard let self = self else { return }

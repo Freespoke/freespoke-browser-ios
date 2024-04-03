@@ -6,7 +6,7 @@ import UIKit
 import Shared
 
 class SignInWithAppleItemView: UIStackView {
-    private lazy var btnSignInWithApple = SignInWithAppleButton(currentTheme: self.currentTheme)
+    private lazy var btnSignInWithApple = SignInWithAppleButton()
     
     private var lblError: UILabel = {
         let lbl = UILabel()
@@ -19,8 +19,6 @@ class SignInWithAppleItemView: UIStackView {
         return lbl
     }()
     
-    private var currentTheme: Theme?
-    
     var errorMessage: String = "" {
         didSet {
             self.updateUI()
@@ -29,8 +27,7 @@ class SignInWithAppleItemView: UIStackView {
     
     var tapClosure: (() -> Void)?
     
-    init(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
+    init() {
         super.init(frame: .zero)
         
         self.axis = .vertical
@@ -41,6 +38,10 @@ class SignInWithAppleItemView: UIStackView {
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func applyTheme(currentTheme: Theme) {
+        self.btnSignInWithApple.applyTheme(currentTheme: currentTheme)
     }
     
     private func addingViews() {

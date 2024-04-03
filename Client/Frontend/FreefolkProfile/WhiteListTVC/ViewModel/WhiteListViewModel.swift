@@ -5,7 +5,6 @@
 import Foundation
 
 final class WhiteListViewModel {
-    
     weak var delegate: WhiteListDelegate?
     private var sections: [WhiteListSectionsType] = []
     
@@ -13,24 +12,33 @@ final class WhiteListViewModel {
     
     init(delegate: WhiteListDelegate? = nil) {
         self.delegate = delegate
-        self.prepareSections()
+        self.setupSections()
     }
     
-    private func prepareSections() {
-        let addBlockerSection: WhiteListSectionsType = .blockAds(title: LocalizationConstants.adBlockStr, cells: [.blockAdsCell])
-        let whiteListSection: WhiteListSectionsType = .whiteList(title: LocalizationConstants.whiteListStr, body: LocalizationConstants.descriptionStr, cells: self.getCellsForWhiteList())
+    private func setupSections() {
+        let addBlockerSection: WhiteListSectionsType = .blockAds(title: LocalizationConstants.manageAdBlockScreenTitle.uppercased(), cells: [.blockAdsCell])
+        let whiteListSection: WhiteListSectionsType = .whiteList(title: LocalizationConstants.whiteListStr, body: LocalizationConstants.adBlockDescriptionStr, cells: self.getCellsForWhiteList())
         self.sections = []
         self.sections.append(addBlockerSection)
-        self.sections.append(whiteListSection)
+        
+        if UserDefaults.standard.bool(forKey: SettingsKeys.isEnabledBlocker) {
+            self.sections.append(whiteListSection)
+        }
+        
+        self.delegate?.reloadTableView()
     }
     
     private func getCellsForWhiteList() -> [WhiteListCellsType] {
         var cells: [WhiteListCellsType] = []
-        cells.append(.enterDomainCell(placeholder: LocalizationConstants.plaeseEnterDomainStr, domain: self.currentEnteredDomain))
+        cells.append(.enterDomainCell(placeholder: LocalizationConstants.adBlockEnterDomainPlaceholder, domain: self.currentEnteredDomain))
         cells.append(.btnActionCell(title: LocalizationConstants.addWebsiteToWhiteListStr))
         guard let domains = UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String] else { return cells }
         cells += domains.enumerated().map({ .domainCell(domain: $1, index: $0) })
         return cells
+    }
+    
+    func updateSections() {
+        self.setupSections()
     }
     
     func getNumberOfSection() -> Int {
@@ -46,14 +54,18 @@ final class WhiteListViewModel {
     }
     
     func removeDomainsBy(index: Int) {
-        self.delegate?.showConfirmAlertForDeleteDomain(completion: { [weak self] in
-            guard let sSelf = self else { return }
-            guard var domains = UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String] else { return }
+        guard var domains = UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String] else { return }
+        guard index < domains.count else { return }
+        let domain = domains[index]
+        self.delegate?.showConfirmAlertForDeleteDomain(domain: domain,
+                                                       completion: { [weak self] in
+            guard let self = self else { return }
             domains.remove(at: index)
             UserDefaults.standard.set(domains, forKey: SettingsKeys.domains)
-            sSelf.prepareSections()
-            sSelf.delegate?.reloadTableView()
-            NotificationCenter.default.post(name: NSNotification.Name.domainWasRemoved, object: nil)
+            UserDefaults.standard.synchronize()
+            self.setupSections()
+            let userInfo: [String: Any] = [NotificationKeyNameForValue.host.rawValue: domain]
+            NotificationCenter.default.post(name: NSNotification.Name.enableAdBlockerForCurrentDomain, object: nil, userInfo: userInfo)
         })
     }
     
@@ -61,17 +73,31 @@ final class WhiteListViewModel {
         self.currentEnteredDomain = domain
     }
     
-    func checkAndSaveDomain() {
-        guard let domain = self.currentEnteredDomain, !domain.isEmpty else { self.delegate?.showErrorAlert(message: LocalizationConstants.pleaseEnterDomainStr); return }
-        guard domain.isValidDomain() else { self.delegate?.showErrorAlert(message: LocalizationConstants.pleaseEnterTheCorrectDomainStr); return }
-        if var domains = UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String] {
-            domains.insert(domain, at: 0)
-            UserDefaults.standard.set(domains, forKey: SettingsKeys.domains)
-        } else {
-            UserDefaults.standard.set([domain], forKey: SettingsKeys.domains)
+    func isEnteredTextDomain() -> Bool {
+        guard let domain = self.currentEnteredDomain,
+              domain.isValidDomain()
+        else {
+            return false
         }
-        self.currentEnteredDomain = ""
-        self.prepareSections()
-        self.delegate?.reloadTableView()
+        return true
+    }
+    
+    func saveDomainIfNotSavedYet() {
+        guard let domain = self.currentEnteredDomain else { return }
+        AdBlockManager.shared.saveDomainToWhiteListIfNotSavedYet(domain: domain,
+                                                                 completion: { [weak self] savingStatus in
+            guard let self = self else { return }
+            switch savingStatus {
+            case .saved:
+                UIUtils.showOkAlertInNewWindow(title: "Add to Whitelist",
+                                               message: "\(domain) has been added to your adblock whitelist. Advertisements will not be blocked on this site.")
+                
+            case .alreadyContains:
+                UIUtils.showOkAlertInNewWindow(title: "Add to Whitelist",
+                                               message: "You already have \(domain) added to your whitelist.")
+            }
+            self.currentEnteredDomain = ""
+            self.setupSections()
+        })
     }
 }

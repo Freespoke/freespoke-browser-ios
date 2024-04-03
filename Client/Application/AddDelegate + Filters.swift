@@ -30,14 +30,14 @@ struct SettingsKeys {
 
 enum HostFileNames: String {
     case adaway
-    case blackHosts
-    case malwareHosts
     case camelon
     case zeus
     case tracker
-    case simpleAds
     case adServerHosts
     case ultimateAdBlock
+    case easyList
+    case easyFanboyAnnoyance
+    case easyPrivacyList
     
-    static let allValues: [HostFileNames] = [.adaway, .blackHosts, .malwareHosts, .camelon, .zeus, .tracker, .simpleAds, .adServerHosts, .ultimateAdBlock]
+    static let allValues: [HostFileNames] = [.adaway, .camelon, .zeus, .tracker, .adServerHosts, .ultimateAdBlock, .easyList, .easyFanboyAnnoyance, .easyPrivacyList]
 }

@@ -25,8 +25,6 @@ class LabelWithUnderlinedButtonView: UIView {
         return btn
     }()
     
-    private var currentTheme: Theme?
-    
     var tapClosure: (() -> Void)?
     
     override init(frame: CGRect) {
@@ -83,23 +81,19 @@ class LabelWithUnderlinedButtonView: UIView {
         ])
     }
     
-    func configure(currentTheme: Theme?, lblTitleText: String, btnTitleText: String) {
-        self.currentTheme = currentTheme
+    func configure(lblTitleText: String, btnTitleText: String) {
         self.lblTitle.text = lblTitleText
         self.button.setTitle(btnTitleText, for: .normal)
-        self.applyTheme()
     }
     
-    private func applyTheme() {
-        if let theme = currentTheme {
-            switch theme.type {
-            case .dark:
-                self.lblTitle.textColor = UIColor.whiteColor
-                self.button.setTitleColor(UIColor.whiteColor, for: .normal)
-            case .light:
-                self.lblTitle.textColor = UIColor.blackColor
-                self.button.setTitleColor(UIColor.blackColor, for: .normal)
-            }
+    func applyTheme(currentTheme: Theme) {
+        switch currentTheme.type {
+        case .dark:
+            self.lblTitle.textColor = UIColor.whiteColor
+            self.button.setTitleColor(UIColor.whiteColor, for: .normal)
+        case .light:
+            self.lblTitle.textColor = UIColor.blackColor
+            self.button.setTitleColor(UIColor.blackColor, for: .normal)
         }
     }
     

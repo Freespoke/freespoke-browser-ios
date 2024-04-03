@@ -55,51 +55,86 @@ class FreefolkProfileViewModel {
     
     init() {
         self.subscribeNotifications()
+        self.setupCellTypes()
     }
     
     func getFreespokeJWTDecodeModel() -> FreespokeJWTDecodeModel? {
         return freespokeJWTDecodeModel
     }
     
-    func getCellTypes() -> [CellType] {
-        if let freespokeJWTDecodeModel = self.freespokeJWTDecodeModel {
-            self.cellTypes = [
-                .premium,
-                .account,
-                .adBlocker,
-                //.darkMode, // dark mode is hidden for now
-                .manageDefaultBrowser,
-                .manageNotifications,
-                .getInTouch,
-                .shareFreespoke,
-                .logout
-            ]
-            if !freespokeJWTDecodeModel.emailVerified {
-                self.cellTypes.insert(.verifyEmail, at: 0)
-            }
-            return self.cellTypes
-        } else {
-            self.cellTypes = [
-                .premium,
-                .account,
-                .adBlocker,
-                //.darkMode, // dark mode is hidden for now
-                .manageDefaultBrowser,
-                .manageNotifications,
-                .getInTouch,
-                .shareFreespoke
-            ]
-            if AppSessionManager.shared.userType != .premium {
-                for (index, cell) in self.cellTypes.enumerated() where cell == .adBlocker {
-                    self.cellTypes.remove(at: index)
+    func setupCellTypes() {
+        self.cellTypes = []
+        Task {
+            if let userType = try? await AppSessionManager.shared.userType() {
+                switch userType {
+                case .authorizedWithoutPremium:
+                    self.cellTypes = [
+                        .premium,
+                        .account,
+                        .darkMode,
+                        .manageDefaultBrowser,
+                        .manageNotifications,
+                        .getInTouch,
+                        .shareFreespoke,
+                        .logout
+                    ]
+                    
+                    if let decodedJWTToken = AppSessionManager.shared.decodedJWTToken, !decodedJWTToken.emailVerified {
+                        self.cellTypes.insert(.verifyEmail, at: 0)
+                    }
+                    
+                    self.delegate?.reloadTableView()
+                    
+                case .premium:
+                    self.cellTypes = [
+                        .premium,
+                        .account,
+                        .darkMode,
+                        .manageDefaultBrowser,
+                        .manageNotifications,
+                        .getInTouch,
+                        .shareFreespoke,
+                        .logout
+                    ]
+                    
+                    if let decodedJWTToken = AppSessionManager.shared.decodedJWTToken, !decodedJWTToken.emailVerified {
+                        self.cellTypes.insert(.verifyEmail, at: 0)
+                    }
+                    
+                    if !self.cellTypes.contains(.verifyEmail) {
+                        self.cellTypes.insert(.adBlocker, at: 2)
+                    } else {
+                        self.cellTypes.insert(.adBlocker, at: 3)
+                    }
+                    
+                    self.delegate?.reloadTableView()
+                case .unauthorized:
+                    self.cellTypes = [
+                        .premium,
+                        .account,
+                        .darkMode,
+                        .manageDefaultBrowser,
+                        .manageNotifications,
+                        .getInTouch,
+                        .shareFreespoke
+                    ]
+                    self.delegate?.reloadTableView()
                 }
             }
-            return self.cellTypes
         }
+    }
+    
+    func getCellTypes() -> [CellType] {
+        return self.cellTypes
     }
     
     func performLogout() {
         AppSessionManager.shared.performFreespokeLogout(completion: nil)
+    }
+    
+    func getWhiteListDomainsCount() -> Int {
+        guard let domains = UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String] else { return 0 }
+        return domains.count
     }
 }
 
@@ -115,6 +150,6 @@ extension FreefolkProfileViewModel {
     
     @objc private func freespokeUserAuthChanged(_ notification: Notification) {
         self.delegate?.profileModelDidUpdateData(freespokeJWTDecodeModel: freespokeJWTDecodeModel)
-        self.delegate?.reloadTableView()
+        self.setupCellTypes()
     }
 }

@@ -48,9 +48,16 @@ enum MenuCellImageType: String {
 }
 
 enum Constants: String {
-    enum UI {
-        static let contentWidthConstraintForIpad: CGFloat = 550
-        static let buttonsWidthConstraintForIpad: CGFloat = 500
+    
+    // MARK: Drawing Constants
+    
+    enum DrawingSizes {
+        static let profileAvatarSize: CGFloat = 40
+        // dynamic width value
+        static let iPadContentWidthFactorPortrait = 0.75
+        static let iPadContentWidthFactorLandscape = 0.55
+        // hardcoded width value
+        static let iPadContentWidthStaticValue: CGFloat = 480
     }
     
     static var apiBaseURL: String {
@@ -89,7 +96,7 @@ enum Constants: String {
     case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
     case electionURL = "https://freespoke.com/election/2024"
-    case appleNativeSubscriptions = "itms-apps://apps.apple.com/account/subscriptions"
+    case appleNativeSubscriptions = "itms-apps://apps.apple.com/account/subscriptions" // "https://apps.apple.com/account/subscriptions"
     
     // MARK: - One Signal
     
@@ -127,6 +134,7 @@ extension UIColor {
     static let neutralsGray05 = Utils.hexStringToUIColor(hex: "#E1E5EB")
     static let charcoalGrayColor = Utils.hexStringToUIColor(hex: "#292929")
     static let gunmetalGrayColor = Utils.hexStringToUIColor(hex: "#525252")
+    static let fxOffWhite1 = Utils.hexStringToUIColor(hex: "#DADEE3")
 }
 
 class Utils {
@@ -155,27 +163,30 @@ class Utils {
 
 enum Matomo {
     static var baseURL: String {
-        switch FreespokeEnvironment.current {
-        case .production:
-            return "https://example.com/matomo.php"
-        case .staging:
-            return "https://example.com/matomo.php"
-        }
+        return "https://matomo.freespoke.com/matomo.php"
     }
     
-    static var productionSiteId   = "6"
-    static var staggingSiteId     = "7"
+    static var matomoSiteId: String {
+        switch FreespokeEnvironment.current {
+        case .production:
+            return "6"
+        case .staging:
+            return "7"
+        }
+    }
 }
 
 enum MatomoCategory: String {
     case appEntry           = "app entry"
-    case appMenu            = "app menu"
+    case appMenuCategory    = "app menu"
     case appHome            = "app home"
     case appTabs            = "app tabs"
     case appShare           = "app share"
+    case appOnboardCategory = "app onboard"
 }
 
 enum MatomoAction: String {
+    case appEntryAction     = "app entry"
     case appMenuTab         = "app menu tab click - "
     case appHomeSearch      = "app home search"
     case appHomeBookmarks   = "app home my bookmarks click"
@@ -189,10 +200,23 @@ enum MatomoAction: String {
     case appTabsPrivateBrowsing = "app tabs private browsing click"
     case appTabsRegularBrowsing = "app tabs regular browsing click"
     case appShareMenu           = "app share from menu"
+    // app onboard actions
+    case appOnbCloseClickAction = "app onboard close click"
+    case appOnbWithoutAccClickAction = "app onboard continue without an account click"
+    case appOnbWithoutAccSetAsDefBrowserClickAction = "app onboard continue without an account set as default browser click"
+    case appOnbWithoutAccAllowNotificationsClickAction = "app onboard continue without an account allow notifications click"
+    case appOnbCreateAccClickAction = "app onboard create account click"
+    case appOnbCreateAccContinueWithoutPremiumClickAction = "app onboard create account continue without premium click"
+    case appOnbCreateAccPremiumPriceClickAction = "app onboard create account premium price click"
+    case appOnbCreateAccSetAsDefBrowserClickAction = "app onboard create account an account set as default browser click"
+    case appOnbCreateAccAllowNotificationsClickAction = "app onboard create account allow notifications click"
+    // subscription, manage plan
+    case appManageUpdatePlanClickAction = "app manage update plan click"
+    case appManageСancelPlanClickAction = "app manage cancel plan click "
 }
 
 enum MatomoName: String {
     case open               = "open"
-    case click              = "click"
+    case clickName          = "click"
     case search             = "search"
 }

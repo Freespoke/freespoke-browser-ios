@@ -5,12 +5,14 @@
 import UIKit
 import Shared
 import StoreKit
+import Combine
+import MatomoTracker
 
 class SubscriptionsVC: OnboardingBaseViewController {
     private let viewModel: SubscriptionsVCViewModel
     private let scrollView = UIScrollView()
     private var scrollableContentView: SubscriptionsContentView!
-
+    
     // MARK: Bottom buttons view
     
     private var lblDescription: UILabel = {
@@ -24,25 +26,25 @@ class SubscriptionsVC: OnboardingBaseViewController {
     }()
     
     private lazy var btnMonthlySubscription: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
         btn.height = 56
         return btn
     }()
     
     private lazy var btnYearlySubscription: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
         btn.height = 56
         return btn
     }()
     
     private lazy var btnUpdateSubscription: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
         btn.height = 56
         return btn
     }()
     
     private lazy var btnCancelSubscription: BaseButton = {
-        let btn = BaseButton(style: .clearStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .clearStyle(currentTheme: self.themeManager.currentTheme))
         btn.height = 56
         return btn
     }()
@@ -56,11 +58,13 @@ class SubscriptionsVC: OnboardingBaseViewController {
         return btn
     }()
     
-    init(currentTheme: Theme?, viewModel: SubscriptionsVCViewModel) {
+    private var stateSubscription: AnyCancellable?
+    
+    init(viewModel: SubscriptionsVCViewModel) {
         self.viewModel = viewModel
-        super.init(currentTheme: currentTheme)
+        super.init()
         self.viewModel.delegate = self
-        self.scrollableContentView = SubscriptionsContentView(currentTheme: self.currentTheme)
+        self.scrollableContentView = SubscriptionsContentView()
     }
     
     required init?(coder: NSCoder) {
@@ -74,6 +78,10 @@ class SubscriptionsVC: OnboardingBaseViewController {
         self.addingViews()
         self.setupConstraints()
         self.setupActions()
+        self.subscribeToViewModelStatePublisher()
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,8 +92,6 @@ class SubscriptionsVC: OnboardingBaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        AppDelegate.AppUtility.lockOrientation(.portrait)
-        
         self.navigationController?.viewControllers.removeAll(where: { $0 is SignUpVC })
     }
     
@@ -94,42 +100,39 @@ class SubscriptionsVC: OnboardingBaseViewController {
         self.scrollView.contentInset.bottom = self.bottomButtonsView.frame.height
     }
     
+    private func subscribeToViewModelStatePublisher() {
+        self.stateSubscription = self.viewModel.$subscriptionType
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.setupUI()
+            }
+    }
+    
     private func setupUI() {
-        self.scrollableContentView.configure(currentTheme: self.currentTheme,
-                                             lblTitleText: self.viewModel.titleText,
+        self.scrollableContentView.configure(lblTitleText: self.viewModel.titleText,
                                              lblSubtitleText: self.viewModel.subtitleText)
         
         self.setupBottomButtonsView()
         
-        self.applyTheme()
-        self.btnRestorePurchases.tapClosure = {
-            InAppManager.shared.restorePurchases(completionHandler: { status in
-                switch status {
-                case .canNotMakePayments:
-                    UIUtils.showOkAlert(title: status.userMessage, message: "")
-                case .noTransactionsToRestore:
-                    UIUtils.showOkAlert(title: status.userMessage, message: "")
-                case .restorePurchasesRequestFailed:
-                    UIUtils.showOkAlert(title: status.userMessage, message: "")
-                case .restored:
-                    UIUtils.showOkAlert(title: status.userMessage, message: "")
-                case .failed:
-                    UIUtils.showOkAlert(title: status.userMessage, message: "")
-                }
-            })
+        self.btnRestorePurchases.tapClosure = { [weak self] in
+            self?.viewModel.restorePurchases()
         }
     }
-
-    private func applyTheme() {
-        if let theme = currentTheme {
-            switch theme.type {
-            case .dark:
-                self.lblDescription.textColor = UIColor.lightGray
-                self.btnContinue.setTitleColor(UIColor.whiteColor, for: .normal)
-            case .light:
-                self.lblDescription.textColor = UIColor.blackColor
-                self.btnContinue.setTitleColor(UIColor.blackColor, for: .normal)
-            }
+    
+    override func applyTheme() {
+        super.applyTheme()
+        
+        self.btnRestorePurchases.applyTheme(currentTheme: self.themeManager.currentTheme)
+        self.scrollableContentView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        
+        switch self.themeManager.currentTheme.type {
+        case .dark:
+            self.lblDescription.textColor = UIColor.lightGray
+            self.btnContinue.setTitleColor(UIColor.whiteColor, for: .normal)
+        case .light:
+            self.lblDescription.textColor = UIColor.blackColor
+            self.btnContinue.setTitleColor(UIColor.blackColor, for: .normal)
         }
     }
     
@@ -168,8 +171,8 @@ extension SubscriptionsVC {
         self.btnContinue.addTarget(self,
                                    action: #selector(self.btnContinueTapped(_:)),
                                    for: .touchUpInside)
-        if case .startTrialSubscription(let isOnboarding) = self.viewModel.state,
-           isOnboarding {
+        
+        if self.viewModel.isOnboarding {
             self.addOnboardingCloseAction()
         } else {
             self.btnClose.addTarget(self,
@@ -178,53 +181,46 @@ extension SubscriptionsVC {
         }
     }
     
-    private func purchaseMonthlySubscription() {
-        self.btnMonthlySubscription.startIndicator()
-        guard let appAccountToken = AppSessionManager.shared.decodedJWTToken?.externalAccountId else {
-            self.btnMonthlySubscription.stopIndicator()
-            return
-        }
-        if let product = InAppManager.shared.getProduct().first(where: { $0.id == ProductIdentifiers.monthlySubscription }) {
-            Task {
-                if await InAppManager.shared.purchase(product, appAccountToken: appAccountToken) {
-                    AppSessionManager.shared.performRefreshFreespokeToken(completion: nil)
-                    self.btnMonthlySubscription.stopIndicator()
-                    self.openPremiumUnlockedScreen()
-                } else {
-                    self.btnMonthlySubscription.stopIndicator()
-                }
-            }
-        }
-    }
-    
-    private func purchaseYearlySubscription() {
-        self.btnYearlySubscription.startIndicator()
-        guard let appAccountToken = AppSessionManager.shared.decodedJWTToken?.externalAccountId else {
-            self.btnYearlySubscription.stopIndicator()
-            return
-        }
-        if let product = InAppManager.shared.getProduct().first(where: { $0.id == ProductIdentifiers.yearlySubscription }) {
-            Task {
-                if await InAppManager.shared.purchase(product, appAccountToken: appAccountToken) {
-                    AppSessionManager.shared.performRefreshFreespokeToken(completion: nil)
-                    self.btnYearlySubscription.stopIndicator()
-                    self.openPremiumUnlockedScreen()
-                } else {
-                    self.btnYearlySubscription.stopIndicator()
-                }
-            }
-        }
-    }
-    
     @objc private func btnMonthlySubscriptionTapped(_ sender: UIButton) {
-        self.purchaseMonthlySubscription()
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
+                                   action: MatomoAction.appOnbCreateAccPremiumPriceClickAction.rawValue,
+                                   name: MatomoName.clickName.rawValue,
+                                   value: nil)
+        self.btnMonthlySubscription.startIndicator()
+        self.btnYearlySubscription.isEnabled = false
+        self.viewModel.purchaseMonthlySubscription(completion: { [weak self] status in
+            guard let self = self else { return }
+            self.btnMonthlySubscription.stopIndicator()
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.btnYearlySubscription.isEnabled = true
+            }
+        })
     }
     
     @objc private func btnYearlySubscriptionTapped(_ sender: UIButton) {
-        self.purchaseYearlySubscription()
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
+                                   action: MatomoAction.appOnbCreateAccPremiumPriceClickAction.rawValue,
+                                   name: MatomoName.clickName.rawValue,
+                                   value: nil)
+        self.btnYearlySubscription.startIndicator()
+        self.btnMonthlySubscription.isEnabled = false
+        self.viewModel.purchaseYearlySubscription(completion: { [weak self] status in
+            guard let self = self else { return }
+            self.btnYearlySubscription.stopIndicator()
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.btnMonthlySubscription.isEnabled = true
+            }
+        })
     }
     
     @objc private func btnUpdateSubscriptionTapped(_ sender: UIButton) {
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue,
+                                   action: MatomoAction.appManageUpdatePlanClickAction.rawValue,
+                                   name: MatomoName.clickName.rawValue,
+                                   value: nil)
+        
         guard let subscriptionSource = AppSessionManager.shared.decodedJWTToken?.subscription?.subscriptionSource else { return }
         switch subscriptionSource {
         case .ios:
@@ -235,6 +231,10 @@ extension SubscriptionsVC {
     }
     
     @objc private func btnCancelSubscriptionTapped(_ sender: UIButton) {
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue,
+                                   action: MatomoAction.appManageСancelPlanClickAction.rawValue,
+                                   name: MatomoName.clickName.rawValue,
+                                   value: nil)
         let subscriptionSource = AppSessionManager.shared.decodedJWTToken?.subscription?.subscriptionSource
         switch subscriptionSource {
         case .ios:
@@ -247,7 +247,7 @@ extension SubscriptionsVC {
                 guard let self = self else { return }
                 self.btnCancelSubscription.stopIndicator()
                 if let linkString = managingSubscriptionModel.manageSubscriptionLink,
-                    let linkForManagingSubscription = URL(string: linkString) {
+                   let linkForManagingSubscription = URL(string: linkString) {
                     DispatchQueue.main.async {
                         UIApplication.shared.open(linkForManagingSubscription, options: [:], completionHandler: nil)
                     }
@@ -257,23 +257,26 @@ extension SubscriptionsVC {
                     })
                 } else {
                     let error = CustomError.somethingWentWrong
-                    UIUtils.showOkAlert(title: error.errorName, message: error.errorDescription)
+                    UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
                 }
             },
                                                           onFailure: { [weak self] error in
                 guard let self = self else { return }
                 self.btnCancelSubscription.stopIndicator()
                 DispatchQueue.main.async {
-                    UIUtils.showOkAlert(title: error.errorName, message: error.errorDescription)
+                    UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
                 }
             })
         }
     }
     
     @objc private func btnContinueTapped(_ sender: UIButton) {
-        if case .startTrialSubscription(let isOnboarding) = self.viewModel.state,
-           isOnboarding {
-            let vc = OnboardingSetDefaultBrowserVC(currentTheme: self.currentTheme)
+        if self.viewModel.isOnboarding {
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
+                                       action: MatomoAction.appOnbCreateAccContinueWithoutPremiumClickAction.rawValue,
+                                       name: MatomoName.clickName.rawValue,
+                                       value: nil)
+            let vc = OnboardingSetDefaultBrowserVC(source: .createAccount)
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             self.motionDismissViewController(animated: true)
@@ -336,44 +339,39 @@ extension SubscriptionsVC {
         self.btnUpdateSubscription.setTitle("Update Plan", for: .normal)
         self.btnCancelSubscription.setTitle("Cancel Plan", for: .normal)
         
-        self.btnRestorePurchases.configure(currentTheme: self.currentTheme,
-                                           lblTitleText: "Already have premium?",
+        self.btnRestorePurchases.configure(lblTitleText: "Already have premium?",
                                            btnTitleText: "Restore Purchase")
         
         self.btnContinue.setTitle(self.viewModel.btnContinueTitleText, for: .normal)
         
-        switch self.viewModel.state {
-        case .startTrialSubscription:
-            self.bottomButtonsView.addViews(views: [self.lblDescription,
-                                                    self.btnMonthlySubscription,
-                                                    self.btnYearlySubscription,
-                                                    self.btnRestorePurchases,
-                                                    self.btnContinue])
+        switch self.viewModel.subscriptionType {
         case .trialExpired:
             self.bottomButtonsView.addViews(views: [self.btnMonthlySubscription,
                                                     self.btnYearlySubscription,
                                                     self.btnRestorePurchases,
                                                     self.btnContinue])
-        case .updatePlan:
+        case .originalApple:
             self.bottomButtonsView.addViews(views: [self.btnUpdateSubscription,
                                                     self.btnCancelSubscription,
                                                     self.btnRestorePurchases,
                                                     self.btnContinue])
-        case .cancelPlanNotOriginalOS:
+        case .notApple:
             self.bottomButtonsView.addViews(views: [self.btnCancelSubscription,
                                                     self.btnRestorePurchases,
                                                     self.btnContinue])
+        case nil:
+            self.bottomButtonsView.addViews(views: [self.lblDescription,
+                                                    self.btnMonthlySubscription,
+                                                    self.btnYearlySubscription,
+                                                    self.btnRestorePurchases,
+                                                    self.btnContinue])
         }
-        
-        self.bottomButtonsView.configure(currentTheme: self.currentTheme)
     }
     
     private func setSubscriptionButtonsTitle() {
-        let monthProduct = InAppManager.shared.getProduct().first(where: { $0.id == ProductIdentifiers.monthlySubscription })
-        let yearProduct = InAppManager.shared.getProduct().first(where: { $0.id == ProductIdentifiers.yearlySubscription })
+        let monthPrice = self.viewModel.monthlySubscription?.displayPrice ?? " - "
+        let yearPrice = self.viewModel.yearlySubscription?.displayPrice ?? " - "
         
-        let monthPrice = monthProduct?.displayPrice ?? ""
-        let yearPrice = yearProduct?.displayPrice ?? ""
         self.btnMonthlySubscription.setAttributedTitle(self.makeAttributedTextForPriceButton(price: monthPrice,
                                                                                              period: "MONTH"),
                                                        for: .normal)
@@ -404,17 +402,23 @@ extension SubscriptionsVC {
 
 extension SubscriptionsVC {
     private func openPremiumUnlockedScreen() {
-        if case .startTrialSubscription(let isOnboarding) = self.viewModel.state,
-           isOnboarding {
-            let vc = PremiumUnlockedVC(currentTheme: self.currentTheme, isOnboarding: true)
-            self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            let vc = PremiumUnlockedVC(currentTheme: self.currentTheme, isOnboarding: false)
-            self.navigationController?.pushViewController(vc, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            if self.viewModel.isOnboarding {
+                let vc = PremiumUnlockedVC(isOnboarding: true)
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let vc = PremiumUnlockedVC(isOnboarding: false)
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
 }
 
+// MARK: SubscriptionsVCViewModelDelegate
+
 extension SubscriptionsVC: SubscriptionsVCViewModelDelegate {
-    
+    func premiumSuccessfullyUnlocked() {
+        self.openPremiumUnlockedScreen()
+    }
 }

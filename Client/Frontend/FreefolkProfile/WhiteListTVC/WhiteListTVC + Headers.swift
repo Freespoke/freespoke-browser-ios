@@ -5,9 +5,8 @@
 import UIKit
 
 extension WhiteListTVC {
-    
     func prepareHeaders(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sections = self.whiteListViewModel.getSections()
+        let sections = self.viewModel.getSections()
         switch sections[section] {
         case .blockAds(let title, _):
             return self.prepareBlockAdsHeader(title: title, tableView)

@@ -12,8 +12,8 @@ extension NetworkManager {
             let endpoint: EndPoint = .logoutFreespokeUser
             
             router.request(endpoint, completion: { [weak self] data, response, error in
-                guard let sSelf = self else { return }
-                sSelf.responseDataProcessingWithoutMapping(data: data, response: response, error: error, completion: { (_, responseError) in
+                guard let self = self else { return }
+                self.responseDataProcessingWithoutMapping(data: data, response: response, error: error, completion: { (_, responseError) in
                     completion?(responseError)
                 })
             })

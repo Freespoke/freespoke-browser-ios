@@ -6,7 +6,6 @@ import UIKit
 import Shared
 
 final class AdBlockerCell: UITableViewCell {
-    
     static let reuseIdentifier = String(describing: type(of: AdBlockerCell.self))
         
     let imgIcon: UIImageView = {
@@ -19,7 +18,7 @@ final class AdBlockerCell: UITableViewCell {
     private let lblTitle: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.sourceSansProFont(.semiBold, size: 19)
-        lbl.text = LocalizationConstants.adBlockStr
+        lbl.text = LocalizationConstants.blockAdsStr
         lbl.numberOfLines = 0
         return lbl
     }()
@@ -42,11 +41,14 @@ final class AdBlockerCell: UITableViewCell {
     private var borderView: UIView = {
         let view =  UIView()
         view.layer.borderWidth = 1.0
-        view.layer.borderColor = UIColor.lightGray.cgColor
+        view.layer.borderColor = UIColor.whiteColor.cgColor
         view.layer.cornerRadius = 4.0
         view.layer.masksToBounds = true
+        view.backgroundColor = .white
         return view
     }()
+    
+    private var currentTheme: Theme?
         
     var closureTappedOnBtnSwitch: (() -> Void)?
     
@@ -74,15 +76,28 @@ final class AdBlockerCell: UITableViewCell {
         self.borderView.addSubview(self.stackView)
     }
     
+    func applyTheme(currentTheme: Theme) {
+        self.currentTheme = currentTheme
+        self.applyTheme()
+    }
+    
+    private func applyTheme() {
+        if let theme = currentTheme {
+            self.borderView.layer.borderColor = (theme.type == .light) ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
+            self.borderView.backgroundColor = (theme.type == .light) ? UIColor.white : UIColor.clear
+        }
+    }
+    
     func configureConstraints() {
         self.borderView.translatesAutoresizingMaskIntoConstraints = false
-        self.borderView.pinToView(view: self.contentView, withInsets: UIEdgeInsets(top: 10, left: 40, bottom: 10, right: 40))
+        self.borderView.pinToView(view: self.contentView, withInsets: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
         self.stackView.pinToView(view: self.borderView, withInsets: UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20))
     }
     
     @objc private func tappedOnBtnSwitcher(_ sender: UISwitch) {
         print("sender.isOn: \(sender.isOn)")
         UserDefaults.standard.setValue(sender.isOn, forKey: SettingsKeys.isEnabledBlocker)
+        NotificationCenter.default.post(name: Notification.Name.adBlockSettingsChanged, object: nil)
         self.closureTappedOnBtnSwitch?()
     }
 }

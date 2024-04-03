@@ -4,12 +4,18 @@
 
 import UIKit
 import Shared
+import MatomoTracker
+
+enum OnboardingSourceDestination {
+    case continueWithoutAccount
+    case createAccount
+}
 
 class OnboardingSetDefaultBrowserVC: OnboardingBaseViewController {
     private var contentView: OnboardingContrentView!
     
     private lazy var btnSetAsDefaultBrowser: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
         btn.setTitle("Set as default browser", for: .normal)
         btn.height = 56
         return btn
@@ -23,10 +29,13 @@ class OnboardingSetDefaultBrowserVC: OnboardingBaseViewController {
         return btn
     }()
     
-    override init(currentTheme: Theme?) {
-        super.init(currentTheme: currentTheme)
+    private let source: OnboardingSourceDestination
+    
+    init(source: OnboardingSourceDestination) {
+        self.source = source
+        super.init()
         
-        self.contentView = OnboardingContrentView(currentTheme: self.currentTheme)
+        self.contentView = OnboardingContrentView()
     }
     
     required init?(coder: NSCoder) {
@@ -40,11 +49,13 @@ class OnboardingSetDefaultBrowserVC: OnboardingBaseViewController {
         self.addingViews()
         self.setupConstraints()
         self.setupActions()
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
     }
     
     private func setupUI() {
-        self.contentView.configure(currentTheme: self.currentTheme,
-                                   lblTitleText: "Make Freespoke \n your favorite.",
+        self.contentView.configure(lblTitleText: "Make Freespoke \n your favorite.",
                                    lblSubtitleText: "Set Freespoke as your default browser and break free from big tech.",
                                    imageLight: UIImage(named: "img_set_as_default_browser_light"),
                                    imageDark: UIImage(named: "img_set_as_default_browser_dark"))
@@ -52,14 +63,16 @@ class OnboardingSetDefaultBrowserVC: OnboardingBaseViewController {
         self.applyTheme()
     }
     
-    private func applyTheme() {
-        if let theme = currentTheme {
-            switch theme.type {
-            case .dark:
-                self.btnNoThanks.setTitleColor(UIColor.white, for: .normal)
-            case .light:
-                self.btnNoThanks.setTitleColor(UIColor.blackColor, for: .normal)
-            }
+    override func applyTheme() {
+        super.applyTheme()
+        
+        self.contentView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        
+        switch self.themeManager.currentTheme.type {
+        case .dark:
+            self.btnNoThanks.setTitleColor(UIColor.white, for: .normal)
+        case .light:
+            self.btnNoThanks.setTitleColor(UIColor.blackColor, for: .normal)
         }
     }
     
@@ -100,15 +113,28 @@ extension OnboardingSetDefaultBrowserVC {
     }
     
     @objc private func btnSetAsDefaultBrowserTapped(_ sender: UIButton) {
+        switch self.source {
+        case .continueWithoutAccount:
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
+                                       action: MatomoAction.appOnbWithoutAccSetAsDefBrowserClickAction.rawValue,
+                                       name: MatomoName.clickName.rawValue,
+                                       value: nil)
+        case .createAccount:
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
+                                       action: MatomoAction.appOnbCreateAccSetAsDefBrowserClickAction.rawValue,
+                                       name: MatomoName.clickName.rawValue,
+                                       value: nil)
+        }
+        
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-            let vc = OnboardingEnableNotificationsVC(currentTheme: self.currentTheme)
+            let vc = OnboardingEnableNotificationsVC(source: self.source)
             self.navigationController?.pushViewController(vc, animated: true)
         })
     }
     
     @objc private func btnNoThanksTapped(_ sender: UIButton) {
-        let vc = OnboardingEnableNotificationsVC(currentTheme: self.currentTheme)
+        let vc = OnboardingEnableNotificationsVC(source: self.source)
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

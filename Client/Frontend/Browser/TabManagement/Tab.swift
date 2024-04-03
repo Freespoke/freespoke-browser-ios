@@ -35,7 +35,6 @@ protocol TabDelegate {
     func tab(_ tab: Tab, didSelectSearchWithFirefoxForSelection selection: String)
     @objc optional func tab(_ tab: Tab, didCreateWebView webView: WKWebView)
     @objc optional func tab(_ tab: Tab, willDeleteWebView webView: WKWebView)
-    func tab(_ currentURL: URL?)
 }
 
 @objc
@@ -565,40 +564,63 @@ class Tab: NSObject {
     func goToBackForwardListItem(_ item: WKBackForwardListItem) {
         _ = webView?.go(to: item)
     }
-
-    @discardableResult func loadRequest(_ request: URLRequest) -> WKNavigation? {
+    
+    @discardableResult func loadRequest_FindForFix(_ request: URLRequest) async throws -> WKNavigation? {
+        print("webView: \(webView)")
         if let webView = webView {
             // Convert about:reader?url=http://example.com URLs to local ReaderMode URLs
-            AdBlockManager.shared.shouldAddBlockRuleList(isShouldAddBlockList: self.shouldEnableAdBlocker(url: request.url), forWebView: webView)
-            if let url = request.url,
-               let syncedReaderModeURL = url.decodeReaderModeURL,
-               let localReaderModeURL = syncedReaderModeURL.encodeReaderModeURL(WebServer.sharedInstance.baseReaderModeURL()) {
-                let readerModeRequest = PrivilegedRequest(url: localReaderModeURL) as URLRequest
-                lastRequest = readerModeRequest
-                return webView.load(readerModeRequest)
+            
+            let result = Task<WKNavigation?, Error>.detached {
+                if let shouldEnableAdBlocker = try? await self.shouldEnableAdBlocker(url: request.url) {
+                    AdBlockManager.shared.shouldAddBlockRuleList(isShouldAddBlockList: shouldEnableAdBlocker,
+                                                                 forWebView: webView)
+                } else {
+                    print("cannotCreateValue")
+                }
+                
+                if let url = request.url,
+                   let syncedReaderModeURL = url.decodeReaderModeURL,
+                   let localReaderModeURL = syncedReaderModeURL.encodeReaderModeURL(WebServer.sharedInstance.baseReaderModeURL()) {
+                    let readerModeRequest = PrivilegedRequest(url: localReaderModeURL) as URLRequest
+                    self.lastRequest = readerModeRequest
+                    return await webView.load(readerModeRequest)
+                }
+                
+                self.lastRequest = request
+                print("request test: \(request)")
+                if let url = request.url, url.isFileURL, request.isPrivileged {
+                    return await webView.loadFileURL(url, allowingReadAccessTo: url)
+                }
+                return await webView.load(request)
             }
-            lastRequest = request
-            print("request test: \(request)")
-            self.tabDelegate?.tab(request.url)
-            if let url = request.url, url.isFileURL, request.isPrivileged {
-                return webView.loadFileURL(url, allowingReadAccessTo: url)
-            }
-            return webView.load(request)
+            
+            return try await result.value
+        } else {
+            print("webView cannot find: \(webView)")
+            return nil
         }
-        return nil
     }
-
+    
     func stop() {
         webView?.stopLoading()
     }
     
-    func shouldEnableAdBlocker(url: URL?) -> Bool {
-        guard AppSessionManager.shared.userType == .premium else { return false }
-        guard let url = url, let host = url.host else { return false }
-        guard let domains = UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String] else { return true }
-        return !domains.contains(where: { $0 == host })
+    func shouldEnableAdBlocker(url: URL?) async throws -> Bool {
+        let result = Task<Bool, Error> {
+            guard let shouldBlockAds = try? await AdBlockManager.shared.shouldBlockAds(), shouldBlockAds else { 
+                return false
+            }
+            guard let url = url, let host = url.host else {
+                return false
+            }
+            guard let domains = UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String] else { 
+                return true
+            }
+            return !domains.contains(where: { $0 == host })
+        }
+        return try await result.value
     }
-
+    
     func reload(bypassCache: Bool = false) {
         // If the current page is an error page, and the reload button is tapped, load the original URL
         if let url = webView?.url, let internalUrl = InternalURL(url), let page = internalUrl.originalURLFromErrorPage {

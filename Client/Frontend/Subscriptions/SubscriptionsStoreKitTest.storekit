@@ -90,7 +90,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "0.99",
+          "displayPrice" : "5",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "075B0800",
@@ -106,7 +106,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "MonthlyRenewableSubscription_staging",
+          "productID" : "premium_monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "MonthSubscriptions",
           "subscriptionGroupID" : "4E41A771",
@@ -119,11 +119,15 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "0.99",
+          "displayPrice" : "30",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "41E877A5",
-          "introductoryOffer" : null,
+          "introductoryOffer" : {
+            "displayPrice" : "0.99",
+            "internalID" : "00B3D966",
+            "paymentMode" : "none"
+          },
           "localizations" : [
             {
               "description" : "",
@@ -131,7 +135,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "YearlyRenewableSubscription_staging",
+          "productID" : "premium_annual",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "YearsSubscriptions",
           "subscriptionGroupID" : "4E41A771",

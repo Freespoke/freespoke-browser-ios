@@ -14,23 +14,23 @@ class CustomTitleView: UIView {
         button.titleLabel?.font = UIFont.sourceSansProFont(.bold, size: 16)
         return button
     }()
-    private var currentTheme: Theme?
     
     private let profileIconView: ProfileIconView = {
         let profileIconView = ProfileIconView()
         return profileIconView
     }()
-
+    
     // MARK: Closures
     
-    var backButtonTapClosure: (() -> Void)?
+    var backButtonTappedClosure: (() -> Void)?
     
     // MARK: - Init
     
     init() {
         super.init(frame: .zero)
-        setupUI()
-        backButton.addTarget(self, action: #selector(self.backButtonTapped), for: .touchUpInside)
+        self.addingViews()
+        self.setupConstraints()
+        self.backButton.addTarget(self, action: #selector(self.backButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -38,49 +38,49 @@ class CustomTitleView: UIView {
     }
     
     // MARK: - UI Setup
-    func setCurrentTheme(currentTheme: Theme) {
-        self.currentTheme = currentTheme
-        self.applyTheme()
-        self.profileIconView.configureTheme(currentTheme: currentTheme)
-    }
     
     func updateProfileIcon(freespokeJWTDecodeModel: FreespokeJWTDecodeModel?) {
         self.profileIconView.updateView(decodedJWTToken: freespokeJWTDecodeModel)
     }
     
-    private func applyTheme() {
-        if let theme = currentTheme {
-            self.backgroundColor = .clear
-            
-            switch theme.type {
-            case .dark:
-                self.backButton.setTitleColor(.whiteColor, for: .normal)
-                self.backButton.setImage(UIImage(named: "left_arrow")?.withTintColor(.whiteColor, renderingMode: .alwaysOriginal), for: .normal)
-            case .light:
-                self.backButton.setTitleColor(.blackColor, for: .normal)
-                self.backButton.setImage(UIImage(named: "left_arrow")?.withTintColor(.blackColor, renderingMode: .alwaysOriginal), for: .normal)
-            }
+    func applyTheme(currentTheme: Theme) {
+        self.profileIconView.applyTheme(currentTheme: currentTheme)
+        
+        self.backgroundColor = .clear
+        
+        switch currentTheme.type {
+        case .dark:
+            self.backButton.setTitleColor(.whiteColor, for: .normal)
+            self.backButton.setImage(UIImage(named: "left_arrow")?.withTintColor(.whiteColor, renderingMode: .alwaysOriginal), for: .normal)
+        case .light:
+            self.backButton.setTitleColor(.blackColor, for: .normal)
+            self.backButton.setImage(UIImage(named: "left_arrow")?.withTintColor(.blackColor, renderingMode: .alwaysOriginal), for: .normal)
         }
     }
-        
-    private func setupUI() {
-        addSubview(backButton)
-        addSubview(profileIconView)
-        
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        profileIconView.translatesAutoresizingMaskIntoConstraints = false
+    
+    private func addingViews() {
+        self.addSubview(self.backButton)
+        self.addSubview(self.profileIconView)
+    }
+    
+    private func setupConstraints() {
+        self.backButton.translatesAutoresizingMaskIntoConstraints = false
+        self.profileIconView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 7),
-            backButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            profileIconView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-            profileIconView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            self.backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.backButton.centerYAnchor.constraint(equalTo: self.profileIconView.centerYAnchor),
+            self.backButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            self.profileIconView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.profileIconView.topAnchor.constraint(equalTo: self.topAnchor),
+            self.profileIconView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     
     // MARK: - Button Actions
     
     @objc private func backButtonTapped() {
-        self.backButtonTapClosure?()
+        self.backButtonTappedClosure?()
     }
 }

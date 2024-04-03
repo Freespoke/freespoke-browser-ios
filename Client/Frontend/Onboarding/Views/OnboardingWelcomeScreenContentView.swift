@@ -47,12 +47,8 @@ class OnboardingWelcomeScreenContentView: UIView {
         return lbl
     }()
     
-    private var currentTheme: Theme?
-    
-    required init(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
+    required init() {
         super.init(frame: .zero)
-        self.prepareUI()
         self.addingViews()
         self.setupConstraints()
     }
@@ -61,24 +57,18 @@ class OnboardingWelcomeScreenContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func prepareUI() {
-        self.applyTheme()
-    }
-    
-    private func applyTheme() {
-        if let theme = currentTheme {
-            self.backgroundColor = .clear
-            
-            switch theme.type {
-            case .dark:
-                self.lblTitle.textColor = UIColor.whiteColor
-                self.lblSubtitle.textColor = UIColor.whiteColor
-                self.lblSecondSubtitle.textColor = UIColor.whiteColor
-            case .light:
-                self.lblTitle.textColor = UIColor.blackColor
-                self.lblSubtitle.textColor = UIColor.blackColor
-                self.lblSecondSubtitle.textColor = UIColor.blackColor
-            }
+    func applyTheme(currentTheme: Theme) {
+        self.backgroundColor = .clear
+        
+        switch currentTheme.type {
+        case .dark:
+            self.lblTitle.textColor = UIColor.whiteColor
+            self.lblSubtitle.textColor = UIColor.whiteColor
+            self.lblSecondSubtitle.textColor = UIColor.whiteColor
+        case .light:
+            self.lblTitle.textColor = UIColor.blackColor
+            self.lblSubtitle.textColor = UIColor.blackColor
+            self.lblSecondSubtitle.textColor = UIColor.blackColor
         }
     }
     
@@ -118,7 +108,7 @@ class OnboardingWelcomeScreenContentView: UIView {
         ])
     }
     
-    func configure(currentTheme: Theme?, lblTitleText: String, lblSubtitleText: String, lblSecondSubtitleText: String) {
+    func configure(lblTitleText: String, lblSubtitleText: String, lblSecondSubtitleText: String) {
         self.lblTitle.text = lblTitleText
         self.lblSubtitle.text = lblSubtitleText
         self.lblSecondSubtitle.text = lblSecondSubtitleText

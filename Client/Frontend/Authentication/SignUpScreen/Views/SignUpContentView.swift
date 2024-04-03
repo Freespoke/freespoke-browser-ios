@@ -31,40 +31,32 @@ class SignUpContentView: UIView {
         return sv
     }()
     
-    lazy var signInWithAppleItem = SignInWithAppleItemView(currentTheme: self.currentTheme)
-    lazy var orViewItem = AuthOrView(currentTheme: self.currentTheme)
+    lazy var signInWithAppleItem = SignInWithAppleItemView()
+    lazy var orViewItem = AuthOrView()
     
     lazy var firstNameItem: CustomTextFieldWithErrorMessage = {
-        let field = CustomTextFieldWithErrorMessage(currentTheme: self.currentTheme, fieldType: .general)
-        let image = self.currentTheme?.type == .dark ? UIImage(named: "img_first_name_field_icon_dark") : UIImage(named: "img_first_name_field_icon_light")
-        field.setIcon(image)
+        let field = CustomTextFieldWithErrorMessage(fieldType: .general)
         field.setPlaceholder("First Name")
         field.delegate = self
         return field
     }()
     
     lazy var lastNameItem: CustomTextFieldWithErrorMessage = {
-        let field = CustomTextFieldWithErrorMessage(currentTheme: self.currentTheme, fieldType: .general)
-        let image = self.currentTheme?.type == .dark ? UIImage(named: "img_first_name_field_icon_dark") : UIImage(named: "img_first_name_field_icon_light")
-        field.setIcon(image)
+        let field = CustomTextFieldWithErrorMessage(fieldType: .general)
         field.setPlaceholder("Last Name")
         field.delegate = self
         return field
     }()
     
     lazy var emailItem: CustomTextFieldWithErrorMessage = {
-        let field = CustomTextFieldWithErrorMessage(currentTheme: self.currentTheme, fieldType: .email)
-        let image = self.currentTheme?.type == .dark ? UIImage(named: "img_email_field_icon_dark") : UIImage(named: "img_email_field_icon_light")
-        field.setIcon(image)
+        let field = CustomTextFieldWithErrorMessage(fieldType: .email)
         field.setPlaceholder("Your Email")
         field.delegate = self
         return field
     }()
     
     lazy var passwordItem: CustomTextFieldWithErrorMessage = {
-        let field = CustomTextFieldWithErrorMessage(currentTheme: self.currentTheme, fieldType: .password)
-        let image = self.currentTheme?.type == .dark ? UIImage(named: "img_password_field_icon_dark") : UIImage(named: "img_password_field_icon_light")
-        field.setIcon(image)
+        let field = CustomTextFieldWithErrorMessage(fieldType: .password)
         field.setPlaceholder("Password")
         field.delegate = self
         return field
@@ -72,13 +64,9 @@ class SignUpContentView: UIView {
     
     var activeTextField: CustomTextFieldWithErrorMessage?
     
-    private var currentTheme: Theme?
-    
-    required init(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
+    required init() {
         super.init(frame: .zero)
         
-        self.prepareUI()
         self.addingViews()
         self.setupConstraints()
         self.addKeyboardNotifications()
@@ -88,20 +76,38 @@ class SignUpContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func prepareUI() {
-        self.applyTheme()
-    }
-    
-    private func applyTheme() {
-        if let theme = currentTheme {
-            self.backgroundColor = .clear
-            
-            switch theme.type {
-            case .dark:
-                self.lineView.backgroundColor = UIColor.blackColor
-            case .light:
-                self.lineView.backgroundColor = UIColor.whiteColor
-            }
+    func applyTheme(currentTheme: Theme) {
+        self.topTitleView.applyTheme(currentTheme: currentTheme)
+        self.signInWithAppleItem.applyTheme(currentTheme: currentTheme)
+        self.orViewItem.applyTheme(currentTheme: currentTheme)
+        
+        // firstNameItem
+        let firstNameItemImage = currentTheme.type == .dark ? UIImage(named: "img_first_name_field_icon_dark") : UIImage(named: "img_first_name_field_icon_light")
+        self.firstNameItem.setIcon(firstNameItemImage)
+        self.firstNameItem.applyTheme(currentTheme: currentTheme)
+        
+        // lastNameItem
+        let lastNameItemImage = currentTheme.type == .dark ? UIImage(named: "img_first_name_field_icon_dark") : UIImage(named: "img_first_name_field_icon_light")
+        self.lastNameItem.setIcon(lastNameItemImage)
+        self.lastNameItem.applyTheme(currentTheme: currentTheme)
+        
+        // emailItem
+        let emailItemImage = currentTheme.type == .dark ? UIImage(named: "img_email_field_icon_dark") : UIImage(named: "img_email_field_icon_light")
+        self.emailItem.setIcon(emailItemImage)
+        self.emailItem.applyTheme(currentTheme: currentTheme)
+        
+        // passwordItem
+        let passwordItemImage = currentTheme.type == .dark ? UIImage(named: "img_password_field_icon_dark") : UIImage(named: "img_password_field_icon_light")
+        self.passwordItem.setIcon(passwordItemImage)
+        self.passwordItem.applyTheme(currentTheme: currentTheme)
+        
+        self.backgroundColor = .clear
+        
+        switch currentTheme.type {
+        case .dark:
+            self.lineView.backgroundColor = UIColor.blackColor
+        case .light:
+            self.lineView.backgroundColor = UIColor.whiteColor
         }
     }
     
@@ -144,9 +150,8 @@ class SignUpContentView: UIView {
         ])
     }
     
-    func configure(currentTheme: Theme?, lblTitleText: String, lblSubtitleText: String?) {
-        self.topTitleView.configure(currentTheme: currentTheme,
-                                    lblTitleText: lblTitleText,
+    func configure(lblTitleText: String, lblSubtitleText: String?) {
+        self.topTitleView.configure(lblTitleText: lblTitleText,
                                     lblSubtitleText: lblSubtitleText,
                                     logoIsHidden: false)
     }

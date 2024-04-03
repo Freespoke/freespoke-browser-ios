@@ -5,12 +5,13 @@
 import UIKit
 import Shared
 import OneSignal
+import MatomoTracker
 
 class OnboardingEnableNotificationsVC: OnboardingBaseViewController {
     private var contentView: OnboardingContrentView!
     
     private lazy var btnNext: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
         btn.setTitle("Next", for: .normal)
         btn.height = 56
         return btn
@@ -24,10 +25,13 @@ class OnboardingEnableNotificationsVC: OnboardingBaseViewController {
         return btn
     }()
     
-    override init(currentTheme: Theme?) {
-        super.init(currentTheme: currentTheme)
+    private let source: OnboardingSourceDestination
+    
+    init(source: OnboardingSourceDestination) {
+        self.source = source
+        super.init()
         
-        self.contentView = OnboardingContrentView(currentTheme: self.currentTheme)
+        self.contentView = OnboardingContrentView()
     }
     
     required init?(coder: NSCoder) {
@@ -41,12 +45,13 @@ class OnboardingEnableNotificationsVC: OnboardingBaseViewController {
         self.addingViews()
         self.setupConstraints()
         self.setupActions()
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
     }
     
     private func setupUI() {
-        self.bottomButtonsView.configure(currentTheme: self.currentTheme)
-        self.contentView.configure(currentTheme: self.currentTheme,
-                                   lblTitleText: "Stay up to date with the latest.",
+        self.contentView.configure(lblTitleText: "Stay up to date with the latest.",
                                    lblSubtitleText: "Enable notifications from Freespoke",
                                    imageLight: UIImage(named: "img_enable_notification_popover_light"),
                                    imageDark: UIImage(named: "img_enable_notification_popover_dark"))
@@ -54,14 +59,16 @@ class OnboardingEnableNotificationsVC: OnboardingBaseViewController {
         self.applyTheme()
     }
     
-    private func applyTheme() {
-        if let theme = currentTheme {
-            switch theme.type {
-            case .dark:
-                self.btnNoThanks.setTitleColor(UIColor.white, for: .normal)
-            case .light:
-                self.btnNoThanks.setTitleColor(UIColor.blackColor, for: .normal)
-            }
+    override func applyTheme() {
+        super.applyTheme()
+        
+        self.contentView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        
+        switch self.themeManager.currentTheme.type {
+        case .dark:
+            self.btnNoThanks.setTitleColor(UIColor.white, for: .normal)
+        case .light:
+            self.btnNoThanks.setTitleColor(UIColor.blackColor, for: .normal)
         }
     }
     
@@ -101,18 +108,31 @@ extension OnboardingEnableNotificationsVC {
     }
     
     @objc private func btnNextTapped(_ sender: UIButton) {
+        switch self.source {
+        case .continueWithoutAccount:
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
+                                       action: MatomoAction.appOnbWithoutAccAllowNotificationsClickAction.rawValue,
+                                       name: MatomoName.clickName.rawValue,
+                                       value: nil)
+        case .createAccount:
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
+                                       action: MatomoAction.appOnbCreateAccAllowNotificationsClickAction.rawValue,
+                                       name: MatomoName.clickName.rawValue,
+                                       value: nil)
+        }
+        
         // Ask for setup notification setting
         OneSignal.promptForPushNotifications(userResponse: { accepted in
             print("User accepted notification: \(accepted)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-            let vc = OnboardingFinishViewController(currentTheme: self.currentTheme)
+            let vc = OnboardingFinishViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         })
     }
     
     @objc private func btnNoThanksTapped(_ sender: UIButton) {
-        let vc = OnboardingFinishViewController(currentTheme: self.currentTheme)
+        let vc = OnboardingFinishViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

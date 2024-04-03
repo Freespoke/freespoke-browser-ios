@@ -13,6 +13,7 @@ public enum CustomError: LocalizedError, Equatable {
     case noInternetConnection
     case unexpectedError(code: Int)
     case failedLogout
+    case refreshTokenFailed
     
     public var errorName: String {
         switch self {
@@ -32,6 +33,8 @@ public enum CustomError: LocalizedError, Equatable {
             return ""
         case .failedLogout:
             return "Error"
+        case .refreshTokenFailed:
+            return ""
         }
     }
     
@@ -53,6 +56,8 @@ public enum CustomError: LocalizedError, Equatable {
             return "Unexpected error. Code: \(code)"
         case .failedLogout:
             return "Unable to log out"
+        case .refreshTokenFailed:
+            return ""
         }
     }
 }

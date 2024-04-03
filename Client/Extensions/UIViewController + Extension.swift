@@ -138,11 +138,11 @@ extension UIViewController {
 extension UIViewController {
     public func motionDismissViewController(animated: Bool = true) {
         DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            if let v = sSelf.navigationController, self != v.viewControllers.first {
+            guard let self = self else { return }
+            if let v = self.navigationController, self != v.viewControllers.first {
                 v.popViewController(animated: animated)
             } else {
-                sSelf.dismiss(animated: animated)
+                self.dismiss(animated: animated)
             }
         }
     }
@@ -153,7 +153,11 @@ extension UIViewController {
         view.addGestureRecognizer(tap)
     }
     
-    @objc func hideKeyboard() {
-        view.endEditing(true)
+    @objc func hideKeyboard(_ sender: UITapGestureRecognizer) {
+//        view.endEditing(true)
+        let touchPoint = sender.location(in: self.view)
+        if let tappedView = self.view.hitTest(touchPoint, with: nil), tappedView is UIControl == false {
+            view.endEditing(true)
+        }
     }
 }

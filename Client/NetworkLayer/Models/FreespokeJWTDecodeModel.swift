@@ -4,6 +4,12 @@
 
 import Foundation
 
+enum SubscriptionType {
+    case trialExpired
+    case originalApple
+    case notApple
+}
+
 struct FreespokeJWTDecodeModel {
     let scope: String
     let emailVerified: Bool
@@ -16,14 +22,75 @@ struct FreespokeJWTDecodeModel {
     let subscription: SubscriptionInfo?
     let exp: Date?
     
-    var isPremium: Bool {
-        switch self.subscription?.subscriptionType {
-        case .free,
-                .freeTrial,
-                .premium:
+    var accessTokenExpiredAlready: Bool {
+        if let expirationDate = self.exp, expirationDate < Date() {
             return true
-        default:
+        } else {
             return false
+        }
+    }
+    
+    func subscriptionType() async throws -> SubscriptionType? {
+        let monthlySubscription = InAppManager.shared.product(productId: ProductIdentifiers.monthlySubscription)
+        let yearlySubscription = InAppManager.shared.product(productId: ProductIdentifiers.yearlySubscription)
+        
+        let premiumResult = Task<SubscriptionType?, Error> {
+            if (monthlySubscription != nil) || (yearlySubscription != nil) {
+                // checking monthly subscription
+                if let monthlySubscription = monthlySubscription {
+                    let isPurchased = try await InAppManager.shared.isPurchased(monthlySubscription.productID)
+                    if isPurchased {
+                        return .originalApple
+                    }
+                }
+                
+                // checking yearly subscription
+                if let yearlySubscription = yearlySubscription {
+                    let isPurchased = try await InAppManager.shared.isPurchased(yearlySubscription.productID)
+                    if isPurchased {
+                        return .originalApple
+                    }
+                }
+                return self.checkIsPremiumUsingAccessToken()
+            } else {
+                return self.checkIsPremiumUsingAccessToken()
+            }
+        }
+        
+        // Wait for the result of the asynchronous task
+        return try await premiumResult.value
+    }
+    
+    private func checkIsPremiumUsingAccessToken() -> SubscriptionType? {
+        switch self.subscription?.subscriptionSource {
+        case .ios:
+            switch self.subscription?.subscriptionType {
+            case .free,
+                    .freeTrial,
+                    .premium:
+                if let expiryDate = self.subscription?.subscriptionExpiry,
+                   expiryDate < Date() {
+                    return .trialExpired
+                } else {
+                    return .originalApple
+                }
+            default:
+                return nil
+            }
+        case nil:
+            switch self.subscription?.subscriptionType {
+            case .free,
+                    .freeTrial,
+                    .premium:
+                if let expiryDate = self.subscription?.subscriptionExpiry,
+                   expiryDate < Date() {
+                    return .trialExpired
+                } else {
+                    return .notApple
+                }
+            default:
+                return nil
+            }
         }
     }
     

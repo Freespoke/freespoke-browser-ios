@@ -6,7 +6,6 @@ import UIKit
 import Shared
 
 final class BlockerAdsCell: UITableViewCell {
-    
     static let reuseIdentifier = String(describing: type(of: BlockerAdsCell.self))
     
     private let contentBlockAdsView: UIView = {
@@ -16,7 +15,7 @@ final class BlockerAdsCell: UITableViewCell {
     
     let viewSeparator: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.neutralsGray5
+        view.backgroundColor = UIColor.whiteColor
         view.setSizeToView(height: 1)
         return view
     }()
@@ -31,7 +30,7 @@ final class BlockerAdsCell: UITableViewCell {
     private let lblTitle: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.sourceSansProFont(.semiBold, size: 19)
-        lbl.text = LocalizationConstants.adBlockStr
+        lbl.text = LocalizationConstants.blockAdsStr
         lbl.numberOfLines = 0
         return lbl
     }()
@@ -45,7 +44,6 @@ final class BlockerAdsCell: UITableViewCell {
 
     private let btnAction: BaseButton = {
         let btn = BaseButton(style: .greyStyle(currentTheme: nil))
-        btn.setTitle(LocalizationConstants.manageBlockStr, for: .normal)
         return btn
     }()
     
@@ -67,17 +65,11 @@ final class BlockerAdsCell: UITableViewCell {
     private var borderView: UIView = {
         let view =  UIView()
         view.layer.borderWidth = 1.0
-        view.layer.borderColor = UIColor.lightGray.cgColor
+        view.layer.borderColor = UIColor.whiteColor.cgColor
         view.layer.cornerRadius = 4.0
         view.layer.masksToBounds = true
         return view
     }()
-    
-    private var currentTheme: Theme? {
-        didSet {
-            self.btnAction.setStyle(style: .greyStyle(currentTheme: self.currentTheme))
-        }
-    }
         
     var closureTappedOnBtnSwitch: (() -> Void)?
     var closureTappedOnBtnManage: (() -> Void)?
@@ -94,7 +86,7 @@ final class BlockerAdsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func prepareUI() {
+    private func prepareUI() {
         self.selectionStyle = .none
         self.contentView.backgroundColor = .clear
         self.backgroundColor = .clear
@@ -102,12 +94,12 @@ final class BlockerAdsCell: UITableViewCell {
         self.btnAction.addTarget(self, action: #selector(self.tappedOnBtnManage), for: .touchUpInside)
     }
     
-    func addingViews() {
+    private func addingViews() {
         self.contentView.addSubview(self.borderView)
         self.borderView.addSubview(self.stackViewVertical)
     }
     
-    func configureConstraints() {
+    private func configureConstraints() {
         self.borderView.translatesAutoresizingMaskIntoConstraints = false
         self.stackViewVertical.translatesAutoresizingMaskIntoConstraints = false
         self.borderView.pinToView(view: self.contentView, withInsets: UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20))
@@ -119,9 +111,10 @@ final class BlockerAdsCell: UITableViewCell {
         UserDefaults.standard.setValue(sender.isOn, forKey: SettingsKeys.isEnabledBlocker)
         self.checkAdBlockerStatus()
         self.closureTappedOnBtnSwitch?()
+        NotificationCenter.default.post(name: Notification.Name.adBlockSettingsChanged, object: nil)
     }
     
-    func checkAdBlockerStatus() {
+    private func checkAdBlockerStatus() {
         let isOn = UserDefaults.standard.bool(forKey: SettingsKeys.isEnabledBlocker)
         switch isOn {
         case true:
@@ -138,7 +131,15 @@ final class BlockerAdsCell: UITableViewCell {
         self.closureTappedOnBtnManage?()
     }
     
-    func setCurrentTheme(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
+    func applyTheme(currentTheme: Theme) {
+        self.btnAction.setStyle(style: .greyStyle(currentTheme: currentTheme))
+        self.borderView.layer.borderColor = (currentTheme.type == .light) ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
+        self.viewSeparator.backgroundColor = (currentTheme.type == .light) ? UIColor.whiteColor : UIColor.blackColor
+    }
+    
+    func configure() {
+        let buttonTitle = LocalizationConstants.manageBlockStr
+        self.btnAction.setTitle(buttonTitle, for: .normal)
+        self.checkAdBlockerStatus()
     }
 }

@@ -6,6 +6,11 @@ import WebKit
 class AdBlockManager {
     static let shared = AdBlockManager()
     
+    enum SaveWhitelistActionStatus {
+        case saved
+        case alreadyContains
+    }
+    
     var ruleLists: [WKContentRuleList] = []
     
     func setupAdBlock(forKey key: String, filename: String, webView: WKWebView?, completion: (() -> Void)?) {
@@ -87,23 +92,54 @@ class AdBlockManager {
     }
     
     func shouldAddBlockRuleList(isShouldAddBlockList: Bool, forWebView webView: WKWebView?) {
-        switch isShouldAddBlockList {
-        case true:
-            for list in ruleLists {
-                webView?.configuration.userContentController.add(list)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            switch isShouldAddBlockList {
+            case true:
+                for list in self.ruleLists {
+                    print("list: \(list.identifier)")
+                    webView?.configuration.userContentController.add(list)
+                }
+            case false:
+                webView?.configuration.userContentController.removeAllContentRuleLists()
             }
-        case false:
-            webView?.configuration.userContentController.removeAllContentRuleLists()
         }
     }
     
-    func shouldBlockAds() -> Bool {
-        return AppSessionManager.shared.userType == .premium
-//        return true
+    func shouldBlockAds() async throws -> Bool {
+        let result = Task<Bool, Error> {
+            if let userType = try? await AppSessionManager.shared.userType(),
+               userType == .premium,
+               UserDefaults.standard.bool(forKey: SettingsKeys.isEnabledBlocker) {
+                return true
+            } else {
+                return false
+            }
+        }
+        return try await result.value
     }
     
     func disableAdBlock(forWebView webView: WKWebView?) {
-        self.ruleLists = []
-        webView?.configuration.userContentController.removeAllContentRuleLists()
+//        self.ruleLists = []
+        DispatchQueue.main.async {
+            webView?.configuration.userContentController.removeAllContentRuleLists()
+        }   
+    }
+    
+    func saveDomainToWhiteListIfNotSavedYet(domain: String, completion: @escaping((_ savingStatus: SaveWhitelistActionStatus) -> Void)) {
+        if var domains = UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String] {
+            if !domains.contains(domain) {
+                domains.insert(domain, at: 0)
+                UserDefaults.standard.set(domains, forKey: SettingsKeys.domains)
+                UserDefaults.standard.synchronize()
+                completion(.saved)
+            } else {
+                completion(.alreadyContains)
+            }
+        } else {
+            UserDefaults.standard.set([domain], forKey: SettingsKeys.domains)
+            UserDefaults.standard.synchronize()
+            completion(.saved)
+        }
     }
 }

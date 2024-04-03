@@ -546,11 +546,6 @@ class BrowserViewController: UIViewController {
             name: .OpenTabNotification,
             object: nil)
     }
-    
-    let adBlockerSwitcherView: AdBlockerSwitcherView = {
-        let view = AdBlockerSwitcherView()
-        return view
-    }()
 
     func addSubviews() {
         webViewContainerBackdrop = UIView()
@@ -575,7 +570,6 @@ class BrowserViewController: UIViewController {
         urlBar.translatesAutoresizingMaskIntoConstraints = false
         urlBar.delegate = self
         urlBar.tabToolbarDelegate = self
-        isBottomSearchBar ? overKeyboardContainer.addArrangedSubview(adBlockerSwitcherView) : header.addSubviews(adBlockerSwitcherView)
         urlBar.addToParent(parent: isBottomSearchBar ? overKeyboardContainer : header, addToTop: false)
         
         view.addSubview(header)
@@ -743,7 +737,7 @@ class BrowserViewController: UIViewController {
     }
 
     private func updateLegacyTheme() {
-        if !NightModeHelper.isActivated() && LegacyThemeManager.instance.systemThemeIsOn {
+        if !NightModeHelper.hasEnabledDarkTheme() && LegacyThemeManager.instance.systemThemeIsOn {
             let userInterfaceStyle = traitCollection.userInterfaceStyle
             LegacyThemeManager.instance.current = userInterfaceStyle == .dark ? LegacyDarkTheme() : LegacyNormalTheme()
         }
@@ -1161,6 +1155,34 @@ class BrowserViewController: UIViewController {
         controller = DismissableNavigationViewController(rootViewController: libraryViewController)
         self.present(controller, animated: true, completion: nil)
     }
+    
+    func addToWhiteList(url: URL) {
+        guard let host = url.host else { return }
+        AdBlockManager.shared.saveDomainToWhiteListIfNotSavedYet(domain: host,
+                                                                 completion: { [weak self] savingStatus in
+            guard let self = self else { return }
+            switch savingStatus {
+            case .saved:
+                let userInfo: [String: Any] = [NotificationKeyNameForValue.host.rawValue: host]
+                NotificationCenter.default.post(name: Notification.Name.disableAdBlockerForCurrentDomain, object: nil, userInfo: userInfo)
+                UIUtils.showTwoButtonsAlertInNewWindow(title: "Add to Whitelist",
+                                                       message: "\(host) has been added to your adblock whitelist. Advertisements will not be blocked on this site.",
+                                                       titleForSecondButton: "Manage Whitelist",
+                                                       secondCompletion: { [weak self] in
+                    guard let self = self else { return }
+                    self.homepageViewController?.displayManageWhiteListVC()
+                })
+            case .alreadyContains:
+                UIUtils.showTwoButtonsAlertInNewWindow(title: "Add to Whitelist",
+                                                       message: "You already have \(host) added to your whitelist.",
+                                                       titleForSecondButton: "Manage Whitelist",
+                                                       secondCompletion: { [weak self] in
+                    guard let self = self else { return }
+                    self.homepageViewController?.displayManageWhiteListVC()
+                })
+            }
+        })
+    }
 
     fileprivate func createSearchControllerIfNeeded() {
         guard self.searchController == nil else { return }
@@ -1234,12 +1256,13 @@ class BrowserViewController: UIViewController {
     func finishEditingAndSubmit(_ url: URL, visitType: VisitType, forTab tab: Tab) {
         urlBar.currentURL = url
         leaveOverlayMode(didCancel: false)
-
-        if let nav = tab.loadRequest(URLRequest(url: url)) {
-            self.recordNavigationInTab(tab, navigation: nav, visitType: visitType)
+        Task {
+            if let nav = try? await tab.loadRequest_FindForFix(URLRequest(url: url)) {
+                self.recordNavigationInTab(tab, navigation: nav, visitType: visitType)
+            }
         }
     }
-
+    
     func addBookmark(url: String, title: String? = nil) {
         var title = (title ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         if title.isEmpty {
@@ -2041,11 +2064,7 @@ extension BrowserViewController: TabDelegate {
 
     func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar) {
         bottomContentStackView.removeArrangedView(bar)
-    }
-    
-    func tab(_ currentURL: URL?) {
-        self.adBlockerSwitcherView.setDomain(domain: currentURL)
-    }
+    }    
 }
 
 // MARK: - LibraryPanelDelegate
@@ -2542,7 +2561,7 @@ extension BrowserViewController {
         self.introVCPresentHelper(introViewController: introViewController)
         */
         
-        let vc = OnboardingWelcomeScreen(currentTheme: themeManager.currentTheme)
+        let vc = OnboardingWelcomeScreen()
         let navVC = UINavigationController(rootViewController: vc)
         navVC.modalPresentationStyle = .fullScreen
         
@@ -2570,7 +2589,9 @@ extension BrowserViewController {
     private func setupHomepageOnBackground() {
         if let homePageURL = NewTabHomePageAccessors.getHomePage(self.profile.prefs),
            let tab = self.tabManager.selectedTab, DeviceInfo.hasConnectivity() {
-            tab.loadRequest(URLRequest(url: homePageURL))
+            Task {
+                try? await tab.loadRequest_FindForFix(URLRequest(url: homePageURL))
+            }
         }
     }
 

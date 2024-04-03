@@ -169,7 +169,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             guard let  self = self else { return }
             self.profileVC = FreefolkProfileVC(viewModel: FreefolkProfileViewModel())
             
-            self.profileVC?.setCurrentTheme(currentTheme: self.themeManager.currentTheme)
             guard let profileVC = self.profileVC else { return }
             profileVC.getInTouchClosure = { [weak self] in
                 self?.showURL(url: Constants.getInTouchURL.rawValue)
@@ -177,37 +176,25 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
                 profileVC.motionDismissViewController()
             }
             
-            profileVC.accountTouchClosure = { [weak self] in
-                guard let  self = self else { return }
-                self.showURL(url: Constants.URLs.accountProfileURL)
-                TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
+            profileVC.accountClickedClosure = { [weak self] in
+                self?.showURL(url: Constants.URLs.accountProfileURL)
+                TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .account)
                 profileVC.motionDismissViewController()
             }
             
             profileVC.darkModeSwitchClosure = { [weak self] isOn in
                 guard let  self = self else { return }
-                let nightModeEnabled = NightModeHelper.isActivated()
-                NightModeHelper.toggle(tabManager: self.tabManager)
-                if nightModeEnabled {
-                    TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .nightModeEnabled)
-                } else {
-                    TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .nightModeDisabled)
-                }
-                // If we've enabled night mode and the theme is normal, enable dark theme
-                if NightModeHelper.isActivated(), LegacyThemeManager.instance.currentName == .normal {
-                    LegacyThemeManager.instance.current = LegacyDarkTheme()
-                    self.themeManager.changeCurrentTheme(.dark)
-                    NightModeHelper.setEnabledDarkTheme(darkTheme: true)
-                }
-                // If we've disabled night mode and dark theme was activated by it then disable dark theme
-                if !NightModeHelper.isActivated(), NightModeHelper.hasEnabledDarkTheme(), LegacyThemeManager.instance.currentName == .dark {
-                    LegacyThemeManager.instance.current = LegacyNormalTheme()
-                    self.themeManager.changeCurrentTheme(.light)
-                    NightModeHelper.setEnabledDarkTheme(darkTheme: false)
-                }
-                profileVC.setCurrentTheme(currentTheme: self.themeManager.currentTheme)
+                NightModeHelper.changeUserInterfaceStyle(to: isOn ? .dark : .light, themeManager: self.themeManager)
             }
             self.navigationController?.pushViewController(profileVC, animated: true)
+        }
+    }
+    
+    func displayManageWhiteListVC() {
+        DispatchQueue.main.async { [ weak self] in
+            guard let self = self else { return }
+            let vc = WhiteListTVC()
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -268,6 +255,11 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         
         self.freespokeHomepageView.arrRecenlyViewed = items
         self.freespokeHomepageView.collectionViewRecentlyViewd.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.freespokeHomepageView.updateView(decodedJWTToken: AppSessionManager.shared.decodedJWTToken)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -466,7 +458,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         updateStatusBar(theme: theme)
         
         if let freespokeHomepageView = freespokeHomepageView {
-            freespokeHomepageView.setCurrentTheme(currentTheme: theme)
+            freespokeHomepageView.applyTheme(currentTheme: theme)
             switch theme.type {
             case .light:
                 view.backgroundColor = theme.colors.layer1

@@ -9,16 +9,16 @@ class OnboardingFinishViewController: OnboardingBaseViewController {
     private var contentView: OnboardingContrentView!
     
     private lazy var btnFinish: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
         btn.setTitle("Finish", for: .normal)
         btn.height = 56
         return btn
     }()
     
-    override init(currentTheme: Theme?) {
-        super.init(currentTheme: currentTheme)
+    init() {
+        super.init()
         
-        self.contentView = OnboardingContrentView(currentTheme: self.currentTheme)
+        self.contentView = OnboardingContrentView()
     }
     
     required init?(coder: NSCoder) {
@@ -32,12 +32,20 @@ class OnboardingFinishViewController: OnboardingBaseViewController {
         self.addingViews()
         self.setupConstraints()
         self.setupActions()
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
+    }
+    
+    override func applyTheme() {
+        super.applyTheme()
+        
+        self.bottomButtonsView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        self.contentView.applyTheme(currentTheme: self.themeManager.currentTheme)
     }
     
     private func setupUI() {
-        self.bottomButtonsView.configure(currentTheme: self.currentTheme)
-        self.contentView.configure(currentTheme: self.currentTheme,
-                                   lblTitleText: "Thanks for joining the Freespoke revolution.",
+        self.contentView.configure(lblTitleText: "Thanks for joining the Freespoke revolution.",
                                    lblSubtitleText: "Give Freespoke a spin. And be sure to tell your friends!",
                                    imageLight: UIImage(named: "img_onboarding_finish_screen_light"),
                                    imageDark: UIImage(named: "img_onboarding_finish_screen_dark"))

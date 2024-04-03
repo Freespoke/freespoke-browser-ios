@@ -787,6 +787,9 @@
 /* Label for the button, displayed in the menu, takes you to to Reading List screen when pressed. */
 "Menu.ReadingList.Label" = "Reading List";
 
+/*Label for the button, displayed in the menu, takes you to Add to white list action when pressed. */
+"Menu.AddToWhitelist.Label" = "Allow ads on this site";
+
 /* Label for the button, displayed in the menu, used to reload the current website without Tracking Protection */
 "Menu.ReloadWithoutTrackingProtection.Title" = "Reload Without Tracking Protection";
 

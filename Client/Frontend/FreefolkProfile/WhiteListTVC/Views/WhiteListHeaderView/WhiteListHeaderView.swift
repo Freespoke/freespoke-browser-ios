@@ -5,12 +5,11 @@
 import UIKit
 
 final class WhiteListHeaderView: UITableViewHeaderFooterView {
-    
     static let reuseIdentifier = String(describing: type(of: WhiteListHeaderView.self))
     
     private let lblTitle: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.sourceSansProFont(.semiBold, size: 24)
+        lbl.font = UIFont.sourceSansProFont(.semiBold, size: 20)
 //        lbl.textColor = UIColor()
         lbl.numberOfLines = 0
         lbl.textAlignment = .center
@@ -30,7 +29,7 @@ final class WhiteListHeaderView: UITableViewHeaderFooterView {
     private var stackView: UIStackView = {
         let sv = UIStackView()
         sv.axis = .vertical
-        sv.spacing = 0
+        sv.spacing = 4
         return sv
     }()
 
@@ -56,7 +55,7 @@ final class WhiteListHeaderView: UITableViewHeaderFooterView {
     }
     
     private func setupConstraints() {
-        self.stackView.pinToView(view: self.contentView, withInsets: UIEdgeInsets(top: 0, left: 40, bottom: 20, right: 40))
+        self.stackView.pinToView(view: self.contentView, withInsets: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0))
     }
     
     func setData(title: String? = nil, body: String? = nil) {

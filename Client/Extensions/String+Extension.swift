@@ -41,7 +41,6 @@ extension String {
 }
 // MARK: Validate domain
 extension String {
-    
     func isValidDomain() -> Bool {
         guard !self.isEmpty else { return false }
         let regex = try! NSRegularExpression(pattern: "^([a-zA-Z0-9-]{1,63}\\.)+[a-zA-Z]{2,6}$")

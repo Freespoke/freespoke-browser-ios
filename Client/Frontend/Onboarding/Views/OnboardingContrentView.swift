@@ -17,10 +17,7 @@ class OnboardingContrentView: UIView {
     private var imageLight: UIImage?
     private var imageDark: UIImage?
     
-    private var currentTheme: Theme?
-    
-    required init(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
+    required init() {
         super.init(frame: .zero)
         self.addingViews()
         self.setupConstraints()
@@ -30,16 +27,16 @@ class OnboardingContrentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func applyTheme() {
-        if let theme = currentTheme {
-            self.backgroundColor = .clear
-            
-            switch theme.type {
-            case .dark:
-                self.imageView.image = self.imageDark
-            case .light:
-                self.imageView.image = self.imageLight
-            }
+    func applyTheme(currentTheme: Theme) {
+        self.topTitleView.applyTheme(currentTheme: currentTheme)
+        
+        self.backgroundColor = .clear
+        
+        switch currentTheme.type {
+        case .dark:
+            self.imageView.image = self.imageDark
+        case .light:
+            self.imageView.image = self.imageLight
         }
     }
     
@@ -64,14 +61,11 @@ class OnboardingContrentView: UIView {
         ])
     }
     
-    func configure(currentTheme: Theme?, lblTitleText: String, lblSubtitleText: String, imageLight: UIImage?, imageDark: UIImage?) {
-        self.topTitleView.configure(currentTheme: currentTheme,
-                                    lblTitleText: lblTitleText,
+    func configure(lblTitleText: String, lblSubtitleText: String, imageLight: UIImage?, imageDark: UIImage?) {
+        self.topTitleView.configure(lblTitleText: lblTitleText,
                                     lblSubtitleText: lblSubtitleText,
                                     logoIsHidden: true)
         self.imageLight = imageLight
         self.imageDark = imageDark
-        
-        self.applyTheme()
     }
 }

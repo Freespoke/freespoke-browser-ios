@@ -49,12 +49,9 @@ class CustomTextFieldWithErrorMessage: UIView {
         }
     }
     
-    private var currentTheme: Theme?
-    
     // MARK: - Initialization
     
-    init(currentTheme: Theme?, fieldType: FieldType) {
-        self.currentTheme = currentTheme
+    init(fieldType: FieldType) {
         switch fieldType {
         case .general:
             self.textField = CustomTextField()
@@ -67,15 +64,19 @@ class CustomTextFieldWithErrorMessage: UIView {
         
         self.addingViews()
         self.setupConstraints()
-        self.textField.tintColor = self.currentTheme?.type == .dark ? UIColor.white : UIColor.blackColor
-        self.textField.textColor = self.currentTheme?.type == .dark ? UIColor.white : UIColor.blackColor
-        self.textField.backgroundColor = self.currentTheme?.type == .dark ? UIColor.clear : UIColor.white
         self.textField.delegate = self
         self.setTargets()
     }
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func applyTheme(currentTheme: Theme) {
+        self.textField.applyTheme(currentTheme: currentTheme)
+//        self.textField.tintColor = self.currentTheme?.type == .dark ? UIColor.white : UIColor.blackColor
+//        self.textField.textColor = self.currentTheme?.type == .dark ? UIColor.white : UIColor.blackColor
+//        self.textField.backgroundColor = self.currentTheme?.type == .dark ? UIColor.clear : UIColor.whit
     }
     
     // MARK: - Setup Views

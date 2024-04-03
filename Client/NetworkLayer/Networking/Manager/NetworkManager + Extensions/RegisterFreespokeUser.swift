@@ -7,8 +7,8 @@ extension NetworkManager {
         func performRequest() {
             let endpoint: EndPoint = .registerFreespokeUser(firstName: firstName, lastName: lastName, email: email, password: password)
             router.request(endpoint, completion: { [weak self] data, response, error in
-                guard let sSelf = self else { return }
-                sSelf.responseDataProcessingGeneric(data: data, response: response, error: error, isShouldRefreshToken: false, completion: { (responseModel: FreespokeAuthModel?, responseError, isShouldRepeatRequest)  in
+                guard let self = self else { return }
+                self.responseDataProcessingGeneric(data: data, response: response, error: error, isShouldRefreshToken: false, completion: { (responseModel: FreespokeAuthModel?, responseError, isShouldRepeatRequest)  in
                     guard !isShouldRepeatRequest else {
                         performRequest()
                         return

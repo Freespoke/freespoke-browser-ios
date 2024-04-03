@@ -23,16 +23,16 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         
         let page = NewTabAccessors.getHomePage(self.profile.prefs)
         
-        if page == .homePage, let homePageURL = HomeButtonHomePageAccessors.getHomePage(self.profile.prefs) {
-                    tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePageURL) as URLRequest)
-        } else if let homePanelURL = page.url {
-            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
-        }
-        else
-        if page == .freespoke {
-            if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
-                          tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
-                      }
+        Task {
+            if page == .homePage, let homePageURL = HomeButtonHomePageAccessors.getHomePage(self.profile.prefs) {
+                _ = try? await tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePageURL) as URLRequest)
+            } else if let homePanelURL = page.url {
+                _ = try? await tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePanelURL) as URLRequest)
+            } else if page == .freespoke {
+                if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
+                    _ = try? await tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePanelURL) as URLRequest)
+                }
+            }
         }
         
 //        switch page {
@@ -82,7 +82,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "News", name: MatomoName.click.rawValue, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue, action: MatomoAction.appMenuTab.rawValue + "News", name: MatomoName.clickName.rawValue, value: nil)
             
             openLinkURL(Constants.newsURL.rawValue)
             
@@ -114,7 +114,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "election", name: MatomoName.click.rawValue, value: nil)
+            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue, action: MatomoAction.appMenuTab.rawValue + "Election", name: MatomoName.clickName.rawValue, value: nil)
             
             openLinkURL(Constants.electionURL.rawValue)
         }
@@ -156,7 +156,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         // Ensure that any keyboards or spinners are dismissed before presenting the menu
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Menu", name: MatomoName.click.rawValue, value: nil)
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue, action: MatomoAction.appMenuTab.rawValue + "Menu", name: MatomoName.clickName.rawValue, value: nil)
 
         // Logs homePageMenu or siteMenu depending if HomePage is open or not
         let isHomePage = tabManager.selectedTab?.isFxHomeTab ?? false
@@ -194,7 +194,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
 
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Tabs", name: MatomoName.click.rawValue, value: nil)
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue, action: MatomoAction.appMenuTab.rawValue + "Tabs", name: MatomoName.clickName.rawValue, value: nil)
         
         let boolBookmarksProfile = profile.prefs.boolForKey("ContextualHintBookmarksLocationKey") ?? false
         
@@ -337,7 +337,9 @@ extension BrowserViewController: MenuControllerDelegate {
     
     func openLinkURL(_ strUrl: String) {
         if let url = URL(string: strUrl) {
-            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
+            Task {
+                _ = try? await tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: url) as URLRequest)
+            }
         }
     }
     
@@ -365,6 +367,10 @@ extension BrowserViewController: MenuControllerDelegate {
 
 // MARK: - ToolbarActionMenuDelegate
 extension BrowserViewController: ToolBarActionMenuDelegate {
+    func showFreespokeProfile() {
+        self.homepageViewController?.displayFreefolkProfileVC()
+    }
+    
     func updateToolbarState() {
         updateToolbarStateForTraitCollection(view.traitCollection)
     }

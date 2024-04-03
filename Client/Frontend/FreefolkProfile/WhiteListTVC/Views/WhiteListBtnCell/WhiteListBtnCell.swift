@@ -45,7 +45,7 @@ final class WhiteListBtnCell: UITableViewCell {
     }
     
     private func setupConstraints() {
-        self.btnAction.pinToView(view: self.contentView, withInsets: UIEdgeInsets(top: 8, left: 40, bottom: 8, right: 40))
+        self.btnAction.pinToView(view: self.contentView, withInsets: UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
     }
     
     func setData(currentTheme: Theme?, title: String) {
@@ -56,4 +56,20 @@ final class WhiteListBtnCell: UITableViewCell {
     @objc private func tappedonBtnAction() {
         self.closureTappedonBtnAction?()
     }
+    
+    func updateButtonState(isEnteredTextDomain: Bool) {
+        self.btnAction.isEnabled = isEnteredTextDomain
+    }
+    
+//    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+//        print("TEST: Hit test !!!!")
+//        
+//        let convertedPoint = self.convert(point, to: self.btnAction)
+//        if self.btnAction.point(inside: convertedPoint, with: event) {
+//            print("TEST: Hit test buttonAction contain point !!!!")
+//            return self.btnAction
+//        } else {
+//            return super.hitTest(point, with: event)
+//        }
+//    }
 }

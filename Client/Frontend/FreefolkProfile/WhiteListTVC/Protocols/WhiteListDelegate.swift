@@ -7,5 +7,5 @@ import Foundation
 protocol WhiteListDelegate: AnyObject {
     func reloadTableView()
     func showErrorAlert(message: String)
-    func showConfirmAlertForDeleteDomain(completion: @escaping (() -> Void))
+    func showConfirmAlertForDeleteDomain(domain: String, completion: @escaping (() -> Void))
 }

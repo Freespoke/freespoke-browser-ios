@@ -20,23 +20,25 @@ extension PhotonActionSheetProtocol {
     func presentSheetWith(viewModel: PhotonActionSheetViewModel,
                           on viewController: PresentableVC,
                           from view: UIView) {
-        let sheet = PhotonActionSheet(viewModel: viewModel)
-        sheet.modalPresentationStyle = viewModel.modalStyle
-        sheet.photonTransitionDelegate = PhotonActionSheetAnimator()
+        DispatchQueue.main.async {
+            let sheet = PhotonActionSheet(viewModel: viewModel)
+            sheet.modalPresentationStyle = viewModel.modalStyle
+            sheet.photonTransitionDelegate = PhotonActionSheetAnimator()
 
-        if let popoverVC = sheet.popoverPresentationController, sheet.modalPresentationStyle == .popover {
-            popoverVC.delegate = viewController
-            popoverVC.sourceView = view
-            popoverVC.sourceRect = view.bounds
+            if let popoverVC = sheet.popoverPresentationController, sheet.modalPresentationStyle == .popover {
+                popoverVC.delegate = viewController
+                popoverVC.sourceView = view
+                popoverVC.sourceRect = view.bounds
 
-            let trait = viewController.traitCollection
-            if viewModel.isMainMenu {
-                let margins = viewModel.getMainMenuPopOverMargins(trait: trait, view: view, presentedOn: viewController)
-                popoverVC.popoverLayoutMargins = margins
+                let trait = viewController.traitCollection
+                if viewModel.isMainMenu {
+                    let margins = viewModel.getMainMenuPopOverMargins(trait: trait, view: view, presentedOn: viewController)
+                    popoverVC.popoverLayoutMargins = margins
+                }
+                popoverVC.permittedArrowDirections = viewModel.getPossibleArrowDirections(trait: trait)
             }
-            popoverVC.permittedArrowDirections = viewModel.getPossibleArrowDirections(trait: trait)
+            viewController.present(sheet, animated: true, completion: nil)
         }
-        viewController.present(sheet, animated: true, completion: nil)
     }
 
     func getLongPressLocationBarActions(with urlBar: URLBarView, webViewContainer: UIView) -> [PhotonRowActions] {

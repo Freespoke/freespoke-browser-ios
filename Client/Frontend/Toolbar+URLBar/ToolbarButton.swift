@@ -41,8 +41,11 @@ class ToolbarButton: UIButton {
 
     override var tintColor: UIColor! {
         didSet {
-            imageView?.tintColor = self.tintColor
-            setTitleColor(tintColor, for: .normal)
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.imageView?.tintColor = self.tintColor
+                self.setTitleColor(self.tintColor, for: .normal)
+            }
         }
     }
 

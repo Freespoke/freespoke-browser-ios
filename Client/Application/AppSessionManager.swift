@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import Foundation
+import WebKit
 
 enum UserType {
     case authorizedWithoutPremium
@@ -15,14 +16,18 @@ protocol AppSessionProvider {
     var launchSessionProvider: LaunchSessionProviderProtocol { get set }
     var downloadQueue: DownloadQueue { get }
     var decodedJWTToken: FreespokeJWTDecodeModel? { get }
-    var userType: UserType { get }
     
+    func userType() async throws -> UserType
     func performRegisterFreespokeUser(firstName: String, lastName: String, email: String, password: String, completion: @escaping (_ authModel: FreespokeAuthModel?, _ error: CustomError?) -> Void)
     func performFreespokeLogin(parentVC: UIViewController, successCompletion: (( _ apiAuthModel: FreespokeAuthModel) -> Void)?)
     func performSignInWithApple(successCompletion: (( _ apiAuthModel: FreespokeAuthModel) -> Void)?, failureCompletion: (( _ error: Error) -> Void)?)
     func performRefreshFreespokeToken(completion: (( _ apiAuthModel: FreespokeAuthModel?, _ error: Error?) -> Void)?)
     func performFreespokeLogout(completion: ((_ error: CustomError?) -> Void)?)
-    func performFreespokeForceLogout()
+    func performFreespokeForceLogout(showAlert: Bool)
+    
+    // web wrapper
+    func webWrapperEventUserLoggedIn(authInfo: FreespokeAuthModel)
+    func webWrapperEventUserLoggedOut()
 }
 
 /// `AppSessionManager` exists to track, mutate and (sometimes) persist session related properties. Each category of
@@ -42,13 +47,23 @@ class AppSessionManager: AppSessionProvider {
         return decodeJWT
     }
     
-    var userType: UserType {
+    func userType() async throws -> UserType {
         if let decodedJWTToken = self.decodedJWTToken {
-            if decodedJWTToken.isPremium {
-                return .premium
-            } else {
-                return .authorizedWithoutPremium
+            let userTypeResult = Task<UserType, Error> {
+                if let subscriptionType = try? await decodedJWTToken.subscriptionType() {
+                    switch subscriptionType {
+                    case .trialExpired:
+                        return UserType.authorizedWithoutPremium
+                    case .originalApple:
+                        return UserType.premium
+                    case .notApple:
+                        return UserType.premium
+                    }
+                } else {
+                    return UserType.authorizedWithoutPremium
+                }
             }
+            return try await userTypeResult.value
         } else {
             return .unauthorized
         }
@@ -99,7 +114,9 @@ class AppSessionManager: AppSessionProvider {
             if let apiAuthModel = apiAuthModel {
                 Keychain.authInfo = apiAuthModel
             } else {
-                AppSessionManager.shared.performFreespokeForceLogout()
+                if self.decodedJWTToken?.accessTokenExpiredAlready == true {
+                    AppSessionManager.shared.performFreespokeForceLogout(showAlert: true)
+                }
             }
             completion?(apiAuthModel, error)
         })
@@ -110,15 +127,17 @@ class AppSessionManager: AppSessionProvider {
         self.authService.performLogoutFreespokeUser(completion: { error in
             print("TEST: Logout error: ", error?.localizedDescription ?? "logout error")
         })
-        self.performFreespokeForceLogout()
+        self.performFreespokeForceLogout(showAlert: true)
     }
     
     // MARK: Freespoke Force Logout
-    func performFreespokeForceLogout() {
+    func performFreespokeForceLogout(showAlert: Bool) {
         DispatchQueue.main.async {
             self.clearFreespokeAccountData()
-            UIUtils.showOkAlert(title: "You've Been Logged Out",
-                                message: "Please log back in.")
+            if showAlert {
+                UIUtils.showOkAlertInNewWindow(title: "You've Been Logged Out",
+                                               message: "Please log back in.")
+            }
         }
     }
     
@@ -155,6 +174,27 @@ class AppSessionManager: AppSessionProvider {
     private func clearFreespokeAccountData() {
         self.stopAccessTokenRefreshTimer()
         Keychain.authInfo = nil
+        self.clearCache()
+    }
+    
+    private func clearCache() {
+        URLCache.shared.removeAllCachedResponses()
+        URLCache.shared.diskCapacity = 0
+        URLCache.shared.memoryCapacity = 0
+        
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        
+        HTTPCookieStorage.shared.cookies?.forEach { cookie in
+            HTTPCookieStorage.shared.deleteCookie(cookie)
+        }
+        print("[WebCacheCleaner] All cookies deleted")
+        
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+                print("[WebCacheCleaner] Record \(record) deleted")
+            }
+        }
     }
     
     private func decodeJWTToken() -> FreespokeJWTDecodeModel? {
@@ -166,5 +206,21 @@ class AppSessionManager: AppSessionProvider {
         else { return nil }
         
         return decodedModel
+    }
+}
+
+// MARK: - Web wrapper events
+
+extension AppSessionManager {
+    func webWrapperEventUserLoggedIn(authInfo: FreespokeAuthModel) {
+        Keychain.authInfo = authInfo
+    }
+    
+    func webWrapperEventUserLoggedOut() {
+        self.performFreespokeForceLogout(showAlert: false)
+    }
+    
+    func webWrapperEventUserDeactivatedAccount() {
+        self.performFreespokeForceLogout(showAlert: false)
     }
 }

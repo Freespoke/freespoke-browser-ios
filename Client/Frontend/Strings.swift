@@ -2711,6 +2711,12 @@ extension String {
             tableName: nil,
             value: "Reading List",
             comment: "Label for the button, displayed in the menu, takes you to to Reading List screen when pressed.")
+        // Reading list
+        public static let AddToWhitelist = MZLocalizedString(
+            "Menu.AddToWhitelist.Label",
+            tableName: nil,
+            value: "Add to Whitelist",
+            comment: "Label for the button, displayed in the menu, takes you to Add to white list action when pressed.")
         public static let AddReadingList = MZLocalizedString(
             "Menu.AddReadingList.Label.v99",
             tableName: nil,
@@ -3585,11 +3591,6 @@ extension String {
         tableName: "LoginManager",
         value: nil,
         comment: "Prompt title when deleting logins")
-    public static let DeleteDomainAlertTitle = MZLocalizedString(
-        "Delete Website",
-        tableName: "AdBlocker",
-        value: nil,
-        comment: "Delete domain from white list")
     public static let DomainTitleForAlert = MZLocalizedString(
         "Domain",
         tableName: "Ad blocker",
@@ -3605,11 +3606,6 @@ extension String {
         tableName: "LoginManager",
         value: nil,
         comment: "Prompt message warning the user that deleting non-synced logins will permanently remove them")
-    public static let DeleteDomainAlertLocalMessage = MZLocalizedString(
-        "Deleting this website will permanently remoce the site from your whitelist.",
-        tableName: "AdBlocker",
-        value: nil,
-        comment: "Prompt message when user want to delete domain from whitelist")
     public static let DeleteLoginAlertCancel = MZLocalizedString(
         "Cancel",
         tableName: "LoginManager",

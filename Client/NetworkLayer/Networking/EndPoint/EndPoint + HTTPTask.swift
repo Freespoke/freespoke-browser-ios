@@ -29,6 +29,15 @@ extension EndPoint {
                                                 bodyEncoding: .urlEncoding(urlEncodingType: .none),
                                                 urlParameters: nil,
                                                 additionHeaders: self.headers)
+        case .restorePurchase(let signedPayload):
+            let bodyParameters: HTTPParameters = [
+                NetworkLayerConstants.ParameterKeys.signedPayload: signedPayload
+            ]
+            
+            return .requestParametersAndHeaders(bodyParameters: bodyParameters,
+                                                bodyEncoding: .jsonEncoding,
+                                                urlParameters: nil,
+                                                additionHeaders: self.headers)
         }
     }
 }

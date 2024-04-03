@@ -26,35 +26,14 @@ class PremiumUnlockedContentView: UIView {
         return lbl
     }()
     
-    private var currentTheme: Theme?
-    
-    required init(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
+    required init() {
         super.init(frame: .zero)
-        self.prepareUI()
         self.addingViews()
         self.setupConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func prepareUI() {
-        self.applyTheme()
-    }
-    
-    private func applyTheme() {
-        if let theme = currentTheme {
-            self.backgroundColor = .clear
-            
-            switch theme.type {
-            case .dark:
-                self.lblSecondSubtitle.textColor = UIColor.whiteColor
-            case .light:
-                self.lblSecondSubtitle.textColor = UIColor.blackColor
-            }
-        }
     }
     
     private func addingViews() {
@@ -87,9 +66,21 @@ class PremiumUnlockedContentView: UIView {
         ])
     }
     
-    func configure(currentTheme: Theme?, lblTitleText: String, lblSubtitleText: String, lblSecondSubtitleText: String) {
-        self.topTitleView.configure(currentTheme: currentTheme,
-                                    lblTitleText: lblTitleText,
+    func applyTheme(currentTheme: Theme) {
+        self.topTitleView.applyTheme(currentTheme: currentTheme)
+        
+        self.backgroundColor = .clear
+        
+        switch currentTheme.type {
+        case .dark:
+            self.lblSecondSubtitle.textColor = UIColor.whiteColor
+        case .light:
+            self.lblSecondSubtitle.textColor = UIColor.blackColor
+        }
+    }
+    
+    func configure(lblTitleText: String, lblSubtitleText: String, lblSecondSubtitleText: String) {
+        self.topTitleView.configure(lblTitleText: lblTitleText,
                                     lblSubtitleText: lblSubtitleText,
                                     logoIsHidden: false)
         

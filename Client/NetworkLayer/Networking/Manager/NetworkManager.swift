@@ -57,7 +57,7 @@ final class NetworkManager: NetworkManagerProtocol {
                             completion(nil, nil, true)
                         } else {
                             print("Should perform force logout!!!")
-                            AppSessionManager.shared.performFreespokeForceLogout()
+                            AppSessionManager.shared.performFreespokeForceLogout(showAlert: true)
                         }
                     })
                 } else {

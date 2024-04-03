@@ -101,7 +101,7 @@ extension TabTrayViewModel {
     }
 
     @objc func didTapAddTab(_ sender: UIBarButtonItem) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appTabs.rawValue, action: MatomoAction.appTabsNewTab.rawValue, name: MatomoName.click.rawValue, value: nil)
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appTabs.rawValue, action: MatomoAction.appTabsNewTab.rawValue, name: MatomoName.clickName.rawValue, value: nil)
         
         tabTrayView.performToolbarAction(.addTab, sender: sender)
     }

@@ -18,7 +18,7 @@ class SignInWithAppleButton: UIButton {
         let lbl = UILabel()
         lbl.textAlignment = .left
         lbl.textColor = UIColor.blackColor
-        lbl.font = UIFont.sourceSansProFont(.semiBold, size: 16)
+        lbl.font = UIDevice.current.isPad ? UIFont.sourceSansProFont(.semiBold, size: 18) : UIFont.sourceSansProFont(.semiBold, size: 16)
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         lbl.text = "Sign In with Apple"
@@ -39,10 +39,7 @@ class SignInWithAppleButton: UIButton {
     
     private var text = ""
     
-    private var currentTheme: Theme?
-    
-    init(currentTheme: Theme?) {
-        self.currentTheme = currentTheme
+    init() {
         super.init(frame: .zero)
         self.commonInit()
         self.addingViews()
@@ -57,11 +54,16 @@ class SignInWithAppleButton: UIButton {
         self.layer.masksToBounds = true
         self.layer.cornerRadius = 4
         self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.whiteColor.cgColor
-        self.backgroundColor = self.currentTheme?.type == .dark ? UIColor.black : UIColor.white
+    }
+    
+    func applyTheme(currentTheme: Theme) {
+        self.layer.borderColor = currentTheme.type == .dark ? UIColor.blackColor.cgColor : UIColor.whiteColor.cgColor
+        self.backgroundColor = currentTheme.type == .dark ? UIColor.black : UIColor.white
         
-        self.iconImageView.image = self.currentTheme?.type == .dark ? UIImage(named: "img_signIn_with_apple_dark") : UIImage(named: "img_signIn_with_apple_light")
-        self.lblTitle.textColor =  self.currentTheme?.type == .dark ? UIColor.white : UIColor.blackColor
+        self.iconImageView.image = currentTheme.type == .dark ? UIImage(named: "img_signIn_with_apple_dark") : UIImage(named: "img_signIn_with_apple_light")
+        self.lblTitle.textColor =  currentTheme.type == .dark ? UIColor.white : UIColor.blackColor
+        
+        self.activityIndicator.activityIndicatorColor = currentTheme.type == .dark ? UIColor.white : UIColor.black
     }
     
     private func addingViews() {
@@ -119,18 +121,17 @@ class SignInWithAppleButton: UIButton {
             guard let self = self else { return }
             self.text = self.titleLabel?.text ?? ""
             self.setTitle("", for: .normal)
-            self.activityIndicator.activityIndicatorColor = self.currentTheme?.type == .dark ? UIColor.white : UIColor.black
             self.activityIndicator.start(pinToView: self)
         }
     }
     
     func stopIndicator() {
         DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.activityIndicator.stop(completion: {
+            guard let self = self else { return }
+            self.activityIndicator.stop(completion: {
                 DispatchQueue.main.async { [weak self] in
-                    guard let sSelf = self else { return }
-                    sSelf.setTitle(sSelf.text, for: .normal)
+                    guard let self = self else { return }
+                    self.setTitle(self.text, for: .normal)
                 }
             })
         }

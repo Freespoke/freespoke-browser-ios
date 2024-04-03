@@ -4,19 +4,20 @@
 
 import UIKit
 import Shared
+import MatomoTracker
 
 class OnboardingWelcomeScreen: OnboardingBaseViewController {
     private var topContentView: OnboardingWelcomeScreenContentView!
     
     private lazy var btnContinueWithoutAccount: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
         btn.setTitle("Continue without account", for: .normal)
         btn.height = 56
         return btn
     }()
     
     private lazy var btnCreateAccount: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.currentTheme))
+        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
         btn.setTitle("Create Account", for: .normal)
         btn.height = 56
         return btn
@@ -29,10 +30,10 @@ class OnboardingWelcomeScreen: OnboardingBaseViewController {
         syncDelegate: UIApplication.shared.syncDelegate
     )
     
-    override init(currentTheme: Theme?) {
-        super.init(currentTheme: currentTheme)
+    init() {
+        super.init()
         
-        self.topContentView = OnboardingWelcomeScreenContentView(currentTheme: self.currentTheme)
+        self.topContentView = OnboardingWelcomeScreenContentView()
     }
     
     required init?(coder: NSCoder) {
@@ -46,6 +47,9 @@ class OnboardingWelcomeScreen: OnboardingBaseViewController {
         self.addingViews()
         self.setupConstraints()
         self.setupActions()
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,19 +60,22 @@ class OnboardingWelcomeScreen: OnboardingBaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        AppDelegate.AppUtility.lockOrientation(.portrait)
+//        AppDelegate.AppUtility.lockOrientation(.portrait)
+    }
+    
+    override func applyTheme() {
+        super.applyTheme()
+        self.topContentView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        self.bottomButtonsView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        self.btnLogin.applyTheme(currentTheme: self.themeManager.currentTheme)
     }
     
     private func setupUI() {
-        self.topContentView.configure(currentTheme: self.currentTheme,
-                                      lblTitleText: "Break free from big tech.",
+        self.topContentView.configure(lblTitleText: "Break free from big tech.",
                                       lblSubtitleText: "Get the unfiltered truth.",
                                       lblSecondSubtitleText: "Protect your privacy.")
         
-        self.bottomButtonsView.configure(currentTheme: self.currentTheme)
-        
-        self.btnLogin.configure(currentTheme: self.currentTheme,
-                                lblTitleText: "Already have an account?",
+        self.btnLogin.configure(lblTitleText: "Already have an account?",
                                 btnTitleText: "Log In")
     }
     
@@ -93,7 +100,7 @@ class OnboardingWelcomeScreen: OnboardingBaseViewController {
                 self.topContentView.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor, constant: 0),
                 self.topContentView.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: 0),
                 self.topContentView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                self.topContentView.widthAnchor.constraint(equalToConstant: Constants.UI.contentWidthConstraintForIpad)
+                self.topContentView.widthAnchor.constraint(equalToConstant: (self.view.frame.width * Constants.DrawingSizes.iPadContentWidthFactorPortrait)),
             ])
         } else {
             NSLayoutConstraint.activate([
@@ -133,12 +140,21 @@ extension OnboardingWelcomeScreen {
     }
     
     @objc private func btnContinueWithoutAccountTapped(_ sender: UIButton) {
-        let vc = OnboardingSetDefaultBrowserVC(currentTheme: self.currentTheme)
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
+                                   action: MatomoAction.appOnbWithoutAccClickAction.rawValue,
+                                   name: MatomoName.clickName.rawValue,
+                                   value: nil)
+        
+        let vc = OnboardingSetDefaultBrowserVC(source: .continueWithoutAccount)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func btnCreateAccountTapped(_ sender: UIButton) {
-        let vc = SignUpVC(currentTheme: self.currentTheme, viewModel: SignUpVCViewModel(isOnboarding: true))
+        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
+                                   action: MatomoAction.appOnbCreateAccClickAction.rawValue,
+                                   name: MatomoName.clickName.rawValue,
+                                   value: nil)
+        let vc = SignUpVC(viewModel: SignUpVCViewModel(isOnboarding: true))
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

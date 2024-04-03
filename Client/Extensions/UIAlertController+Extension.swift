@@ -232,16 +232,15 @@ extension UIAlertController {
         return deleteAlert
     }
     
-    class func deleteDomainAlert(
-        _ deleteCallback: @escaping UIAlertActionCallback) -> UIAlertController {
-        let deleteAlert = UIAlertController(title: .DeleteLoginAlertTitle, message: .DeleteDomainAlertLocalMessage, preferredStyle: .alert)
-
-        let cancelAction = UIAlertAction(title: .DeleteLoginAlertCancel, style: .cancel, handler: nil)
-        let deleteAction = UIAlertAction(title: .DeleteLoginAlertDelete, style: .destructive, handler: deleteCallback)
-
+    class func deleteDomainAlert(title: String, message: String, deleteCallback: @escaping UIAlertActionCallback) -> UIAlertController {
+        let deleteAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: deleteCallback)
+        
         deleteAlert.addAction(cancelAction)
         deleteAlert.addAction(deleteAction)
-
+        
         return deleteAlert
     }
 }

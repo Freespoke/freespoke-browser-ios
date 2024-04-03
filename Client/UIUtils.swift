@@ -5,30 +5,6 @@
 import UIKit
 
 enum UIUtils {
-    static func showOkAlert(title: String, message: String?, titleForButton: String = "OK", buttonTintColor: UIColor? = nil, completion: (() -> Void)? = nil) {
-        DispatchQueue.main.async {
-            guard let topMostVC = UIApplication.shared.keyWindowPresentedController() else { return }
-            
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            
-            let buttonAction = UIAlertAction(title: titleForButton, 
-                                             style: UIAlertAction.Style.cancel,
-                                             handler: { _ in
-                completion?()
-            })
-            
-            alert.addAction(buttonAction)
-            
-            if let tint = buttonTintColor {
-                buttonAction.setValue(tint, forKey: "titleTextColor")
-            } else {
-                buttonAction.setValue(UIColor.greenColor, forKey: "titleTextColor")
-            }
-            
-            topMostVC.present(alert, animated: true)
-        }
-    }
-    
     static func showOkAlertInNewWindow(title: String?, message: String?, titleForButton: String = "OK", completion: (() -> Void)? = nil) {
         DispatchQueue.main.async {
             let alert = DBAlertController(title: title,
@@ -41,6 +17,31 @@ enum UIUtils {
             })
             
             alert.addAction(cancelAction)
+            alert.show()
+        }
+    }
+    
+    static func showTwoButtonsAlertInNewWindow(title: String?, message: String?, titleForFirstButton: String = "OK", titleForSecondButton: String, firstCompletion: (() -> Void)? = nil, secondCompletion: (() -> Void)? = nil) {
+        DispatchQueue.main.async {
+            let alert = DBAlertController(title: title,
+                                          message: message,
+                                          preferredStyle: .alert)
+            
+            let firstButtonAction = UIAlertAction(title: titleForFirstButton,
+                                                  style: .default,
+                                                  handler: { _ in
+                firstCompletion?()
+            })
+            
+            let secondButtonAction = UIAlertAction(title: titleForSecondButton,
+                                                   style: .default,
+                                                   handler: { _ in
+                secondCompletion?()
+            })
+            
+            alert.addAction(secondButtonAction)
+            alert.addAction(firstButtonAction)
+            
             alert.show()
         }
     }
@@ -81,9 +82,6 @@ public class DBAlertController: UIAlertController {
     public func show(animated flag: Bool = true,
                      sourceRect: CGRect? = nil,
                      completion: (() -> Void)? = nil) {
-        self.view.tintColor = .white
-        self.overrideUserInterfaceStyle = .dark
-        
         if let rootViewController = alertWindow.rootViewController {
             alertWindow.makeKeyAndVisible()
             

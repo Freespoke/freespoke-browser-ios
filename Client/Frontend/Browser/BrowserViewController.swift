@@ -1685,6 +1685,10 @@ class BrowserViewController: UIViewController {
     }
 
     func presentShareSheet(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
+        AnalyticsManager.trackMatomoEvent(category: .appShareCategory,
+                                          action: AnalyticsManager.MatomoAction.appWebWrapperShareAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
+
         let helper = ShareExtensionHelper(url: url, tab: tab)
         let controller = helper.createActivityViewController({ [unowned self] completed, activityType in
             switch activityType {

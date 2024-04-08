@@ -8,8 +8,8 @@ import Shared
 class PremiumUnlockedVC: OnboardingBaseViewController {
     private var topContentView: PremiumUnlockedContentView!
     
-    private lazy var btnNext: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
+    private lazy var btnNext: MainButton = {
+        let btn = MainButton()
         btn.setTitle("Next", for: .normal)
         btn.height = 56
         return btn
@@ -46,6 +46,7 @@ class PremiumUnlockedVC: OnboardingBaseViewController {
     
     override func applyTheme() {
         super.applyTheme()
+        self.btnNext.applyTheme()
         self.topContentView.applyTheme(currentTheme: self.themeManager.currentTheme)
     }
     

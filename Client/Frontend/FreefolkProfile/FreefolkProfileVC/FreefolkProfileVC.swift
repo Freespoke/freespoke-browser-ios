@@ -4,7 +4,6 @@
 
 import UIKit
 import Shared
-import MatomoTracker
 import OneSignal
 import Common
 
@@ -34,7 +33,7 @@ class FreefolkProfileVC: UIViewController, Themeable {
     
     var getInTouchClosure: (() -> Void)?
     var accountClickedClosure: (() -> Void)?
-    var darkModeSwitchClosure: ((_ isOn: Bool) -> Void)?
+    var appThemeClickedClosure: (() -> Void)?
     
     init(viewModel: FreefolkProfileViewModel, themeManager: ThemeManager = AppContainer.shared.resolve(),
          notificationCenter: NotificationProtocol = NotificationCenter.default) {
@@ -180,10 +179,9 @@ class FreefolkProfileVC: UIViewController, Themeable {
             popoverPresentationController.sourceRect = self.view.bounds
             popoverPresentationController.permittedArrowDirections = .up
         }
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appShare.rawValue,
-                                   action: MatomoAction.appShareMenu.rawValue,
-                                   name: MatomoName.clickName.rawValue,
-                                   value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appShareCategory,
+                                          action: AnalyticsManager.MatomoAction.appShareFromProfileMenuAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         TelemetryWrapper.recordEvent(category: .action,
                                      method: .tap,
                                      object: .sharePageWith)
@@ -260,32 +258,54 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         switch cellType {
         case .premium:
             cell.tapClosure = { [weak self] in
+                AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                                  action: AnalyticsManager.MatomoAction.appProfileScreenAction.rawValue + "premium",
+                                                  name: AnalyticsManager.MatomoName.clickName)
                 self?.premiumClicked()
             }
         case .account:
             cell.tapClosure = { [weak self] in
+                AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                                  action: AnalyticsManager.MatomoAction.appProfileScreenAction.rawValue + "account",
+                                                  name: AnalyticsManager.MatomoName.clickName)
                 self?.accountCellClicked()
+            }
+        case .darkMode:
+            cell.tapClosure = { [weak self] in
+                AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                                  action: AnalyticsManager.MatomoAction.appProfileScreenAction.rawValue + "app theme",
+                                                  name: AnalyticsManager.MatomoName.clickName)
+                self?.appThemeClickedClosure?()
             }
         case .manageDefaultBrowser:
             cell.tapClosure = { [weak self] in
+                AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                                  action: AnalyticsManager.MatomoAction.appProfileScreenAction.rawValue + "manage default browser",
+                                                  name: AnalyticsManager.MatomoName.clickName)
                 self?.showDeviceAppSettings()
             }
         case .manageNotifications:
             cell.tapClosure = { [weak self] in
+                AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                                  action: AnalyticsManager.MatomoAction.appProfileScreenAction.rawValue + "manage notifications",
+                                                  name: AnalyticsManager.MatomoName.clickName)
                 self?.manageNotificationClicked()
             }
             
         case .getInTouch:
             cell.tapClosure = { [weak self] in
+                AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                                  action: AnalyticsManager.MatomoAction.appProfileScreenAction.rawValue + "get in touch",
+                                                  name: AnalyticsManager.MatomoName.clickName)
                 self?.getInTouchClosure?()
             }
         case .shareFreespoke:
             cell.tapClosure = { [weak self] in
+                AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                                  action: AnalyticsManager.MatomoAction.appProfileScreenAction.rawValue + "share freespoke",
+                                                  name: AnalyticsManager.MatomoName.clickName)
                 self?.shareFreespoke()
             }
-        case .darkMode:
-            cell.tapClosure = { }
-            self.configureDarkModeCell(cell)
         default:
             cell.tapClosure = { }
             break
@@ -328,15 +348,10 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         cell.configureCell(textColor: (theme.type == .light) ? .blackColor : .whiteColor)
         
         cell.tapClosure = { [weak self] in
+            AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                              action: AnalyticsManager.MatomoAction.appProfileScreenAction.rawValue + "logout",
+                                              name: AnalyticsManager.MatomoName.clickName)
             self?.viewModel.performLogout()
-        }
-    }
-    
-    private func configureDarkModeCell(_ cell: ProfileCell) {
-        let nightModeEnabled = NightModeHelper.hasEnabledDarkTheme()
-        cell.setDarkModeSwitch(isOn: nightModeEnabled)
-        cell.darkModeSwitchClosure = { [weak self] isOn in
-            self?.darkModeSwitchClosure?(isOn)
         }
     }
 }

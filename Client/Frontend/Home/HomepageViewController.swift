@@ -148,6 +148,9 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         }
         
         freespokeHomepageView.profileIconTapClosure = { [weak self] in
+            AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                              action: AnalyticsManager.MatomoAction.appProfileHomePageAvatarClickedAction.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
             self?.displayFreefolkProfileVC()
         }
         
@@ -182,9 +185,10 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
                 profileVC.motionDismissViewController()
             }
             
-            profileVC.darkModeSwitchClosure = { [weak self] isOn in
+            profileVC.appThemeClickedClosure = { [weak self] in
                 guard let  self = self else { return }
-                NightModeHelper.changeUserInterfaceStyle(to: isOn ? .dark : .light, themeManager: self.themeManager)
+                let themeSettingsController = ThemeSettingsController()
+                self.present(themeSettingsController, animated: true)
             }
             self.navigationController?.pushViewController(profileVC, animated: true)
         }

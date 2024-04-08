@@ -107,7 +107,7 @@ class SubscriptionsVCViewModel {
         })
     }
     
-    func restorePurchases(completion: ((IAPManagerRestorationStatus) -> Void)? = nil) {
+    func restorePurchases(completion: ((IAPManagerRestorationStatus) -> Void)?) {
         guard let appAccountToken = self.appAccountToken else {
             UIUtils.showOkAlert(title: "appAccountToken is nil", message: "")
             completion?(.restorePurchasesFailed(customMessage: "appAccountToken is nil"))
@@ -123,9 +123,11 @@ class SubscriptionsVCViewModel {
                     if error == nil {
                         self.updateCurrentSubscriptionsState()
                     }
+                    completion?(status)
                 })
+            } else {
+                completion?(status)
             }
-            completion?(status)
         })
     }
 }

@@ -4,22 +4,19 @@
 
 import UIKit
 import Shared
-import MatomoTracker
 
 class OnboardingWelcomeScreen: OnboardingBaseViewController {
     private var topContentView: OnboardingWelcomeScreenContentView!
     
-    private lazy var btnContinueWithoutAccount: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
+    private lazy var btnContinueWithoutAccount: MainButton = {
+        let btn = MainButton()
         btn.setTitle("Continue without account", for: .normal)
-        btn.height = 56
         return btn
     }()
     
-    private lazy var btnCreateAccount: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
+    private lazy var btnCreateAccount: MainButton = {
+        let btn = MainButton()
         btn.setTitle("Create Account", for: .normal)
-        btn.height = 56
         return btn
     }()
     
@@ -65,6 +62,9 @@ class OnboardingWelcomeScreen: OnboardingBaseViewController {
     
     override func applyTheme() {
         super.applyTheme()
+        
+        self.btnContinueWithoutAccount.applyTheme()
+        self.btnCreateAccount.applyTheme()
         self.topContentView.applyTheme(currentTheme: self.themeManager.currentTheme)
         self.bottomButtonsView.applyTheme(currentTheme: self.themeManager.currentTheme)
         self.btnLogin.applyTheme(currentTheme: self.themeManager.currentTheme)
@@ -140,20 +140,18 @@ extension OnboardingWelcomeScreen {
     }
     
     @objc private func btnContinueWithoutAccountTapped(_ sender: UIButton) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
-                                   action: MatomoAction.appOnbWithoutAccClickAction.rawValue,
-                                   name: MatomoName.clickName.rawValue,
-                                   value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,
+                                          action: AnalyticsManager.MatomoAction.appOnbWithoutAccClickAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         
         let vc = OnboardingSetDefaultBrowserVC(source: .continueWithoutAccount)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func btnCreateAccountTapped(_ sender: UIButton) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
-                                   action: MatomoAction.appOnbCreateAccClickAction.rawValue,
-                                   name: MatomoName.clickName.rawValue,
-                                   value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,
+                                          action: AnalyticsManager.MatomoAction.appOnbCreateAccClickAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         let vc = SignUpVC(viewModel: SignUpVCViewModel(isOnboarding: true))
         self.navigationController?.pushViewController(vc, animated: true)
     }

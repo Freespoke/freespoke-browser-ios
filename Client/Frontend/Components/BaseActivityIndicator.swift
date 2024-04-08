@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import UIKit
+import Shared
 
 enum ActivityIndicatorSize {
     case small
@@ -10,18 +11,21 @@ enum ActivityIndicatorSize {
 }
 
 class BaseActivityIndicator: UIView {
+    enum BaseActivityIndicatorOverlayMode {
+        case standart
+        case transparent
+    }
+    
     private var overlayView: UIView?
     private let viewWithIndicator = UIView()
     private let activityIndicator = UIActivityIndicatorView()
     
     private var activityIndicatorSize: ActivityIndicatorSize = .large
-    var activityIndicatorColor = UIColor.black
     
     private lazy var descriptionLabel: UILabel = {
         let lbl = UILabel()
         lbl.textAlignment = .center
         lbl.backgroundColor = UIColor.clear
-        lbl.textColor = activityIndicatorColor
         lbl.font = UIFont.sourceSansProFont(.semiBold, size: 14)
         lbl.layer.masksToBounds = true
         lbl.layer.cornerRadius = 4
@@ -52,18 +56,28 @@ class BaseActivityIndicator: UIView {
         viewWithIndicator.layer.cornerRadius = 8
     }
     
-    func start(pinToView view: UIView, withText text: String? = nil, overlay: Bool = false) {
+    func applyTheme(currentTheme: Theme) {
+        switch currentTheme.type {
+        case .dark:
+            self.activityIndicator.color = .white
+            self.descriptionLabel.textColor = .white
+        case .light:
+            self.activityIndicator.color = .black
+            self.descriptionLabel.textColor = .black
+        }
+    }
+    
+    func start(pinToView view: UIView, withText text: String? = nil, overlayMode: BaseActivityIndicatorOverlayMode?) {
         guard self.superview == nil else { return self.activityIndicator.startAnimating() }
         view.addSubview(self)
         
         view.bringSubviewToFront(self)
         
         descriptionLabel.text = text
-        activityIndicator.color = self.activityIndicatorColor
         self.translatesAutoresizingMaskIntoConstraints = false
         self.pinToView(view: view)
-        if overlay {
-            self.addOverlayView()
+        if let overlayMode = overlayMode {
+            self.addOverlayView(overlayMode: overlayMode)
         }
         self.addSubview(self.viewWithIndicator)
         self.addSubview(self.descriptionLabel)
@@ -110,12 +124,17 @@ class BaseActivityIndicator: UIView {
 extension BaseActivityIndicator {
     // MARK: Add Overlay View
     
-    private func addOverlayView() {
+    private func addOverlayView(overlayMode: BaseActivityIndicatorOverlayMode) {
         guard self.overlayView?.superview == nil else { return }
         
         let overlayView = UIView()
         overlayView.isUserInteractionEnabled = true
-        overlayView.backgroundColor = .black.withAlphaComponent(0.65)
+        switch overlayMode {
+        case .standart:
+            overlayView.backgroundColor = .black.withAlphaComponent(0.35)
+        case .transparent:
+            overlayView.backgroundColor = .clear
+        }
         
         self.overlayView = overlayView
         

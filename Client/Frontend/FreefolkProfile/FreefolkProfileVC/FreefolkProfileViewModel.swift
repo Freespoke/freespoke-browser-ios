@@ -26,7 +26,7 @@ enum CellType {
         case .verifyEmail: return "Verify Email"
         case .premium: return "Premium"
         case .account: return "Account"
-        case .darkMode: return "Dark Mode"
+        case .darkMode: return "App Theme"
         case .manageDefaultBrowser: return "Manage Default Browser"
         case .manageNotifications: return "Manage Notifications"
         case .getInTouch: return "Get in Touch"

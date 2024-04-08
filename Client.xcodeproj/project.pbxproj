@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		011C97182BBEDB6B00B96A36 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011C97172BBEDB6B00B96A36 /* AnalyticsManager.swift */; };
+		011C97192BBEDB6B00B96A36 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011C97172BBEDB6B00B96A36 /* AnalyticsManager.swift */; };
+		011C971B2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011C971A2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift */; };
+		011C971C2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011C971A2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift */; };
 		012C3AB62B80D3C5007EC4AF /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FF01FC2B7D2C240027845D /* SignUpVC.swift */; };
 		012C3AB82B80DEE3007EC4AF /* SignUpVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012C3AB72B80DEE3007EC4AF /* SignUpVCViewModel.swift */; };
 		012C3AB92B80DEE3007EC4AF /* SignUpVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012C3AB72B80DEE3007EC4AF /* SignUpVCViewModel.swift */; };
@@ -24,12 +28,6 @@
 		012C3AD82B821AC1007EC4AF /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012C3AD62B821AC1007EC4AF /* CustomTextField.swift */; };
 		014128742B7A73A800283449 /* OnboardingWelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014128732B7A73A800283449 /* OnboardingWelcomeScreen.swift */; };
 		014128752B7A73A800283449 /* OnboardingWelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014128732B7A73A800283449 /* OnboardingWelcomeScreen.swift */; };
-		014128782B7A74E100283449 /* BaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014128772B7A74E100283449 /* BaseButton.swift */; };
-		014128792B7A74E100283449 /* BaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014128772B7A74E100283449 /* BaseButton.swift */; };
-		0141287B2B7A750000283449 /* BaseButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141287A2B7A750000283449 /* BaseButtonStyle.swift */; };
-		0141287C2B7A750000283449 /* BaseButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141287A2B7A750000283449 /* BaseButtonStyle.swift */; };
-		0141287E2B7A751B00283449 /* BaseButtonStylesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141287D2B7A751B00283449 /* BaseButtonStylesModel.swift */; };
-		0141287F2B7A751B00283449 /* BaseButtonStylesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141287D2B7A751B00283449 /* BaseButtonStylesModel.swift */; };
 		014128812B7A76AE00283449 /* UIFont + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014128802B7A76AE00283449 /* UIFont + Extensions.swift */; };
 		014128822B7A76AE00283449 /* UIFont + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014128802B7A76AE00283449 /* UIFont + Extensions.swift */; };
 		014128842B7A79AC00283449 /* BaseActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014128832B7A79AC00283449 /* BaseActivityIndicator.swift */; };
@@ -813,6 +811,12 @@
 		01BD25FE2B6CF7EB00B8B9EB /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		01BD25FF2B6CF7EB00B8B9EB /* RustMozillaAppServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43BE578A278BA4D900491291 /* RustMozillaAppServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		01BD26002B6CF7EB00B8B9EB /* Sync.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2827315E1ABC9BE600AA1954 /* Sync.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		01BE9C2B2BC01A06002D3844 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BE9C2A2BC01A06002D3844 /* MainButton.swift */; };
+		01BE9C2C2BC01A06002D3844 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BE9C2A2BC01A06002D3844 /* MainButton.swift */; };
+		01BE9C2E2BC01D04002D3844 /* BaseTouchableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BE9C2D2BC01D04002D3844 /* BaseTouchableButton.swift */; };
+		01BE9C2F2BC01D04002D3844 /* BaseTouchableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BE9C2D2BC01D04002D3844 /* BaseTouchableButton.swift */; };
+		01BE9C312BC02413002D3844 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BE9C302BC02413002D3844 /* SecondaryButton.swift */; };
+		01BE9C322BC02413002D3844 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BE9C302BC02413002D3844 /* SecondaryButton.swift */; };
 		01CB8B102BA328A300ADC323 /* OnboardingTopTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */; };
 		01CB8B112BA328A300ADC323 /* OnboardingTopTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */; };
 		01CE39362BB1F000009CEE9B /* InAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE39352BB1F000009CEE9B /* InAppManager.swift */; };
@@ -2574,6 +2578,8 @@
 
 /* Begin PBXFileReference section */
 		00B144CD8BEF73CF75ED7639 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Menu.strings; sourceTree = "<group>"; };
+		011C97172BBEDB6B00B96A36 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
+		011C971A2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager + Constants.swift"; sourceTree = "<group>"; };
 		012C3AB72B80DEE3007EC4AF /* SignUpVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVCViewModel.swift; sourceTree = "<group>"; };
 		012C3ABB2B80E31A007EC4AF /* SignUpContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpContentView.swift; sourceTree = "<group>"; };
 		012C3ABE2B80E872007EC4AF /* SignInWithAppleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleItemView.swift; sourceTree = "<group>"; };
@@ -2582,9 +2588,6 @@
 		012C3AD22B821A75007EC4AF /* CustomTextFieldWithErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldWithErrorMessage.swift; sourceTree = "<group>"; };
 		012C3AD62B821AC1007EC4AF /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		014128732B7A73A800283449 /* OnboardingWelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeScreen.swift; sourceTree = "<group>"; };
-		014128772B7A74E100283449 /* BaseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseButton.swift; sourceTree = "<group>"; };
-		0141287A2B7A750000283449 /* BaseButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseButtonStyle.swift; sourceTree = "<group>"; };
-		0141287D2B7A751B00283449 /* BaseButtonStylesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseButtonStylesModel.swift; sourceTree = "<group>"; };
 		014128802B7A76AE00283449 /* UIFont + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont + Extensions.swift"; sourceTree = "<group>"; };
 		014128832B7A79AC00283449 /* BaseActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseActivityIndicator.swift; sourceTree = "<group>"; };
 		014128862B7A7A2E00283449 /* UIView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Extensions.swift"; sourceTree = "<group>"; };
@@ -2649,6 +2652,9 @@
 		01B1EEB62B8A9E4B00899E53 /* ClientFennec.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ClientFennec.entitlements; sourceTree = "<group>"; };
 		01B1EEB72B8BD7C100899E53 /* Notification.Name + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name + Extensions.swift"; sourceTree = "<group>"; };
 		01BD26072B6CF7EB00B8B9EB /* Fennec_Staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fennec_Staging.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		01BE9C2A2BC01A06002D3844 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
+		01BE9C2D2BC01D04002D3844 /* BaseTouchableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTouchableButton.swift; sourceTree = "<group>"; };
+		01BE9C302BC02413002D3844 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
 		01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTopTitleView.swift; sourceTree = "<group>"; };
 		01CE39352BB1F000009CEE9B /* InAppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppManager.swift; sourceTree = "<group>"; };
 		01CE39382BB1F149009CEE9B /* InAppManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppManagerProtocol.swift; sourceTree = "<group>"; };
@@ -4361,6 +4367,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		011C97162BBEDB4E00B96A36 /* AnalitycsManager */ = {
+			isa = PBXGroup;
+			children = (
+				011C971A2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift */,
+				011C97172BBEDB6B00B96A36 /* AnalyticsManager.swift */,
+			);
+			name = AnalitycsManager;
+			sourceTree = "<group>";
+		};
 		012C3ABA2B80E307007EC4AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -4396,16 +4411,6 @@
 				014128732B7A73A800283449 /* OnboardingWelcomeScreen.swift */,
 			);
 			path = OnboardingWelcomeScreen;
-			sourceTree = "<group>";
-		};
-		014128762B7A74D400283449 /* BaseButton */ = {
-			isa = PBXGroup;
-			children = (
-				0141287D2B7A751B00283449 /* BaseButtonStylesModel.swift */,
-				0141287A2B7A750000283449 /* BaseButtonStyle.swift */,
-				014128772B7A74E100283449 /* BaseButton.swift */,
-			);
-			path = BaseButton;
 			sourceTree = "<group>";
 		};
 		014128892B7A7DAE00283449 /* Views */ = {
@@ -4451,7 +4456,9 @@
 		01567C332B7C073E0026066A /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
-				014128762B7A74D400283449 /* BaseButton */,
+				01BE9C2D2BC01D04002D3844 /* BaseTouchableButton.swift */,
+				01BE9C2A2BC01A06002D3844 /* MainButton.swift */,
+				01BE9C302BC02413002D3844 /* SecondaryButton.swift */,
 				8AB5958B28414DF60090F4AE /* ActionButton.swift */,
 				01567C342B7C07720026066A /* UnderlinedButton.swift */,
 				012C3AC12B80F218007EC4AF /* SignInWithAppleButton.swift */,
@@ -6061,6 +6068,7 @@
 		965C3C8B29313949006499ED /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				011C97162BBEDB4E00B96A36 /* AnalitycsManager */,
 				5A6AD22529428942000A9654 /* DownloadQueue */,
 				965C3C9029324AF2006499ED /* AppSession */,
 			);
@@ -9325,6 +9333,7 @@
 				01BD238A2B6CF7EB00B8B9EB /* StatefulButton.swift in Sources */,
 				01BD238B2B6CF7EB00B8B9EB /* WallpaperCollection.swift in Sources */,
 				01BD238C2B6CF7EB00B8B9EB /* TelemetryWrapper.swift in Sources */,
+				01BE9C2F2BC01D04002D3844 /* BaseTouchableButton.swift in Sources */,
 				01BD238D2B6CF7EB00B8B9EB /* URLTextField.swift in Sources */,
 				01BD238E2B6CF7EB00B8B9EB /* ClipboardBarDisplayHandler.swift in Sources */,
 				01BD238F2B6CF7EB00B8B9EB /* PhotonActionSheetViewModel.swift in Sources */,
@@ -9411,6 +9420,7 @@
 				01BD23D32B6CF7EB00B8B9EB /* TodayUX.swift in Sources */,
 				01BD23D42B6CF7EB00B8B9EB /* AdjustHelper.swift in Sources */,
 				01BD23D52B6CF7EB00B8B9EB /* NSAttributedString+Extension.swift in Sources */,
+				01BE9C322BC02413002D3844 /* SecondaryButton.swift in Sources */,
 				01BD23D62B6CF7EB00B8B9EB /* SceneDelegate.swift in Sources */,
 				01BD23D72B6CF7EB00B8B9EB /* NimbusFlaggableFeature.swift in Sources */,
 				01BD23D82B6CF7EB00B8B9EB /* Clearables.swift in Sources */,
@@ -9438,7 +9448,6 @@
 				01BD23EA2B6CF7EB00B8B9EB /* SettingsViewController.swift in Sources */,
 				01BD23EB2B6CF7EB00B8B9EB /* AppVersionUpdateCheckerProtocol.swift in Sources */,
 				01BD23EC2B6CF7EB00B8B9EB /* SendToDeviceHelper.swift in Sources */,
-				014128792B7A74E100283449 /* BaseButton.swift in Sources */,
 				01BD23ED2B6CF7EB00B8B9EB /* SessionData.swift in Sources */,
 				01BD23EE2B6CF7EB00B8B9EB /* AccessibilityIdentifiers.swift in Sources */,
 				01BD23EF2B6CF7EB00B8B9EB /* MenuBuilderHelper.swift in Sources */,
@@ -9558,7 +9567,6 @@
 				01BD24562B6CF7EB00B8B9EB /* WebServerUtil.swift in Sources */,
 				01BD24572B6CF7EB00B8B9EB /* ContextualHintEligibilityUtility.swift in Sources */,
 				01BD24582B6CF7EB00B8B9EB /* LoginListDataSourceHelper.swift in Sources */,
-				0141287F2B7A751B00283449 /* BaseButtonStylesModel.swift in Sources */,
 				01BD24592B6CF7EB00B8B9EB /* LabelButtonHeaderView.swift in Sources */,
 				01BD245A2B6CF7EB00B8B9EB /* LaunchSessionProvider.swift in Sources */,
 				01BD245B2B6CF7EB00B8B9EB /* AddCredentialViewController.swift in Sources */,
@@ -9727,6 +9735,7 @@
 				01BD24E72B6CF7EB00B8B9EB /* TrackingProtectionPageStats.swift in Sources */,
 				01BD24E82B6CF7EB00B8B9EB /* ScreenshotHelper.swift in Sources */,
 				01BD24E92B6CF7EB00B8B9EB /* TabManager.swift in Sources */,
+				011C97192BBEDB6B00B96A36 /* AnalyticsManager.swift in Sources */,
 				01BD24EA2B6CF7EB00B8B9EB /* ReaderModeFontSizeLabel.swift in Sources */,
 				01BD24EB2B6CF7EB00B8B9EB /* SearchGroupedItemsViewController.swift in Sources */,
 				01BD24EC2B6CF7EB00B8B9EB /* TopTabsLayout.swift in Sources */,
@@ -9743,7 +9752,6 @@
 				01BD24F52B6CF7EB00B8B9EB /* ASGroup.swift in Sources */,
 				01BD24F62B6CF7EB00B8B9EB /* NewTabAccessors.swift in Sources */,
 				01BD24F72B6CF7EB00B8B9EB /* JumpBackInCell.swift in Sources */,
-				0141287C2B7A750000283449 /* BaseButtonStyle.swift in Sources */,
 				01BD24F82B6CF7EB00B8B9EB /* HomepageViewModel.swift in Sources */,
 				01823F9B2B8DFE9F00986B73 /* EmailTextField.swift in Sources */,
 				01BD24F92B6CF7EB00B8B9EB /* Tab.swift in Sources */,
@@ -9855,6 +9863,7 @@
 				01BD25572B6CF7EB00B8B9EB /* TabContentBlocker.swift in Sources */,
 				01BD25582B6CF7EB00B8B9EB /* RecentlySavedViewModel.swift in Sources */,
 				01BD25592B6CF7EB00B8B9EB /* ClearPrivateDataTableViewController.swift in Sources */,
+				01BE9C2C2BC01A06002D3844 /* MainButton.swift in Sources */,
 				01BD255A2B6CF7EB00B8B9EB /* BrowserViewController+KeyCommands.swift in Sources */,
 				01BD255B2B6CF7EB00B8B9EB /* RemoteTabsClientAndTabsDataSource.swift in Sources */,
 				01BD255C2B6CF7EB00B8B9EB /* ReaderPanel.swift in Sources */,
@@ -9876,6 +9885,7 @@
 				01BD25692B6CF7EB00B8B9EB /* FileManagerInterface.swift in Sources */,
 				01BD256A2B6CF7EB00B8B9EB /* LocalDesktopFolder.swift in Sources */,
 				01BD256B2B6CF7EB00B8B9EB /* ReaderModeButton.swift in Sources */,
+				011C971C2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift in Sources */,
 				01BD256C2B6CF7EB00B8B9EB /* ActionButton.swift in Sources */,
 				01BD256D2B6CF7EB00B8B9EB /* ReaderModeFontSizeButton.swift in Sources */,
 				014840FB2B7E3446005CD610 /* SubscriptionsVC.swift in Sources */,
@@ -10420,6 +10430,7 @@
 				8AD40FCB27BADC4B00672675 /* StatefulButton.swift in Sources */,
 				C84655E62887398700861B4A /* WallpaperCollection.swift in Sources */,
 				EBF47E701F7979DF00899189 /* TelemetryWrapper.swift in Sources */,
+				01BE9C2E2BC01D04002D3844 /* BaseTouchableButton.swift in Sources */,
 				8AD40FCF27BADC6B00672675 /* URLTextField.swift in Sources */,
 				31ADB5DA1E58CEC300E87909 /* ClipboardBarDisplayHandler.swift in Sources */,
 				8AD1980F27BEB3F100D64B0E /* PhotonActionSheetViewModel.swift in Sources */,
@@ -10506,6 +10517,7 @@
 				048B4C8624A53F3E001B56E8 /* TodayUX.swift in Sources */,
 				8A07910F278F62F2005529CB /* AdjustHelper.swift in Sources */,
 				E1442FC2294782C3003680B0 /* NSAttributedString+Extension.swift in Sources */,
+				01BE9C312BC02413002D3844 /* SecondaryButton.swift in Sources */,
 				967A028E28FA026F003C35E3 /* SceneDelegate.swift in Sources */,
 				C8B07A4128199500000AFCE7 /* NimbusFlaggableFeature.swift in Sources */,
 				0B62EFD21AD63CD100ACB9CD /* Clearables.swift in Sources */,
@@ -10533,7 +10545,6 @@
 				F85C7F0E2711C556004BDBA4 /* SettingsViewController.swift in Sources */,
 				C8B509E3293FA39900AC013C /* AppVersionUpdateCheckerProtocol.swift in Sources */,
 				E1AFBAF9292EA0330065E35E /* SendToDeviceHelper.swift in Sources */,
-				014128782B7A74E100283449 /* BaseButton.swift in Sources */,
 				74C027451B2A348C001B1E88 /* SessionData.swift in Sources */,
 				C84266752728462900382274 /* AccessibilityIdentifiers.swift in Sources */,
 				01ADAA832B86A5C10009754E /* NetworkManagerProtocol.swift in Sources */,
@@ -10654,7 +10665,6 @@
 				5A271ABD2860B0D700471CE4 /* WebServerUtil.swift in Sources */,
 				964FA97528A1A8F20024BB3B /* ContextualHintEligibilityUtility.swift in Sources */,
 				CA7FC7D324A6A9B70012F347 /* LoginListDataSourceHelper.swift in Sources */,
-				0141287E2B7A751B00283449 /* BaseButtonStylesModel.swift in Sources */,
 				43AB6FA425DC53D30016B015 /* LabelButtonHeaderView.swift in Sources */,
 				965C3C942933A860006499ED /* LaunchSessionProvider.swift in Sources */,
 				C8163851268A0899004C7160 /* AddCredentialViewController.swift in Sources */,
@@ -10822,6 +10832,7 @@
 				C81AC6B626160091007800C5 /* TabTrayViewModel.swift in Sources */,
 				EBB89504219398E500EB91A0 /* TrackingProtectionPageStats.swift in Sources */,
 				D31F95E91AC226CB005C9F3B /* ScreenshotHelper.swift in Sources */,
+				011C97182BBEDB6B00B96A36 /* AnalyticsManager.swift in Sources */,
 				D3968F251A38FE8500CEFD3B /* TabManager.swift in Sources */,
 				2178A6A229145506002EC290 /* ReaderModeFontSizeLabel.swift in Sources */,
 				96EB6C4027DBEE9800A9D159 /* SearchGroupedItemsViewController.swift in Sources */,
@@ -10839,7 +10850,6 @@
 				968BD7EB27DFF0F8003148B3 /* ASGroup.swift in Sources */,
 				392ED7E41D0AEF56009D9B62 /* NewTabAccessors.swift in Sources */,
 				8A9AC465276CEC4E0047F5B0 /* JumpBackInCell.swift in Sources */,
-				0141287B2B7A750000283449 /* BaseButtonStyle.swift in Sources */,
 				01823F9A2B8DFE9F00986B73 /* EmailTextField.swift in Sources */,
 				1DFE57FD27BADD7D0025DE58 /* HomepageViewModel.swift in Sources */,
 				D3A9949D1A3686BD008AD1AC /* Tab.swift in Sources */,
@@ -10950,6 +10960,7 @@
 				EBB89506219398E500EB91A0 /* TabContentBlocker.swift in Sources */,
 				966206CD2698DE1E005C0A55 /* RecentlySavedViewModel.swift in Sources */,
 				D3E8EF101B97BE69001900FB /* ClearPrivateDataTableViewController.swift in Sources */,
+				01BE9C2B2BC01A06002D3844 /* MainButton.swift in Sources */,
 				C8F457AA1F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift in Sources */,
 				21357F2F294237D8004BF9FD /* RemoteTabsClientAndTabsDataSource.swift in Sources */,
 				59A68FD5260B8D520F890F4A /* ReaderPanel.swift in Sources */,
@@ -10971,6 +10982,7 @@
 				C8741FE928C4D30F00030029 /* FileManagerInterface.swift in Sources */,
 				8A3233FE28627446003E1C33 /* LocalDesktopFolder.swift in Sources */,
 				8AD40FCA27BADC4B00672675 /* ReaderModeButton.swift in Sources */,
+				011C971B2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift in Sources */,
 				8AB5958C28414DF60090F4AE /* ActionButton.swift in Sources */,
 				014840FE2B7E3D8F005CD610 /* SubscriptionsContentView.swift in Sources */,
 				2178A6A4291455F7002EC290 /* ReaderModeFontSizeButton.swift in Sources */,

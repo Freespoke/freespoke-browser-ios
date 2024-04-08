@@ -11,10 +11,9 @@ class SignUpVC: OnboardingBaseViewController {
     private let scrollView = UIScrollView()
     private var scrollableContentView: SignUpContentView!
     
-    private lazy var btnNext: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
+    private lazy var btnNext: MainButton = {
+        let btn = MainButton()
         btn.setTitle("Next", for: .normal)
-        btn.height = 56
         btn.isEnabled = false
         return btn
     }()
@@ -59,6 +58,7 @@ class SignUpVC: OnboardingBaseViewController {
     override func applyTheme() {
         super.applyTheme()
         
+        self.btnNext.applyTheme()
         self.scrollableContentView.applyTheme(currentTheme: self.themeManager.currentTheme)
         self.btnLogin.applyTheme(currentTheme: self.themeManager.currentTheme)
         self.bottomButtonsView.applyTheme(currentTheme: self.themeManager.currentTheme)

@@ -26,6 +26,7 @@ class NightModeHelper: TabContentScript {
     }
     
     static func hasEnabledDarkTheme() -> Bool {
+//        LegacyThemeManager.instance.currentName == .dark
         let theme = BuiltinThemeName(rawValue: LegacyThemeManager.instance.current.name) ?? .normal
         let isNightMode = (theme == .dark) ? true : false
         return isNightMode
@@ -42,5 +43,6 @@ class NightModeHelper: TabContentScript {
             LegacyThemeManager.instance.current = LegacyDarkTheme()
             themeManager.changeCurrentTheme(.dark)
         }
+        print("TEST: NightModeHelper changeUserInterfaceStyle to theme: ", themeType)
     }
 }

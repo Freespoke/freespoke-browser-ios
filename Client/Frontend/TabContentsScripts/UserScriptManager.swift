@@ -21,6 +21,10 @@ class UserScriptManager {
         source: "window.__firefox__.NightMode.setEnabled(true)",
         injectionTime: .atDocumentStart,
         forMainFrameOnly: true)
+    private let lightModeUserScript = WKUserScript.createInDefaultContentWorld(
+        source: "window.__firefox__.NightMode.setEnabled(false)",
+        injectionTime: .atDocumentStart,
+        forMainFrameOnly: true)
     private let printHelperUserScript = WKUserScript.createInPageContentWorld(
         source: "window.print = function () { window.webkit.messageHandlers.printHandler.postMessage({}) }",
         injectionTime: .atDocumentEnd,
@@ -82,6 +86,9 @@ class UserScriptManager {
         if nightMode {
             tab.webView?.configuration.userContentController.addUserScript(nightModeUserScript)
         }
+//        else {
+//            tab.webView?.configuration.userContentController.addUserScript(lightModeUserScript)
+//        }
         // If No Image Mode is enabled, inject a small user script to ensure
         // that it gets enabled immediately when the DOM loads.
         if noImageMode {

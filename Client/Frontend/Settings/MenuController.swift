@@ -7,7 +7,6 @@ import Storage
 import Shared
 import Foundation
 import Dispatch
-import MatomoTracker
 
 protocol MenuControllerDelegate: class {
     func didSelectOption(curCellType: MenuCellType)

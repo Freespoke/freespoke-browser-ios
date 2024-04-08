@@ -157,10 +157,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Matomo tracker
         MatomoTracker.shared.isOptedOut = false
         
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appEntry.rawValue,
-                                   action: MatomoAction.appEntryAction.rawValue,
-                                   name: MatomoName.open.rawValue,
-                                   value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appEntry,
+                                          action: AnalyticsManager.MatomoAction.appEntryAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.open)
         
         return true
     }
@@ -374,6 +373,6 @@ extension AppDelegate {
 // MARK: - MatomoTracker
 
 extension MatomoTracker {
-    static let shared: MatomoTracker = MatomoTracker(siteId: Matomo.matomoSiteId,
-                                                     baseURL: URL(string: Matomo.baseURL)!)
+    static let shared: MatomoTracker = MatomoTracker(siteId: AnalyticsManager.Matomo.matomoSiteId,
+                                                     baseURL: URL(string: AnalyticsManager.Matomo.baseURL)!)
 }

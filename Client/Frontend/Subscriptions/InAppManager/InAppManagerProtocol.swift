@@ -10,9 +10,11 @@ struct ProductIdentifiers {
     static var monthlySubscription: String {
         switch FreespokeEnvironment.current {
         case .production:
-            "premium_monthly"
+            "premium_monthly_v2" // NEW
+            // "premium_monthly" // OLD
         case .staging:
-            "premium_monthly"  // TODO: remove before upload staging build
+            "premium_monthly_v2" // NEW
+//            "premium_monthly"  // TODO: remove before upload staging build
             //            "MonthlyRenewableSubscription_staging"   // TODO: uncommit before upload staging build
         }
     }
@@ -20,9 +22,11 @@ struct ProductIdentifiers {
     static var yearlySubscription: String {
         switch FreespokeEnvironment.current {
         case .production:
-            "premium_annual"
+            "premium_annual_v2"  // NEW
+            // "premium_annual"  // OLD
         case .staging:
-            "premium_annual"  // TODO: remove before upload staging build
+            "premium_annual_v2"  // NEW
+//            "premium_annual"  // TODO: remove before upload staging build
             //            "YearlyRenewableSubscription_staging"   // TODO: uncommit before upload staging build
         }
     }

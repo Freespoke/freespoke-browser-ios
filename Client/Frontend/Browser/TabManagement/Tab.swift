@@ -319,23 +319,42 @@ class Tab: NSObject {
 
             contentBlocker?.noImageMode(enabled: noImageMode)
 
-            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: LegacyThemeManager.instance.currentName == .dark, noImageMode: noImageMode)
         }
     }
+    
+//    var nightMode: Bool {
+//        didSet {
+////            guard nightMode != oldValue else { return }
+//            print("TEST: nightMode did set: ", nightMode)
+//            webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+//            
+////            if (window.__firefox__){window.__firefox__.NightMode.setEnabled(false);}
+//            
+////            webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+//            // For WKWebView background color to take effect, isOpaque must be false,
+//            // which is counter-intuitive. Default is true. The color is previously
+//            // set to black in the WKWebView init.
+//            webView?.isOpaque = !nightMode
+//
+//            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: !nightMode, noImageMode: noImageMode)
+//            print("TEST: injectUserScriptsIntoTab: ", nightMode)
+//        }
+//    }
 
-    var nightMode: Bool {
-        didSet {
-            guard nightMode != oldValue else { return }
-
-            webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
-            // For WKWebView background color to take effect, isOpaque must be false,
-            // which is counter-intuitive. Default is true. The color is previously
-            // set to black in the WKWebView init.
-            webView?.isOpaque = !nightMode
-
-            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
-        }
-    }
+//    var nightMode: Bool {
+//        didSet {
+//            guard nightMode != oldValue else { return }
+//
+//            webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+//            // For WKWebView background color to take effect, isOpaque must be false,
+//            // which is counter-intuitive. Default is true. The color is previously
+//            // set to black in the WKWebView init.
+//            webView?.isOpaque = !nightMode
+//
+//            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+//        }
+//    }
 
     var contentBlocker: FirefoxTabContentBlocker?
 
@@ -386,7 +405,7 @@ class Tab: NSObject {
          faviconHelper: SiteImageHandler = DefaultSiteImageHandler.factory(),
          logger: Logger = DefaultLogger.shared) {
         self.configuration = configuration
-        self.nightMode = false
+//        self.nightMode = LegacyThemeManager.instance.currentName == .dark
         self.noImageMode = false
         self.profile = profile
         self.metadataManager = TabMetadataManager(metadataObserver: profile.places)
@@ -464,6 +483,7 @@ class Tab: NSObject {
             configureEdgeSwipeGestureRecognizers()
             self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
             self.webView?.addObserver(self, forKeyPath: KVOConstants.title.rawValue, options: .new, context: nil)
+            let nightMode = LegacyThemeManager.instance.currentName == .dark
             UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
             tabDelegate?.tab?(self, didCreateWebView: webView)
         }
@@ -791,6 +811,33 @@ class Tab: NSObject {
 
     func applyTheme() {
         UITextField.appearance().keyboardAppearance = isPrivate ? .dark : (LegacyThemeManager.instance.currentName == .dark ? .dark : .light)
+        
+//        self.nightMode = isPrivate ? true : (LegacyThemeManager.instance.currentName == .dark ? true : false)
+        
+        let nightMode = LegacyThemeManager.instance.currentName == .dark
+        print("TEST: nightMode did set: ", nightMode)
+        webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+        
+        //            if (window.__firefox__){window.__firefox__.NightMode.setEnabled(false);}
+        
+        //            webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+        // For WKWebView background color to take effect, isOpaque must be false,
+        // which is counter-intuitive. Default is true. The color is previously
+        // set to black in the WKWebView init.
+        webView?.isOpaque = !nightMode
+        
+        print("TEST: injectUserScriptsIntoTab: ", nightMode)
+        UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+        
+//        if let url = webView?.url {
+//            if url.absoluteString.contains("freespoke.com") == true {
+//                UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: !nightMode, noImageMode: noImageMode)
+//            } else {
+//                UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+//            }
+//        } else {
+//            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+//        }
     }
 
     func getProviderForUrl() -> SearchEngine {

@@ -9,7 +9,6 @@ import Common
 import Kingfisher
 import SwiftyJSON
 import Shared
-import MatomoTracker
 
 protocol FreespokeHomepageDelegate {
     func didPressSearch()
@@ -71,7 +70,6 @@ class FreespokeHomepage: UIView {
     @IBOutlet weak var btnFreespokeWayDown: UIButton!
     
     @IBOutlet weak var avatarView: UIView!
-    
     
     private var profileIconView = ProfileIconView()
     
@@ -392,7 +390,7 @@ class FreespokeHomepage: UIView {
                                                              mainImageAttribution: story["main_image"]["attribution"].stringValue,
                                                              publisher_icons: story["publisher_icons"].arrayValue)
                                 
-                                self.arrTrendingStory.append(contentsOf: [newStory])
+                                self.arrTrendingStory.append(newStory)// .append(contentsOf: [newStory])
                             }
                         }
                         
@@ -452,14 +450,18 @@ class FreespokeHomepage: UIView {
     // MARK: - Action Methods
     
     @IBAction func btnSearch(_ sender: Any) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeSearch.rawValue, name: MatomoName.search.rawValue, value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                          action: AnalyticsManager.MatomoAction.appHomeSearch.rawValue,
+                                          name: AnalyticsManager.MatomoName.search)
         
         delegate?.didPressSearch()
     }
     
     @IBAction func btnFreespokeWayUp(_ sender: UIButton) {
         if let text = sender.titleLabel?.text {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.clickName.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeFreespoke.rawValue + text,
+                                              name: AnalyticsManager.MatomoName.clickName)
         }
         
         delegate?.showURL(url: urlSearch)
@@ -467,7 +469,9 @@ class FreespokeHomepage: UIView {
     
     @IBAction func btnFreespokeWayMiddle(_ sender: UIButton) {
         if let text = sender.titleLabel?.text {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.clickName.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeFreespoke.rawValue + text,
+                                              name: AnalyticsManager.MatomoName.clickName)
         }
         
         delegate?.showURL(url: urlShopping)
@@ -475,7 +479,9 @@ class FreespokeHomepage: UIView {
     
     @IBAction func btnFreespokeWayDown(_ sender: UIButton) {
         if let text = sender.titleLabel?.text {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.clickName.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeFreespoke.rawValue + text,
+                                              name: AnalyticsManager.MatomoName.clickName)
         }
         
         delegate?.showURL(url: urlTrending)
@@ -488,6 +494,9 @@ class FreespokeHomepage: UIView {
     @IBAction func btnTrendingNews(_ sender: Any) {
         //pageTrending = pageTrending + 1
         //getTrendngStory(page: pageTrending)
+        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                          action: AnalyticsManager.MatomoAction.appHomeTrendingNewsStoryViewMoreClick.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         
         delegate?.showURL(url: "https://freespoke.com/news/what-is-hot")
     }
@@ -499,6 +508,9 @@ class FreespokeHomepage: UIView {
     @IBAction func btnShopUsa(_ sender: Any) {
         //pageShoppping = pageShoppping + 1
         //getShopppingCollection(page: pageShoppping)
+        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                          action: AnalyticsManager.MatomoAction.appHomeShopUsaViewMoreClick.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         
         delegate?.showURL(url: "https://freespoke.com/shop")
     }
@@ -737,7 +749,9 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch collectionView {
         case collectionViewBookmarks:
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeBookmarks.rawValue, name: MatomoName.clickName.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeBookmarks.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
             
             let site = arrBookmarks[indexPath.row]
             
@@ -745,13 +759,17 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             
         case collectionViewTrendingNews:
             let story = arrTrendingStory[indexPath.row]
-            
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeNews.rawValue, name: story.name, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeTrendingNewsStoryClick.rawValue,
+                                              name: story.name,
+                                              url: story.url.asURL)
             
             delegate?.showURL(url: story.url)
             
         case collectionViewRecentlyViewd:
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeRecently.rawValue, name: MatomoName.clickName.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeRecently.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
             
             let site = arrRecenlyViewed[indexPath.row]
             
@@ -762,7 +780,10 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
         case collectionViewShopUsa:
             let shop = arrShoppingCollection[indexPath.row]
             
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeShop.rawValue, name: shop.url, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeShopUsaClick.rawValue,
+                                              name: shop.title,
+                                              url: shop.url.asURL)
             
             delegate?.showURL(url: shop.url)
             

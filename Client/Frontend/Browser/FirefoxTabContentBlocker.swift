@@ -66,9 +66,9 @@ class FirefoxTabContentBlocker: TabContentBlocker, TabContentScript {
     }
 
     func setupForTab() {
-        guard let tab = tab else { return }
-        let rules = BlocklistFileName.listsForMode(strict: blockingStrengthPref == .strict)
-        ContentBlocker.shared.setupTrackingProtection(forTab: tab, isEnabled: isEnabled, rules: rules)
+//        guard let tab = tab else { return }
+//        let rules = BlocklistFileName.listsForMode(strict: blockingStrengthPref == .strict)
+//        ContentBlocker.shared.setupTrackingProtection(forTab: tab, isEnabled: isEnabled, rules: rules)
     }
 
     override func notifiedTabSetupRequired() {

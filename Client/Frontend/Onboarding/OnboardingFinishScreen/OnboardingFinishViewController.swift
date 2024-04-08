@@ -8,10 +8,9 @@ import Shared
 class OnboardingFinishViewController: OnboardingBaseViewController {
     private var contentView: OnboardingContrentView!
     
-    private lazy var btnFinish: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
+    private lazy var btnFinish: MainButton = {
+        let btn = MainButton()
         btn.setTitle("Finish", for: .normal)
-        btn.height = 56
         return btn
     }()
     
@@ -40,6 +39,7 @@ class OnboardingFinishViewController: OnboardingBaseViewController {
     override func applyTheme() {
         super.applyTheme()
         
+        self.btnFinish.applyTheme()
         self.bottomButtonsView.applyTheme(currentTheme: self.themeManager.currentTheme)
         self.contentView.applyTheme(currentTheme: self.themeManager.currentTheme)
     }

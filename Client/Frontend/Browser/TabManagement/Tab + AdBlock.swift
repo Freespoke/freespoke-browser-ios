@@ -7,45 +7,22 @@ import UIKit
 extension Tab {
     func prepareBlocker() {
         // MARK: For ad blocker
-        NotificationCenter.default.addObserver(self, selector: #selector(adBlockChanged), name: Notification.Name.adBlockSettingsChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(adBlockChanged), name: Notification.Name.updateAdBlockRules, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(shouldDisableAdBlockerFor(_:)), name: Notification.Name.disableAdBlockerForCurrentDomain, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(shouldEnableAdBlockerFor(_:)), name: Notification.Name.enableAdBlockerForCurrentDomain, object: nil)
-
-        self.loadAdBlocking { [weak self] in
+        
+        AdBlockManager.shared.setupAdBlockInternalRuleLists(webView: self.webView, completion: { })
+        
+//        self.loadAdBlocking { [weak self] in
 //            DispatchQueue.main.sync { [weak self] in
 //                guard let webView = self?.webView else { return }
 //                if self?.webView?.url == nil {
 //                    let _ = self?.webView?.load(URLRequest(url: URL(string: "https://localhost:8080")!))
 //                }
 //            }
-        }
+//        }
     }
-    
-    func loadAdBlocking(completion: @escaping (() -> Void)) {
-        Task {
-            if let shouldBlockAds = try? await AdBlockManager.shared.shouldBlockAds(), shouldBlockAds {
-                let group = DispatchGroup()
-                
-                for hostFile in HostFileNames.allValues {
-                    group.enter()
-                    AdBlockManager.shared.setupAdBlock(forKey: hostFile.rawValue, filename: hostFile.rawValue, webView: webView) {
-                        group.leave()
-                    }
-                }
-                
-                group.enter()
-                AdBlockManager.shared.setupAdBlockFromStringLiteral(forWebView: self.webView) {
-                    group.leave()
-                }
-                
-                group.notify(queue: .main, execute: {
-                    completion()
-                })
-            } else {
-                completion()
-            }
-        }
-    }
+
     
     @MainActor
     @objc func adBlockChanged() {
@@ -56,9 +33,9 @@ extension Tab {
             if let shouldBlockAds = try? await AdBlockManager.shared.shouldBlockAds(), shouldBlockAds {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
-                    self.loadAdBlocking {
+                    AdBlockManager.shared.setupAdBlockInternalRuleLists(webView: self.webView, completion: {
                         webView.load(currentRequest)
-                    }
+                    })
                 }
             } else {
                 DispatchQueue.main.async {

@@ -60,6 +60,10 @@ enum Constants: String {
         static let iPadContentWidthStaticValue: CGFloat = 480
     }
     
+    enum EasyListsURL {        
+        static let easyList = "https://easylist.to/easylist/easylist.txt"
+    }
+    
     static var apiBaseURL: String {
         switch FreespokeEnvironment.current {
         case .production:
@@ -159,64 +163,4 @@ class Utils {
             alpha: CGFloat(1.0)
         )
     }
-}
-
-enum Matomo {
-    static var baseURL: String {
-        return "https://matomo.freespoke.com/matomo.php"
-    }
-    
-    static var matomoSiteId: String {
-        switch FreespokeEnvironment.current {
-        case .production:
-            return "6"
-        case .staging:
-            return "7"
-        }
-    }
-}
-
-enum MatomoCategory: String {
-    case appEntry           = "app entry"
-    case appMenuCategory    = "app menu"
-    case appHome            = "app home"
-    case appTabs            = "app tabs"
-    case appShare           = "app share"
-    case appOnboardCategory = "app onboard"
-}
-
-enum MatomoAction: String {
-    case appEntryAction     = "app entry"
-    case appMenuTab         = "app menu tab click - "
-    case appHomeSearch      = "app home search"
-    case appHomeBookmarks   = "app home my bookmarks click"
-    case appHomeNews        = "app home trending news story view summary click"
-    case appHomeRecently    = "app home recently viewed click"
-    case appHomeShop        = "app home shop usa store product click"
-    case appHomeFreespoke   = "app home the freespoke way click - "
-    case appTabsCloseTabsMenu   = "app tabs close tabs menu"
-    case appTabsNewTab          = "app tabs new tab click"
-    case appTabsCloseAllTabs    = "app tabs close all tabs click"
-    case appTabsPrivateBrowsing = "app tabs private browsing click"
-    case appTabsRegularBrowsing = "app tabs regular browsing click"
-    case appShareMenu           = "app share from menu"
-    // app onboard actions
-    case appOnbCloseClickAction = "app onboard close click"
-    case appOnbWithoutAccClickAction = "app onboard continue without an account click"
-    case appOnbWithoutAccSetAsDefBrowserClickAction = "app onboard continue without an account set as default browser click"
-    case appOnbWithoutAccAllowNotificationsClickAction = "app onboard continue without an account allow notifications click"
-    case appOnbCreateAccClickAction = "app onboard create account click"
-    case appOnbCreateAccContinueWithoutPremiumClickAction = "app onboard create account continue without premium click"
-    case appOnbCreateAccPremiumPriceClickAction = "app onboard create account premium price click"
-    case appOnbCreateAccSetAsDefBrowserClickAction = "app onboard create account an account set as default browser click"
-    case appOnbCreateAccAllowNotificationsClickAction = "app onboard create account allow notifications click"
-    // subscription, manage plan
-    case appManageUpdatePlanClickAction = "app manage update plan click"
-    case appManageСancelPlanClickAction = "app manage cancel plan click "
-}
-
-enum MatomoName: String {
-    case open               = "open"
-    case clickName          = "click"
-    case search             = "search"
 }

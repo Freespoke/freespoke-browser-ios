@@ -4,7 +4,6 @@
 
 import UIKit
 import Shared
-import MatomoTracker
 import Common
 
 class OnboardingBaseViewController: UIViewController, Themeable {
@@ -136,10 +135,9 @@ extension OnboardingBaseViewController {
     }
     
     @objc func onboardingCloseAction(animated: Bool = true) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
-                                   action: MatomoAction.appOnbCloseClickAction.rawValue,
-                                   name: MatomoName.clickName.rawValue,
-                                   value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,
+                                          action: AnalyticsManager.MatomoAction.appOnbCloseClickAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.profile.prefs.setInt(1, forKey: PrefsKeys.IntroSeen)

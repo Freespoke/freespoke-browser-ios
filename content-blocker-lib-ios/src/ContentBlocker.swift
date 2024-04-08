@@ -18,7 +18,16 @@ enum BlocklistCategory: CaseIterable {
             return .advertising
         case .analyticsURLs, .analyticsCookies:
             return .analytics
-        case .socialURLs, .socialCookies:
+        case .socialURLs, .socialCookies,
+                .adaway,
+                .camelon,
+                .zeus,
+                .tracker,
+                .adServerHosts,
+                .ultimateAdBlock,
+                .easyList,
+                .easyFanboyAnnoyance,
+                .easyPrivacyList:
             return .social
         case .cryptomining:
             return .cryptomining
@@ -40,11 +49,23 @@ enum BlocklistFileName: String, CaseIterable {
     case analyticsCookies = "disconnect-block-cookies-analytics"
     // case contentCookies = "disconnect-block-cookies-content"
     case socialCookies = "disconnect-block-cookies-social"
+    // MARK: EasyList and others cases
+    case adaway
+    case camelon
+    case zeus
+    case tracker
+    case adServerHosts
+    case ultimateAdBlock
+    case easyList
+    case easyFanboyAnnoyance
+    case easyPrivacyList
+    
+    
 
     var filename: String { return self.rawValue }
 
     static var basic: [BlocklistFileName] { return [.advertisingCookies, .analyticsCookies, .socialCookies, .cryptomining, .fingerprinting] }
-    static var strict: [BlocklistFileName] { return [.advertisingURLs, .analyticsURLs, .socialURLs, cryptomining, fingerprinting] }
+    static var strict: [BlocklistFileName] { return [.advertisingURLs, .analyticsURLs, .socialURLs, cryptomining, fingerprinting, .adaway, .camelon, .zeus, .tracker, .adServerHosts, .ultimateAdBlock, .easyList, .easyFanboyAnnoyance, .easyPrivacyList] }
 
     static func listsForMode(strict: Bool) -> [BlocklistFileName] {
         return strict ? BlocklistFileName.strict : BlocklistFileName.basic
@@ -115,7 +136,10 @@ class ContentBlocker {
         for list in rules {
             let name = list.filename
             ruleStore.lookUpContentRuleList(forIdentifier: name) { rule, error in
+                print("error: \(error)")
+                print("rule list adding : \(rule?.identifier)")
                 guard let rule = rule else { return }
+                print("rule list added: \(rule.identifier)")
                 self.add(contentRuleList: rule, toTab: tab)
             }
         }
@@ -268,33 +292,33 @@ extension ContentBlocker {
     }
 
     func compileListsNotInStore(completion: @escaping () -> Void) {
-        let blocklists = BlocklistFileName.allCases.map { $0.filename }
-        let deferreds: [Deferred<Void>] = blocklists.map { filename in
-            let result = Deferred<Void>()
-            ruleStore.lookUpContentRuleList(forIdentifier: filename) { contentRuleList, error in
-                if contentRuleList != nil {
-                    result.fill(())
-                    return
-                }
-                self.loadJsonFromBundle(forResource: filename) { jsonString in
-                    var str = jsonString
-                    guard let range = str.range(of: "]", options: String.CompareOptions.backwards) else { return }
-                    str = str.replacingCharacters(in: range, with: self.safelistAsJSON() + "]")
-                    self.ruleStore.compileContentRuleList(forIdentifier: filename, encodedContentRuleList: str) { rule, error in
-                        if let error = error {
-                            assertionFailure("Content blocker error: \(error)")
-                        }
-                        assert(rule != nil)
-
-                        result.fill(())
-                    }
-                }
-            }
-            return result
-        }
-
-        all(deferreds).uponQueue(.main) { _ in
-            completion()
-        }
+//        let blocklists = BlocklistFileName.allCases.map { $0.filename }
+//        let deferreds: [Deferred<Void>] = blocklists.map { filename in
+//            let result = Deferred<Void>()
+//            ruleStore.lookUpContentRuleList(forIdentifier: filename) { contentRuleList, error in
+//                if contentRuleList != nil {
+//                    result.fill(())
+//                    return
+//                }
+//                self.loadJsonFromBundle(forResource: filename) { jsonString in
+//                    var str = jsonString
+//                    guard let range = str.range(of: "]", options: String.CompareOptions.backwards) else { return }
+//                    str = str.replacingCharacters(in: range, with: self.safelistAsJSON() + "]")
+//                    self.ruleStore.compileContentRuleList(forIdentifier: filename, encodedContentRuleList: str) { rule, error in
+//                        if let error = error {
+//                            assertionFailure("Content blocker error: \(error)")
+//                        }
+//                        assert(rule != nil)
+//
+//                        result.fill(())
+//                    }
+//                }
+//            }
+//            return result
+//        }
+//
+//        all(deferreds).uponQueue(.main) { _ in
+//            completion()
+//        }
     }
 }

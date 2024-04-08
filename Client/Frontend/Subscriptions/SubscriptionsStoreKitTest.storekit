@@ -91,7 +91,7 @@
 
           ],
           "displayPrice" : "5",
-          "familyShareable" : false,
+          "familyShareable" : true,
           "groupNumber" : 1,
           "internalID" : "075B0800",
           "introductoryOffer" : {
@@ -106,7 +106,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "premium_monthly",
+          "productID" : "premium_monthly_v2",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "MonthSubscriptions",
           "subscriptionGroupID" : "4E41A771",
@@ -120,7 +120,7 @@
 
           ],
           "displayPrice" : "30",
-          "familyShareable" : false,
+          "familyShareable" : true,
           "groupNumber" : 1,
           "internalID" : "41E877A5",
           "introductoryOffer" : {
@@ -135,7 +135,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "premium_annual",
+          "productID" : "premium_annual_v2",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "YearsSubscriptions",
           "subscriptionGroupID" : "4E41A771",

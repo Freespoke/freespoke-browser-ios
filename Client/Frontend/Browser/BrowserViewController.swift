@@ -1714,6 +1714,10 @@ class BrowserViewController: UIViewController {
     }
 
     func presentShareSheet(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
+        AnalyticsManager.trackMatomoEvent(category: .appShareCategory,
+                                          action: AnalyticsManager.MatomoAction.appWebWrapperShareAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
+
         let helper = ShareExtensionHelper(url: url, tab: tab)
         let controller = helper.createActivityViewController({ [unowned self] completed, activityType in
             switch activityType {
@@ -2022,9 +2026,9 @@ extension BrowserViewController: TabDelegate {
 
         tab.addContentScript(LocalRequestHelper(), name: LocalRequestHelper.name())
 
-        let blocker = FirefoxTabContentBlocker(tab: tab, prefs: profile.prefs)
-        tab.contentBlocker = blocker
-        tab.addContentScript(blocker, name: FirefoxTabContentBlocker.name())
+//        let blocker = FirefoxTabContentBlocker(tab: tab, prefs: profile.prefs)
+//        tab.contentBlocker = blocker
+//        tab.addContentScript(blocker, name: FirefoxTabContentBlocker.name())
 
         tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name())
     }

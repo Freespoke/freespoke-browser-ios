@@ -6,17 +6,16 @@ import Foundation
 import Shared
 
 final class WhiteListBtnCell: UITableViewCell {
-    
     static let reuseIdentifier = String(describing: type(of: WhiteListBtnCell.self))
     
-    private let btnAction: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: nil))
+    private let btnAction: MainButton = {
+        let btn = MainButton()
         return btn
     }()
     
     private var currentTheme: Theme? {
         didSet {
-            self.btnAction.setStyle(style: .greenStyle(currentTheme: self.currentTheme))
+            self.btnAction.applyTheme()
         }
     }
     

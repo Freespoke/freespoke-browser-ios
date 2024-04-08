@@ -5,15 +5,13 @@
 import UIKit
 import Shared
 import OneSignal
-import MatomoTracker
 
 class OnboardingEnableNotificationsVC: OnboardingBaseViewController {
     private var contentView: OnboardingContrentView!
     
-    private lazy var btnNext: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
+    private lazy var btnNext: MainButton = {
+        let btn = MainButton()
         btn.setTitle("Next", for: .normal)
-        btn.height = 56
         return btn
     }()
     
@@ -63,6 +61,7 @@ class OnboardingEnableNotificationsVC: OnboardingBaseViewController {
         super.applyTheme()
         
         self.contentView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        self.btnNext.applyTheme()
         
         switch self.themeManager.currentTheme.type {
         case .dark:
@@ -110,15 +109,13 @@ extension OnboardingEnableNotificationsVC {
     @objc private func btnNextTapped(_ sender: UIButton) {
         switch self.source {
         case .continueWithoutAccount:
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
-                                       action: MatomoAction.appOnbWithoutAccAllowNotificationsClickAction.rawValue,
-                                       name: MatomoName.clickName.rawValue,
-                                       value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,
+                                              action: AnalyticsManager.MatomoAction.appOnbWithoutAccAllowNotificationsClickAction.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
         case .createAccount:
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
-                                       action: MatomoAction.appOnbCreateAccAllowNotificationsClickAction.rawValue,
-                                       name: MatomoName.clickName.rawValue,
-                                       value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,
+                                              action: AnalyticsManager.MatomoAction.appOnbCreateAccAllowNotificationsClickAction.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
         }
         
         // Ask for setup notification setting

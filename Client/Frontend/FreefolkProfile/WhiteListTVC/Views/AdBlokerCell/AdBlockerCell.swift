@@ -97,7 +97,7 @@ final class AdBlockerCell: UITableViewCell {
     @objc private func tappedOnBtnSwitcher(_ sender: UISwitch) {
         print("sender.isOn: \(sender.isOn)")
         UserDefaults.standard.setValue(sender.isOn, forKey: SettingsKeys.isEnabledBlocker)
-        NotificationCenter.default.post(name: Notification.Name.adBlockSettingsChanged, object: nil)
+        NotificationCenter.default.post(name: Notification.Name.updateAdBlockRules, object: nil)
         self.closureTappedOnBtnSwitch?()
     }
 }

@@ -131,6 +131,9 @@ class ProfileIconView: UIView {
             self.stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
             self.stackView.heightAnchor.constraint(equalToConstant: 40),
             
+            self.starImageView.heightAnchor.constraint(equalToConstant: 16),
+            self.starImageView.widthAnchor.constraint(equalToConstant: 16),
+            
             self.avatarImageView.heightAnchor.constraint(equalToConstant: 40),
             self.avatarImageView.widthAnchor.constraint(equalToConstant: 40)
         ])

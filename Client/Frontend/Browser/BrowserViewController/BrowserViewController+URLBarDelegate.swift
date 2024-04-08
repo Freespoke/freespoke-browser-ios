@@ -168,40 +168,40 @@ extension BrowserViewController: URLBarDelegate {
     }
 
     func urlBarDidTapShield(_ urlBar: URLBarView) {
-        if let tab = self.tabManager.selectedTab {
-            let etpViewModel = EnhancedTrackingProtectionMenuVM(tab: tab, profile: profile)
-            etpViewModel.onOpenSettingsTapped = {
-                let settingsTableViewController = AppSettingsTableViewController(
-                    with: self.profile,
-                    and: self.tabManager,
-                    delegate: self,
-                    deeplinkingTo: .contentBlocker)
-
-                let controller = ThemedNavigationController(rootViewController: settingsTableViewController)
-                controller.presentingModalViewControllerDelegate = self
-
-                // Wait to present VC in an async dispatch queue to prevent a case where dismissal
-                // of this popover on iPad seems to block the presentation of the modal VC.
-                DispatchQueue.main.async {
-                    self.present(controller, animated: true, completion: nil)
-                }
-            }
-
-            let etpVC = EnhancedTrackingProtectionMenuVC(viewModel: etpViewModel)
-            if UIDevice.current.userInterfaceIdiom == .phone {
-                etpVC.modalPresentationStyle = .custom
-                etpVC.transitioningDelegate = self
-            } else {
-                etpVC.asPopover = true
-                etpVC.modalPresentationStyle = .popover
-                etpVC.popoverPresentationController?.sourceView = urlBar.locationView.trackingProtectionButton
-                etpVC.popoverPresentationController?.permittedArrowDirections = .up
-                etpVC.popoverPresentationController?.delegate = self
-            }
-
-            TelemetryWrapper.recordEvent(category: .action, method: .press, object: .trackingProtectionMenu)
-            self.present(etpVC, animated: true, completion: nil)
-        }
+//        if let tab = self.tabManager.selectedTab {
+//            let etpViewModel = EnhancedTrackingProtectionMenuVM(tab: tab, profile: profile)
+//            etpViewModel.onOpenSettingsTapped = {
+//                let settingsTableViewController = AppSettingsTableViewController(
+//                    with: self.profile,
+//                    and: self.tabManager,
+//                    delegate: self,
+//                    deeplinkingTo: .contentBlocker)
+//
+//                let controller = ThemedNavigationController(rootViewController: settingsTableViewController)
+//                controller.presentingModalViewControllerDelegate = self
+//
+//                // Wait to present VC in an async dispatch queue to prevent a case where dismissal
+//                // of this popover on iPad seems to block the presentation of the modal VC.
+//                DispatchQueue.main.async {
+//                    self.present(controller, animated: true, completion: nil)
+//                }
+//            }
+//
+//            let etpVC = EnhancedTrackingProtectionMenuVC(viewModel: etpViewModel)
+//            if UIDevice.current.userInterfaceIdiom == .phone {
+//                etpVC.modalPresentationStyle = .custom
+//                etpVC.transitioningDelegate = self
+//            } else {
+//                etpVC.asPopover = true
+//                etpVC.modalPresentationStyle = .popover
+//                etpVC.popoverPresentationController?.sourceView = urlBar.locationView.trackingProtectionButton
+//                etpVC.popoverPresentationController?.permittedArrowDirections = .up
+//                etpVC.popoverPresentationController?.delegate = self
+//            }
+//
+//            TelemetryWrapper.recordEvent(category: .action, method: .press, object: .trackingProtectionMenu)
+//            self.present(etpVC, animated: true, completion: nil)
+//        }
     }
 
     func urlBarDidPressStop(_ urlBar: URLBarView) {

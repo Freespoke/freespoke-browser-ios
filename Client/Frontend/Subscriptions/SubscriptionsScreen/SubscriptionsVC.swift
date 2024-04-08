@@ -6,12 +6,13 @@ import UIKit
 import Shared
 import StoreKit
 import Combine
-import MatomoTracker
 
 class SubscriptionsVC: OnboardingBaseViewController {
     private let viewModel: SubscriptionsVCViewModel
     private let scrollView = UIScrollView()
     private var scrollableContentView: SubscriptionsContentView!
+    
+    private var activityIndicator = BaseActivityIndicator(activityIndicatorSize: .large)
     
     // MARK: Bottom buttons view
     
@@ -25,27 +26,23 @@ class SubscriptionsVC: OnboardingBaseViewController {
         return lbl
     }()
     
-    private lazy var btnMonthlySubscription: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
-        btn.height = 56
+    private lazy var btnMonthlySubscription: MainButton = {
+        let btn = MainButton()
         return btn
     }()
     
-    private lazy var btnYearlySubscription: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
-        btn.height = 56
+    private lazy var btnYearlySubscription: MainButton = {
+        let btn = MainButton()
         return btn
     }()
     
-    private lazy var btnUpdateSubscription: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
-        btn.height = 56
+    private lazy var btnUpdateSubscription: MainButton = {
+        let btn = MainButton()
         return btn
     }()
     
-    private lazy var btnCancelSubscription: BaseButton = {
-        let btn = BaseButton(style: .clearStyle(currentTheme: self.themeManager.currentTheme))
-        btn.height = 56
+    private lazy var btnCancelSubscription: SecondaryButton = {
+        let btn = SecondaryButton()
         return btn
     }()
     
@@ -116,7 +113,23 @@ class SubscriptionsVC: OnboardingBaseViewController {
         self.setupBottomButtonsView()
         
         self.btnRestorePurchases.tapClosure = { [weak self] in
-            self?.viewModel.restorePurchases()
+            self?.showActivityIndicatorOverFullScreen()
+            self?.viewModel.restorePurchases(completion: { [weak self] status in
+                guard let self = self else { return }
+                self.removeActivityIndicatorFromScreen()
+            })
+        }
+    }
+    
+    private func showActivityIndicatorOverFullScreen() {
+        guard let window = self.view.window else { return }
+        guard self.activityIndicator.superview == nil else { return }
+        self.activityIndicator.start(pinToView: window, overlayMode: .standart)
+    }
+    
+    private func removeActivityIndicatorFromScreen() {
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.removeFromSuperview()
         }
     }
     
@@ -124,12 +137,20 @@ class SubscriptionsVC: OnboardingBaseViewController {
         super.applyTheme()
         
         self.btnRestorePurchases.applyTheme(currentTheme: self.themeManager.currentTheme)
+        
+        self.btnMonthlySubscription.applyTheme()
+        self.btnYearlySubscription.applyTheme()
+        self.btnUpdateSubscription.applyTheme()
+        self.btnCancelSubscription.applyTheme()
+        
         self.scrollableContentView.applyTheme(currentTheme: self.themeManager.currentTheme)
+        self.activityIndicator.applyTheme(currentTheme: self.themeManager.currentTheme)
         
         switch self.themeManager.currentTheme.type {
         case .dark:
             self.lblDescription.textColor = UIColor.lightGray
             self.btnContinue.setTitleColor(UIColor.whiteColor, for: .normal)
+            
         case .light:
             self.lblDescription.textColor = UIColor.blackColor
             self.btnContinue.setTitleColor(UIColor.blackColor, for: .normal)
@@ -182,10 +203,9 @@ extension SubscriptionsVC {
     }
     
     @objc private func btnMonthlySubscriptionTapped(_ sender: UIButton) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
-                                   action: MatomoAction.appOnbCreateAccPremiumPriceClickAction.rawValue,
-                                   name: MatomoName.clickName.rawValue,
-                                   value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,
+                                          action: AnalyticsManager.MatomoAction.appOnbCreateAccPremiumPriceClickAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         self.btnMonthlySubscription.startIndicator()
         self.btnYearlySubscription.isEnabled = false
         self.viewModel.purchaseMonthlySubscription(completion: { [weak self] status in
@@ -199,10 +219,9 @@ extension SubscriptionsVC {
     }
     
     @objc private func btnYearlySubscriptionTapped(_ sender: UIButton) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
-                                   action: MatomoAction.appOnbCreateAccPremiumPriceClickAction.rawValue,
-                                   name: MatomoName.clickName.rawValue,
-                                   value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,
+                                          action: AnalyticsManager.MatomoAction.appOnbCreateAccPremiumPriceClickAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         self.btnYearlySubscription.startIndicator()
         self.btnMonthlySubscription.isEnabled = false
         self.viewModel.purchaseYearlySubscription(completion: { [weak self] status in
@@ -216,25 +235,31 @@ extension SubscriptionsVC {
     }
     
     @objc private func btnUpdateSubscriptionTapped(_ sender: UIButton) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue,
-                                   action: MatomoAction.appManageUpdatePlanClickAction.rawValue,
-                                   name: MatomoName.clickName.rawValue,
-                                   value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                          action: AnalyticsManager.MatomoAction.appManageUpdatePlanClickAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         
-        guard let subscriptionSource = AppSessionManager.shared.decodedJWTToken?.subscription?.subscriptionSource else { return }
+        let subscriptionSource = AppSessionManager.shared.decodedJWTToken?.subscription?.subscriptionSource
+        
         switch subscriptionSource {
         case .ios:
             if let appStoreSubscriptionURL = URL(string: Constants.appleNativeSubscriptions.rawValue) {
                 UIApplication.shared.open(appStoreSubscriptionURL, options: [:], completionHandler: nil)
             }
+        default:
+            self.btnUpdateSubscription.startIndicator()
+            self.performUpdateCancelSubscriptionAction(completion: { [weak self] in
+                guard let self = self else { return }
+                self.btnUpdateSubscription.stopIndicator()
+            })
         }
     }
     
     @objc private func btnCancelSubscriptionTapped(_ sender: UIButton) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue,
-                                   action: MatomoAction.appManageСancelPlanClickAction.rawValue,
-                                   name: MatomoName.clickName.rawValue,
-                                   value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                          action: AnalyticsManager.MatomoAction.appManageСancelPlanClickAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
+
         let subscriptionSource = AppSessionManager.shared.decodedJWTToken?.subscription?.subscriptionSource
         switch subscriptionSource {
         case .ios:
@@ -243,39 +268,45 @@ extension SubscriptionsVC {
             }
         default:
             self.btnCancelSubscription.startIndicator()
-            self.viewModel.getLinkForManagingSubscription(onSuccess: { [weak self] managingSubscriptionModel in
+            self.performUpdateCancelSubscriptionAction(completion: { [weak self] in
                 guard let self = self else { return }
                 self.btnCancelSubscription.stopIndicator()
-                if let linkString = managingSubscriptionModel.manageSubscriptionLink,
-                   let linkForManagingSubscription = URL(string: linkString) {
-                    DispatchQueue.main.async {
-                        UIApplication.shared.open(linkForManagingSubscription, options: [:], completionHandler: nil)
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { [weak self] in
-                        guard let self = self else { return }
-                        self.motionDismissViewController(animated: true)
-                    })
-                } else {
-                    let error = CustomError.somethingWentWrong
-                    UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
-                }
-            },
-                                                          onFailure: { [weak self] error in
-                guard let self = self else { return }
-                self.btnCancelSubscription.stopIndicator()
-                DispatchQueue.main.async {
-                    UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
-                }
             })
         }
     }
     
+    private func performUpdateCancelSubscriptionAction(completion: (() -> Void)?) {
+        self.viewModel.getLinkForManagingSubscription(onSuccess: { [weak self] managingSubscriptionModel in
+            if let linkString = managingSubscriptionModel.manageSubscriptionLink,
+               let linkForManagingSubscription = URL(string: linkString) {
+                DispatchQueue.main.async {
+                    UIApplication.shared.open(linkForManagingSubscription, options: [:], completionHandler: nil)
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { [weak self] in
+                    guard let self = self else { return }
+                    self.motionDismissViewController(animated: true)
+                })
+            } else {
+                let error = CustomError.somethingWentWrong
+                UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
+            }
+            
+            completion?()
+        },
+                                                      onFailure: { [weak self] error in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
+            }
+            completion?()
+        })
+    }
+    
     @objc private func btnContinueTapped(_ sender: UIButton) {
         if self.viewModel.isOnboarding {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
-                                       action: MatomoAction.appOnbCreateAccContinueWithoutPremiumClickAction.rawValue,
-                                       name: MatomoName.clickName.rawValue,
-                                       value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,
+                                              action: AnalyticsManager.MatomoAction.appOnbCreateAccContinueWithoutPremiumClickAction.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
             let vc = OnboardingSetDefaultBrowserVC(source: .createAccount)
             self.navigationController?.pushViewController(vc, animated: true)
         } else {

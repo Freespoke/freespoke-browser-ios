@@ -134,6 +134,16 @@ class TPStatsBlocklists {
             BlocklistFileName.socialURLs,
             BlocklistFileName.cryptomining,
             BlocklistFileName.fingerprinting,
+            // MARK: Added from EasyList and others
+//            BlocklistFileName.adaway,
+//            BlocklistFileName.camelon,
+//            BlocklistFileName.zeus,
+//            BlocklistFileName.tracker,
+//            BlocklistFileName.adServerHosts,
+//            BlocklistFileName.ultimateAdBlock,
+//            BlocklistFileName.easyList,
+//            BlocklistFileName.easyFanboyAnnoyance,
+//            BlocklistFileName.easyPrivacyList
             ] {
             let list: [[String: AnyObject]]
             do {

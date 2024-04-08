@@ -73,6 +73,15 @@
       }
     },
     {
+      "identity" : "jam",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/brianmichel/Jam.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "80d110d2c1e9d23b68fd7164902d02c03967ddc1"
+      }
+    },
+    {
       "identity" : "kif",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kif-framework/KIF.git",

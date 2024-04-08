@@ -4,7 +4,6 @@
 
 import Shared
 import UIKit
-import MatomoTracker
 
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressHome(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -82,7 +81,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue, action: MatomoAction.appMenuTab.rawValue + "News", name: MatomoName.clickName.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                              action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "News",
+                                              name: AnalyticsManager.MatomoName.clickName)
             
             openLinkURL(Constants.newsURL.rawValue)
             
@@ -114,7 +115,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue, action: MatomoAction.appMenuTab.rawValue + "Election", name: MatomoName.clickName.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                              action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Election",
+                                              name: AnalyticsManager.MatomoName.clickName)
             
             openLinkURL(Constants.electionURL.rawValue)
         }
@@ -155,8 +158,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressMenu(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         // Ensure that any keyboards or spinners are dismissed before presenting the menu
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue, action: MatomoAction.appMenuTab.rawValue + "Menu", name: MatomoName.clickName.rawValue, value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Menu",
+                                          name: AnalyticsManager.MatomoName.clickName)
 
         // Logs homePageMenu or siteMenu depending if HomePage is open or not
         let isHomePage = tabManager.selectedTab?.isFxHomeTab ?? false
@@ -194,7 +198,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
 
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue, action: MatomoAction.appMenuTab.rawValue + "Tabs", name: MatomoName.clickName.rawValue, value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Tabs",
+                                          name: AnalyticsManager.MatomoName.clickName)
         
         let boolBookmarksProfile = profile.prefs.boolForKey("ContextualHintBookmarksLocationKey") ?? false
         

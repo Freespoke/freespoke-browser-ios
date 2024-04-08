@@ -25,7 +25,7 @@ class SubscriptionsContentView: UIView {
     
     private let item1 = SubscriptionPrivilegesItem(image: UIImage(named: "img_onboarding_ad_free_search_icon"),
                                                    titleText: "Ad-Free",
-                                                   subtitleText: "Block unwanted ads while browsing",
+                                                   subtitleText: "Block unwanted ads while browsing.",
                                                    bottomLineVisible: true)
     
     private let item2 = SubscriptionPrivilegesItem(image: UIImage(named: "img_onboarding_without_bias_icon"),

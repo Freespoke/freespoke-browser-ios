@@ -42,8 +42,8 @@ final class BlockerAdsCell: UITableViewCell {
         return switcher
     }()
 
-    private let btnAction: BaseButton = {
-        let btn = BaseButton(style: .greyStyle(currentTheme: nil))
+    private let btnAction: ThirdButton = {
+        let btn = ThirdButton()
         return btn
     }()
     
@@ -111,7 +111,7 @@ final class BlockerAdsCell: UITableViewCell {
         UserDefaults.standard.setValue(sender.isOn, forKey: SettingsKeys.isEnabledBlocker)
         self.checkAdBlockerStatus()
         self.closureTappedOnBtnSwitch?()
-        NotificationCenter.default.post(name: Notification.Name.adBlockSettingsChanged, object: nil)
+        NotificationCenter.default.post(name: Notification.Name.updateAdBlockRules, object: nil)
     }
     
     private func checkAdBlockerStatus() {
@@ -132,7 +132,7 @@ final class BlockerAdsCell: UITableViewCell {
     }
     
     func applyTheme(currentTheme: Theme) {
-        self.btnAction.setStyle(style: .greyStyle(currentTheme: currentTheme))
+        self.btnAction.applyTheme()
         self.borderView.layer.borderColor = (currentTheme.type == .light) ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
         self.viewSeparator.backgroundColor = (currentTheme.type == .light) ? UIColor.whiteColor : UIColor.blackColor
     }

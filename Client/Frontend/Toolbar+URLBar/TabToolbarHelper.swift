@@ -4,7 +4,6 @@
 
 import UIKit
 import Shared
-import MatomoTracker
 
 protocol TabToolbarProtocol: AnyObject {
     var tabToolbarDelegate: TabToolbarDelegate? { get set }
@@ -289,10 +288,9 @@ open class TabToolbarHelper: NSObject {
     }
 
     func didClickHome() {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenuCategory.rawValue,
-                                   action: MatomoAction.appMenuTab.rawValue + "Home",
-                                   name: MatomoName.clickName.rawValue,
-                                   value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Home",
+                                          name: AnalyticsManager.MatomoName.clickName)
         
         toolbar.tabToolbarDelegate?.tabToolbarDidPressHome(toolbar, button: toolbar.appMenuButton)
     }

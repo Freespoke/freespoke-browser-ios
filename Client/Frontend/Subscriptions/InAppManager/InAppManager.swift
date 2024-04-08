@@ -145,10 +145,9 @@ extension InAppManager {
                 let transaction = try self.checkVerified(verification)
                 await transaction.finish()
                 // TODO: Call request to post transaction (originalID) to our backend
-                
-                
-                
                 completion(.subscribed(product: product))
+                UserDefaults.standard.setValue(true, forKey: SettingsKeys.isEnabledBlocker)
+                NotificationCenter.default.post(name: Notification.Name.updateAdBlockRules, object: nil)
             case .pending:
                 // Family sharing is not acitvated for now in AppStore.
                 completion(.failed(customMessage: "Family sharing is not acitvated for now in AppStore."))

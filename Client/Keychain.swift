@@ -5,12 +5,12 @@
 import Foundation
 import Security
 
-protocol ObjectSavable {
+protocol KeychainObjectSavable {
     static func setObject<Object>(_ object: Object, forKey: Keychain.KeychainKeys) throws where Object: Encodable
     static func getObject<Object>(forKey: Keychain.KeychainKeys, castTo type: Object.Type) throws -> Object where Object: Decodable
 }
 
-enum ObjectSavableError: String, LocalizedError {
+enum KeychainObjectSavableError: String, LocalizedError {
     case unableToEncode = "Unable to encode object into data"
     case noValue = "No data object found for the given key"
     case unableToDecode = "Unable to decode object into given type"
@@ -101,25 +101,25 @@ extension Keychain {
 
 // MARK: - ObjectSavable
 
-extension Keychain: ObjectSavable {
+extension Keychain: KeychainObjectSavable {
     static func setObject<Object>(_ object: Object, forKey: KeychainKeys) throws where Object: Encodable {
         let encoder = JSONEncoder()
         do {
             let data = try encoder.encode(object)
             _ = self.save(key: forKey.rawValue, data: data)
         } catch {
-            throw ObjectSavableError.unableToEncode
+            throw KeychainObjectSavableError.unableToEncode
         }
     }
     
     static func getObject<Object>(forKey: KeychainKeys, castTo type: Object.Type) throws -> Object where Object: Decodable {
-        guard let data = self.load(key: forKey.rawValue) else { throw ObjectSavableError.noValue }
+        guard let data = self.load(key: forKey.rawValue) else { throw KeychainObjectSavableError.noValue }
         let decoder = JSONDecoder()
         do {
             let object = try decoder.decode(type, from: data)
             return object
         } catch {
-            throw ObjectSavableError.unableToDecode
+            throw KeychainObjectSavableError.unableToDecode
         }
     }
 }

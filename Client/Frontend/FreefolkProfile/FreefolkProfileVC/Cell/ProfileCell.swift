@@ -34,8 +34,7 @@ class ProfileCell: UITableViewCell {
         iconImageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
         let stackView = UIStackView(arrangedSubviews: [iconImageView,
                                                        titleLabel,
-                                                       arrowImageView,
-                                                       darkModeSwitch])
+                                                       arrowImageView])
         stackView.axis = .horizontal
         stackView.spacing = 10
         stackView.alignment = .center
@@ -51,17 +50,9 @@ class ProfileCell: UITableViewCell {
         return view
     }()
     
-    private let darkModeSwitch: UISwitch = {
-        let darkModeSwitch = UISwitch()
-        darkModeSwitch.isOn = false
-        darkModeSwitch.onTintColor = .greenColor
-        return darkModeSwitch
-    }()
-    
     var currentTheme: Theme?
     
     var tapClosure: (() -> Void)?
-    var darkModeSwitchClosure: ((_ isOn: Bool) -> Void)?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -75,7 +66,6 @@ class ProfileCell: UITableViewCell {
     }
     
     func prepareUI() {
-        self.darkModeSwitch.addTarget(self, action: #selector(self.darkModeSwitchChanged(_:)), for: .valueChanged)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.cellTapped))
         addGestureRecognizer(tapGesture)
     }
@@ -118,6 +108,10 @@ class ProfileCell: UITableViewCell {
             UIImage(named: "right_arrows")?.withTintColor(.blackColor, renderingMode: .alwaysOriginal)
         case .darkMode:
             iconImage = UIImage(named: "dark_mode_icon")
+            //==
+            self.arrowImageView.image = currentTheme?.type == .dark ?
+            UIImage(named: "right_arrows")?.withTintColor(.whiteColor, renderingMode: .alwaysOriginal) :
+            UIImage(named: "right_arrows")?.withTintColor(.blackColor, renderingMode: .alwaysOriginal)
         case .manageDefaultBrowser:
             iconImage = UIImage(named: "manage_browser_icon")
         case .manageNotifications:
@@ -131,7 +125,6 @@ class ProfileCell: UITableViewCell {
             self.titleLabel.textColor = .systemBlue
             self.iconImageView.isHidden = true
             self.arrowImageView.isHidden = true
-            self.darkModeSwitch.isHidden = true
         case .adBlocker:
             break
         case .verifyEmail:
@@ -143,22 +136,18 @@ class ProfileCell: UITableViewCell {
             self.arrowImageView.isHidden = false
             self.titleLabel.isHidden = false
             self.iconImageView.isHidden = false
-            self.darkModeSwitch.isHidden = true
         case .darkMode:
-            iconImageView.isHidden = false
-            self.arrowImageView.isHidden = true
+            self.arrowImageView.isHidden = false
             self.titleLabel.isHidden = false
-            self.darkModeSwitch.isHidden = false
+            self.iconImageView.isHidden = false
         case .manageDefaultBrowser, .manageNotifications, .getInTouch, .shareFreespoke:
             self.iconImageView.isHidden = false
             self.titleLabel.isHidden = false
             self.arrowImageView.isHidden = true
-            self.darkModeSwitch.isHidden = true
         case .logout:
             self.iconImageView.isHidden = true
             self.titleLabel.isHidden = false
             self.arrowImageView.isHidden = true
-            self.darkModeSwitch.isHidden = true
         case .adBlocker:
             break
         case .verifyEmail:
@@ -173,14 +162,6 @@ class ProfileCell: UITableViewCell {
             self.titleLabel.textColor = (theme.type == .light) ? .blackColor : .white
             self.borderView.layer.borderColor = (theme.type == .light) ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
         }
-    }
-    
-    func setDarkModeSwitch(isOn: Bool) {
-        self.darkModeSwitch.isOn = isOn
-    }
-    
-    @objc private func darkModeSwitchChanged(_ sender: UISwitch) {
-        self.darkModeSwitchClosure?(sender.isOn)
     }
     
     @objc private func cellTapped() {

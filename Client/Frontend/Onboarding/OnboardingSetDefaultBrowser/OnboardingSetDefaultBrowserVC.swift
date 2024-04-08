@@ -4,7 +4,6 @@
 
 import UIKit
 import Shared
-import MatomoTracker
 
 enum OnboardingSourceDestination {
     case continueWithoutAccount
@@ -14,10 +13,9 @@ enum OnboardingSourceDestination {
 class OnboardingSetDefaultBrowserVC: OnboardingBaseViewController {
     private var contentView: OnboardingContrentView!
     
-    private lazy var btnSetAsDefaultBrowser: BaseButton = {
-        let btn = BaseButton(style: .greenStyle(currentTheme: self.themeManager.currentTheme))
+    private lazy var btnSetAsDefaultBrowser: MainButton = {
+        let btn = MainButton()
         btn.setTitle("Set as default browser", for: .normal)
-        btn.height = 56
         return btn
     }()
     
@@ -66,6 +64,7 @@ class OnboardingSetDefaultBrowserVC: OnboardingBaseViewController {
     override func applyTheme() {
         super.applyTheme()
         
+        self.btnSetAsDefaultBrowser.applyTheme()
         self.contentView.applyTheme(currentTheme: self.themeManager.currentTheme)
         
         switch self.themeManager.currentTheme.type {
@@ -115,15 +114,13 @@ extension OnboardingSetDefaultBrowserVC {
     @objc private func btnSetAsDefaultBrowserTapped(_ sender: UIButton) {
         switch self.source {
         case .continueWithoutAccount:
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
-                                       action: MatomoAction.appOnbWithoutAccSetAsDefBrowserClickAction.rawValue,
-                                       name: MatomoName.clickName.rawValue,
-                                       value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,
+                                              action: AnalyticsManager.MatomoAction.appOnbWithoutAccSetAsDefBrowserClickAction.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
         case .createAccount:
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appOnboardCategory.rawValue,
-                                       action: MatomoAction.appOnbCreateAccSetAsDefBrowserClickAction.rawValue,
-                                       name: MatomoName.clickName.rawValue,
-                                       value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,
+                                              action: AnalyticsManager.MatomoAction.appOnbCreateAccSetAsDefBrowserClickAction.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
         }
         
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])

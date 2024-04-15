@@ -8,16 +8,24 @@ import Jam
 
 enum EasyListsName: String {
     case easyList = "easy-list"
-    
+    case easyListJson = "easyList"
+    case easyPrivacyList = "easy-privacy"
+    case easyFanboyAnnoyance = "fanboy-annoyance"
     static var names: [EasyListsName] = [.easyList]
+    static var testNames: [EasyListsName] = [.easyListJson]
     
     var url: URL? {
         switch self {
         case .easyList:
             return URL(string: Constants.EasyListsURL.easyList)
+        case .easyPrivacyList:
+            return URL(string: Constants.EasyListsURL.easyPrivacyList)
+        case .easyFanboyAnnoyance:
+            return URL(string: Constants.EasyListsURL.easyFanboyAnnoyance)
+        case .easyListJson:
+            return nil
         }
     }
-
 
 }
 
@@ -34,9 +42,10 @@ class AdBlockManager {
     
     var ruleLists: [WKContentRuleList] = []
     
-    let easyListUpdateTimeInterval: Double = 24 * 60 * 60
+    let easyListUpdateTimeInterval: Double = 60 * 60 * 24
         
     func setupAdBlockInternalRuleLists(webView: WKWebView?, completion: (() -> Void)?) {
+        guard ruleLists.isEmpty else { completion?(); return }
         let group = DispatchGroup()
         for name in EasyListsName.names {
             group.enter()
@@ -44,6 +53,13 @@ class AdBlockManager {
                 group.leave()
             })
         }
+        
+        let name: EasyListsName = .easyListJson
+        group.enter()
+        self.setupAdBlock(forKey: name.rawValue, filename: name.rawValue, webView: webView, completion: {
+            group.leave()
+        })
+        
         group.notify(queue: .main, execute: {
             completion?()
         })
@@ -103,6 +119,40 @@ class AdBlockManager {
         }
     }
     
+    func setupAdBlock(forKey key: String, filename: String, webView: WKWebView?, completion: (() -> Void)?) {
+        if UserDefaults.standard.bool(forKey: key) {
+            WKContentRuleListStore.default().lookUpContentRuleList(forIdentifier: key) { [weak self] ruleList, error in
+                if let error = error {
+                    print("\(filename).json" + error.localizedDescription)
+                    UserDefaults.standard.set(false, forKey: key)
+                    self?.setupAdBlock(forKey: key, filename: filename, webView: webView, completion: completion)
+                    return
+                }
+                if let list = ruleList {
+                    self?.ruleLists.append(list)
+                    webView?.configuration.userContentController.add(list)
+                    completion?()
+                }
+            }
+        } else {
+            if let jsonPath = Bundle.main.path(forResource: filename, ofType: "json"), let jsonContent = try? String(contentsOfFile: jsonPath, encoding: .utf8) {
+                WKContentRuleListStore.default().compileContentRuleList(forIdentifier: key, encodedContentRuleList: jsonContent) { [weak self] ruleList, error in
+                    if let error = error {
+                        print("\(filename).json" + error.localizedDescription)
+                        completion?()
+                        return
+                    }
+                    if let list = ruleList {
+                        self?.ruleLists.append(list)
+                        webView?.configuration.userContentController.add(list)
+                        UserDefaults.standard.set(true, forKey: key)
+                        completion?()
+                    }
+                }
+            }
+        }
+    }
+    
     private func prepareEasyListRulesJSON(path: String) async throws -> String? {
         let rules = await parser.parse(file: path)
         let output = sut.generate(for: rules)
@@ -116,7 +166,7 @@ class AdBlockManager {
             switch isShouldAddBlockList {
             case true:
                 for list in self.ruleLists {
-                    print("list was added: \(list.identifier)")
+                    print("list was added: \(String(describing: list.identifier))")
                     webView?.configuration.userContentController.add(list)
                 }
             case false:
@@ -147,7 +197,7 @@ class AdBlockManager {
 //        self.ruleLists = []
         DispatchQueue.main.async {
             webView?.configuration.userContentController.removeAllContentRuleLists()
-        }   
+        }
     }
     
     func saveDomainToWhiteListIfNotSavedYet(domain: String, completion: @escaping((_ savingStatus: SaveWhitelistActionStatus) -> Void)) {

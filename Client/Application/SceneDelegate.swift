@@ -45,6 +45,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
 
         self.window = window
+        
+//        InAppManager.shared.restorePurchasesAtAppStart()
 
         var themeManager: ThemeManager = AppContainer.shared.resolve()
         themeManager.window = window

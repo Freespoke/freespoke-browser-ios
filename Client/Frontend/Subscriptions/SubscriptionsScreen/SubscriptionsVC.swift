@@ -381,14 +381,12 @@ extension SubscriptionsVC {
                                                     self.btnYearlySubscription,
                                                     self.btnRestorePurchases,
                                                     self.btnContinue])
-        case .originalApple:
+        case .premiumOriginalApple, .premiumBecauseAppleAccountHasSubscription:
             self.bottomButtonsView.addViews(views: [self.btnUpdateSubscription,
                                                     self.btnCancelSubscription,
-                                                    self.btnRestorePurchases,
                                                     self.btnContinue])
-        case .notApple:
+        case .premiumNotApple:
             self.bottomButtonsView.addViews(views: [self.btnCancelSubscription,
-                                                    self.btnRestorePurchases,
                                                     self.btnContinue])
         case nil:
             self.bottomButtonsView.addViews(views: [self.lblDescription,

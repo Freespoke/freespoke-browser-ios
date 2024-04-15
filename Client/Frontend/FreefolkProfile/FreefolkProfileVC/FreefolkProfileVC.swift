@@ -63,6 +63,7 @@ class FreefolkProfileVC: UIViewController, Themeable {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.reloadTableView()
+        self.viewModel.checkPremiumState()
         self.customTitleView.updateProfileIcon(freespokeJWTDecodeModel: self.viewModel.freespokeJWTDecodeModel)
     }
     
@@ -141,6 +142,7 @@ class FreefolkProfileVC: UIViewController, Themeable {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.register(VerifyEmailCell.self, forCellReuseIdentifier: VerifyEmailCell.identifier)
+        self.tableView.register(PremiumCell.self, forCellReuseIdentifier: PremiumCell.identifier)
         self.tableView.register(ProfileCell.self, forCellReuseIdentifier: ProfileCell.identifier)
         self.tableView.register(LogoutCell.self, forCellReuseIdentifier: LogoutCell.identifier)
         self.tableView.register(BlockerAdsCell.self, forCellReuseIdentifier: BlockerAdsCell.reuseIdentifier)
@@ -219,7 +221,9 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         switch cellType {
         case .verifyEmail:
             return self.prepareVerifyEmailCell(with: cellType.title, at: indexPath)
-        case .premium, .account, .manageDefaultBrowser, .manageNotifications, .getInTouch, .shareFreespoke, .darkMode:
+        case .premium:
+            return self.preparePremiumCell(with: cellType.title, at: indexPath)
+        case .account, .manageDefaultBrowser, .manageNotifications, .getInTouch, .shareFreespoke, .darkMode:
             return self.getProfileCell(for: cellType, at: indexPath)
         case .logout:
             return self.getLogoutCell(at: indexPath)
@@ -232,7 +236,34 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: VerifyEmailCell.identifier, for: indexPath) as? VerifyEmailCell else {
             return UITableViewCell()
         }
-        cell.configure(title: title, subtitle: "Check your email for a message to confirm your account.", currentTheme: self.themeManager.currentTheme)
+        cell.configure(title: title,
+                       subtitle: "Check your email for a message to confirm your account.",
+                       currentTheme: self.themeManager.currentTheme)
+        return cell
+    }
+    
+    private func preparePremiumCell(with title: String, at indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PremiumCell.identifier, for: indexPath) as? PremiumCell else {
+            return UITableViewCell()
+        }
+        
+        cell.cellTappedClosure = { [weak self] in
+            AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                              action: AnalyticsManager.MatomoAction.appProfileScreenAction.rawValue + "premium",
+                                              name: AnalyticsManager.MatomoName.clickName)
+            self?.premiumClicked()
+        }
+        
+        cell.warningButtonTappedClosure = {
+            ensureMainThread {
+                UIUtils.showOkAlertInNewWindow(title: nil,
+                                               message: "Your subscription is active, but it may be linked to a different Freespoke account. To enjoy your benefits across all our platforms, please log in with the account you originally used to activate your subscription.")
+            }
+        }
+        
+        cell.configure(title: title,
+                       currentTheme: self.themeManager.currentTheme,
+                       shouldDisplayWarningView: self.viewModel.shouldShowWarningForPremiumCell)
         return cell
     }
     
@@ -253,7 +284,6 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    // TODO: Move function to the viewModel
     private func getProfileCell(for cellType: CellType, at indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell.identifier, for: indexPath) as? ProfileCell else {
             return UITableViewCell()
@@ -273,19 +303,13 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     private func configureProfileCell(_ cell: ProfileCell, for cellType: CellType) {
-        cell.configure(with: cellType, currentTheme: self.themeManager.currentTheme)
+        cell.configure(with: cellType,
+                       currentTheme: self.themeManager.currentTheme)
         
         let theme = self.themeManager.currentTheme
         cell.backgroundColor = (theme.type == .light) ? .gray7 : .clear
         
         switch cellType {
-        case .premium:
-            cell.tapClosure = { [weak self] in
-                AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
-                                                  action: AnalyticsManager.MatomoAction.appProfileScreenAction.rawValue + "premium",
-                                                  name: AnalyticsManager.MatomoName.clickName)
-                self?.premiumClicked()
-            }
         case .account:
             cell.tapClosure = { [weak self] in
                 AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
@@ -354,7 +378,6 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     private func accountCellClicked() {
-//        self.accountClickedClosure?()
         guard let accountURL = URL(string: Constants.URLs.accountProfileURL) else { return }
         
         DispatchQueue.main.async {
@@ -394,8 +417,17 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension FreefolkProfileVC: FreefolkProfileViewModelProtocol {
+    func showWarningForPremiumCell() {
+        ensureMainThread { [weak self] in
+            guard let self = self else { return }
+            for case let cell as PremiumCell in self.tableView.visibleCells {
+                cell.showWarningView()
+            }
+        }
+    }
+    
     func reloadTableView() {
-        DispatchQueue.main.async { [weak self] in
+        ensureMainThread { [weak self] in
             self?.tableView.reloadData()
         }
     }

@@ -6,8 +6,9 @@ import Foundation
 
 enum SubscriptionType {
     case trialExpired
-    case originalApple
-    case notApple
+    case premiumOriginalApple
+    case premiumNotApple
+    case premiumBecauseAppleAccountHasSubscription
 }
 
 struct FreespokeJWTDecodeModel {
@@ -38,17 +39,25 @@ struct FreespokeJWTDecodeModel {
             if (monthlySubscription != nil) || (yearlySubscription != nil) {
                 // checking monthly subscription
                 if let monthlySubscription = monthlySubscription {
-                    let isPurchased = try await InAppManager.shared.isPurchased(monthlySubscription.productID)
-                    if isPurchased {
-                        return .originalApple
+                    let isPurchasedResult = try await InAppManager.shared.isPurchased(monthlySubscription.productID)
+                    if isPurchasedResult.isPurchased {
+                        if isPurchasedResult.usingCurrentAccount == true {
+                            return .premiumOriginalApple
+                        } else {
+                            return .premiumBecauseAppleAccountHasSubscription
+                        }
                     }
                 }
                 
                 // checking yearly subscription
                 if let yearlySubscription = yearlySubscription {
-                    let isPurchased = try await InAppManager.shared.isPurchased(yearlySubscription.productID)
-                    if isPurchased {
-                        return .originalApple
+                    let isPurchasedResult = try await InAppManager.shared.isPurchased(yearlySubscription.productID)
+                    if isPurchasedResult.isPurchased {
+                        if isPurchasedResult.usingCurrentAccount == true {
+                            return .premiumOriginalApple
+                        } else {
+                            return .premiumBecauseAppleAccountHasSubscription
+                        }
                     }
                 }
                 return self.checkIsPremiumUsingAccessToken()
@@ -62,34 +71,22 @@ struct FreespokeJWTDecodeModel {
     }
     
     private func checkIsPremiumUsingAccessToken() -> SubscriptionType? {
-        switch self.subscription?.subscriptionSource {
+        guard let subscription = self.subscription else { return nil }
+        
+        switch subscription.subscriptionSource {
         case .ios:
-            switch self.subscription?.subscriptionType {
-            case .free,
-                    .freeTrial,
-                    .premium:
-                if let expiryDate = self.subscription?.subscriptionExpiry,
-                   expiryDate < Date() {
-                    return .trialExpired
-                } else {
-                    return .originalApple
-                }
-            default:
-                return nil
+            if let expiryDate = self.subscription?.subscriptionExpiry,
+               expiryDate < Date() {
+                return .trialExpired
+            } else {
+                return .premiumOriginalApple
             }
         case nil:
-            switch self.subscription?.subscriptionType {
-            case .free,
-                    .freeTrial,
-                    .premium:
-                if let expiryDate = self.subscription?.subscriptionExpiry,
-                   expiryDate < Date() {
-                    return .trialExpired
-                } else {
-                    return .notApple
-                }
-            default:
-                return nil
+            if let expiryDate = subscription.subscriptionExpiry,
+               expiryDate < Date() {
+                return .trialExpired
+            } else {
+                return .premiumNotApple
             }
         }
     }
@@ -105,7 +102,7 @@ struct FreespokeJWTDecodeModel {
 
 extension FreespokeJWTDecodeModel: Codable {
     private enum CodingKeys: String, CodingKey {
-        case scope
+        case scope = "scope"
         case emailVerified = "email_verified"
         case name = "name"
         case preferredUsername = "preferred_username"
@@ -119,25 +116,15 @@ extension FreespokeJWTDecodeModel: Codable {
 }
 
 struct SubscriptionInfo: Codable {
-    enum SubscriptionType: String {
-        case free = "free"
-        case freeTrial = "free trial"
-        case premium = "premium"
-    }
-    
     enum SubscriptionSource: String {
         case ios = "ios-native"
     }
     
-    private let subscriptionName: String
     let subscriptionPaymentAmount: Int
     let subscriptionPaymentCurrency: String
     let subscriptionPaymentSource: String
     let subscriptionExpiry: Date?
     
-    var subscriptionType: SubscriptionType? {
-        SubscriptionType(rawValue: self.subscriptionName)
-    }
     var subscriptionSource: SubscriptionSource? {
         SubscriptionSource(rawValue: self.subscriptionPaymentSource)
     }

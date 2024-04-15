@@ -318,8 +318,10 @@ class Tab: NSObject {
             guard noImageMode != oldValue else { return }
 
             contentBlocker?.noImageMode(enabled: noImageMode)
-
-            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: LegacyThemeManager.instance.currentName == .dark, noImageMode: noImageMode)
+            
+            UserScriptManager.shared.injectUserScriptsIntoTab(self,
+                                                              nightMode: LegacyThemeManager.instance.currentName == .dark,
+                                                              noImageMode: noImageMode)
         }
     }
     
@@ -484,7 +486,9 @@ class Tab: NSObject {
             self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
             self.webView?.addObserver(self, forKeyPath: KVOConstants.title.rawValue, options: .new, context: nil)
             let nightMode = LegacyThemeManager.instance.currentName == .dark
-            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+            UserScriptManager.shared.injectUserScriptsIntoTab(self,
+                                                              nightMode: nightMode,
+                                                              noImageMode: noImageMode)
             tabDelegate?.tab?(self, didCreateWebView: webView)
             AdBlockManager.shared.disableAdBlock(forWebView: webView)
             self.prepareBlocker()
@@ -595,39 +599,76 @@ class Tab: NSObject {
         _ = webView?.go(to: item)
     }
     
-    @discardableResult func loadRequest_FindForFix(_ request: URLRequest) async throws -> WKNavigation? {
-        print("webView: \(webView)")
+//    @discardableResult func loadRequest_FindForFix(_ request: URLRequest) async throws -> WKNavigation? {
+//        print("webView: \(webView)")
+//        if let webView = webView {
+//            // Convert about:reader?url=http://example.com URLs to local ReaderMode URLs
+//            
+//            let result = Task<WKNavigation?, Error>.detached {
+////                if let shouldEnableAdBlocker = try? await self.shouldEnableAdBlocker(url: request.url) {
+////                    AdBlockManager.shared.shouldAddBlockRuleList(isShouldAddBlockList: shouldEnableAdBlocker,
+////                                                                 forWebView: webView)
+////                } else {
+////                    print("cannotCreateValue")
+////                }
+//                
+//                if let url = request.url,
+//                   let syncedReaderModeURL = url.decodeReaderModeURL,
+//                   let localReaderModeURL = syncedReaderModeURL.encodeReaderModeURL(WebServer.sharedInstance.baseReaderModeURL()) {
+//                    let readerModeRequest = PrivilegedRequest(url: localReaderModeURL) as URLRequest
+//                    self.lastRequest = readerModeRequest
+//                    return await webView.load(readerModeRequest)
+//                }
+//                
+//                self.lastRequest = request
+//                print("request test: \(request)")
+//                if let url = request.url, url.isFileURL, request.isPrivileged {
+//                    return await webView.loadFileURL(url, allowingReadAccessTo: url)
+//                }
+//                return await webView.load(request)
+//            }
+//            
+//            return try await result.value
+//        } else {
+//            print("webView cannot find: \(webView)")
+//            return nil
+//        }
+//    }
+    
+    func loadRequest_FindForFix(_ request: URLRequest, completion: ((WKNavigation?) -> Void)? = nil) {
         if let webView = webView {
             // Convert about:reader?url=http://example.com URLs to local ReaderMode URLs
             
-            let result = Task<WKNavigation?, Error>.detached {
-                if let shouldEnableAdBlocker = try? await self.shouldEnableAdBlocker(url: request.url) {
+            Task { [weak self] in
+                if let shouldEnableAdBlocker = try? await self?.shouldEnableAdBlocker(url: request.url) {
                     AdBlockManager.shared.shouldAddBlockRuleList(isShouldAddBlockList: shouldEnableAdBlocker,
                                                                  forWebView: webView)
                 } else {
                     print("cannotCreateValue")
                 }
-                
-                if let url = request.url,
-                   let syncedReaderModeURL = url.decodeReaderModeURL,
-                   let localReaderModeURL = syncedReaderModeURL.encodeReaderModeURL(WebServer.sharedInstance.baseReaderModeURL()) {
-                    let readerModeRequest = PrivilegedRequest(url: localReaderModeURL) as URLRequest
-                    self.lastRequest = readerModeRequest
-                    return await webView.load(readerModeRequest)
-                }
-                
-                self.lastRequest = request
-                print("request test: \(request)")
-                if let url = request.url, url.isFileURL, request.isPrivileged {
-                    return await webView.loadFileURL(url, allowingReadAccessTo: url)
-                }
-                return await webView.load(request)
             }
             
-            return try await result.value
+            
+            if let url = request.url,
+               let syncedReaderModeURL = url.decodeReaderModeURL,
+               let localReaderModeURL = syncedReaderModeURL.encodeReaderModeURL(WebServer.sharedInstance.baseReaderModeURL()) {
+                let readerModeRequest = PrivilegedRequest(url: localReaderModeURL) as URLRequest
+                lastRequest = readerModeRequest
+                webView.load(readerModeRequest)
+                completion?(webView.load(readerModeRequest))
+                return
+            }
+            lastRequest = request
+            if let url = request.url, url.isFileURL, request.isPrivileged {
+                webView.loadFileURL(url, allowingReadAccessTo: url)
+                completion?(webView.loadFileURL(url, allowingReadAccessTo: url))
+                return
+            }
+            webView.load(request)
+            completion?(webView.load(request))
+            return
         } else {
-            print("webView cannot find: \(webView)")
-            return nil
+            completion?(nil)
         }
     }
     
@@ -861,7 +902,7 @@ class Tab: NSObject {
         
         let nightMode = LegacyThemeManager.instance.currentName == .dark
         print("TEST: nightMode did set: ", nightMode)
-        webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+//        webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
         
         //            if (window.__firefox__){window.__firefox__.NightMode.setEnabled(false);}
         
@@ -872,7 +913,10 @@ class Tab: NSObject {
         webView?.isOpaque = !nightMode
         
         print("TEST: injectUserScriptsIntoTab: ", nightMode)
-        UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+        
+        UserScriptManager.shared.injectUserScriptsIntoTab(self,
+                                                          nightMode: nightMode,
+                                                          noImageMode: noImageMode)
         
 //        if let url = webView?.url {
 //            if url.absoluteString.contains("freespoke.com") == true {

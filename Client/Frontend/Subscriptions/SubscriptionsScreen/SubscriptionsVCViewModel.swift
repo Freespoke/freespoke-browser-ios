@@ -21,9 +21,11 @@ class SubscriptionsVCViewModel {
         switch subscriptionType {
         case .trialExpired:
             return "Select a Plan"
-        case .originalApple:
+        case .premiumOriginalApple:
             return "Update Plan"
-        case .notApple:
+        case .premiumNotApple:
+            return "Update Plan"
+        case .premiumBecauseAppleAccountHasSubscription:
             return "Update Plan"
         case nil:
             return "Start your 30 day \n free trial"
@@ -33,8 +35,9 @@ class SubscriptionsVCViewModel {
     var subtitleText: String? {
         switch subscriptionType {
         case .trialExpired,
-                .originalApple,
-                .notApple:
+                .premiumOriginalApple,
+                .premiumNotApple,
+                .premiumBecauseAppleAccountHasSubscription:
             return "Cancel anytime."
         case nil:
             return nil
@@ -44,8 +47,9 @@ class SubscriptionsVCViewModel {
     var descriptionText: String? {
         switch subscriptionType {
         case .trialExpired,
-                .originalApple,
-                .notApple:
+                .premiumOriginalApple,
+                .premiumNotApple,
+                .premiumBecauseAppleAccountHasSubscription:
             return nil
         case nil:
             return "By tapping below for monthly or yearly subscription you are enrolling in automatic payments after the 30-day trial period. You can cancel anytime, effective at end of billing period."
@@ -56,8 +60,9 @@ class SubscriptionsVCViewModel {
         switch subscriptionType {
         case .trialExpired:
             return "Continue without premium"
-        case .originalApple,
-                .notApple:
+        case .premiumOriginalApple,
+                .premiumNotApple,
+                .premiumBecauseAppleAccountHasSubscription:
             return "Continue without Updating"
         case nil:
             return "Continue without premium"

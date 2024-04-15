@@ -1256,11 +1256,12 @@ class BrowserViewController: UIViewController {
     func finishEditingAndSubmit(_ url: URL, visitType: VisitType, forTab tab: Tab) {
         urlBar.currentURL = url
         leaveOverlayMode(didCancel: false)
-        Task {
-            if let nav = try? await tab.loadRequest_FindForFix(URLRequest(url: url)) {
-                self.recordNavigationInTab(tab, navigation: nav, visitType: visitType)
-            }
-        }
+        
+        tab.loadRequest_FindForFix(URLRequest(url: url), completion: { [weak self] request in
+            guard let request = request else { return }
+            self?.recordNavigationInTab(tab, navigation: request, visitType: visitType)
+        })
+        
     }
     
     func addBookmark(url: String, title: String? = nil) {
@@ -2031,6 +2032,24 @@ extension BrowserViewController: TabDelegate {
 //        tab.addContentScript(blocker, name: FirefoxTabContentBlocker.name())
 
         tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name())
+        
+        // Freespoke events
+        
+        let freespokeLoginHelper = FreespokeAuthEventLoginHelper(tab: tab)
+        freespokeLoginHelper.delegate = self
+        tab.addContentScriptToPage(freespokeLoginHelper, name: FreespokeAuthEventLoginHelper.name())
+        
+        let freespokeLogoutHelper = FreespokeAuthEventLogoutHelper(tab: tab)
+        freespokeLogoutHelper.delegate = self
+        tab.addContentScriptToPage(freespokeLogoutHelper, name: FreespokeAuthEventLogoutHelper.name())
+        
+        let freespokeAccountUpdatedHelper = FreespokeAuthEventAccountUpdatedHelper(tab: tab)
+        freespokeAccountUpdatedHelper.delegate = self
+        tab.addContentScriptToPage(freespokeAccountUpdatedHelper, name: FreespokeAuthEventAccountUpdatedHelper.name())
+        
+        let freespokeDeactivateAccountHelper = FreespokeAuthEventDeactivateAccountHelper(tab: tab)
+        freespokeDeactivateAccountHelper.delegate = self
+        tab.addContentScriptToPage(freespokeDeactivateAccountHelper, name: FreespokeAuthEventDeactivateAccountHelper.name())
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -2593,9 +2612,7 @@ extension BrowserViewController {
     private func setupHomepageOnBackground() {
         if let homePageURL = NewTabHomePageAccessors.getHomePage(self.profile.prefs),
            let tab = self.tabManager.selectedTab, DeviceInfo.hasConnectivity() {
-            Task {
-                try? await tab.loadRequest_FindForFix(URLRequest(url: homePageURL))
-            }
+            tab.loadRequest_FindForFix(URLRequest(url: homePageURL))
         }
     }
 
@@ -2876,6 +2893,23 @@ extension BrowserViewController: TabTrayDelegate {
     func tabTrayDidRequestTabsSettings() {
         showSettingsWithDeeplink(to: .customizeTabs)
     }
+}
+
+// MARK: Feespoke account events
+extension BrowserViewController: FreespokeAuthEventLoginHelperDelegate {
+    func freespokeAuthEventLoginHelper(_ helper: FreespokeAuthEventLoginHelper, userLoggedInForTab tab: Tab) { }
+}
+
+extension BrowserViewController: FreespokeAuthEventLogoutHelperDelegate {
+    func freespokeAuthEventLogoutHelper(_ helper: FreespokeAuthEventLogoutHelper, userLoggedOutForTab tab: Tab) { }
+}
+
+extension BrowserViewController: FreespokeAuthEventAccountUpdatedHelperDelegate {
+    func freespokeAuthEventAccountUpdatedHelper(_ helper: FreespokeAuthEventAccountUpdatedHelper, userAccountUpdatedInTab tab: Tab) { }
+}
+
+extension BrowserViewController: FreespokeAuthEventDeactivateAccountHelperDelegate {
+    func freespokeAuthEventDeactivateAccountHelper(_ helper: FreespokeAuthEventDeactivateAccountHelper, userAccountDeactivatedForTab tab: Tab) { }
 }
 
 // MARK: Browser Chrome Theming

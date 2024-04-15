@@ -505,33 +505,33 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
             tab.createWebview()
         }
         tab.navigationDelegate = self.navDelegate
-        Task {
-            if let request = request {
-                _ = try? await tab.loadRequest_FindForFix(request)
-            } else if !isPopup {
-                let newTabChoice = NewTabAccessors.getNewTabPage(profile.prefs)
-                tab.newTabPageType = newTabChoice
-                switch newTabChoice {
-                case .homePage:
-                    // We definitely have a homepage if we've got here
-                    // (so we can safely dereference it).
-                    let url = NewTabHomePageAccessors.getHomePage(profile.prefs)!
-                    _ = try? await tab.loadRequest_FindForFix(URLRequest(url: url))
-                case .freespoke:
-                    if let url = URL(string: Constants.freespokeURL.rawValue) {
-                        _ = try? await tab.loadRequest_FindForFix(URLRequest(url: url))
-                    }
-                default:
-                    // The common case, where the NewTabPage enum defines
-                    // one of the about:home pages.
-                    guard tab.webView != nil else { return }
-                    if let url = newTabChoice.url {
-                        _ = try? await tab.loadRequest_FindForFix(PrivilegedRequest(url: url) as URLRequest)
-                        tab.url = url
-                    }
+        
+        if let request = request {
+            tab.loadRequest_FindForFix(request)
+        } else if !isPopup {
+            let newTabChoice = NewTabAccessors.getNewTabPage(profile.prefs)
+            tab.newTabPageType = newTabChoice
+            switch newTabChoice {
+            case .homePage:
+                // We definitely have a homepage if we've got here
+                // (so we can safely dereference it).
+                let url = NewTabHomePageAccessors.getHomePage(profile.prefs)!
+                tab.loadRequest_FindForFix(URLRequest(url: url))
+            case .freespoke:
+                if let url = URL(string: Constants.freespokeURL.rawValue) {
+                    tab.loadRequest_FindForFix(URLRequest(url: url))
+                }
+            default:
+                // The common case, where the NewTabPage enum defines
+                // one of the about:home pages.
+                guard tab.webView != nil else { return }
+                if let url = newTabChoice.url {
+                    tab.loadRequest_FindForFix(PrivilegedRequest(url: url) as URLRequest)
+                    tab.url = url
                 }
             }
         }
+        
 
         tab.noImageMode = NoImageModeHelper.isActivated(profile.prefs)
 
@@ -884,9 +884,9 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
             return existingTab ?? addTab(URLRequest(url: customUrl), isPrivate: privateMode)
         } else if page == .topSites, let homeUrl = homeUrl {
             let home = existingTab ?? addTab(isPrivate: privateMode)
-            Task {
-                _ = try? await home.loadRequest_FindForFix(PrivilegedRequest(url: homeUrl) as URLRequest)
-            }
+            
+            home.loadRequest_FindForFix(PrivilegedRequest(url: homeUrl) as URLRequest)
+            
             home.url = homeUrl
             return home
         }

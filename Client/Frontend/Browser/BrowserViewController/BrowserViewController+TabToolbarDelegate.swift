@@ -22,17 +22,17 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         
         let page = NewTabAccessors.getHomePage(self.profile.prefs)
         
-        Task {
-            if page == .homePage, let homePageURL = HomeButtonHomePageAccessors.getHomePage(self.profile.prefs) {
-                _ = try? await tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePageURL) as URLRequest)
-            } else if let homePanelURL = page.url {
-                _ = try? await tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePanelURL) as URLRequest)
-            } else if page == .freespoke {
-                if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
-                    _ = try? await tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePanelURL) as URLRequest)
-                }
+        
+        if page == .homePage, let homePageURL = HomeButtonHomePageAccessors.getHomePage(self.profile.prefs) {
+            tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePageURL) as URLRequest)
+        } else if let homePanelURL = page.url {
+            tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePanelURL) as URLRequest)
+        } else if page == .freespoke {
+            if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
+                tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePanelURL) as URLRequest)
             }
         }
+        
         
 //        switch page {
 //        case .freespoke:
@@ -343,9 +343,7 @@ extension BrowserViewController: MenuControllerDelegate {
     
     func openLinkURL(_ strUrl: String) {
         if let url = URL(string: strUrl) {
-            Task {
-                _ = try? await tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: url) as URLRequest)
-            }
+            tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: url) as URLRequest)
         }
     }
     

@@ -14,20 +14,20 @@ struct ManagingSubscriptionModel: Codable {
     struct Attributes: Codable {
         let externalAccountId: String?
         let registrationPlatform: String?
-        let subscription: Subscription?
+//        let subscription: Subscription?
         
         enum CodingKeys: String, CodingKey {
             case externalAccountId = "external_account_id"
             case registrationPlatform = "registrationPlatform"
-            case subscription = "subscription"
+//            case subscription = "subscription"
         }
     }
     
-    struct Subscription: Codable {
-        let subscriptionName: String?
-        let subscriptionPaymentAmount: Double?
-        let subscriptionPaymentCurrency: String?
-        let subscriptionPaymentSource: String?
-        let subscriptionExpiry: TimeInterval?
-    }
+//    struct Subscription: Codable {
+//        let subscriptionName: String?
+//        let subscriptionPaymentAmount: Double?
+//        let subscriptionPaymentCurrency: String?
+//        let subscriptionPaymentSource: String?
+//        let subscriptionExpiry: TimeInterval?
+//    }
 }

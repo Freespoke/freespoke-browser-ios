@@ -26,7 +26,7 @@ class InAppManager: NSObject, InAppManagerProtocol {
     
     private var products: [Product] = []
     private var taskTransactionsHandle: Task<Void, Error>?
-    private var networkManager = NetworkManager()
+//    private var networkManager = NetworkManager()
     
     private override init() {
         super.init()
@@ -80,8 +80,8 @@ extension InAppManager {
         
         Task { @MainActor in
             do {
-                let isPurchased = try await self.isPurchased(productIdentifier)
-                guard !isPurchased else {
+                let isPurchasedResult = try await self.isPurchased(productIdentifier)
+                guard !isPurchasedResult.isPurchased else {
                     completion(.failed(customMessage: "Subscription failed. User has already subscribed."))
                     return
                 }
@@ -124,9 +124,20 @@ extension InAppManager {
         }
     }
     
-    func isPurchased(_ productIdentifier: String) async throws -> Bool {
-        guard let result = await Transaction.latest(for: productIdentifier)
-        else { return false }
+    func appleAccountHasActiveAppSubscription() async throws -> Bool {
+        if let monthlyPurchased = try? await self.isPurchased(ProductIdentifiers.monthlySubscription) {
+            return true
+        }
+        
+        if let yearlyPurchased = try? await self.isPurchased(ProductIdentifiers.yearlySubscription) {
+            return true
+        }
+        
+        return false
+    }
+    
+    func isPurchased(_ productIdentifier: String) async throws -> (isPurchased: Bool, usingCurrentAccount: Bool?) {
+        guard let result = await Transaction.latest(for: productIdentifier) else { return (false, nil) }
         let transaction = try self.checkVerified(result)
         
         var expired = false
@@ -135,7 +146,18 @@ extension InAppManager {
             expired = true
         }
         
-        return transaction.revocationDate == nil && !transaction.isUpgraded && !expired
+        let purchased = transaction.revocationDate == nil && !transaction.isUpgraded && !expired
+        
+        if purchased {
+            if let appAccountToken = transaction.appAccountToken,
+                appAccountToken == AppSessionManager.shared.decodedJWTToken?.externalAccountId {
+                return (true, true)
+            } else {
+                return (true, false)
+            }
+        } else {
+            return (false, nil)
+        }
     }
     
     private func processPurchaseResult(product: Product, result: Product.PurchaseResult, completion: @escaping((IAPManagerPurchasingStatus) -> Void)) {
@@ -163,6 +185,10 @@ extension InAppManager {
 // MARK: - Restore Purchases
 
 extension InAppManager {
+    func restorePurchasesAtAppStart() {
+        SKPaymentQueue.default().restoreCompletedTransactions()
+    }
+    
     func restorePurchases(appAccountToken: UUID, completion: @escaping((IAPManagerRestorationStatus) -> Void)) {
         Task {
             do {
@@ -173,17 +199,17 @@ extension InAppManager {
                 
                 for await entitlement in entitlements {
                     if let transaction = try? self.checkVerified(entitlement) {
-                        originalTransactionId = transaction.originalID
-                        self.networkManager.restorePurchase(signedPayload: entitlement.jwsRepresentation,
-                                                            completion: { response, error in
-                            if let response = response {
-                                completion(.restored(message: response.message))
-                            } else if let error = error {
-                                completion(.restorePurchasesFailed(customMessage: error.errorDescription))
-                            } else {
-                                completion(.restorePurchasesFailed())
-                            }
-                        })
+//                        originalTransactionId = transaction.originalID
+//                        self.networkManager.restorePurchase(signedPayload: entitlement.jwsRepresentation,
+//                                                            completion: { response, error in
+//                            if let response = response {
+//                                completion(.restored(message: response.message))
+//                            } else if let error = error {
+//                                completion(.restorePurchasesFailed(customMessage: error.errorDescription))
+//                            } else {
+//                                completion(.restorePurchasesFailed())
+//                            }
+//                        })
                         break
                     }
                 }
@@ -192,6 +218,7 @@ extension InAppManager {
                     completion(.noTransactionsToRestore)
                     return
                 }
+                completion(.restored)
             } catch {
                 if let error = error as? StoreKitError {
                     self.processRestorePurchasesError(error: error, completion: completion)

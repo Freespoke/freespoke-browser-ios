@@ -22,12 +22,15 @@ extension Tab {
 //            }
 //        }
     }
-
     
     @MainActor
     @objc func adBlockChanged() {
         guard let webView = self.webView else { return }
-        guard let url = webView.url else { return }
+        var url: URL?
+        ensureMainThread {
+            url = webView.url
+        }
+        guard let url = url else { return }
         let currentRequest = URLRequest(url: url)
         Task {
             if let shouldBlockAds = try? await AdBlockManager.shared.shouldBlockAds(), shouldBlockAds {

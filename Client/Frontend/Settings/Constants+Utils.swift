@@ -62,6 +62,8 @@ enum Constants: String {
     
     enum EasyListsURL {        
         static let easyList = "https://easylist.to/easylist/easylist.txt"
+        static let easyPrivacyList = "https://easylist.to/easylist/easyprivacy.txt"
+        static let easyFanboyAnnoyance = "https://secure.fanboy.co.nz/fanboy-annoyance.txt"
     }
     
     static var apiBaseURL: String {
@@ -82,6 +84,7 @@ enum Constants: String {
                 return "https://freespoke.com/account/profile"
             case .staging:
                 return "https://staging.freespoke.com/account/profile"
+//                return "https://test-appy-scripts--ff-internal-staging.netlify.app"
             }
         }
     }

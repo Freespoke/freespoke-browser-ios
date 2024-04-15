@@ -169,7 +169,7 @@ extension SignUpVC {
                             switch subscriptionType {
                             case .trialExpired:
                                 self.openSubscriptionScreen()
-                            case .originalApple, .notApple:
+                            case .premiumOriginalApple, .premiumNotApple, .premiumBecauseAppleAccountHasSubscription:
                                 if self.viewModel.isOnboarding {
                                     self.onboardingCloseAction(animated: false)
                                 } else {
@@ -199,17 +199,26 @@ extension SignUpVC {
                                                        successCompletion: { [weak self] authModel in
             guard let self = self else { return }
             Task {
-                if self.viewModel.isOnboarding, let subscriptionType = try? await AppSessionManager.shared.decodedJWTToken?.subscriptionType() {
-                    switch subscriptionType {
-                    case .trialExpired:
+                if self.viewModel.isOnboarding, let userType = try? await AppSessionManager.shared.userType() {
+                    switch userType {
+                    case .authorizedWithoutPremium:
                         self.openSubscriptionScreen()
-                    case .originalApple, .notApple:
+                    case .premium, .premiumBecauseAppleAccountHasSubscription:
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
                             self.onboardingCloseAction(animated: false)
                         })
+                    case .unauthorized:
+                        fatalError("Should not happens after user authorized successfully!!!")
                     }
-                } else {
-                    self.openSubscriptionScreen()
+                } else if let userType = try? await AppSessionManager.shared.userType() {
+                    switch userType {
+                    case .authorizedWithoutPremium:
+                        self.openSubscriptionScreen()
+                    case .premium, .premiumBecauseAppleAccountHasSubscription:
+                        self.btnCloseNotOnboardingAction()
+                    case .unauthorized:
+                        fatalError("Should not happens after user authorized successfully!!!")
+                    }
                 }
             }
         })
@@ -233,10 +242,24 @@ extension SignUpVC {
                                     completion: { [weak self] error in
             guard let self = self else { return }
             self.btnNext.stopIndicator()
-            if let error = error {
-                UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
-            } else {
-                self.openSubscriptionScreen()
+            Task { [weak self] in
+                guard let self = self else { return }
+                if let error = error {
+                    UIUtils.showOkAlertInNewWindow(title: error.errorName,
+                                                   message: error.errorDescription)
+                } else if self.viewModel.isOnboarding {
+                    let vc = OnboardingSetDefaultBrowserVC(source: .createAccount)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                } else if let userType = try? await AppSessionManager.shared.userType() {
+                    switch userType {
+                    case .authorizedWithoutPremium:
+                        self.openSubscriptionScreen()
+                    case .premium, .premiumBecauseAppleAccountHasSubscription:
+                        self.btnCloseNotOnboardingAction()
+                    case .unauthorized:
+                        fatalError("Should not happens after user authorized successfully!!!")
+                    }
+                }
             }
         })
     }

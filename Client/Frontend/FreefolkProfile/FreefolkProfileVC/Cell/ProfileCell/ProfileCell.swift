@@ -22,6 +22,13 @@ class ProfileCell: UITableViewCell {
         return label
     }()
     
+    private let warningIconImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "right_arrows")
+        return imageView
+    }()
+    
     private let arrowImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "right_arrows"))
         imageView.contentMode = .scaleAspectFit
@@ -84,10 +91,11 @@ class ProfileCell: UITableViewCell {
             self.borderView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20),
             self.borderView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
             
-            self.stackView.topAnchor.constraint(equalTo: self.borderView.topAnchor, constant: 20),
+            self.stackView.topAnchor.constraint(equalTo: self.borderView.topAnchor, constant: 7),
             self.stackView.leadingAnchor.constraint(equalTo: self.borderView.leadingAnchor, constant: 20),
             self.stackView.trailingAnchor.constraint(equalTo: self.borderView.trailingAnchor, constant: -20),
-            self.stackView.bottomAnchor.constraint(equalTo: self.borderView.bottomAnchor, constant: -20),
+            self.stackView.bottomAnchor.constraint(equalTo: self.borderView.bottomAnchor, constant: -7),
+            self.stackView.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
     
@@ -96,11 +104,6 @@ class ProfileCell: UITableViewCell {
         self.titleLabel.text = cellType.title
         var iconImage: UIImage?
         switch cellType {
-        case .premium:
-            iconImage = currentTheme?.type == .dark ? UIImage(named: "img_premium_star_dark") : UIImage(named: "img_premium_star_light")
-            self.arrowImageView.image = currentTheme?.type == .dark ?
-            UIImage(named: "right_arrows")?.withTintColor(.whiteColor, renderingMode: .alwaysOriginal) :
-            UIImage(named: "right_arrows")?.withTintColor(.blackColor, renderingMode: .alwaysOriginal)
         case .account:
             iconImage = UIImage(named: "account_icon")
             self.arrowImageView.image = currentTheme?.type == .dark ?
@@ -125,12 +128,12 @@ class ProfileCell: UITableViewCell {
             self.titleLabel.textColor = .systemBlue
             self.iconImageView.isHidden = true
             self.arrowImageView.isHidden = true
-        case .verifyEmail:
+        case .verifyEmail, .premium:
             break
         }
         self.iconImageView.image = iconImage
         switch cellType {
-        case .premium, .account:
+        case .account:
             self.arrowImageView.isHidden = false
             self.titleLabel.isHidden = false
             self.iconImageView.isHidden = false
@@ -146,7 +149,7 @@ class ProfileCell: UITableViewCell {
             self.iconImageView.isHidden = true
             self.titleLabel.isHidden = false
             self.arrowImageView.isHidden = true
-        case .verifyEmail:
+        case .verifyEmail, .premium:
             break
         }
         

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		011A0C3E2BCAA9A200B9C555 /* ProfileCellTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A0C3D2BCAA9A200B9C555 /* ProfileCellTitleView.swift */; };
+		011A0C3F2BCAA9A200B9C555 /* ProfileCellTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A0C3D2BCAA9A200B9C555 /* ProfileCellTitleView.swift */; };
+		011A0C422BCB08AF00B9C555 /* PremiumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A0C412BCB08AF00B9C555 /* PremiumCell.swift */; };
+		011A0C432BCB08AF00B9C555 /* PremiumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A0C412BCB08AF00B9C555 /* PremiumCell.swift */; };
 		011C97182BBEDB6B00B96A36 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011C97172BBEDB6B00B96A36 /* AnalyticsManager.swift */; };
 		011C97192BBEDB6B00B96A36 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011C97172BBEDB6B00B96A36 /* AnalyticsManager.swift */; };
 		011C971B2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011C971A2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift */; };
@@ -60,6 +64,10 @@
 		01567C442B7CCB0A0026066A /* OnboardingEnableNotificationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01567C422B7CCB0A0026066A /* OnboardingEnableNotificationsVC.swift */; };
 		01567C482B7CCFCB0026066A /* OnboardingFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01567C472B7CCFCB0026066A /* OnboardingFinishViewController.swift */; };
 		01567C492B7CCFCB0026066A /* OnboardingFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01567C472B7CCFCB0026066A /* OnboardingFinishViewController.swift */; };
+		01620C6D2BCD73E300A7C4F5 /* FreespokeAuthEventAccountUpdatedHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01620C6C2BCD73E300A7C4F5 /* FreespokeAuthEventAccountUpdatedHelper.swift */; };
+		01620C6E2BCD73E300A7C4F5 /* FreespokeAuthEventAccountUpdatedHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01620C6C2BCD73E300A7C4F5 /* FreespokeAuthEventAccountUpdatedHelper.swift */; };
+		016C3BC62BC42F17007CBC5D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 016C3BC52BC42F17007CBC5D /* PrivacyInfo.xcprivacy */; };
+		016C3BC72BC42F17007CBC5D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 016C3BC52BC42F17007CBC5D /* PrivacyInfo.xcprivacy */; };
 		017D2DB72BB7391000A1B20C /* RestorePurchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D2DB62BB7391000A1B20C /* RestorePurchase.swift */; };
 		017D2DB82BB7391000A1B20C /* RestorePurchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D2DB62BB7391000A1B20C /* RestorePurchase.swift */; };
 		017D2DBA2BB7399B00A1B20C /* RestorePurchaseResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D2DB92BB7399B00A1B20C /* RestorePurchaseResponseModel.swift */; };
@@ -817,6 +825,12 @@
 		01BE9C2F2BC01D04002D3844 /* BaseTouchableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BE9C2D2BC01D04002D3844 /* BaseTouchableButton.swift */; };
 		01BE9C312BC02413002D3844 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BE9C302BC02413002D3844 /* SecondaryButton.swift */; };
 		01BE9C322BC02413002D3844 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BE9C302BC02413002D3844 /* SecondaryButton.swift */; };
+		01BEEE6D2BCBF84F008146B6 /* FreespokeAuthEventLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BEEE6C2BCBF84F008146B6 /* FreespokeAuthEventLoginHelper.swift */; };
+		01BEEE6E2BCBF84F008146B6 /* FreespokeAuthEventLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BEEE6C2BCBF84F008146B6 /* FreespokeAuthEventLoginHelper.swift */; };
+		01BEEE702BCC06E1008146B6 /* FreespokeAuthEventLogoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BEEE6F2BCC06E1008146B6 /* FreespokeAuthEventLogoutHelper.swift */; };
+		01BEEE712BCC06E1008146B6 /* FreespokeAuthEventLogoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BEEE6F2BCC06E1008146B6 /* FreespokeAuthEventLogoutHelper.swift */; };
+		01BEEE732BCC0805008146B6 /* FreespokeAuthEventDeactivateAccountHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BEEE722BCC0805008146B6 /* FreespokeAuthEventDeactivateAccountHelper.swift */; };
+		01BEEE742BCC0805008146B6 /* FreespokeAuthEventDeactivateAccountHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BEEE722BCC0805008146B6 /* FreespokeAuthEventDeactivateAccountHelper.swift */; };
 		01CB8B102BA328A300ADC323 /* OnboardingTopTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */; };
 		01CB8B112BA328A300ADC323 /* OnboardingTopTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */; };
 		01CE39362BB1F000009CEE9B /* InAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE39352BB1F000009CEE9B /* InAppManager.swift */; };
@@ -2578,6 +2592,8 @@
 
 /* Begin PBXFileReference section */
 		00B144CD8BEF73CF75ED7639 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Menu.strings; sourceTree = "<group>"; };
+		011A0C3D2BCAA9A200B9C555 /* ProfileCellTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellTitleView.swift; sourceTree = "<group>"; };
+		011A0C412BCB08AF00B9C555 /* PremiumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumCell.swift; sourceTree = "<group>"; };
 		011C97172BBEDB6B00B96A36 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		011C971A2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager + Constants.swift"; sourceTree = "<group>"; };
 		012C3AB72B80DEE3007EC4AF /* SignUpVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVCViewModel.swift; sourceTree = "<group>"; };
@@ -2604,7 +2620,9 @@
 		01567C3F2B7C24F80026066A /* OnboardingContrentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContrentView.swift; sourceTree = "<group>"; };
 		01567C422B7CCB0A0026066A /* OnboardingEnableNotificationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingEnableNotificationsVC.swift; sourceTree = "<group>"; };
 		01567C472B7CCFCB0026066A /* OnboardingFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFinishViewController.swift; sourceTree = "<group>"; };
+		01620C6C2BCD73E300A7C4F5 /* FreespokeAuthEventAccountUpdatedHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreespokeAuthEventAccountUpdatedHelper.swift; sourceTree = "<group>"; };
 		016B6DF92B62796A00AA65EE /* Fennec_Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Fennec_Staging.xcconfig; path = Configuration/Fennec_Staging.xcconfig; sourceTree = "<group>"; };
+		016C3BC52BC42F17007CBC5D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		017D2DB62BB7391000A1B20C /* RestorePurchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchase.swift; sourceTree = "<group>"; };
 		017D2DB92BB7399B00A1B20C /* RestorePurchaseResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchaseResponseModel.swift; sourceTree = "<group>"; };
 		0181A4032B83B2CD005BE1F6 /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
@@ -2655,6 +2673,9 @@
 		01BE9C2A2BC01A06002D3844 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
 		01BE9C2D2BC01D04002D3844 /* BaseTouchableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTouchableButton.swift; sourceTree = "<group>"; };
 		01BE9C302BC02413002D3844 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
+		01BEEE6C2BCBF84F008146B6 /* FreespokeAuthEventLoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreespokeAuthEventLoginHelper.swift; sourceTree = "<group>"; };
+		01BEEE6F2BCC06E1008146B6 /* FreespokeAuthEventLogoutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreespokeAuthEventLogoutHelper.swift; sourceTree = "<group>"; };
+		01BEEE722BCC0805008146B6 /* FreespokeAuthEventDeactivateAccountHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreespokeAuthEventDeactivateAccountHelper.swift; sourceTree = "<group>"; };
 		01CB8B0F2BA328A300ADC323 /* OnboardingTopTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTopTitleView.swift; sourceTree = "<group>"; };
 		01CE39352BB1F000009CEE9B /* InAppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppManager.swift; sourceTree = "<group>"; };
 		01CE39382BB1F149009CEE9B /* InAppManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppManagerProtocol.swift; sourceTree = "<group>"; };
@@ -4367,6 +4388,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		011A0C402BCAA9AC00B9C555 /* ProfileCell */ = {
+			isa = PBXGroup;
+			children = (
+				011A0C3D2BCAA9A200B9C555 /* ProfileCellTitleView.swift */,
+				44481A5E2B7D8430003BBD6E /* ProfileCell.swift */,
+				011A0C412BCB08AF00B9C555 /* PremiumCell.swift */,
+			);
+			path = ProfileCell;
+			sourceTree = "<group>";
+		};
 		011C97162BBEDB4E00B96A36 /* AnalitycsManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -5502,7 +5533,7 @@
 		44481A5D2B7D8416003BBD6E /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				44481A5E2B7D8430003BBD6E /* ProfileCell.swift */,
+				011A0C402BCAA9AC00B9C555 /* ProfileCell */,
 				44AA16D92B891B9F001D8E06 /* LogoutCell.swift */,
 				018247D72B99AB5900334C48 /* VerifyEmailCell.swift */,
 			);
@@ -5910,6 +5941,10 @@
 				D0E55C4E1FB4FD23006DC274 /* FormPostHelper.swift */,
 				39F4C1092045DB2E00746155 /* FocusHelper.swift */,
 				0BA02DB12942605600C92603 /* CreditCardHelper.swift */,
+				01BEEE6C2BCBF84F008146B6 /* FreespokeAuthEventLoginHelper.swift */,
+				01BEEE6F2BCC06E1008146B6 /* FreespokeAuthEventLogoutHelper.swift */,
+				01620C6C2BCD73E300A7C4F5 /* FreespokeAuthEventAccountUpdatedHelper.swift */,
+				01BEEE722BCC0805008146B6 /* FreespokeAuthEventDeactivateAccountHelper.swift */,
 			);
 			path = TabContentsScripts;
 			sourceTree = "<group>";
@@ -7685,6 +7720,7 @@
 				8A9F0B5527C595F300FE09AE /* ImageIdentifiers.swift */,
 				5A47CFF42860FB8900B2B7BF /* AppLaunchUtil.swift */,
 				5A3A2A0C287F742C00B79EAC /* BackgroundSyncUtil.swift */,
+				016C3BC52BC42F17007CBC5D /* PrivacyInfo.xcprivacy */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -8625,6 +8661,7 @@
 			files = (
 				01BD256F2B6CF7EB00B8B9EB /* FennecEnterprise.entitlements in Resources */,
 				01BD25702B6CF7EB00B8B9EB /* Firefox.entitlements in Resources */,
+				016C3BC72BC42F17007CBC5D /* PrivacyInfo.xcprivacy in Resources */,
 				01BD25712B6CF7EB00B8B9EB /* Fennec.entitlements in Resources */,
 				01BD25722B6CF7EB00B8B9EB /* initial_experiments.json in Resources */,
 				01BD25732B6CF7EB00B8B9EB /* pocketsponsoredfeed.json in Resources */,
@@ -8840,6 +8877,7 @@
 			files = (
 				2F88741C2A5C91F6002A84D9 /* FennecEnterprise.entitlements in Resources */,
 				2F88741B2A5C91E4002A84D9 /* Firefox.entitlements in Resources */,
+				016C3BC62BC42F17007CBC5D /* PrivacyInfo.xcprivacy in Resources */,
 				2F88741A2A5C91CB002A84D9 /* Fennec.entitlements in Resources */,
 				39D056382665235700FBEE59 /* initial_experiments.json in Resources */,
 				C8B0F5F8283B7D38007AE65D /* pocketsponsoredfeed.json in Resources */,
@@ -9303,6 +9341,7 @@
 				01BD23712B6CF7EB00B8B9EB /* RemoteTabsErrorCell.swift in Sources */,
 				01BD23722B6CF7EB00B8B9EB /* AppAuthenticator.swift in Sources */,
 				01BD23732B6CF7EB00B8B9EB /* TemporaryDocument.swift in Sources */,
+				011A0C3F2BCAA9A200B9C555 /* ProfileCellTitleView.swift in Sources */,
 				01BD23742B6CF7EB00B8B9EB /* HistoryDeletionUtility.swift in Sources */,
 				01BD23752B6CF7EB00B8B9EB /* HistoryHighlightsDataAdaptor.swift in Sources */,
 				01BD23762B6CF7EB00B8B9EB /* OpenPassBookHelper.swift in Sources */,
@@ -9384,6 +9423,7 @@
 				01BD23B52B6CF7EB00B8B9EB /* BottomSheetViewController.swift in Sources */,
 				01BD23B62B6CF7EB00B8B9EB /* PhotonActionSheetSiteHeaderView.swift in Sources */,
 				01BD23B72B6CF7EB00B8B9EB /* WallpaperMetadataLoader.swift in Sources */,
+				01BEEE742BCC0805008146B6 /* FreespokeAuthEventDeactivateAccountHelper.swift in Sources */,
 				01BD23B82B6CF7EB00B8B9EB /* DownloadedFile.swift in Sources */,
 				01567C2F2B7BAC1B0026066A /* LabelWithUnderlinedButtonView.swift in Sources */,
 				01BD23B92B6CF7EB00B8B9EB /* RecentlyClosedTabsPanel.swift in Sources */,
@@ -9489,6 +9529,7 @@
 				01BD240E2B6CF7EB00B8B9EB /* BrowserViewController+UIDropInteractionDelegate.swift in Sources */,
 				01BD240F2B6CF7EB00B8B9EB /* PrivilegedRequest.swift in Sources */,
 				01ADAAB12B877EEA0009754E /* FreespokeOAuthConstants.swift in Sources */,
+				01BEEE6E2BCBF84F008146B6 /* FreespokeAuthEventLoginHelper.swift in Sources */,
 				01BD24102B6CF7EB00B8B9EB /* HomepageContextMenuHelper.swift in Sources */,
 				01BD24112B6CF7EB00B8B9EB /* KeyboardPressesHandler.swift in Sources */,
 				01BD24122B6CF7EB00B8B9EB /* Swizzling.m in Sources */,
@@ -9631,6 +9672,7 @@
 				01BD248D2B6CF7EB00B8B9EB /* OnboardingCardViewModel.swift in Sources */,
 				01BD248E2B6CF7EB00B8B9EB /* DefaultSearchPrefs.swift in Sources */,
 				01BD248F2B6CF7EB00B8B9EB /* LegacyWallpaper.swift in Sources */,
+				01620C6E2BCD73E300A7C4F5 /* FreespokeAuthEventAccountUpdatedHelper.swift in Sources */,
 				01BD24902B6CF7EB00B8B9EB /* MenuHelper.swift in Sources */,
 				01BD24912B6CF7EB00B8B9EB /* Constants+Utils.swift in Sources */,
 				01ADAA782B86A5C10009754E /* Tools.swift in Sources */,
@@ -9725,6 +9767,7 @@
 				01BD24DF2B6CF7EB00B8B9EB /* BrowserViewController+URLBarDelegate.swift in Sources */,
 				01BD24E02B6CF7EB00B8B9EB /* DownloadsPanelViewModel.swift in Sources */,
 				44481A582B7A26BC003BBD6E /* ProfileIconView.swift in Sources */,
+				011A0C432BCB08AF00B9C555 /* PremiumCell.swift in Sources */,
 				01BD24E12B6CF7EB00B8B9EB /* BrowserViewController+TabToolbarDelegate.swift in Sources */,
 				01BD24E22B6CF7EB00B8B9EB /* CreditCardHelper.swift in Sources */,
 				01BD24E32B6CF7EB00B8B9EB /* SwipeAnimator.swift in Sources */,
@@ -9859,6 +9902,7 @@
 				01BD25532B6CF7EB00B8B9EB /* StoryProvider.swift in Sources */,
 				01BD25542B6CF7EB00B8B9EB /* DebugSettingsBundleOptions.swift in Sources */,
 				01BD25552B6CF7EB00B8B9EB /* LoginOnboardingViewController.swift in Sources */,
+				01BEEE712BCC06E1008146B6 /* FreespokeAuthEventLogoutHelper.swift in Sources */,
 				01BD25562B6CF7EB00B8B9EB /* UIImage+ImageEffects.m in Sources */,
 				01BD25572B6CF7EB00B8B9EB /* TabContentBlocker.swift in Sources */,
 				01BD25582B6CF7EB00B8B9EB /* RecentlySavedViewModel.swift in Sources */,
@@ -10400,6 +10444,7 @@
 				210887CC293E8800000AB4EE /* RemoteTabsErrorCell.swift in Sources */,
 				F85C7F0F271DD154004BDBA4 /* AppAuthenticator.swift in Sources */,
 				D029A04920A62DB0001DB72F /* TemporaryDocument.swift in Sources */,
+				011A0C3E2BCAA9A200B9C555 /* ProfileCellTitleView.swift in Sources */,
 				C8BA0E7627F20B8E00DD8214 /* HistoryDeletionUtility.swift in Sources */,
 				5AB4237E28A2BA9C003BC40C /* HistoryHighlightsDataAdaptor.swift in Sources */,
 				8A590C6128C123100032F1AA /* OpenPassBookHelper.swift in Sources */,
@@ -10481,6 +10526,7 @@
 				E13F8C342928194800BDC8B4 /* PhotonActionSheetSiteHeaderView.swift in Sources */,
 				C869912F28917688007ACC5C /* WallpaperMetadataLoader.swift in Sources */,
 				2137785D297F1F2800D01309 /* DownloadedFile.swift in Sources */,
+				01BEEE732BCC0805008146B6 /* FreespokeAuthEventDeactivateAccountHelper.swift in Sources */,
 				01567C2E2B7BAC1B0026066A /* LabelWithUnderlinedButtonView.swift in Sources */,
 				745DAB301CDAAFAA00D44181 /* RecentlyClosedTabsPanel.swift in Sources */,
 				D0B9483D22A18B78002F4AA1 /* TextFieldTableViewCell.swift in Sources */,
@@ -10586,6 +10632,7 @@
 				D0C95EF6201A55A800E4E51C /* BrowserViewController+UIDropInteractionDelegate.swift in Sources */,
 				01ADAAB02B877EEA0009754E /* FreespokeOAuthConstants.swift in Sources */,
 				D31CF65C1CC1959A001D0BD0 /* PrivilegedRequest.swift in Sources */,
+				01BEEE6D2BCBF84F008146B6 /* FreespokeAuthEventLoginHelper.swift in Sources */,
 				8A6A796D27F773550022D6C6 /* HomepageContextMenuHelper.swift in Sources */,
 				8A2783F1275FFDC50080D29D /* KeyboardPressesHandler.swift in Sources */,
 				E650755C1E37F747006961AC /* Swizzling.m in Sources */,
@@ -10728,6 +10775,7 @@
 				21B2844A28464FF0003EA521 /* OnboardingCardViewModel.swift in Sources */,
 				DDA24A431FD84D630098F159 /* DefaultSearchPrefs.swift in Sources */,
 				DFD64DB727A1A909003D4534 /* LegacyWallpaper.swift in Sources */,
+				01620C6D2BCD73E300A7C4F5 /* FreespokeAuthEventAccountUpdatedHelper.swift in Sources */,
 				E65075611E37F77D006961AC /* MenuHelper.swift in Sources */,
 				01ADAA772B86A5C10009754E /* Tools.swift in Sources */,
 				2FFF6BE129CC9AEB000A2F74 /* Constants+Utils.swift in Sources */,
@@ -10822,6 +10870,7 @@
 				8A2D593E27DC0AA100713EC9 /* TopSite.swift in Sources */,
 				434E733725EED32E006D3BDE /* BrowserViewController+URLBarDelegate.swift in Sources */,
 				2137785F297F3B1B00D01309 /* DownloadsPanelViewModel.swift in Sources */,
+				011A0C422BCB08AF00B9C555 /* PremiumCell.swift in Sources */,
 				44481A572B7A26BC003BBD6E /* ProfileIconView.swift in Sources */,
 				EBE26B57220C959D00D1D99A /* BrowserViewController+TabToolbarDelegate.swift in Sources */,
 				0BA02DB22942605600C92603 /* CreditCardHelper.swift in Sources */,
@@ -10956,6 +11005,7 @@
 				E58368AA287D632F0087A449 /* StoryProvider.swift in Sources */,
 				E6327A641BF6438E008D12E0 /* DebugSettingsBundleOptions.swift in Sources */,
 				F85C7EDD27109241004BDBA4 /* LoginOnboardingViewController.swift in Sources */,
+				01BEEE702BCC06E1008146B6 /* FreespokeAuthEventLogoutHelper.swift in Sources */,
 				D8FDEB57220CFE970069A582 /* UIImage+ImageEffects.m in Sources */,
 				EBB89506219398E500EB91A0 /* TabContentBlocker.swift in Sources */,
 				966206CD2698DE1E005C0A55 /* RecentlySavedViewModel.swift in Sources */,

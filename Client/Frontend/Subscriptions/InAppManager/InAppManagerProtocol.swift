@@ -56,7 +56,7 @@ enum IAPManagerPurchasingStatus: Equatable {
 enum IAPManagerRestorationStatus: Equatable {
     case canNotMakePayments
     case noTransactionsToRestore
-    case restored(message: String)
+    case restored
     case restorePurchasesFailed(customMessage: String? = nil)
     case storeProductNotAvailable
     case userCancelled
@@ -69,8 +69,8 @@ enum IAPManagerRestorationStatus: Equatable {
             return "We did not find any previous subscriptions to restore under this account."
         case .restorePurchasesFailed(let customMessage):
             return customMessage ?? "Restore Subscription Failed"
-        case .restored(let message):
-            return message
+        case .restored:
+            return "Your Subscription restored Successfully"
         case .storeProductNotAvailable:
             return "Store Product Not Available"
         case .userCancelled:
@@ -86,4 +86,5 @@ protocol InAppManagerProtocol {
     func restorePurchases(appAccountToken: UUID, completion: @escaping((IAPManagerRestorationStatus) -> Void))
     
     func requestProductsInfo()
+    func restorePurchasesAtAppStart()
 }

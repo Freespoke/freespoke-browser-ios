@@ -8,6 +8,7 @@ import WebKit
 enum UserType {
     case authorizedWithoutPremium
     case premium
+    case premiumBecauseAppleAccountHasSubscription
     case unauthorized
 }
 
@@ -54,9 +55,11 @@ class AppSessionManager: AppSessionProvider {
                     switch subscriptionType {
                     case .trialExpired:
                         return UserType.authorizedWithoutPremium
-                    case .originalApple:
+                    case .premiumOriginalApple:
                         return UserType.premium
-                    case .notApple:
+                    case .premiumBecauseAppleAccountHasSubscription:
+                        return UserType.premiumBecauseAppleAccountHasSubscription
+                    case .premiumNotApple:
                         return UserType.premium
                     }
                 } else {
@@ -126,6 +129,7 @@ class AppSessionManager: AppSessionProvider {
     func performFreespokeLogout(completion: ((_ error: CustomError?) -> Void)?) {
         self.authService.performLogoutFreespokeUser(completion: { error in
             print("TEST: Logout error: ", error?.localizedDescription ?? "logout error")
+            completion?(error)
         })
         self.performFreespokeForceLogout(showAlert: true)
     }
@@ -218,6 +222,10 @@ extension AppSessionManager {
     
     func webWrapperEventUserLoggedOut() {
         self.performFreespokeForceLogout(showAlert: false)
+    }
+    
+    func webWrapperEventUserAccountUpdated() {
+        self.performRefreshFreespokeToken(completion: nil)
     }
     
     func webWrapperEventUserDeactivatedAccount() {

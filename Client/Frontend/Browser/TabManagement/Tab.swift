@@ -318,8 +318,10 @@ class Tab: NSObject {
             guard noImageMode != oldValue else { return }
 
             contentBlocker?.noImageMode(enabled: noImageMode)
-
-            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: LegacyThemeManager.instance.currentName == .dark, noImageMode: noImageMode)
+            
+            UserScriptManager.shared.injectUserScriptsIntoTab(self,
+                                                              nightMode: LegacyThemeManager.instance.currentName == .dark,
+                                                              noImageMode: noImageMode)
         }
     }
     
@@ -484,7 +486,9 @@ class Tab: NSObject {
             self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
             self.webView?.addObserver(self, forKeyPath: KVOConstants.title.rawValue, options: .new, context: nil)
             let nightMode = LegacyThemeManager.instance.currentName == .dark
-            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+            UserScriptManager.shared.injectUserScriptsIntoTab(self,
+                                                              nightMode: nightMode,
+                                                              noImageMode: noImageMode)
             tabDelegate?.tab?(self, didCreateWebView: webView)
         }
     }
@@ -816,7 +820,7 @@ class Tab: NSObject {
         
         let nightMode = LegacyThemeManager.instance.currentName == .dark
         print("TEST: nightMode did set: ", nightMode)
-        webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+//        webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
         
         //            if (window.__firefox__){window.__firefox__.NightMode.setEnabled(false);}
         
@@ -827,7 +831,10 @@ class Tab: NSObject {
         webView?.isOpaque = !nightMode
         
         print("TEST: injectUserScriptsIntoTab: ", nightMode)
-        UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+        
+        UserScriptManager.shared.injectUserScriptsIntoTab(self,
+                                                          nightMode: nightMode,
+                                                          noImageMode: noImageMode)
         
 //        if let url = webView?.url {
 //            if url.absoluteString.contains("freespoke.com") == true {

@@ -7,6 +7,7 @@ import Shared
 
 protocol FreefolkProfileViewModelProtocol: AnyObject {
     func profileModelDidUpdateData(freespokeJWTDecodeModel: FreespokeJWTDecodeModel?)
+    func showWarningForPremiumCell()
     func reloadTableView()
 }
 
@@ -47,12 +48,15 @@ class FreefolkProfileViewModel {
     var currentTheme: Theme?
     private var cellTypes: [CellType] = []
     
+    var shouldShowWarningForPremiumCell: Bool = false
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
     init() {
         self.subscribeNotifications()
+        self.checkPremiumState()
     }
     
     func getFreespokeJWTDecodeModel() -> FreespokeJWTDecodeModel? {
@@ -85,7 +89,26 @@ class FreefolkProfileViewModel {
         }
     }
     
+    func checkPremiumState() {
+        guard AppSessionManager.shared.decodedJWTToken != nil else { return }
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            Task {
+                let userType = try await AppSessionManager.shared.userType()
+                switch userType {
+                case .premiumBecauseAppleAccountHasSubscription:
+                    self.shouldShowWarningForPremiumCell = true
+                    self.delegate?.showWarningForPremiumCell()
+                case .unauthorized, .authorizedWithoutPremium, .premium:
+                    break
+                }
+            }
+        }
+    }
+    
     func performLogout() {
+        self.shouldShowWarningForPremiumCell = false
         AppSessionManager.shared.performFreespokeLogout(completion: nil)
     }
 }

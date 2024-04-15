@@ -75,7 +75,7 @@ class ProfileIconView: UIView {
                 case .authorizedWithoutPremium:
                     self.initialsLabel.text = AppSessionManager.shared.decodedJWTToken?.getInitialsLetters()
                     self.setAuthorizedWithoutPremiumUI()
-                case .premium:
+                case .premium, .premiumBecauseAppleAccountHasSubscription:
                     self.initialsLabel.text = AppSessionManager.shared.decodedJWTToken?.getInitialsLetters()
                     self.setPremiumUI()
                 case .unauthorized:

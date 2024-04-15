@@ -81,8 +81,6 @@ public class DBAlertController: UIAlertController {
     public func show(animated flag: Bool = true,
                      sourceRect: CGRect? = nil,
                      completion: (() -> Void)? = nil) {
-        self.view.tintColor = .white
-        self.overrideUserInterfaceStyle = .dark
         
         if let rootViewController = alertWindow.rootViewController {
             alertWindow.makeKeyAndVisible()

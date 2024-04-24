@@ -324,7 +324,8 @@ extension OAuthLoginVC: WKUIDelegate, WKNavigationDelegate {
             decisionHandler(.cancel)
         } else {
             webView.customUserAgent = UserAgent.getUserAgent(domain: url.baseDomain ?? "")
-            UserScriptManager.shared.injectFreespokeDomainRequiredInfoScriptsIfNeeded(self.tabManager.selectedTab)
+            UserScriptManager.shared.injectFreespokeDomainRequiredInfoScriptsIfNeeded(webView: webView,
+                                                                                      navigationAction: navigationAction)
             decisionHandler(.allow)
         }
     }

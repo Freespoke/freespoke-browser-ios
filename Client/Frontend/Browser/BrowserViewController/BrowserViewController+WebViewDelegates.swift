@@ -484,7 +484,8 @@ extension BrowserViewController: WKNavigationDelegate {
             return
         }
         
-        UserScriptManager.shared.injectFreespokeDomainRequiredInfoScriptsIfNeeded(tab)
+        UserScriptManager.shared.injectFreespokeDomainRequiredInfoScriptsIfNeeded(webView: webView,
+                                                                                  navigationAction: navigationAction)
         
         if tab == tabManager.selectedTab,
            navigationAction.navigationType == .linkActivated,

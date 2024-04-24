@@ -7,11 +7,7 @@ import Common
 
 extension URL {
     public func isFreespokeDomain() -> Bool {
-        if self.host == "freespoke.com" {
-            return true
-        } else if self.host == "stagingfreespoke.com" {
-            return true
-        } else if self.host == "local" {
+        if self.host?.contains("freespoke.com") == true {
             return true
         }
         return false

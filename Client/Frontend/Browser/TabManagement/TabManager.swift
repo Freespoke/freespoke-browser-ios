@@ -919,7 +919,14 @@ extension TabManager: WKNavigationDelegate {
             if let internalUrl = InternalURL(url), internalUrl.isSessionRestore {
                 return
             }
-
+            
+            NightModeHelper.checkIsWebPageSupportDarkModeStyle(webView: webView,
+                                                               completion: { supportsDarkMode in
+                if let supportsDarkMode = supportsDarkMode, !supportsDarkMode {
+                    webView.backgroundColor = UIColor.white
+                }
+            })
+            
             storeChanges()
         }
     }

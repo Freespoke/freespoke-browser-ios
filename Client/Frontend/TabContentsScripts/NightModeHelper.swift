@@ -32,6 +32,49 @@ class NightModeHelper: TabContentScript {
         return isNightMode
     }
     
+    static func checkIsWebPageSupportDarkModeStyle(webView: WKWebView, completion: @escaping((_ supportsDarkMode: Bool?) -> Void)) {
+        // Evaluate JavaScript to check for dark mode support
+        let jsCode = """
+                   (() => {
+                       const stylesheets = document.styleSheets;
+                       for (let i = 0; i < stylesheets.length; i++) {
+                           const stylesheet = stylesheets[i];
+                           const media = stylesheet.media;
+                           if (media && media.length > 0) {
+                               for (let j = 0; j < media.length; j++) {
+                                   if (media[j] === '(prefers-color-scheme: dark)') {
+                                       return true;
+                                   }
+                               }
+                           }
+                       }
+                       return false;
+                   })();
+               """
+        
+        webView.evaluateJavaScript(jsCode) { (result, error) in
+            if let error = error {
+                print("DEBUG: Error evaluating JavaScript: \(error)")
+                completion(nil)
+                return
+            }
+            
+            guard let supportsDarkMode = result as? Bool else {
+                print("DEBUG: Invalid result type")
+                completion(nil)
+                return
+            }
+            
+            if supportsDarkMode {
+                print("DEBUG: Web page supports dark mode styles")
+                completion(true)
+            } else {
+                print("DEBUG: Web page does not support dark mode styles")
+                completion(false)
+            }
+        }
+    }
+    
     static func changeUserInterfaceStyle(to themeType: ThemeType, themeManager: ThemeManager) {
         LegacyThemeManager.instance.systemThemeIsOn = false
         themeManager.setSystemTheme(isOn: false)

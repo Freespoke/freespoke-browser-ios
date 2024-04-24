@@ -84,7 +84,6 @@ enum Constants: String {
                 return "https://freespoke.com/account/profile"
             case .staging:
                 return "https://staging.freespoke.com/account/profile"
-//                return "https://test-appy-scripts--ff-internal-staging.netlify.app"
             }
         }
     }

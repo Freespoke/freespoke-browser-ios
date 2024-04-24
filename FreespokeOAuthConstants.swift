@@ -8,8 +8,8 @@ final class OAuthConstants {
     static var openIdIssuer: String {
             switch FreespokeEnvironment.current {
             case .production:
-                return "https://auth.staging.freespoke.com/realms/freespoke-staging"
-//                return "https://accounts.freespoke.com/realms/freespoke"
+//                return "https://auth.staging.freespoke.com/realms/freespoke-staging"
+                return "https://accounts.freespoke.com/realms/freespoke"
             case .staging:
                 return "https://auth.staging.freespoke.com/realms/freespoke-staging"
             }

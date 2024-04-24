@@ -219,11 +219,16 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
                     let readingListSection = getReadingListSection()
                     append(to: &section, action: readingListSection)
                     
-                    if let userType = try? await AppSessionManager.shared.userType(),
-                       userType == .premium,
-                       !isHomePage {
-                        let addToWhitelistSection = self.getAddToWhitelistSection()
-                        append(to: &section, action: addToWhitelistSection)
+                    if let userType = try? await AppSessionManager.shared.userType() {
+                        switch userType {
+                        case .premiumOriginalApple, .premiumNotApple, .premiumBecauseAppleAccountHasSubscription, .unauthorizedWithPremium:
+                            if !isHomePage {
+                                let addToWhitelistSection = self.getAddToWhitelistSection()
+                                append(to: &section, action: addToWhitelistSection)
+                            }
+                        case .authorizedWithoutPremium, .unauthorizedWithoutPremium:
+                            break
+                        }
                     }
                 }
                 return section

@@ -63,7 +63,7 @@ class FreefolkProfileVC: UIViewController, Themeable {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.reloadTableView()
-        self.viewModel.checkPremiumState()
+        self.viewModel.updateShowWarningForPremium()
         self.customTitleView.updateProfileIcon(freespokeJWTDecodeModel: self.viewModel.freespokeJWTDecodeModel)
     }
     
@@ -163,17 +163,42 @@ class FreefolkProfileVC: UIViewController, Themeable {
     }
     
     private func premiumClicked() {
-        if self.viewModel.freespokeJWTDecodeModel != nil {
-            self.navigateToSubscriptionScreen()
-        } else {
+        Task {
+            do {
+                if self.viewModel.freespokeJWTDecodeModel != nil {
+                    self.showSubscriptionScreen()
+                } else if let userType = try? await AppSessionManager.shared.userType() {
+                    switch userType {
+                    case .unauthorizedWithoutPremium:
+                        self.showSignUpScreen()
+                    case .authorizedWithoutPremium,
+                            .premiumOriginalApple,
+                            .premiumNotApple,
+                            .premiumBecauseAppleAccountHasSubscription,
+                            .unauthorizedWithPremium:
+                        self.showSubscriptionScreen()
+                    }
+                } else {
+                    self.showSignUpScreen()
+                }
+            }
+        }
+    }
+    
+    private func showSignUpScreen() {
+        ensureMainThread { [weak self] in
+            guard let self = self else { return }
             let vc = SignUpVC(viewModel: SignUpVCViewModel(isOnboarding: false))
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
-    private func navigateToSubscriptionScreen() {
-        let vc = SubscriptionsVC(viewModel: SubscriptionsVCViewModel(isOnboarding: false))
-        self.navigationController?.pushViewController(vc, animated: true)
+    private func showSubscriptionScreen() {
+        ensureMainThread { [weak self] in
+            guard let self = self else { return }
+            let vc = SubscriptionsVC(viewModel: SubscriptionsVCViewModel(isOnboarding: false))
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     private func shareFreespoke() {
@@ -257,7 +282,7 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
         cell.warningButtonTappedClosure = {
             ensureMainThread {
                 UIUtils.showOkAlertInNewWindow(title: nil,
-                                               message: "Your subscription is active, but it may be linked to a different Freespoke account. To enjoy your benefits across all our platforms, please log in with the account you originally used to activate your subscription.")
+                                               message: "Your subscription is active, but it may be linked to a different Freespoke account or you might not be logged in yet. To enjoy your benefits across all our platforms, please log in with the account you originally used to activate your subscription.")
             }
         }
         

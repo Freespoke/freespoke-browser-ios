@@ -7,9 +7,11 @@ import WebKit
 
 enum UserType {
     case authorizedWithoutPremium
-    case premium
+    case premiumOriginalApple
+    case premiumNotApple
     case premiumBecauseAppleAccountHasSubscription
-    case unauthorized
+    case unauthorizedWithoutPremium
+    case unauthorizedWithPremium
 }
 
 protocol AppSessionProvider {
@@ -56,11 +58,11 @@ class AppSessionManager: AppSessionProvider {
                     case .trialExpired:
                         return UserType.authorizedWithoutPremium
                     case .premiumOriginalApple:
-                        return UserType.premium
+                        return UserType.premiumOriginalApple
                     case .premiumBecauseAppleAccountHasSubscription:
                         return UserType.premiumBecauseAppleAccountHasSubscription
                     case .premiumNotApple:
-                        return UserType.premium
+                        return UserType.premiumNotApple
                     }
                 } else {
                     return UserType.authorizedWithoutPremium
@@ -68,7 +70,50 @@ class AppSessionManager: AppSessionProvider {
             }
             return try await userTypeResult.value
         } else {
-            return .unauthorized
+            let appleMonthlySubscription = InAppManager.shared.product(productId: ProductIdentifiers.monthlySubscription)
+            let appleYearlySubscription = InAppManager.shared.product(productId: ProductIdentifiers.yearlySubscription)
+            
+            let premiumResult = Task<UserType, Error> {
+                if (appleMonthlySubscription != nil) || (appleYearlySubscription != nil) {
+                    // checking monthly subscription
+                    if let appleMonthlySubscription = appleMonthlySubscription {
+                        let isPurchasedResult = try await InAppManager.shared.isPurchased(appleMonthlySubscription.productID)
+                        if isPurchasedResult.isPurchased {
+                            return UserType.unauthorizedWithPremium
+                        }
+                    }
+                    
+                    // checking yearly subscription
+                    if let appleYearlySubscription = appleYearlySubscription {
+                        let isPurchasedResult = try await InAppManager.shared.isPurchased(appleYearlySubscription.productID)
+                        if isPurchasedResult.isPurchased {
+                            return UserType.unauthorizedWithPremium
+                        }
+                    }
+                }
+                
+                return UserType.unauthorizedWithoutPremium
+            }
+            return try await premiumResult.value
+        }
+    }
+    
+    func checkIsUserHasPremium(isPremiumCompletion: ((_ isPremium: Bool) -> Void)?) {
+        Task {
+            do {
+                if let userType = try? await self.userType() {
+                    switch userType {
+                    case .authorizedWithoutPremium:
+                        isPremiumCompletion?(false)
+                    case .premiumOriginalApple, .premiumNotApple, .premiumBecauseAppleAccountHasSubscription:
+                        isPremiumCompletion?(true)
+                    case .unauthorizedWithoutPremium:
+                        isPremiumCompletion?(false)
+                    case .unauthorizedWithPremium:
+                        isPremiumCompletion?(true)
+                    }
+                }
+            }
         }
     }
     

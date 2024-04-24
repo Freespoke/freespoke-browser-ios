@@ -182,10 +182,17 @@ class AdBlockManager {
     
     func shouldBlockAds() async throws -> Bool {
         let result = Task<Bool, Error> {
-            if let userType = try? await AppSessionManager.shared.userType(),
-               userType == .premium,
-               UserDefaults.standard.bool(forKey: SettingsKeys.isEnabledBlocker) {
-                return true
+            if let userType = try? await AppSessionManager.shared.userType() {
+                switch userType {
+                case .premiumOriginalApple, .premiumNotApple, .premiumBecauseAppleAccountHasSubscription, .unauthorizedWithPremium:
+                    if UserDefaults.standard.bool(forKey: SettingsKeys.isEnabledBlocker) {
+                        return true
+                    } else {
+                        return false
+                    }
+                case .authorizedWithoutPremium, .unauthorizedWithoutPremium:
+                    return false
+                }
             } else {
                 return false
             }

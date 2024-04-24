@@ -59,7 +59,7 @@ class FreefolkProfileViewModel {
     init() {
         self.subscribeNotifications()
         self.setupCellTypes()
-        self.checkPremiumState()
+        self.updateShowWarningForPremium()
     }
     
     func getFreespokeJWTDecodeModel() -> FreespokeJWTDecodeModel? {
@@ -89,7 +89,7 @@ class FreefolkProfileViewModel {
                     
                     self.delegate?.reloadTableView()
                     
-                case .premium, .premiumBecauseAppleAccountHasSubscription:
+                case .premiumOriginalApple, .premiumNotApple, .premiumBecauseAppleAccountHasSubscription, .unauthorizedWithPremium:
                     self.cellTypes = [
                         .premium,
                         .account,
@@ -112,7 +112,7 @@ class FreefolkProfileViewModel {
                     }
                     
                     self.delegate?.reloadTableView()
-                case .unauthorized:
+                case .unauthorizedWithoutPremium:
                     self.cellTypes = [
                         .premium,
                         .account,
@@ -132,18 +132,19 @@ class FreefolkProfileViewModel {
         return self.cellTypes
     }
         
-    func checkPremiumState() {
-        guard AppSessionManager.shared.decodedJWTToken != nil else { return }
+    func updateShowWarningForPremium() {
+//        guard AppSessionManager.shared.decodedJWTToken != nil else { return }
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             Task {
                 let userType = try await AppSessionManager.shared.userType()
                 switch userType {
-                case .premiumBecauseAppleAccountHasSubscription:
+                case .premiumBecauseAppleAccountHasSubscription, .unauthorizedWithPremium:
                     self.shouldShowWarningForPremiumCell = true
                     self.delegate?.showWarningForPremiumCell()
-                case .unauthorized, .authorizedWithoutPremium, .premium:
+                case .unauthorizedWithoutPremium, .authorizedWithoutPremium, .premiumOriginalApple, .premiumNotApple:
+                    self.shouldShowWarningForPremiumCell = false
                     break
                 }
             }
@@ -151,7 +152,6 @@ class FreefolkProfileViewModel {
     }
     
     func performLogout() {
-        self.shouldShowWarningForPremiumCell = false
         AppSessionManager.shared.performFreespokeLogout(completion: nil)
     }
     
@@ -172,6 +172,7 @@ extension FreefolkProfileViewModel {
     }
     
     @objc private func freespokeUserAuthChanged(_ notification: Notification) {
+        self.updateShowWarningForPremium()
         self.delegate?.profileModelDidUpdateData(freespokeJWTDecodeModel: freespokeJWTDecodeModel)
         self.setupCellTypes()
     }

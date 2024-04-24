@@ -75,11 +75,13 @@ class ProfileIconView: UIView {
                 case .authorizedWithoutPremium:
                     self.initialsLabel.text = AppSessionManager.shared.decodedJWTToken?.getInitialsLetters()
                     self.setAuthorizedWithoutPremiumUI()
-                case .premium, .premiumBecauseAppleAccountHasSubscription:
+                case .premiumOriginalApple, .premiumNotApple, .premiumBecauseAppleAccountHasSubscription:
                     self.initialsLabel.text = AppSessionManager.shared.decodedJWTToken?.getInitialsLetters()
                     self.setPremiumUI()
-                case .unauthorized:
+                case .unauthorizedWithoutPremium:
                     self.setUnauthorizedUI()
+                case .unauthorizedWithPremium:
+                    self.setUnauthorizedUIWithPremium()
                 }
             }
         }
@@ -106,6 +108,14 @@ class ProfileIconView: UIView {
         self.starImageView.isHidden = true
         self.avatarImageView.isHidden = false
         self.stackViewLeadingConstraint?.constant = 0
+        self.stackViewTrailingConstraint?.constant = 0
+    }
+    
+    private func setUnauthorizedUIWithPremium() {
+        self.initialsLabel.isHidden = true
+        self.starImageView.isHidden = false
+        self.avatarImageView.isHidden = false
+        self.stackViewLeadingConstraint?.constant = 10
         self.stackViewTrailingConstraint?.constant = 0
     }
     

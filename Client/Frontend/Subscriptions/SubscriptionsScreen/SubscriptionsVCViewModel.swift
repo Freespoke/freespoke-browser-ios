@@ -92,10 +92,26 @@ class SubscriptionsVCViewModel {
     
     private func updateCurrentSubscriptionsState() {
         Task {
-            if let subscriptionType = try? await AppSessionManager.shared.decodedJWTToken?.subscriptionType() {
-                self.subscriptionType = subscriptionType
-            } else {
-                self.subscriptionType = nil
+            if let userType = try? await AppSessionManager.shared.userType() {
+                switch userType {
+                case .unauthorizedWithoutPremium:
+                    self.subscriptionType = nil
+                case .authorizedWithoutPremium:
+                    if let subscriptionType = try? await AppSessionManager.shared.decodedJWTToken?.subscriptionType() {
+                        self.subscriptionType = subscriptionType
+                    } else {
+                        self.subscriptionType = nil
+                    }
+                case .premiumOriginalApple:
+                    self.subscriptionType = .premiumOriginalApple
+                case .premiumNotApple:
+                    self.subscriptionType = .premiumNotApple
+                    
+                case .premiumBecauseAppleAccountHasSubscription:
+                    self.subscriptionType = .premiumBecauseAppleAccountHasSubscription
+                case .unauthorizedWithPremium:
+                    self.subscriptionType = .premiumOriginalApple
+                }
             }
         }
     }

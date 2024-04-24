@@ -172,7 +172,7 @@ extension UserScriptManager {
         }
         
         // MARK: Pass HasPremium using Java Script code
-        self.checkIsUserHasPremium(isPremiumCompletion: { isPremium in
+        AppSessionManager.shared.checkIsUserHasPremium(isPremiumCompletion: { isPremium in
             ensureMainThread {
                 let setHasPremiumJsCode = """
                 (function() {
@@ -183,22 +183,5 @@ extension UserScriptManager {
                 webView.evaluateJavaScript(setHasPremiumJsCode)
             }
         })
-    }
-    
-    private func checkIsUserHasPremium(isPremiumCompletion: ((_ isPremium: Bool) -> Void)?) {
-        Task {
-            do {
-                if let userType = try? await AppSessionManager.shared.userType() {
-                    switch userType {
-                    case .authorizedWithoutPremium:
-                        isPremiumCompletion?(false)
-                    case .premium, .premiumBecauseAppleAccountHasSubscription:
-                        isPremiumCompletion?(true)
-                    case .unauthorized:
-                        isPremiumCompletion?(false)
-                    }
-                }
-            }
-        }
     }
 }

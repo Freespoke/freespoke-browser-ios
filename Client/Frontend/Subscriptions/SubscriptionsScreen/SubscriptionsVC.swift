@@ -276,32 +276,48 @@ extension SubscriptionsVC {
     }
     
     private func performUpdateCancelSubscriptionAction(completion: (() -> Void)?) {
-        self.viewModel.getLinkForManagingSubscription(onSuccess: { [weak self] managingSubscriptionModel in
-            if let linkString = managingSubscriptionModel.manageSubscriptionLink,
-               let linkForManagingSubscription = URL(string: linkString) {
-                DispatchQueue.main.async {
-                    UIApplication.shared.open(linkForManagingSubscription, options: [:], completionHandler: nil)
+        Task {
+            do {
+                if let userType = try? await AppSessionManager.shared.userType() {
+                    switch userType {
+                    case .premiumNotApple:
+                        self.viewModel.getLinkForManagingSubscription(onSuccess: { [weak self] managingSubscriptionModel in
+                            if let linkString = managingSubscriptionModel.manageSubscriptionLink,
+                               let linkForManagingSubscription = URL(string: linkString) {
+                                DispatchQueue.main.async {
+                                    UIApplication.shared.open(linkForManagingSubscription, options: [:], completionHandler: nil)
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { [weak self] in
+                                    guard let self = self else { return }
+                                    self.motionDismissViewController(animated: true)
+                                })
+                            } else {
+                                let error = CustomError.somethingWentWrong
+                                UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
+                            }
+                            
+                            completion?()
+                        },
+                                                                      onFailure: { [weak self] error in
+                            guard let self = self else { return }
+                            DispatchQueue.main.async {
+                                UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
+                            }
+                            completion?()
+                        })
+                    case .premiumBecauseAppleAccountHasSubscription, .unauthorizedWithPremium, .premiumOriginalApple:
+                        if let appStoreSubscriptionURL = URL(string: Constants.appleNativeSubscriptions.rawValue) {
+                            UIApplication.shared.open(appStoreSubscriptionURL, options: [:], completionHandler: nil)
+                        }
+                        completion?()
+                    case .unauthorizedWithoutPremium, .authorizedWithoutPremium:
+                        completion?()
+                    }
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { [weak self] in
-                    guard let self = self else { return }
-                    self.motionDismissViewController(animated: true)
-                })
-            } else {
-                let error = CustomError.somethingWentWrong
-                UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
             }
-            
-            completion?()
-        },
-                                                      onFailure: { [weak self] error in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
-            }
-            completion?()
-        })
+        }
     }
-    
+
     @objc private func btnContinueTapped(_ sender: UIButton) {
         if self.viewModel.isOnboarding {
             AnalyticsManager.trackMatomoEvent(category: .appOnboardCategory,

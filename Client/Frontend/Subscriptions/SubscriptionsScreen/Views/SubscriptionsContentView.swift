@@ -104,7 +104,7 @@ class SubscriptionsContentView: UIView {
         self.privilegesStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.topTitleView.topAnchor.constraint(equalTo: self.topAnchor, constant: UIDevice.current.isPad ? 120 : 105),
+            self.topTitleView.topAnchor.constraint(equalTo: self.topAnchor, constant: UIDevice.current.isPad ? 70 : 55),
             self.topTitleView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
             self.topTitleView.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor),
             self.topTitleView.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),

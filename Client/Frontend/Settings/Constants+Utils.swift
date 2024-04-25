@@ -105,15 +105,12 @@ enum Constants: String {
     case appleNativeSubscriptions = "itms-apps://apps.apple.com/account/subscriptions" // "https://apps.apple.com/account/subscriptions"
     
     // MARK: - One Signal
-    
     enum OneSignalConstants {
         static var oneSignalId: String {
             switch FreespokeEnvironment.current {
             case .production:
-                // TODO: should be replaced to production app id. For now will be used staging app id
-                return "de8ebc15-f8ef-427a-b1c1-f312ce831eea"
+                return "8c38e904-be26-4ed0-9343-4186ab6c7f82"
             case .staging:
-                // one signall app id (stagincId = "de8ebc15-f8ef-427a-b1c1-f312ce831eea")
                 return "de8ebc15-f8ef-427a-b1c1-f312ce831eea"
             }
         }

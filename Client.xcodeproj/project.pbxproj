@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01117E872BDC25D700DF571F /* GetShoppingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E862BDC25D700DF571F /* GetShoppingCollection.swift */; };
+		01117E882BDC25D700DF571F /* GetShoppingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E862BDC25D700DF571F /* GetShoppingCollection.swift */; };
+		01117E8A2BDC26F400DF571F /* ShoppingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E892BDC26F400DF571F /* ShoppingModel.swift */; };
+		01117E8B2BDC26F400DF571F /* ShoppingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E892BDC26F400DF571F /* ShoppingModel.swift */; };
 		011A0C3E2BCAA9A200B9C555 /* ProfileCellTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A0C3D2BCAA9A200B9C555 /* ProfileCellTitleView.swift */; };
 		011A0C3F2BCAA9A200B9C555 /* ProfileCellTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A0C3D2BCAA9A200B9C555 /* ProfileCellTitleView.swift */; };
 		011A0C422BCB08AF00B9C555 /* PremiumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A0C412BCB08AF00B9C555 /* PremiumCell.swift */; };
@@ -2657,6 +2661,8 @@
 
 /* Begin PBXFileReference section */
 		00B144CD8BEF73CF75ED7639 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Menu.strings; sourceTree = "<group>"; };
+		01117E862BDC25D700DF571F /* GetShoppingCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShoppingCollection.swift; sourceTree = "<group>"; };
+		01117E892BDC26F400DF571F /* ShoppingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingModel.swift; sourceTree = "<group>"; };
 		011A0C3D2BCAA9A200B9C555 /* ProfileCellTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellTitleView.swift; sourceTree = "<group>"; };
 		011A0C412BCB08AF00B9C555 /* PremiumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumCell.swift; sourceTree = "<group>"; };
 		011C97172BBEDB6B00B96A36 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
@@ -4708,6 +4714,7 @@
 				01823F902B8D592700986B73 /* LogoutFreespokeUser.swift */,
 				01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */,
 				017D2DB62BB7391000A1B20C /* RestorePurchase.swift */,
+				01117E862BDC25D700DF571F /* GetShoppingCollection.swift */,
 			);
 			path = "NetworkManager + Extensions";
 			sourceTree = "<group>";
@@ -4760,6 +4767,7 @@
 				0181A4162B855D3A005BE1F6 /* FreespokeAuthModel.swift */,
 				01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */,
 				017D2DB92BB7399B00A1B20C /* RestorePurchaseResponseModel.swift */,
+				01117E892BDC26F400DF571F /* ShoppingModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -10018,6 +10026,7 @@
 				01ADAAA22B86A5C20009754E /* Encodable + Extensions.swift in Sources */,
 				01BD24BF2B6CF7EB00B8B9EB /* BookmarkCollectionViewCell.swift in Sources */,
 				01BD24C02B6CF7EB00B8B9EB /* ContextualHintViewController.swift in Sources */,
+				01117E882BDC25D700DF571F /* GetShoppingCollection.swift in Sources */,
 				012C3AB92B80DEE3007EC4AF /* SignUpVCViewModel.swift in Sources */,
 				0181A4182B855D3A005BE1F6 /* FreespokeAuthModel.swift in Sources */,
 				01BD24C12B6CF7EB00B8B9EB /* Experiments.swift in Sources */,
@@ -10092,6 +10101,7 @@
 				01BD24F72B6CF7EB00B8B9EB /* JumpBackInCell.swift in Sources */,
 				01BD24F82B6CF7EB00B8B9EB /* HomepageViewModel.swift in Sources */,
 				01823F9B2B8DFE9F00986B73 /* EmailTextField.swift in Sources */,
+				01117E8B2BDC26F400DF571F /* ShoppingModel.swift in Sources */,
 				01BD24F92B6CF7EB00B8B9EB /* Tab.swift in Sources */,
 				01BD24FA2B6CF7EB00B8B9EB /* ToolbarButton.swift in Sources */,
 				01BD24FB2B6CF7EB00B8B9EB /* NightModeHelper.swift in Sources */,
@@ -11142,6 +11152,7 @@
 				E660BDD91BB06521009AC090 /* TabsButton.swift in Sources */,
 				E1A6AB4828CA833000EBEBDD /* WallpaperBaseViewController.swift in Sources */,
 				2F745E382A8E0E0200A4085B /* BookmarkCollectionViewCell.swift in Sources */,
+				01117E872BDC25D700DF571F /* GetShoppingCollection.swift in Sources */,
 				012C3AB82B80DEE3007EC4AF /* SignUpVCViewModel.swift in Sources */,
 				0181A4172B855D3A005BE1F6 /* FreespokeAuthModel.swift in Sources */,
 				01ADAA972B86A5C10009754E /* NetworkLayerConstants.swift in Sources */,
@@ -11216,6 +11227,7 @@
 				8A9AC465276CEC4E0047F5B0 /* JumpBackInCell.swift in Sources */,
 				01823F9A2B8DFE9F00986B73 /* EmailTextField.swift in Sources */,
 				1DFE57FD27BADD7D0025DE58 /* HomepageViewModel.swift in Sources */,
+				01117E8A2BDC26F400DF571F /* ShoppingModel.swift in Sources */,
 				D3A9949D1A3686BD008AD1AC /* Tab.swift in Sources */,
 				8AD40FD127BADCBA00672675 /* ToolbarButton.swift in Sources */,
 				A93067E81D0FE18E00C49C6E /* NightModeHelper.swift in Sources */,

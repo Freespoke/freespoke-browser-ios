@@ -65,6 +65,10 @@ enum NetworkLayerConstants {
         static var restorePurchasePath: String {
             return "/accounts/restore-purchase/ios"
         }
+        
+        static var getShoppingCollectionPath: String {
+            return "/v2/shop/collections"
+        }
     }
     
     // MARK: Header Keys
@@ -92,5 +96,7 @@ enum NetworkLayerConstants {
         static let clientId = "client_id"
         static let refreshToken = "refresh_token"
         static let signedPayload = "signedPayload"
+        static let page = "page"
+        static let perPage = "per_page"
     }
 }

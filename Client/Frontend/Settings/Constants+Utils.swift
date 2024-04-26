@@ -66,15 +66,6 @@ enum Constants: String {
         static let easyFanboyAnnoyance = "https://secure.fanboy.co.nz/fanboy-annoyance.txt"
     }
     
-    static var apiBaseURL: String {
-        switch FreespokeEnvironment.current {
-        case .production:
-            return "https://api.freespoke.com/v2"
-        case .staging:
-            return "https://api.staging.freespoke.com/v2"
-        }
-    }
-    
     // MARK: - URLs
     
     enum URLs {

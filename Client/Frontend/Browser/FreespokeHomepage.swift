@@ -83,7 +83,7 @@ class FreespokeHomepage: UIView {
     var arrBookmarks = [Site]()
     var arrRecenlyViewed = [HighlightItem]()
     var arrTrendingStory = [TrendingStory]()
-    var arrShoppingCollection = [Shopping]()
+    var arrShoppingCollection: [ShoppingCoollectionItemModel] = []
     
     var urlSearch       = ""
     var urlTrending     = ""
@@ -97,6 +97,8 @@ class FreespokeHomepage: UIView {
         .underlineStyle: NSUnderlineStyle.single.rawValue]
     
     let margin: CGFloat = 8
+    
+    private var networkManager = NetworkManager()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -407,44 +409,21 @@ class FreespokeHomepage: UIView {
         dataTask.resume()
     }
     
-    func getShopppingCollection(page: Int, completion: (() -> Void)? = nil) {
-        let url = NSURL(string: "\(Constants.apiBaseURL)/shop/collections?page=\(page)&per_page=4")
-        let request = NSMutableURLRequest(url: url! as URL)
-        request.httpMethod = "GET"
-        let session = URLSession(configuration:URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
-        let dataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
-            
-            if error != nil {
-            } else {
-                do {
-                    let json = try JSON(data: data!)
-                    let collections = json["collections"]
-                    
-                    if let arrShopping = collections.array {
-                        if !arrShopping.isEmpty {
-                            self.arrShoppingCollection = [Shopping]()
-                            
-                            for story in arrShopping {
-                                let newStory = Shopping(ID: 1,
-                                                        url: story["url"].stringValue,
-                                                        title: story["title"].stringValue,
-                                                        thumbnail: story["thumbnail"].stringValue)
-                                
-                                self.arrShoppingCollection.append(contentsOf: [newStory])
-                            }
-                        }
-                    }
-                    
-                    DispatchQueue.main.async {
-                        self.collectionViewShopUsa.reloadData()
-                    }
+    private func getShopppingCollection(page: Int, completion: (() -> Void)? = nil) {
+        self.networkManager.getShoppingCollection(page: page,
+                                                  perPage: 4,
+                                                  completion: { [weak self] shoppingCollectionModel, error in
+            guard let self = self else { return }
+            if let shoppingCollectionModel = shoppingCollectionModel {
+                if !shoppingCollectionModel.collections.isEmpty {
+                    self.arrShoppingCollection = shoppingCollectionModel.collections
                 }
-                catch {
-                    print("error")
+                
+                DispatchQueue.main.async {
+                    self.collectionViewShopUsa.reloadData()
                 }
             }
-        }
-        dataTask.resume()
+        })
     }
     
     // MARK: - Action Methods
@@ -609,10 +588,10 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
         case collectionViewTrendingNews:
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trendingNewsCellIdentifier", for: indexPath) as? TrendingNewsCollectionViewCell {
                 
-                if indexPath.row < arrTrendingStory.count {
+                if indexPath.row < self.arrTrendingStory.count {
                     
                     
-                    let story = arrTrendingStory[indexPath.row]
+                    let story = self.arrTrendingStory[indexPath.row]
                     
                     cell.lblTitle.text = story.name
                     
@@ -710,30 +689,24 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             }
             
         case collectionViewRecentlyViewd:
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recentlyViewedCellIdentifier", for: indexPath) as? RecentlyViewedCollectionViewCell {
-                
-                let bookmark = arrRecenlyViewed[indexPath.row]
-                
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recentlyViewedCellIdentifier", for: indexPath) as? RecentlyViewedCollectionViewCell,
+               indexPath.row < self.arrRecenlyViewed.count {
+                let bookmark = self.arrRecenlyViewed[indexPath.row]
                 if let strUrl = bookmark.urlString {
                     let url = URL(string: "http://www.google.com/s2/favicons?sz=\(32)&domain=\(strUrl)")
-                    
                     cell.imgView.kf.setImage(with: url)
                 }
-                
                 cell.lblTitle.text = bookmark.displayTitle
-                
                 return cell
             }
             
         case collectionViewShopUsa:
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "shopUsaCellIdentifier", for: indexPath) as? ShopUsaCollectionViewCell {
-                
-                let story = arrShoppingCollection[indexPath.row]
-                
-                cell.lblTitle.text = story.title
-                let url = URL(string: story.thumbnail)
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "shopUsaCellIdentifier", for: indexPath) as? ShopUsaCollectionViewCell,
+               indexPath.row < self.arrShoppingCollection.count {
+                let shop = arrShoppingCollection[indexPath.row]
+                cell.lblTitle.text = shop.title
+                let url = URL(string: shop.thumbnail)
                 cell.imgView.kf.setImage(with: url)
-                
                 return cell
             }
             
@@ -758,7 +731,8 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             delegate?.showURL(url: site.url)
             
         case collectionViewTrendingNews:
-            let story = arrTrendingStory[indexPath.row]
+            guard indexPath.row < self.arrTrendingStory.count else { return }
+            let story = self.arrTrendingStory[indexPath.row]
             AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
                                               action: AnalyticsManager.MatomoAction.appHomeTrendingNewsStoryClick.rawValue,
                                               name: story.name,
@@ -770,14 +744,14 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
                                               action: AnalyticsManager.MatomoAction.appHomeRecently.rawValue,
                                               name: AnalyticsManager.MatomoName.clickName)
-            
-            let site = arrRecenlyViewed[indexPath.row]
-            
+            guard indexPath.row < self.arrRecenlyViewed.count else { return }
+            let site = self.arrRecenlyViewed[indexPath.row]
             if let url = site.urlString {
                 delegate?.showURL(url: url)
             }
             
         case collectionViewShopUsa:
+            guard indexPath.row < self.arrShoppingCollection.count else { return }
             let shop = arrShoppingCollection[indexPath.row]
             
             AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
@@ -838,7 +812,8 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
 
 extension FreespokeHomepage: TrendingNewsCollectionViewCellDelegate {
     func didBtnPhoto(indexPath: IndexPath) {
-        let story = arrTrendingStory[indexPath.row]
+        guard indexPath.row < self.arrTrendingStory.count else { return }
+        let story = self.arrTrendingStory[indexPath.row]
         
         var image = story.mainImageAttribution
         
@@ -850,6 +825,7 @@ extension FreespokeHomepage: TrendingNewsCollectionViewCellDelegate {
     }
     
     func didBtnViewSummary(indexPath: IndexPath) {
+        guard indexPath.row < self.arrTrendingStory.count else { return }
         let story = arrTrendingStory[indexPath.row]
         
         delegate?.showURL(url: story.url)
@@ -891,30 +867,6 @@ class TrendingStory: Equatable, Hashable {
 }
 
 func ==(lhs: TrendingStory, rhs: TrendingStory) -> Bool {
-    return lhs.url == rhs.url
-}
-
-class Shopping: Equatable, Hashable {
-    var ID: Int
-    var title: String
-    var url: String
-    var thumbnail: String
-    
-    init(ID: Int, url: String, title: String, thumbnail: String) {
-        self.ID = ID
-        self.title = title
-        self.url = url
-        self.thumbnail = thumbnail
-    }
-    
-    var hashValue: Int {
-        get {
-            return ID.hashValue << 15 + title.hashValue
-        }
-    }
-}
-
-func ==(lhs: Shopping, rhs: Shopping) -> Bool {
     return lhs.url == rhs.url
 }
 

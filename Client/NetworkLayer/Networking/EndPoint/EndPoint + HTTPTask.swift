@@ -38,6 +38,15 @@ extension EndPoint {
                                                 bodyEncoding: .jsonEncoding,
                                                 urlParameters: nil,
                                                 additionHeaders: self.headers)
+        case .getShoppingCollection(let page, let perPage):
+            let parameters: HTTPParameters = [
+                NetworkLayerConstants.ParameterKeys.page: page,
+                NetworkLayerConstants.ParameterKeys.perPage: perPage
+            ]
+            return .requestParametersAndHeaders(bodyParameters: nil,
+                                                bodyEncoding: .urlEncoding(urlEncodingType: .none),
+                                                urlParameters: parameters,
+                                                additionHeaders: self.headers)
         }
     }
 }

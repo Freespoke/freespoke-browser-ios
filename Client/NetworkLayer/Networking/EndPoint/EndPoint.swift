@@ -5,6 +5,7 @@ enum EndPoint {
     case logoutFreespokeUser
     case getLinkForManagingSubscription
     case restorePurchase(signedPayload: String)
+    case getShoppingCollection(page: Int, perPage: Int)
 }
 
 extension EndPoint: EndPointType {
@@ -12,7 +13,8 @@ extension EndPoint: EndPointType {
         switch self {
         case .registerFreespokeUser,
                 .getLinkForManagingSubscription,
-                .restorePurchase:
+                .restorePurchase,
+                .getShoppingCollection:
             guard let url = URL(string: NetworkLayerConstants.BaseURL.baseServerUrl) else {
                 fatalError("baseServerUrl could not be configured.")
             }
@@ -35,6 +37,8 @@ extension EndPoint: EndPointType {
             return NetworkLayerConstants.PathURLs.getLinkForManagingSubscriptionPath
         case .restorePurchase:
             return NetworkLayerConstants.PathURLs.restorePurchasePath
+        case .getShoppingCollection:
+            return NetworkLayerConstants.PathURLs.getShoppingCollectionPath
         }
     }
     
@@ -44,7 +48,8 @@ extension EndPoint: EndPointType {
                 .logoutFreespokeUser,
                 .restorePurchase:
             return .post
-        case .getLinkForManagingSubscription:
+        case .getLinkForManagingSubscription,
+                .getShoppingCollection:
             return .get
         }
     }

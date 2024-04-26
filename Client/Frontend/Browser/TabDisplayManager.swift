@@ -202,7 +202,8 @@ class TabDisplayManager: NSObject, FeatureFlaggable {
         tabManager.addDelegate(self)
         register(self, forTabEvents: .didChangeURL, .didSetScreenshot)
         self.dataStore.removeAll()
-        getTabsAndUpdateInactiveState { tabGroup, tabsToDisplay in
+        getTabsAndUpdateInactiveState { [weak self] tabGroup, tabsToDisplay in
+            guard let self = self else { return }
             guard !tabsToDisplay.isEmpty else { return }
             let orderedRegularTabs = tabDisplayType == .TopTabTray ? tabsToDisplay : self.getRegularOrderedTabs() ?? tabsToDisplay
             if self.getRegularOrderedTabs() == nil {
@@ -219,6 +220,11 @@ class TabDisplayManager: NSObject, FeatureFlaggable {
     private func tabsSetupHelper(tabGroups: [ASGroup<Tab>]?, filteredTabs: [Tab]) {
         self.tabGroups = tabGroups
         self.filteredTabs = filteredTabs
+        
+        ensureMainThread { [weak self] in
+            guard let self = self else { return }
+            self.collectionView.reloadData()
+        }
     }
 
     private func setupSearchTermGroupsAndFilteredTabs(tabsToBuildFrom: [Tab], completion: @escaping ([ASGroup<Tab>]?, [Tab]) -> Void) {
@@ -342,10 +348,10 @@ class TabDisplayManager: NSObject, FeatureFlaggable {
         }
 
         if shouldSelectMostRecentTab {
-            getTabsAndUpdateInactiveState { tabGroup, tabsToDisplay in
+            getTabsAndUpdateInactiveState { [weak self] tabGroup, tabsToDisplay in
                 let tab = mostRecentTab(inTabs: tabsToDisplay) ?? tabsToDisplay.last
                 if let tab = tab {
-                    self.tabManager.selectTab(tab)
+                    self?.tabManager.selectTab(tab)
                 }
             }
         }
@@ -381,10 +387,10 @@ class TabDisplayManager: NSObject, FeatureFlaggable {
         operations.removeAll()
         dataStore.removeAll()
 
-        getTabsAndUpdateInactiveState {
-            tabGroup, tabsToDisplay in
-
-            tabsToDisplay.forEach {
+        getTabsAndUpdateInactiveState { [weak self] tabGroup, tabsToDisplay in
+            guard let self = self else { return }
+            tabsToDisplay.forEach { [weak self] in
+                guard let self = self else { return }
                 self.dataStore.insert($0)
             }
 
@@ -431,8 +437,25 @@ class TabDisplayManager: NSObject, FeatureFlaggable {
         }
 
         // case: Group has less than 3 tabs (refresh all)
-        if let count = tabGroups?[indexOfGroup].groupedItems.count, count < 3 {
-            refreshStore()
+        if let count = tabGroups?[indexOfGroup].groupedItems.count, count == 2 {
+            tabGroups?[indexOfGroup].groupedItems.remove(at: tabIndexInGroup)
+            if let tab = tabGroups?[indexOfGroup].groupedItems.first {
+                self.dataStore.insert(tab, at: 0)
+            }
+            tabGroups?.remove(at: indexOfGroup)
+            groupedCell.tabDisplayManagerDelegate = self
+            groupedCell.tabGroups = self.tabGroups
+            groupedCell.hasExpanded = false
+            groupedCell.selectedTab = tabManager.selectedTab
+            groupedCell.tableView.reloadData()
+            groupedCell.scrollToSelectedGroup()
+            
+            self.collectionView.reloadData()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
+                guard let self = self else { return }
+                self.refreshStore()
+            })
         } else {
             // case: Group has more than 2 tabs, we are good to remove just one tab from group
             tabGroups?[indexOfGroup].groupedItems.remove(at: tabIndexInGroup)
@@ -453,7 +476,8 @@ class TabDisplayManager: NSObject, FeatureFlaggable {
 
         guard let index = collectionView.indexPath(for: cell)?.item, let tab = dataStore.at(index) else { return }
 
-        getTabsAndUpdateInactiveState { tabGroup, tabsToDisplay in
+        getTabsAndUpdateInactiveState { [weak self] tabGroup, tabsToDisplay in
+            guard let self = self else { return }
             if self.isPrivate == false, tabsToDisplay.count + (self.tabsInAllGroups?.count ?? 0) == 1 {
                 self.tabManager.removeTabs([tab])
                 self.tabManager.selectTab(self.tabManager.addTab())

@@ -34,6 +34,9 @@
 		012C3AD42B821A75007EC4AF /* CustomTextFieldWithErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012C3AD22B821A75007EC4AF /* CustomTextFieldWithErrorMessage.swift */; };
 		012C3AD72B821AC1007EC4AF /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012C3AD62B821AC1007EC4AF /* CustomTextField.swift */; };
 		012C3AD82B821AC1007EC4AF /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012C3AD62B821AC1007EC4AF /* CustomTextField.swift */; };
+		013EAC132BDC5BAF000E3D19 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 013EAC122BDC5BAF000E3D19 /* PrivacyInfo.xcprivacy */; };
+		013EAC152BDC5CF6000E3D19 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 013EAC142BDC5CF6000E3D19 /* PrivacyInfo.xcprivacy */; };
+		013EAC172BDC5DA8000E3D19 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 013EAC162BDC5DA8000E3D19 /* PrivacyInfo.xcprivacy */; };
 		014128742B7A73A800283449 /* OnboardingWelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014128732B7A73A800283449 /* OnboardingWelcomeScreen.swift */; };
 		014128752B7A73A800283449 /* OnboardingWelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014128732B7A73A800283449 /* OnboardingWelcomeScreen.swift */; };
 		014128812B7A76AE00283449 /* UIFont + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014128802B7A76AE00283449 /* UIFont + Extensions.swift */; };
@@ -2674,6 +2677,9 @@
 		012C3AC42B8100B2007EC4AF /* AuthOrView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthOrView.swift; sourceTree = "<group>"; };
 		012C3AD22B821A75007EC4AF /* CustomTextFieldWithErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldWithErrorMessage.swift; sourceTree = "<group>"; };
 		012C3AD62B821AC1007EC4AF /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		013EAC122BDC5BAF000E3D19 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		013EAC142BDC5CF6000E3D19 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		013EAC162BDC5DA8000E3D19 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		014128732B7A73A800283449 /* OnboardingWelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeScreen.swift; sourceTree = "<group>"; };
 		014128802B7A76AE00283449 /* UIFont + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont + Extensions.swift"; sourceTree = "<group>"; };
 		014128832B7A79AC00283449 /* BaseActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseActivityIndicator.swift; sourceTree = "<group>"; };
@@ -4859,6 +4865,7 @@
 				047F9B2F24E1FE1F00CD7DF7 /* Info.plist */,
 				D58A202A25C9D96400105D25 /* Localizable.strings */,
 				D59431F025E9912900F0BA82 /* WidgetIntents.intentdefinition */,
+				013EAC162BDC5DA8000E3D19 /* PrivacyInfo.xcprivacy */,
 			);
 			path = WidgetKit;
 			sourceTree = "<group>";
@@ -7782,6 +7789,7 @@
 				C893075C265501EE00A1DB2F /* CredentialAssets.xcassets */,
 				F8324AE12649B3E7007E4BFA /* CredentialProviderFennec.entitlements */,
 				437475CA26DD1B7300DF2822 /* CredentialProviderFirefoxBeta.entitlements */,
+				013EAC122BDC5BAF000E3D19 /* PrivacyInfo.xcprivacy */,
 			);
 			path = CredentialProvider;
 			sourceTree = "<group>";
@@ -8126,6 +8134,7 @@
 				E41A7D4A1A1BE04500245963 /* InitialViewController.swift */,
 				EB940747208134AF00702E05 /* UXConstants.swift */,
 				F8708D291A0970990051AB07 /* ShareViewController.swift */,
+				013EAC142BDC5CF6000E3D19 /* PrivacyInfo.xcprivacy */,
 			);
 			path = ShareTo;
 			sourceTree = "<group>";
@@ -9043,6 +9052,7 @@
 			files = (
 				047F9B2E24E1FE1F00CD7DF7 /* Assets.xcassets in Resources */,
 				D58A202C25C9D96400105D25 /* Localizable.strings in Resources */,
+				013EAC172BDC5DA8000E3D19 /* PrivacyInfo.xcprivacy in Resources */,
 				1D9E1FE524FEF56C006E561D /* TopSites in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9139,6 +9149,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				013EAC132BDC5BAF000E3D19 /* PrivacyInfo.xcprivacy in Resources */,
 				C874FC652661367900EBE86E /* MainInterface.storyboard in Resources */,
 				C893075D265501EE00A1DB2F /* CredentialAssets.xcassets in Resources */,
 			);
@@ -9290,6 +9301,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				013EAC152BDC5CF6000E3D19 /* PrivacyInfo.xcprivacy in Resources */,
 				EBE7635920ADCB7600E27F2D /* SendTo.xcassets in Resources */,
 				F8708D2E1A0970B70051AB07 /* Images.xcassets in Resources */,
 			);

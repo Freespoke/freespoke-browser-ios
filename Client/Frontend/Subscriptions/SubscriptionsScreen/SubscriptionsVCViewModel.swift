@@ -28,7 +28,7 @@ class SubscriptionsVCViewModel {
         case .premiumBecauseAppleAccountHasSubscription:
             return "Update Plan"
         case nil:
-            return "Start your 30 day \n free trial"
+            return "Try Freespoke Premium \n Free for 30 Days"
         }
     }
     
@@ -40,19 +40,7 @@ class SubscriptionsVCViewModel {
                 .premiumBecauseAppleAccountHasSubscription:
             return "Cancel anytime."
         case nil:
-            return nil
-        }
-    }
-    
-    var descriptionText: String? {
-        switch subscriptionType {
-        case .trialExpired,
-                .premiumOriginalApple,
-                .premiumNotApple,
-                .premiumBecauseAppleAccountHasSubscription:
-            return nil
-        case nil:
-            return "By tapping below for monthly or yearly subscription you are enrolling in automatic payments after the 30-day trial period. You can cancel anytime, effective at end of billing period."
+            return "Break free from big tech with Freespoke’s ad blockers and private search."
         }
     }
     

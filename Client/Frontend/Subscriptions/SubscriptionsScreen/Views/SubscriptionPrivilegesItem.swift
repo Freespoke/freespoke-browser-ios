@@ -108,7 +108,7 @@ class SubscriptionPrivilegesItem: UIView {
             
             self.labelsStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
             self.labelsStackView.leadingAnchor.constraint(equalTo: self.iconImageView.trailingAnchor, constant: 20),
-            self.labelsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
+            self.labelsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
             
             self.lineView.topAnchor.constraint(equalTo: self.labelsStackView.bottomAnchor, constant: 16),
             self.lineView.heightAnchor.constraint(equalToConstant: 1),

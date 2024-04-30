@@ -16,23 +16,18 @@ class SubscriptionsVC: OnboardingBaseViewController {
     
     // MARK: Bottom buttons view
     
-    private var lblDescription: UILabel = {
-        let lbl = UILabel()
-        lbl.textAlignment = .center
-        lbl.textColor = UIColor.blackColor
-        lbl.font = UIFont.sourceSansProFont(.regular, size: 13)
-        lbl.numberOfLines = 0
-        lbl.lineBreakMode = .byWordWrapping
-        return lbl
+    private var txtDescription: SubscriptionsClickableTextView = {
+        let txt = SubscriptionsClickableTextView()
+        return txt
     }()
     
-    private lazy var btnMonthlySubscription: MainButton = {
-        let btn = MainButton()
+    private lazy var btnMonthlySubscription: SubscribeActionButton = {
+        let btn = SubscribeActionButton()
         return btn
     }()
     
-    private lazy var btnYearlySubscription: MainButton = {
-        let btn = MainButton()
+    private lazy var btnYearlySubscription: SubscribeActionButton = {
+        let btn = SubscribeActionButton()
         return btn
     }()
     
@@ -84,6 +79,8 @@ class SubscriptionsVC: OnboardingBaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        self.txtDescription.applyTheme(currentTheme: self.themeManager.currentTheme)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -145,14 +142,12 @@ class SubscriptionsVC: OnboardingBaseViewController {
         
         self.scrollableContentView.applyTheme(currentTheme: self.themeManager.currentTheme)
         self.activityIndicator.applyTheme(currentTheme: self.themeManager.currentTheme)
+        self.txtDescription.applyTheme(currentTheme: self.themeManager.currentTheme)
         
         switch self.themeManager.currentTheme.type {
         case .dark:
-            self.lblDescription.textColor = UIColor.lightGray
             self.btnContinue.setTitleColor(UIColor.whiteColor, for: .normal)
-            
         case .light:
-            self.lblDescription.textColor = UIColor.blackColor
             self.btnContinue.setTitleColor(UIColor.blackColor, for: .normal)
         }
     }
@@ -298,8 +293,7 @@ extension SubscriptionsVC {
                             
                             completion?()
                         },
-                                                                      onFailure: { [weak self] error in
-                            guard let self = self else { return }
+                                                                      onFailure: { error in
                             DispatchQueue.main.async {
                                 UIUtils.showOkAlertInNewWindow(title: error.errorName, message: error.errorDescription)
                             }
@@ -380,7 +374,7 @@ extension SubscriptionsVC {
 
 extension SubscriptionsVC {
     private func setupBottomButtonsView() {
-        self.lblDescription.text = self.viewModel.descriptionText
+        // MARK: Setup bottomButtonsView
         self.bottomButtonsView.updateButtonsSpacing(to: 16)
         self.setSubscriptionButtonsTitle()
         self.btnUpdateSubscription.setTitle("Update Plan", for: .normal)
@@ -390,6 +384,8 @@ extension SubscriptionsVC {
                                            btnTitleText: "Restore Purchase")
         
         self.btnContinue.setTitle(self.viewModel.btnContinueTitleText, for: .normal)
+        
+        self.bottomButtonsView.makeSureDescriptionLabelRemoved()
         
         switch self.viewModel.subscriptionType {
         case .trialExpired:
@@ -405,8 +401,8 @@ extension SubscriptionsVC {
             self.bottomButtonsView.addViews(views: [self.btnCancelSubscription,
                                                     self.btnContinue])
         case nil:
-            self.bottomButtonsView.addViews(views: [self.lblDescription,
-                                                    self.btnMonthlySubscription,
+            self.bottomButtonsView.addDescriptionLabel(lblDescription: self.txtDescription)
+            self.bottomButtonsView.addViews(views: [self.btnMonthlySubscription,
                                                     self.btnYearlySubscription,
                                                     self.btnRestorePurchases,
                                                     self.btnContinue])
@@ -417,9 +413,11 @@ extension SubscriptionsVC {
         let monthPrice = self.viewModel.monthlySubscription?.displayPrice ?? " - "
         let yearPrice = self.viewModel.yearlySubscription?.displayPrice ?? " - "
         
+        self.btnMonthlySubscription.setMainLableTitle(text: "Monthly")
         self.btnMonthlySubscription.setAttributedTitle(self.makeAttributedTextForPriceButton(price: monthPrice,
                                                                                              period: "MONTH"),
                                                        for: .normal)
+        self.btnYearlySubscription.setMainLableTitle(text: "Yearly")
         self.btnYearlySubscription.setAttributedTitle(self.makeAttributedTextForPriceButton(price: yearPrice,
                                                                                             period: "YEAR"),
                                                       for: .normal)

@@ -6,6 +6,13 @@ import UIKit
 import Shared
 
 class OnboardingBottomButtonsView: UIView {
+    
+    private var lblDescriptionStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .vertical
+        return sv
+    }()
+    
     private var btnsStackView: UIStackView = {
         let sv = UIStackView()
         sv.axis = .vertical
@@ -17,6 +24,7 @@ class OnboardingBottomButtonsView: UIView {
     }()
     
     private var widthConstraint: NSLayoutConstraint?
+    private var btnsStackViewTopConstraint: NSLayoutConstraint?
     
     deinit {
        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -66,11 +74,22 @@ class OnboardingBottomButtonsView: UIView {
     }
     
     private func addingViews() {
+        self.addSubview(self.lblDescriptionStackView)
         self.addSubview(self.btnsStackView)
     }
     
     private func setupConstraints() {
         btnsStackView.translatesAutoresizingMaskIntoConstraints = false
+        lblDescriptionStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            lblDescriptionStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 32),
+            lblDescriptionStackView.leadingAnchor.constraint(equalTo: self.btnsStackView.leadingAnchor, constant: 0),
+            lblDescriptionStackView.trailingAnchor.constraint(equalTo: self.btnsStackView.trailingAnchor, constant: 0)
+        ])
+        
+        self.btnsStackViewTopConstraint = self.btnsStackView.topAnchor.constraint(equalTo: self.lblDescriptionStackView.bottomAnchor, constant: 32)
+        self.btnsStackViewTopConstraint?.isActive = true
         
         // MARK: constraints are set depending on the type of device iPad or iPhone
         if UIDevice.current.isPad {
@@ -79,18 +98,36 @@ class OnboardingBottomButtonsView: UIView {
             self.widthConstraint?.isActive = true
             
             NSLayoutConstraint.activate([
-                btnsStackView.topAnchor.constraint(equalTo: self.self.topAnchor, constant: 32),
                 self.btnsStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
                 btnsStackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32)
             ])
         } else {
             NSLayoutConstraint.activate([
-                btnsStackView.topAnchor.constraint(equalTo: self.self.topAnchor, constant: 32),
                 btnsStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
                 btnsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
                 btnsStackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32)
             ])
         }
+    }
+    
+    func makeSureDescriptionLabelRemoved() {
+        self.lblDescriptionStackView.arrangedSubviews.forEach({ [weak self] in
+            guard let self = self else { return }
+            self.lblDescriptionStackView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        })
+        self.btnsStackViewTopConstraint?.constant = 0
+    }
+    
+    func addDescriptionLabel(lblDescription: UITextView) {
+        self.lblDescriptionStackView.arrangedSubviews.forEach({ [weak self] in
+            guard let self = self else { return }
+            self.lblDescriptionStackView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        })
+        
+        self.lblDescriptionStackView.addArrangedSubview(lblDescription)
+        self.btnsStackViewTopConstraint?.constant = 32
     }
     
     func addViews(views: [UIView]) {

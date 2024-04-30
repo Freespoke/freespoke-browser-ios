@@ -24,22 +24,34 @@ class SubscriptionsContentView: UIView {
     }()
     
     private let item1 = SubscriptionPrivilegesItem(image: UIImage(named: "img_onboarding_ad_free_search_icon"),
-                                                   titleText: "Ad-Free",
-                                                   subtitleText: "Block unwanted ads while browsing.",
+                                                   titleText: "Unlimited Ad Block",
+                                                   subtitleText: "Block ads while searching and browsing.",
                                                    bottomLineVisible: true)
     
     private let item2 = SubscriptionPrivilegesItem(image: UIImage(named: "img_onboarding_without_bias_icon"),
-                                                   titleText: "Without Bias",
-                                                   subtitleText: "Get the unfiltered truth.",
+                                                   titleText: "Increased Privacy",
+                                                   subtitleText: "Enjoy a safer web by removing tracking requests.",
                                                    bottomLineVisible: true)
     
     private let item3 = SubscriptionPrivilegesItem(image: UIImage(named: "img_onboarding_porn_free_icon"),
-                                                   titleText: "Porn-Free",
-                                                   subtitleText: "Fight human trafficking.",
+                                                   titleText: "Cleaner Browsing",
+                                                   subtitleText: "Remove the clutter while you search and catch up on the news.",
                                                    bottomLineVisible: false)
+    
+    private let item4: UILabel = {
+        let lbl = UILabel()
+        lbl.textAlignment = .center
+        lbl.textColor = UIColor.gray2
+        lbl.font = UIFont.sourceSansProFont(.regular, size: 14)
+        lbl.numberOfLines = 0
+        lbl.lineBreakMode = .byWordWrapping
+        lbl.text = "Join the fight for free speech and a free internet, get unfiltered news and eliminate big tech's ability to spy on your searches."
+        return lbl
+    }()
     
     private let lineSeparator1 = UIView()
     private let lineSeparator2 = UIView()
+    private let lineSeparator3 = UIView()
     
     required init() {
         super.init(frame: .zero)
@@ -60,12 +72,15 @@ class SubscriptionsContentView: UIView {
         self.backgroundColor = .clear
         self.lineSeparator1.backgroundColor = currentTheme.type == .dark ? UIColor.blackColor : UIColor.whiteColor
         self.lineSeparator2.backgroundColor = currentTheme.type == .dark ? UIColor.blackColor : UIColor.whiteColor
+        self.lineSeparator3.backgroundColor = currentTheme.type == .dark ? UIColor.blackColor : UIColor.whiteColor
         
         switch currentTheme.type {
         case .dark:
             self.lineView.backgroundColor = UIColor.blackColor
+            self.item4.textColor = UIColor.lightGray
         case .light:
             self.lineView.backgroundColor = UIColor.whiteColor
+            self.item4.textColor = UIColor.gray2
         }
     }
     
@@ -82,10 +97,11 @@ class SubscriptionsContentView: UIView {
         self.privilegesStackView.addArrangedSubview(item2)
         self.addLineViewToItem(item: item2, lineSeparator: self.lineSeparator2)
         self.privilegesStackView.addArrangedSubview(item3)
+        self.addLineViewToItem(item: item3, lineSeparator: self.lineSeparator3)
+        self.privilegesStackView.addArrangedSubview(item4)
     }
     
     private func addLineViewToItem(item: SubscriptionPrivilegesItem, lineSeparator: UIView) {
-        
         self.addSubviews(lineSeparator)
         
         lineSeparator.translatesAutoresizingMaskIntoConstraints = false

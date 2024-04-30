@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01000F9F2BE10F85008DB712 /* SubscriptionsClickableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */; };
+		01000FA02BE10F85008DB712 /* SubscriptionsClickableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */; };
 		01117E872BDC25D700DF571F /* GetShoppingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E862BDC25D700DF571F /* GetShoppingCollection.swift */; };
 		01117E882BDC25D700DF571F /* GetShoppingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E862BDC25D700DF571F /* GetShoppingCollection.swift */; };
 		01117E8A2BDC26F400DF571F /* ShoppingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E892BDC26F400DF571F /* ShoppingModel.swift */; };
@@ -19,6 +21,8 @@
 		011C97192BBEDB6B00B96A36 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011C97172BBEDB6B00B96A36 /* AnalyticsManager.swift */; };
 		011C971B2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011C971A2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift */; };
 		011C971C2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011C971A2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift */; };
+		011EE7FD2BE0E23700FAB30B /* SubscribeActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE7FC2BE0E23700FAB30B /* SubscribeActionButton.swift */; };
+		011EE7FE2BE0E23700FAB30B /* SubscribeActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE7FC2BE0E23700FAB30B /* SubscribeActionButton.swift */; };
 		012C3AB62B80D3C5007EC4AF /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FF01FC2B7D2C240027845D /* SignUpVC.swift */; };
 		012C3AB82B80DEE3007EC4AF /* SignUpVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012C3AB72B80DEE3007EC4AF /* SignUpVCViewModel.swift */; };
 		012C3AB92B80DEE3007EC4AF /* SignUpVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012C3AB72B80DEE3007EC4AF /* SignUpVCViewModel.swift */; };
@@ -2664,12 +2668,14 @@
 
 /* Begin PBXFileReference section */
 		00B144CD8BEF73CF75ED7639 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Menu.strings; sourceTree = "<group>"; };
+		01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsClickableTextView.swift; sourceTree = "<group>"; };
 		01117E862BDC25D700DF571F /* GetShoppingCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShoppingCollection.swift; sourceTree = "<group>"; };
 		01117E892BDC26F400DF571F /* ShoppingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingModel.swift; sourceTree = "<group>"; };
 		011A0C3D2BCAA9A200B9C555 /* ProfileCellTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellTitleView.swift; sourceTree = "<group>"; };
 		011A0C412BCB08AF00B9C555 /* PremiumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumCell.swift; sourceTree = "<group>"; };
 		011C97172BBEDB6B00B96A36 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		011C971A2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager + Constants.swift"; sourceTree = "<group>"; };
+		011EE7FC2BE0E23700FAB30B /* SubscribeActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeActionButton.swift; sourceTree = "<group>"; };
 		012C3AB72B80DEE3007EC4AF /* SignUpVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVCViewModel.swift; sourceTree = "<group>"; };
 		012C3ABB2B80E31A007EC4AF /* SignUpContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpContentView.swift; sourceTree = "<group>"; };
 		012C3ABE2B80E872007EC4AF /* SignInWithAppleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleItemView.swift; sourceTree = "<group>"; };
@@ -4592,6 +4598,7 @@
 			children = (
 				014840FD2B7E3D8F005CD610 /* SubscriptionsContentView.swift */,
 				014841002B7E915E005CD610 /* SubscriptionPrivilegesItem.swift */,
+				01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4611,6 +4618,7 @@
 				01BE9C2A2BC01A06002D3844 /* MainButton.swift */,
 				01BE9C302BC02413002D3844 /* SecondaryButton.swift */,
 				01BE9C332BC0346B002D3844 /* ThirdButton.swift */,
+				011EE7FC2BE0E23700FAB30B /* SubscribeActionButton.swift */,
 				8AB5958B28414DF60090F4AE /* ActionButton.swift */,
 				01567C342B7C07720026066A /* UnderlinedButton.swift */,
 				012C3AC12B80F218007EC4AF /* SignInWithAppleButton.swift */,
@@ -9724,6 +9732,7 @@
 				01BD23B32B6CF7EB00B8B9EB /* UIButtonExtensions.swift in Sources */,
 				01BD23B42B6CF7EB00B8B9EB /* ThirdPartySearchAlerts.swift in Sources */,
 				01BD23B52B6CF7EB00B8B9EB /* BottomSheetViewController.swift in Sources */,
+				01000FA02BE10F85008DB712 /* SubscriptionsClickableTextView.swift in Sources */,
 				01BD23B62B6CF7EB00B8B9EB /* PhotonActionSheetSiteHeaderView.swift in Sources */,
 				01BD23B72B6CF7EB00B8B9EB /* WallpaperMetadataLoader.swift in Sources */,
 				01BEEE742BCC0805008146B6 /* FreespokeAuthEventDeactivateAccountHelper.swift in Sources */,
@@ -10052,6 +10061,7 @@
 				0181A4102B85219F005BE1F6 /* CustomError.swift in Sources */,
 				01BD24C72B6CF7EB00B8B9EB /* TabDataRetriever.swift in Sources */,
 				01BD24C82B6CF7EB00B8B9EB /* Toast.swift in Sources */,
+				011EE7FE2BE0E23700FAB30B /* SubscribeActionButton.swift in Sources */,
 				01BD24C92B6CF7EB00B8B9EB /* UIStackView+Extension.swift in Sources */,
 				01BD24CA2B6CF7EB00B8B9EB /* DefaultSearchEngineProvider.swift in Sources */,
 				01BD24CB2B6CF7EB00B8B9EB /* JumpBackInSectionLayout.swift in Sources */,
@@ -10850,6 +10860,7 @@
 				E195440528A5AFDE00304CF0 /* BottomSheetViewController.swift in Sources */,
 				E13F8C342928194800BDC8B4 /* PhotonActionSheetSiteHeaderView.swift in Sources */,
 				C869912F28917688007ACC5C /* WallpaperMetadataLoader.swift in Sources */,
+				01000F9F2BE10F85008DB712 /* SubscriptionsClickableTextView.swift in Sources */,
 				2137785D297F1F2800D01309 /* DownloadedFile.swift in Sources */,
 				01BEEE732BCC0805008146B6 /* FreespokeAuthEventDeactivateAccountHelper.swift in Sources */,
 				01567C2E2B7BAC1B0026066A /* LabelWithUnderlinedButtonView.swift in Sources */,
@@ -11178,6 +11189,7 @@
 				0181A40F2B85219F005BE1F6 /* CustomError.swift in Sources */,
 				2F44FCCB1A9E972E00FD20CC /* SearchEnginePicker.swift in Sources */,
 				1DA3CE5F24EEE7C600422BB2 /* TabDataRetriever.swift in Sources */,
+				011EE7FD2BE0E23700FAB30B /* SubscribeActionButton.swift in Sources */,
 				D04D1B92209790B60074B35F /* Toast.swift in Sources */,
 				8AD5702F27AB4DEA005BFDC8 /* UIStackView+Extension.swift in Sources */,
 				01ADAAB32B8781110009754E /* OAuthLoginVC.swift in Sources */,

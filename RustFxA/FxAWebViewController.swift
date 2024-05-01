@@ -19,7 +19,7 @@ enum DismissType {
  */
 class FxAWebViewController: UIViewController {
     fileprivate let dismissType: DismissType
-    fileprivate var webView: WKWebView
+    var webView: WKWebView
     /// Used to show a second WKWebView to browse help links.
     fileprivate var helpBrowser: WKWebView?
     fileprivate let viewModel: FxAWebViewModel

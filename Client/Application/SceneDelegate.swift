@@ -11,6 +11,7 @@ import UserNotifications
 import Account
 import MozillaAppServices
 import Common
+import BranchSDK
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -45,6 +46,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
 
         self.window = window
+        
+//        InAppManager.shared.restorePurchasesAtAppStart()
 
         var themeManager: ThemeManager = AppContainer.shared.resolve()
         themeManager.window = window
@@ -84,6 +87,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         _ scene: UIScene,
         openURLContexts URLContexts: Set<UIOpenURLContext>
     ) {
+        BranchScene.shared().scene(scene, openURLContexts: URLContexts)
         guard let url = URLContexts.first?.url,
               let routerPath = NavigationPath(url: url) else { return }
 
@@ -109,6 +113,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     /// Use this method to handle Handoff-related data or other activities.
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        BranchScene.shared().scene(scene, continue: userActivity)
         if userActivity.activityType == SiriShortcuts.activityType.openURL.rawValue {
             browserViewController.openBlankNewTab(focusLocationField: false)
         }

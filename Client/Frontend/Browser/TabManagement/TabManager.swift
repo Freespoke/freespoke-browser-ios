@@ -485,29 +485,29 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
         } else if let parent = parent, var insertIndex = tabs.firstIndex(of: parent) {
             placeNextToParentTab = true
             insertIndex += 1
-
+            
             // If we are on iPad (.TopTabTray), the new tab should be inserted immediately after the parent tab.
             // In this scenario the while loop shouldn't be executed.
             while insertIndex < tabs.count && tabs[insertIndex].isDescendentOf(parent) && tabDisplayType == .TabGrid {
                 insertIndex += 1
             }
-
+            
             tab.parent = parent
             tabs.insert(tab, at: insertIndex)
         }
-
+        
         delegates.forEach { $0.get()?.tabManager(self,
                                                  didAddTab: tab,
                                                  placeNextToParentTab: placeNextToParentTab,
                                                  isRestoring: store.isRestoringTabs) }
-
+        
         if !zombie {
             tab.createWebview()
         }
         tab.navigationDelegate = self.navDelegate
-
+        
         if let request = request {
-            tab.loadRequest(request)
+            tab.loadRequest_FindForFix(request)
         } else if !isPopup {
             let newTabChoice = NewTabAccessors.getNewTabPage(profile.prefs)
             tab.newTabPageType = newTabChoice
@@ -516,30 +516,30 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
                 // We definitely have a homepage if we've got here
                 // (so we can safely dereference it).
                 let url = NewTabHomePageAccessors.getHomePage(profile.prefs)!
-                tab.loadRequest(URLRequest(url: url))
+                tab.loadRequest_FindForFix(URLRequest(url: url))
             case .freespoke:
                 if let url = URL(string: Constants.freespokeURL.rawValue) {
-                    tab.loadRequest(URLRequest(url: url))
+                    tab.loadRequest_FindForFix(URLRequest(url: url))
                 }
-                break
             default:
                 // The common case, where the NewTabPage enum defines
                 // one of the about:home pages.
+                guard tab.webView != nil else { return }
                 if let url = newTabChoice.url {
-                    tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
+                    tab.loadRequest_FindForFix(PrivilegedRequest(url: url) as URLRequest)
                     tab.url = url
                 }
             }
         }
+        
 
-        tab.nightMode = NightModeHelper.isActivated()
         tab.noImageMode = NoImageModeHelper.isActivated(profile.prefs)
 
         if flushToDisk {
             storeChanges()
         }
     }
-
+    
     // MARK: - Move tabs
     func moveTab(isPrivate privateMode: Bool, fromIndex visibleFromIndex: Int, toIndex visibleToIndex: Int) {
         let currentTabs = privateMode ? privateTabs : normalTabs
@@ -884,7 +884,9 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
             return existingTab ?? addTab(URLRequest(url: customUrl), isPrivate: privateMode)
         } else if page == .topSites, let homeUrl = homeUrl {
             let home = existingTab ?? addTab(isPrivate: privateMode)
-            home.loadRequest(PrivilegedRequest(url: homeUrl) as URLRequest)
+            
+            home.loadRequest_FindForFix(PrivilegedRequest(url: homeUrl) as URLRequest)
+            
             home.url = homeUrl
             return home
         }
@@ -919,7 +921,14 @@ extension TabManager: WKNavigationDelegate {
             if let internalUrl = InternalURL(url), internalUrl.isSessionRestore {
                 return
             }
-
+            
+            NightModeHelper.checkIsWebPageSupportDarkModeStyle(webView: webView,
+                                                               completion: { supportsDarkMode in
+                if let supportsDarkMode = supportsDarkMode, !supportsDarkMode {
+                    webView.backgroundColor = UIColor.white
+                }
+            })
+            
             storeChanges()
         }
     }

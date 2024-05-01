@@ -4,7 +4,6 @@
 
 import Shared
 import UIKit
-import MatomoTracker
 
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressHome(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -23,17 +22,17 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         
         let page = NewTabAccessors.getHomePage(self.profile.prefs)
         
+        
         if page == .homePage, let homePageURL = HomeButtonHomePageAccessors.getHomePage(self.profile.prefs) {
-                    tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePageURL) as URLRequest)
+            tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePageURL) as URLRequest)
         } else if let homePanelURL = page.url {
-            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
-        }
-        else
-        if page == .freespoke {
+            tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePanelURL) as URLRequest)
+        } else if page == .freespoke {
             if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
-                          tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
-                      }
+                tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePanelURL) as URLRequest)
+            }
         }
+        
         
 //        switch page {
 //        case .freespoke:
@@ -82,7 +81,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "News", name: MatomoName.click.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                              action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "News",
+                                              name: AnalyticsManager.MatomoName.clickName)
             
             openLinkURL(Constants.newsURL.rawValue)
             
@@ -114,7 +115,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "election", name: MatomoName.click.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                              action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Election",
+                                              name: AnalyticsManager.MatomoName.clickName)
             
             openLinkURL(Constants.electionURL.rawValue)
         }
@@ -155,8 +158,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressMenu(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         // Ensure that any keyboards or spinners are dismissed before presenting the menu
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Menu", name: MatomoName.click.rawValue, value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Menu",
+                                          name: AnalyticsManager.MatomoName.clickName)
 
         // Logs homePageMenu or siteMenu depending if HomePage is open or not
         let isHomePage = tabManager.selectedTab?.isFxHomeTab ?? false
@@ -169,10 +173,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         menuHelper.delegate = self
         menuHelper.menuActionDelegate = self
         menuHelper.sendToDeviceDelegate = self
-
+        
         menuHelper.getToolbarActions(navigationController: navigationController) { actions in
-            let shouldInverse = PhotonActionSheetViewModel.hasInvertedMainMenu(trait: self.traitCollection, isBottomSearchBar: self.isBottomSearchBar)
-            let viewModel = PhotonActionSheetViewModel(actions: actions, modalStyle: .popover, isMainMenu: true, isMainMenuInverted: shouldInverse)
+            let viewModel = PhotonActionSheetViewModel(actions: actions, modalStyle: .popover, isMainMenu: true, isMainMenuInverted: false)
             self.presentSheetWith(viewModel: viewModel, on: self, from: button)
         }
         
@@ -195,7 +198,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
 
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Tabs", name: MatomoName.click.rawValue, value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Tabs",
+                                          name: AnalyticsManager.MatomoName.clickName)
         
         let boolBookmarksProfile = profile.prefs.boolForKey("ContextualHintBookmarksLocationKey") ?? false
         
@@ -338,7 +343,7 @@ extension BrowserViewController: MenuControllerDelegate {
     
     func openLinkURL(_ strUrl: String) {
         if let url = URL(string: strUrl) {
-            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
+            tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: url) as URLRequest)
         }
     }
     
@@ -366,6 +371,10 @@ extension BrowserViewController: MenuControllerDelegate {
 
 // MARK: - ToolbarActionMenuDelegate
 extension BrowserViewController: ToolBarActionMenuDelegate {
+    func showFreespokeProfile() {
+        self.homepageViewController?.displayFreefolkProfileVC()
+    }
+    
     func updateToolbarState() {
         updateToolbarStateForTraitCollection(view.traitCollection)
     }

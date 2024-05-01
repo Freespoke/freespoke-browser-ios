@@ -13,7 +13,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     // MARK: - Typealiases
     private typealias a11y = AccessibilityIdentifiers.FirefoxHomepage
     typealias SendToDeviceDelegate = InstructionsViewDelegate & DevicePickerViewControllerDelegate
-
+    
     // MARK: - Operational Variables
     weak var homePanelDelegate: HomePanelDelegate? {
         didSet {
@@ -28,10 +28,11 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     }
     
     var delegate: FreespokeHomepageDelegate?
-
+    
     private var viewModel: HomepageViewModel
     private var contextMenuHelper: HomepageContextMenuHelper
     private var tabManager: TabManagerProtocol
+    
     private var urlBar: URLBarViewProtocol
     private var userDefaults: UserDefaultsInterface
     private lazy var wallpaperView: WallpaperBackgroundView = .build { _ in }
@@ -39,7 +40,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     private var syncTabContextualHintViewController: ContextualHintViewController
     private var collectionView: UICollectionView! = nil
     private var logger: Logger
-
+    
     var themeManager: ThemeManager
     var notificationCenter: NotificationProtocol
     var themeObserver: NSObjectProtocol?
@@ -48,7 +49,8 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     var isNewTab = false
     var isSearching = false
     var freespokeHomepageView: FreespokeHomepage!
-
+    var profileVC: FreefolkProfileVC?
+    
     // Background for status bar
     private lazy var statusBarView: UIView = {
         let statusBarFrame = statusBarFrame ?? CGRect.zero
@@ -56,19 +58,19 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         view.addSubview(statusBarView)
         return statusBarView
     }()
-
+    
     // Content stack views contains collection view.
     lazy var contentStackView: UIStackView = .build { stackView in
         stackView.backgroundColor = .clear
         stackView.axis = .vertical
     }
-
+    
     var currentTab: Tab? {
         return tabManager.selectedTab
     }
     
     var profile: Profile?
-
+    
     // MARK: - Initializers
     init(profile: Profile,
          tabManager: TabManagerProtocol,
@@ -88,7 +90,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
                                            tabManager: tabManager,
                                            urlBar: urlBar,
                                            theme: themeManager.currentTheme)
-
+        
         let jumpBackInContextualViewModel = ContextualHintViewModel(forHintType: .jumpBackIn,
                                                                     with: viewModel.profile)
         self.jumpBackInContextualHintViewController = ContextualHintViewController(with: jumpBackInContextualViewModel)
@@ -96,34 +98,31 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
                                                                  with: viewModel.profile)
         self.syncTabContextualHintViewController = ContextualHintViewController(with: syncTabContextualViewModel)
         self.contextMenuHelper = HomepageContextMenuHelper(viewModel: viewModel)
-
+        
         self.themeManager = themeManager
         self.notificationCenter = notificationCenter
         self.logger = logger
         super.init(nibName: nil, bundle: nil)
-
+        
         contextMenuHelper.delegate = self
         contextMenuHelper.getPopoverSourceRect = { [weak self] popoverView in
             guard let self = self else { return CGRect() }
             return self.getPopoverSourceRect(sourceView: popoverView)
         }
-
-        setupNotifications(forObserver: self,
-                           observing: [.HomePanelPrefsChanged,
-                                       .TabsPrivacyModeChanged,
-                                       .WallpaperDidChange])
+        
+        self.subscribeNotifications()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     deinit {
         jumpBackInContextualHintViewController.stopTimer()
         syncTabContextualHintViewController.stopTimer()
         notificationCenter.removeObserver(self)
     }
-
+    
     // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,7 +130,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         configureWallpaperView()
         configureContentStackView()
         configureCollectionView()
-
+        
         // Delay setting up the view model delegate to ensure the views have been configured first
         viewModel.delegate = self
         
@@ -141,22 +140,66 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         freespokeHomepageView.getRecentBookmarks()
         
         freespokeHomepageView.delegate = self
-
+        
         view.addSubview(freespokeHomepageView)
-
+        
         freespokeHomepageView.snp.makeConstraints { make in
             make.top.left.right.bottom.equalTo(view)
         }
-
+        
+        freespokeHomepageView.profileIconTapClosure = { [weak self] in
+            AnalyticsManager.trackMatomoEvent(category: .appProfileCategory,
+                                              action: AnalyticsManager.MatomoAction.appProfileHomePageAvatarClickedAction.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
+            self?.displayFreefolkProfileVC()
+        }
+        
+        self.freespokeHomepageView.updateView(decodedJWTToken: AppSessionManager.shared.decodedJWTToken)
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
         //view.addGestureRecognizer(tap)
-
+        
         setupSectionsAction()
         reloadView()
-
+        
         listenForThemeChange(view)
         applyTheme()
+    }
+    
+    func displayFreefolkProfileVC() {
+        DispatchQueue.main.async { [ weak self] in
+            guard let  self = self else { return }
+            self.profileVC = FreefolkProfileVC(viewModel: FreefolkProfileViewModel())
+            
+            guard let profileVC = self.profileVC else { return }
+            profileVC.getInTouchClosure = { [weak self] in
+                self?.showURL(url: Constants.getInTouchURL.rawValue)
+                TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)
+                profileVC.motionDismissViewController()
+            }
+            
+            profileVC.accountClickedClosure = { [weak self] in
+                self?.showURL(url: Constants.URLs.accountProfileURL)
+                TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .account)
+                profileVC.motionDismissViewController()
+            }
+            
+            profileVC.appThemeClickedClosure = { [weak self] in
+                guard let  self = self else { return }
+                let themeSettingsController = ThemeSettingsController()
+                self.present(themeSettingsController, animated: true)
+            }
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
+    }
+    
+    func displayManageWhiteListVC() {
+        DispatchQueue.main.async { [ weak self] in
+            guard let self = self else { return }
+            let vc = WhiteListTVC()
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func checkFreespokeHomepage() {
@@ -164,7 +207,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             if !isNewTab {
                 if isSearching {
                     if let freespokeHomepageView = freespokeHomepageView {
-                        
                         UIView.animate(
                             withDuration: 0.2,
                             animations: {
@@ -206,7 +248,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             }
         }
     }
-
+    
     func reloadFreespokeHomepage() {
         if let freespokeHomepageView = freespokeHomepageView {
             freespokeHomepageView.reloadAllItems()
@@ -218,18 +260,23 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         self.freespokeHomepageView.arrRecenlyViewed = items
         self.freespokeHomepageView.collectionViewRecentlyViewd.reloadData()
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.freespokeHomepageView.updateView(decodedJWTToken: AppSessionManager.shared.decodedJWTToken)
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         jumpBackInContextualHintViewController.stopTimer()
         syncTabContextualHintViewController.stopTimer()
     }
-
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-
+        
         wallpaperView.updateImageForOrientationChange()
-
+        
         if UIDevice.current.userInterfaceIdiom == .pad {
             reloadOnRotation(newSize: size)
         }
@@ -242,20 +289,20 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             }
         }
     }
-
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         applyTheme()
-
+        
         if previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass
             || previousTraitCollection?.verticalSizeClass != traitCollection.verticalSizeClass {
             reloadOnRotation(newSize: view.frame.size)
         }
     }
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        
         // make sure the keyboard is dismissed when wallpaper onboarding is shown
         // Can be removed once underlying problem is solved (FXIOS-4904)
         if let presentedViewController = presentedViewController,
@@ -271,20 +318,20 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         self.freespokeHomepageView.collectionViewRecentlyViewd.reloadData()
         //})
     }
-
+    
     // MARK: - Layout
-
+    
     func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds,
                                           collectionViewLayout: createLayout())
-
+        
         HomepageSectionType.cellTypes.forEach {
             collectionView.register($0, forCellWithReuseIdentifier: $0.cellIdentifier)
         }
         collectionView.register(LabelButtonHeaderView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: LabelButtonHeaderView.cellIdentifier)
-
+        
         collectionView.keyboardDismissMode = .onDrag
         collectionView.addGestureRecognizer(longPressRecognizer)
         collectionView.delegate = self
@@ -295,7 +342,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         collectionView.accessibilityIdentifier = a11y.collectionView
         contentStackView.addArrangedSubview(collectionView)
     }
-
+    
     func configureContentStackView() {
         view.addSubview(contentStackView)
         NSLayoutConstraint.activate([
@@ -305,7 +352,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             contentStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-
+    
     func configureWallpaperView() {
         view.addSubview(wallpaperView)
         NSLayoutConstraint.activate([
@@ -314,10 +361,10 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             wallpaperView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             wallpaperView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-
+        
         view.sendSubviewToBack(wallpaperView)
     }
-
+    
     func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
@@ -329,65 +376,65 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         }
         return layout
     }
-
+    
     // MARK: Long press
-
+    
     private lazy var longPressRecognizer: UILongPressGestureRecognizer = {
         return UILongPressGestureRecognizer(target: self, action: #selector(longPress))
     }()
-
+    
     @objc fileprivate func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         guard longPressGestureRecognizer.state == .began else { return }
-
+        
         let point = longPressGestureRecognizer.location(in: collectionView)
         guard let indexPath = collectionView.indexPathForItem(at: point),
               let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler
         else { return }
-
+        
         viewModel.handleLongPress(with: collectionView, indexPath: indexPath)
     }
-
+    
     // MARK: - Homepage view cycle
     /// Normal view controller view cycles cannot be relied on the homepage since the current way of showing and hiding the homepage is through alpha.
     /// This is a problem that need to be fixed but until then we have to rely on the methods here.
-
+    
     func homepageWillAppear(isZeroSearch: Bool) {
         logger.log("\(type(of: self)) will appear", level: .info, category: .lifecycle)
-
+        
         viewModel.isZeroSearch = isZeroSearch
         viewModel.recordViewAppeared()
         notificationCenter.post(name: .HistoryUpdated)
     }
-
+    
     func homepageDidAppear() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
             self?.displayWallpaperSelector()
         }
     }
-
+    
     func homepageWillDisappear() {
         jumpBackInContextualHintViewController.stopTimer()
         syncTabContextualHintViewController.stopTimer()
         viewModel.recordViewDisappeared()
     }
-
+    
     // MARK: - Helpers
-
+    
     /// On iPhone, we call reloadOnRotation when the trait collection has changed, to ensure calculation
     /// is done with the new trait. On iPad, trait collection doesn't change from portrait to landscape (and vice-versa)
     /// since it's `.regular` on both. We reloadOnRotation from viewWillTransition in that case.
     private func reloadOnRotation(newSize: CGSize) {
         logger.log("Reload on rotation to new size \(newSize)", level: .info, category: .homepage)
-
+        
         if presentedViewController as? PhotonActionSheet != nil {
             presentedViewController?.dismiss(animated: false, completion: nil)
         }
-
+        
         // Force the entire collection view to re-layout
         viewModel.refreshData(for: traitCollection, size: newSize)
         collectionView.reloadData()
         collectionView.collectionViewLayout.invalidateLayout()
-
+        
         // This pushes a reload to the end of the main queue after all the work associated with
         // rotating has been completed. This is important because some of the cells layout are
         // based on the screen state
@@ -397,30 +444,31 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         
         
     }
-
+    
     private func adjustPrivacySensitiveSections(notification: Notification) {
         guard let dict = notification.object as? NSDictionary,
               let isPrivate = dict[Tab.privateModeKey] as? Bool
         else { return }
-
+        
         let privacySectionState = isPrivate ? "Removing": "Adding"
         logger.log("\(privacySectionState) privacy sensitive sections", level: .info, category: .homepage)
         viewModel.isPrivate = isPrivate
         reloadView()
     }
-
+    
     func applyTheme() {
         let theme = themeManager.currentTheme
         viewModel.theme = theme
         updateStatusBar(theme: theme)
         
         if let freespokeHomepageView = freespokeHomepageView {
+            freespokeHomepageView.applyTheme(currentTheme: theme)
             switch theme.type {
             case .light:
                 view.backgroundColor = theme.colors.layer1
                 
                 freespokeHomepageView.contentView.backgroundColor = .white
-
+                
                 freespokeHomepageView.lblFreespoke.textColor = UIColor(colorString: "081A33")
                 freespokeHomepageView.imgViewFreespoke.image = UIImage(named: "banner-light")
                 
@@ -450,7 +498,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
                 freespokeHomepageView.btnFreespokeWayUp.setTitleColor(.blackColor, for: .normal)
                 freespokeHomepageView.btnFreespokeWayMiddle.setTitleColor(.blackColor, for: .normal)
                 freespokeHomepageView.btnFreespokeWayDown.setTitleColor(.blackColor, for: .normal)
-
+                
                 freespokeHomepageView.btnFreespokeWayUp.layer.borderColor           = UIColor.whiteColor.cgColor
                 freespokeHomepageView.btnFreespokeWayMiddle.layer.borderColor       = UIColor.whiteColor.cgColor
                 freespokeHomepageView.btnFreespokeWayDown.layer.borderColor         = UIColor.whiteColor.cgColor
@@ -473,7 +521,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
                 view.backgroundColor = .darkBackground
                 
                 freespokeHomepageView.contentView.backgroundColor = .darkBackground
-
+                
                 freespokeHomepageView.lblFreespoke.textColor = .white
                 freespokeHomepageView.imgViewFreespoke.image = UIImage(named: "banner-dark")
                 
@@ -503,7 +551,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
                 freespokeHomepageView.btnFreespokeWayUp.setTitleColor(.white, for: .normal)
                 freespokeHomepageView.btnFreespokeWayMiddle.setTitleColor(.white, for: .normal)
                 freespokeHomepageView.btnFreespokeWayDown.setTitleColor(.white, for: .normal)
-
+                
                 freespokeHomepageView.btnFreespokeWayUp.layer.borderColor           = UIColor.blackColor.cgColor
                 freespokeHomepageView.btnFreespokeWayMiddle.layer.borderColor       = UIColor.blackColor.cgColor
                 freespokeHomepageView.btnFreespokeWayDown.layer.borderColor         = UIColor.blackColor.cgColor
@@ -524,37 +572,37 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             }
         }
     }
-
+    
     func scrollToTop(animated: Bool = false) {
         collectionView?.setContentOffset(.zero, animated: animated)
     }
-
+    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        //|     don't close the view on homepage 
+        //|     don't close the view on homepage
         //dismissKeyboard()
     }
-
+    
     @objc private func dismissKeyboard() {
         if currentTab?.lastKnownUrl?.absoluteString.hasPrefix("internal://") ?? false {
             urlBar.leaveOverlayMode()
         }
     }
-
+    
     func updatePocketCellsWithVisibleRatio(cells: [UICollectionViewCell], relativeRect: CGRect) {
         guard let window = UIWindow.keyWindow else { return }
         for cell in cells {
             // For every story cell get it's frame relative to the window
             let targetRect = cell.superview.map { window.convert(cell.frame, from: $0) } ?? .zero
-
+            
             // TODO: If visibility ratio is over 50% sponsored content can be marked as seen by the user
             _ = targetRect.visibilityRatio(relativeTo: relativeRect)
         }
     }
-
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Find visible pocket cells that holds pocket stories
         let cells = self.collectionView.visibleCells.filter { $0.reuseIdentifier == PocketStandardCell.cellIdentifier }
-
+        
         // Relative frame is the collectionView frame plus the status bar height
         let relativeRect = CGRect(
             x: collectionView.frame.minX,
@@ -563,23 +611,23 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             height: collectionView.frame.height + UIWindow.statusBarHeight
         )
         updatePocketCellsWithVisibleRatio(cells: cells, relativeRect: relativeRect)
-
+        
         updateStatusBar(theme: themeManager.currentTheme)
     }
-
+    
     private func showSiteWithURLHandler(_ url: URL, isGoogleTopSite: Bool = false) {
         let visitType = VisitType.bookmark
         homePanelDelegate?.homePanel(didSelectURL: url, visitType: visitType, isGoogleTopSite: isGoogleTopSite)
     }
-
+    
     func displayWallpaperSelector() {
         let wallpaperManager = WallpaperManager(userDefaults: userDefaults)
         guard wallpaperManager.canOnboardingBeShown(using: viewModel.profile),
               canModalBePresented
         else { return }
-
+        
         self.dismissKeyboard()
-
+        
         let viewModel = WallpaperSelectorViewModel(wallpaperManager: wallpaperManager, openSettingsAction: {
             self.homePanelDidRequestToOpenSettings(at: .wallpaper)
         })
@@ -590,29 +638,29 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             viewModel: bottomSheetViewModel,
             childViewController: viewController
         )
-
+        
         self.present(bottomSheetVC, animated: false, completion: nil)
         userDefaults.set(true, forKey: PrefsKeys.Wallpapers.OnboardingSeenKey)
     }
-
+    
     // Check if we already present something on top of the homepage,
     // if the homepage is actually being shown to the user and if the page is shown from a loaded webpage (zero search).
     private var canModalBePresented: Bool {
         return presentedViewController == nil && view.alpha == 1 && !viewModel.isZeroSearch
     }
-
+    
     // MARK: - Contextual hint
-
+    
     private func prepareJumpBackInContextualHint(onView headerView: LabelButtonHeaderView) {
         guard jumpBackInContextualHintViewController.shouldPresentHint(),
               !viewModel.shouldDisplayHomeTabBanner,
               !headerView.frame.isEmpty
         else { return }
-
+        
         // Calculate label header view frame to add as source rect for CFR
         var rect = headerView.convert(headerView.titleLabel.frame, to: collectionView)
         rect = collectionView.convert(rect, to: view)
-
+        
         jumpBackInContextualHintViewController.configure(
             anchor: view,
             withArrowDirection: .down,
@@ -622,7 +670,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             withActionBeforeAppearing: { self.contextualHintPresented(type: .jumpBackIn) },
             andActionForButton: { self.openTabsSettings() })
     }
-
+    
     private func prepareSyncedTabContextualHint(onCell cell: SyncedTabCell) {
         guard syncTabContextualHintViewController.shouldPresentHint(),
               featureFlags.isFeatureEnabled(.contextualHintForJumpBackInSyncedTab, checking: .buildOnly)
@@ -630,7 +678,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             syncTabContextualHintViewController.unconfigure()
             return
         }
-
+        
         syncTabContextualHintViewController.configure(
             anchor: cell.getContextualHintAnchor(),
             withArrowDirection: .down,
@@ -638,15 +686,15 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             presentedUsing: { self.presentContextualHint(contextualHintViewController: self.syncTabContextualHintViewController) },
             withActionBeforeAppearing: { self.contextualHintPresented(type: .jumpBackInSyncedTab) })
     }
-
+    
     @objc private func presentContextualHint(contextualHintViewController: ContextualHintViewController) {
         guard viewModel.viewAppeared, canModalBePresented else {
             contextualHintViewController.stopTimer()
             return
         }
-
+        
         present(contextualHintViewController, animated: true, completion: nil)
-
+        
         UIAccessibility.post(notification: .layoutChanged, argument: contextualHintViewController)
     }
 }
@@ -662,11 +710,11 @@ extension HomepageViewController: UICollectionViewDelegate, UICollectionViewData
                 for: indexPath) as? LabelButtonHeaderView,
               let sectionViewModel = viewModel.getSectionViewModel(shownSection: indexPath.section)
         else { return UICollectionReusableView() }
-
+        
         // Configure header only if section is shown
         let headerViewModel = sectionViewModel.shouldShow ? sectionViewModel.headerViewModel : LabelButtonHeaderViewModel.emptyHeader
         headerView.configure(viewModel: headerViewModel, theme: themeManager.currentTheme)
-
+        
         // Jump back in header specific setup
         if sectionViewModel.sectionType == .jumpBackIn {
             self.viewModel.jumpBackInViewModel.sendImpressionTelemetry()
@@ -678,23 +726,23 @@ extension HomepageViewController: UICollectionViewDelegate, UICollectionViewData
         }
         return headerView
     }
-
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.shownSections.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.getSectionViewModel(shownSection: section)?.numberOfItemsInSection() ?? 0
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler else {
             return UICollectionViewCell()
         }
-
+        
         return viewModel.configure(collectionView, at: indexPath)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler else { return }
         viewModel.didSelectItem(at: indexPath, homePanelDelegate: homePanelDelegate, libraryPanelDelegate: libraryPanelDelegate)
@@ -710,39 +758,39 @@ private extension HomepageViewController {
         viewModel.headerViewModel.onTapAction = { _ in
             // No action currently set if the logo button is tapped.
         }
-
+        
         // Message card
         viewModel.messageCardViewModel.dismissClosure = { [weak self] in
             self?.reloadView()
         }
-
+        
         // Top sites
         viewModel.topSiteViewModel.tilePressedHandler = { [weak self] site, isGoogle in
             guard let url = site.url.asURL else { return }
             self?.showSiteWithURLHandler(url, isGoogleTopSite: isGoogle)
         }
-
+        
         viewModel.topSiteViewModel.tileLongPressedHandler = { [weak self] (site, sourceView) in
             self?.contextMenuHelper.presentContextMenu(for: site, with: sourceView, sectionType: .topSites)
         }
-
+        
         // Recently saved
         viewModel.recentlySavedViewModel.headerButtonAction = { [weak self] button in
             self?.openBookmarks(button)
         }
-
+        
         // Jumpback in
         viewModel.jumpBackInViewModel.onTapGroup = { [weak self] tab in
             self?.homePanelDelegate?.homePanelDidRequestToOpenTabTray(withFocusedTab: tab)
         }
-
+        
         viewModel.jumpBackInViewModel.headerButtonAction = { [weak self] button in
             self?.openTabTray(button)
         }
-
+        
         viewModel.jumpBackInViewModel.syncedTabsShowAllAction = { [weak self] in
             self?.homePanelDelegate?.homePanelDidRequestToOpenTabTray(focusedSegment: .syncedTabs)
-
+            
             var extras: [String: String]?
             if let isZeroSearch = self?.viewModel.isZeroSearch {
                 extras = TelemetryWrapper.getOriginExtras(isZeroSearch: isZeroSearch)
@@ -753,10 +801,10 @@ private extension HomepageViewController {
                                          value: .jumpBackInSectionSyncedTabShowAll,
                                          extras: extras)
         }
-
+        
         viewModel.jumpBackInViewModel.openSyncedTabAction = { [weak self] tabURL in
             self?.homePanelDelegate?.homePanelDidRequestToOpenInNewTab(tabURL, isPrivate: false, selectNewTab: true)
-
+            
             var extras: [String: String]?
             if let isZeroSearch = self?.viewModel.isZeroSearch {
                 extras = TelemetryWrapper.getOriginExtras(isZeroSearch: isZeroSearch)
@@ -767,88 +815,88 @@ private extension HomepageViewController {
                                          value: .jumpBackInSectionSyncedTabOpened,
                                          extras: extras)
         }
-
+        
         viewModel.jumpBackInViewModel.prepareContextualHint = { [weak self] syncedTabCell in
             self?.prepareSyncedTabContextualHint(onCell: syncedTabCell)
         }
-
+        
         // History highlights
         viewModel.historyHighlightsViewModel.onTapItem = { [weak self] highlight in
             guard let url = highlight.siteUrl else {
                 self?.openHistoryHighlightsSearchGroup(item: highlight)
                 return
             }
-
+            
             self?.homePanelDelegate?.homePanel(didSelectURL: url,
                                                visitType: .link,
                                                isGoogleTopSite: false)
         }
-
+        
         viewModel.historyHighlightsViewModel.historyHighlightLongPressHandler = { [weak self] (highlightItem, sourceView) in
             self?.contextMenuHelper.presentContextMenu(for: highlightItem,
                                                        with: sourceView,
                                                        sectionType: .historyHighlights)
         }
-
+        
         viewModel.historyHighlightsViewModel.headerButtonAction = { [weak self] button in
             self?.openHistory(button)
         }
-
+        
         // Pocket
         viewModel.pocketViewModel.onTapTileAction = { [weak self] url in
             self?.showSiteWithURLHandler(url)
         }
-
+        
         viewModel.pocketViewModel.onLongPressTileAction = { [weak self] (site, sourceView) in
             self?.contextMenuHelper.presentContextMenu(for: site, with: sourceView, sectionType: .pocket)
         }
-
+        
         viewModel.pocketViewModel.onScroll = { [weak self] cells in
             guard let window = UIWindow.keyWindow, let self = self else { return }
             let cells = self.collectionView.visibleCells.filter { $0.reuseIdentifier == PocketStandardCell.cellIdentifier }
             self.updatePocketCellsWithVisibleRatio(cells: cells, relativeRect: window.bounds)
         }
-
+        
         // Customize home
         viewModel.customizeButtonViewModel.onTapAction = { [weak self] _ in
             self?.openCustomizeHomeSettings()
         }
     }
-
+    
     private func openHistoryHighlightsSearchGroup(item: HighlightItem) {
         guard let groupItem = item.group else { return }
-
+        
         var groupedSites = [Site]()
         for item in groupItem {
             groupedSites.append(buildSite(from: item))
         }
         let groupSite = ASGroup<Site>(searchTerm: item.displayTitle, groupedItems: groupedSites, timestamp: Date.now())
-
+        
         let asGroupListViewModel = SearchGroupedItemsViewModel(asGroup: groupSite, presenter: .recentlyVisited)
         let asGroupListVC = SearchGroupedItemsViewController(viewModel: asGroupListViewModel, profile: viewModel.profile)
-
+        
         let dismissableController: DismissableNavigationViewController
         dismissableController = DismissableNavigationViewController(rootViewController: asGroupListVC)
-
+        
         self.present(dismissableController, animated: true, completion: nil)
-
+        
         TelemetryWrapper.recordEvent(category: .action,
                                      method: .tap,
                                      object: .firefoxHomepage,
                                      value: .historyHighlightsGroupOpen,
                                      extras: nil)
-
+        
         asGroupListVC.libraryPanelDelegate = libraryPanelDelegate
     }
-
+    
     private func buildSite(from highlight: HighlightItem) -> Site {
         let itemURL = highlight.urlString ?? ""
         return Site(url: itemURL, title: highlight.displayTitle)
     }
-
+    
     func openTabTray(_ sender: UIButton) {
         homePanelDelegate?.homePanelDidRequestToOpenTabTray(withFocusedTab: nil)
-
+        
         if sender.accessibilityIdentifier == a11y.MoreButtons.jumpBackIn {
             TelemetryWrapper.recordEvent(category: .action,
                                          method: .tap,
@@ -857,10 +905,10 @@ private extension HomepageViewController {
                                          extras: TelemetryWrapper.getOriginExtras(isZeroSearch: viewModel.isZeroSearch))
         }
     }
-
+    
     func openBookmarks(_ sender: UIButton) {
         homePanelDelegate?.homePanelDidRequestToOpenLibrary(panel: .bookmarks)
-
+        
         if sender.accessibilityIdentifier == a11y.MoreButtons.recentlySaved {
             TelemetryWrapper.recordEvent(category: .action,
                                          method: .tap,
@@ -869,10 +917,10 @@ private extension HomepageViewController {
                                          extras: TelemetryWrapper.getOriginExtras(isZeroSearch: viewModel.isZeroSearch))
         }
     }
-
+    
     func openHistory(_ sender: UIButton) {
         homePanelDelegate?.homePanelDidRequestToOpenLibrary(panel: .history)
-
+        
         if sender.accessibilityIdentifier == a11y.MoreButtons.historyHighlights {
             TelemetryWrapper.recordEvent(category: .action,
                                          method: .tap,
@@ -880,7 +928,7 @@ private extension HomepageViewController {
                                          value: .historyHighlightsShowAll)
         }
     }
-
+    
     func openCustomizeHomeSettings() {
         homePanelDelegate?.homePanelDidRequestToOpenSettings(at: .customizeHomepage)
         TelemetryWrapper.recordEvent(category: .action,
@@ -888,19 +936,19 @@ private extension HomepageViewController {
                                      object: .firefoxHomepage,
                                      value: .customizeHomepageButton)
     }
-
+    
     func contextualHintPresented(type: ContextualHintType) {
         homePanelDelegate?.homePanelDidPresentContextualHintOf(type: type)
     }
-
+    
     func openTabsSettings() {
         homePanelDelegate?.homePanelDidRequestToOpenSettings(at: .customizeTabs)
     }
-
+    
     func getPopoverSourceRect(sourceView: UIView?) -> CGRect {
         let cellRect = sourceView?.frame ?? .zero
         let cellFrameInSuperview = self.collectionView?.convert(cellRect, to: self.collectionView) ?? .zero
-
+        
         return CGRect(origin: CGPoint(x: cellFrameInSuperview.size.width / 2,
                                       y: cellFrameInSuperview.height / 2),
                       size: .zero)
@@ -912,11 +960,11 @@ extension HomepageViewController: HomepageContextMenuHelperDelegate {
     func homePanelDidRequestToOpenInNewTab(_ url: URL, isPrivate: Bool, selectNewTab: Bool) {
         homePanelDelegate?.homePanelDidRequestToOpenInNewTab(url, isPrivate: isPrivate, selectNewTab: selectNewTab)
     }
-
+    
     func homePanelDidRequestToOpenSettings(at settingsPage: AppSettingsDeeplinkOption) {
         homePanelDelegate?.homePanelDidRequestToOpenSettings(at: settingsPage)
     }
-
+    
     func showToast(message: String) {
         SimpleToast().showAlertWithText(message, bottomContainer: view, theme: themeManager.currentTheme)
     }
@@ -928,10 +976,10 @@ extension HomepageViewController: SearchBarLocationProvider {}
 extension HomepageViewController {
     var statusBarFrame: CGRect? {
         guard let keyWindow = UIWindow.keyWindow else { return nil }
-
+        
         return keyWindow.windowScene?.statusBarManager?.statusBarFrame
     }
-
+    
     // Returns a value between 0 and 1 which indicates how far the user has scrolled.
     // This is used as the alpha of the status bar background.
     // 0 = no status bar background shown
@@ -943,11 +991,11 @@ extension HomepageViewController {
               let statusBarHeight: CGFloat = statusBarFrame?.height,
               statusBarHeight > 0
         else { return 0 }
-
+        
         // The scrollview content offset is automatically adjusted to account for the status bar.
         // We want to start showing the status bar background as soon as the user scrolls.
         var offset = (scrollView.contentOffset.y + statusBarHeight) / statusBarHeight
-
+        
         if offset > 1 {
             offset = 1
         } else if offset < 0 {
@@ -955,18 +1003,18 @@ extension HomepageViewController {
         }
         return offset
     }
-
+    
     func updateStatusBar(theme: Theme) {
         switch theme.type {
         case .dark:
-            let backgroundColor = UIColor.darkBackground//theme.colors.layer1
+            let backgroundColor = UIColor.darkBackground
             statusBarView.backgroundColor = backgroundColor.withAlphaComponent(scrollOffset)
             
         case .light:
             let backgroundColor = theme.colors.layer1
             statusBarView.backgroundColor = backgroundColor.withAlphaComponent(scrollOffset)
         }
-
+        
         if let statusBarFrame = statusBarFrame {
             statusBarView.frame = statusBarFrame
         }
@@ -988,11 +1036,11 @@ extension HomepageViewController: UIPopoverPresentationControllerDelegate {
                 !syncTabContextualHintViewController.isPresenting else { return }
         popoverPresentationController.presentedViewController.dismiss(animated: false, completion: nil)
     }
-
+    
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
-
+    
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         return true
     }
@@ -1003,7 +1051,7 @@ extension HomepageViewController: HomepageViewModelDelegate {
     func reloadView() {
         ensureMainThread { [weak self] in
             guard let self = self else { return }
-
+            
             self.viewModel.refreshData(for: self.traitCollection, size: self.view.frame.size)
             self.collectionView.reloadData()
             self.collectionView.collectionViewLayout.invalidateLayout()
@@ -1030,21 +1078,36 @@ extension HomepageViewController: FreespokeHomepageDelegate {
     }
 }
 
+// MARK: Subscribe Notifications
+
+extension HomepageViewController {
+    private func subscribeNotifications() {
+        self.setupNotifications(forObserver: self,
+                                observing: [.HomePanelPrefsChanged,
+                                            .TabsPrivacyModeChanged,
+                                            .WallpaperDidChange,
+                                            .freespokeUserAuthChanged])
+    }
+}
+
 // MARK: - Notifiable
 extension HomepageViewController: Notifiable {
     func handleNotifications(_ notification: Notification) {
         ensureMainThread { [weak self] in
             guard let self = self else { return }
-
             switch notification.name {
             case .TabsPrivacyModeChanged:
                 self.adjustPrivacySensitiveSections(notification: notification)
-
+                
             case .HomePanelPrefsChanged,
                     .WallpaperDidChange:
                 self.reloadView()
-
-            default: break
+                
+            case .freespokeUserAuthChanged:
+                self.freespokeHomepageView.updateView(decodedJWTToken: AppSessionManager.shared.decodedJWTToken)
+                
+            default:
+                break
             }
         }
     }

@@ -5,6 +5,15 @@
 import UIKit
 import Common
 
+extension URL {
+    public func isFreespokeDomain() -> Bool {
+        if self.host?.contains("freespoke.com") == true {
+            return true
+        }
+        return false
+    }
+}
+
 // MARK: - Local Resource URL Extensions
 extension URL {
     public func allocatedFileSize() -> Int64 {

@@ -9,7 +9,6 @@ import Common
 import Kingfisher
 import SwiftyJSON
 import Shared
-import MatomoTracker
 
 protocol FreespokeHomepageDelegate {
     func didPressSearch()
@@ -70,16 +69,21 @@ class FreespokeHomepage: UIView {
     @IBOutlet weak var btnFreespokeWayMiddle: UIButton!
     @IBOutlet weak var btnFreespokeWayDown: UIButton!
     
+    @IBOutlet weak var avatarView: UIView!
+    
+    private var profileIconView = ProfileIconView()
+    
+    var profileIconTapClosure: (() -> Void)?
+    
     var delegate: FreespokeHomepageDelegate?
     
     private var bookmarksHandler: BookmarksHandler?
     
     var profile: Profile!
-    
     var arrBookmarks = [Site]()
     var arrRecenlyViewed = [HighlightItem]()
     var arrTrendingStory = [TrendingStory]()
-    var arrShoppingCollection = [Shopping]()
+    var arrShoppingCollection: [ShoppingCoollectionItemModel] = []
     
     var urlSearch       = ""
     var urlTrending     = ""
@@ -89,16 +93,18 @@ class FreespokeHomepage: UIView {
     var pageShoppping = 1
     
     let yourAttributes: [NSAttributedString.Key: Any] = [
-          .font: UIFont(name: "SourceSansPro-Regular", size: 14)!,
-          .underlineStyle: NSUnderlineStyle.single.rawValue]
+        .font: UIFont(name: "SourceSansPro-Regular", size: 14)!,
+        .underlineStyle: NSUnderlineStyle.single.rawValue]
     
     let margin: CGFloat = 8
+    
+    private var networkManager = NetworkManager()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
-        
         setUI()
+        addProfileIconView()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -111,6 +117,25 @@ class FreespokeHomepage: UIView {
         contentView.fixInView(self)
         
         initCollectionView()
+    }
+    
+    func applyTheme(currentTheme: Theme) {
+        self.profileIconView.applyTheme(currentTheme: currentTheme)
+    }
+    
+    func addProfileIconView() {
+        self.avatarView.addSubview(self.profileIconView)
+        self.profileIconView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.profileIconView.pinToView(view: self.avatarView)
+        
+        profileIconView.tapClosure = { [weak self] in
+            self?.profileIconTapClosure?()
+        }
+    }
+    
+    func updateView(decodedJWTToken: FreespokeJWTDecodeModel?) {
+        self.profileIconView.updateView(decodedJWTToken: decodedJWTToken)
     }
     
     private func initCollectionView() {
@@ -248,12 +273,12 @@ class FreespokeHomepage: UIView {
             guard let bookmarkItems = result.successValue else {
                 return
             }
-
+            
             let sites = bookmarkItems.map({ Site(url: $0.url, title: $0.title, bookmarked: true, guid: $0.guid) }).reversed()
             
             self.arrBookmarks = [Site]()
             self.arrBookmarks.append(contentsOf: sites)
-
+            
             DispatchQueue.main.async {
                 self.collectionViewBookmarks.reloadData()
             }
@@ -367,7 +392,7 @@ class FreespokeHomepage: UIView {
                                                              mainImageAttribution: story["main_image"]["attribution"].stringValue,
                                                              publisher_icons: story["publisher_icons"].arrayValue)
                                 
-                                self.arrTrendingStory.append(contentsOf: [newStory])
+                                self.arrTrendingStory.append(newStory)// .append(contentsOf: [newStory])
                             }
                         }
                         
@@ -384,57 +409,38 @@ class FreespokeHomepage: UIView {
         dataTask.resume()
     }
     
-    func getShopppingCollection(page: Int, completion: (() -> Void)? = nil) {
-        let url = NSURL(string: "\(Constants.apiBaseURL)/shop/collections?page=\(page)&per_page=4")
-        let request = NSMutableURLRequest(url: url! as URL)
-        request.httpMethod = "GET"
-        let session = URLSession(configuration:URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
-        let dataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
-            
-            if error != nil {
-            } else {
-                do {
-                    let json = try JSON(data: data!)
-                    let collections = json["collections"]
-                    
-                    if let arrShopping = collections.array {
-                        if !arrShopping.isEmpty {
-                            self.arrShoppingCollection = [Shopping]()
-                            
-                            for story in arrShopping {
-                                let newStory = Shopping(ID: 1,
-                                                        url: story["url"].stringValue,
-                                                        title: story["title"].stringValue,
-                                                        thumbnail: story["thumbnail"].stringValue)
-                                
-                                self.arrShoppingCollection.append(contentsOf: [newStory])
-                            }
-                        }
-                    }
-                    
-                    DispatchQueue.main.async {
-                        self.collectionViewShopUsa.reloadData()
-                    }
+    private func getShopppingCollection(page: Int, completion: (() -> Void)? = nil) {
+        self.networkManager.getShoppingCollection(page: page,
+                                                  perPage: 4,
+                                                  completion: { [weak self] shoppingCollectionModel, error in
+            guard let self = self else { return }
+            if let shoppingCollectionModel = shoppingCollectionModel {
+                if !shoppingCollectionModel.collections.isEmpty {
+                    self.arrShoppingCollection = shoppingCollectionModel.collections
                 }
-                catch {
-                    print("error")
+                
+                DispatchQueue.main.async {
+                    self.collectionViewShopUsa.reloadData()
                 }
             }
-        }
-        dataTask.resume()
+        })
     }
-
+    
     // MARK: - Action Methods
     
     @IBAction func btnSearch(_ sender: Any) {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeSearch.rawValue, name: MatomoName.search.rawValue, value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                          action: AnalyticsManager.MatomoAction.appHomeSearch.rawValue,
+                                          name: AnalyticsManager.MatomoName.search)
         
         delegate?.didPressSearch()
     }
     
     @IBAction func btnFreespokeWayUp(_ sender: UIButton) {
         if let text = sender.titleLabel?.text {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.click.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeFreespoke.rawValue + text,
+                                              name: AnalyticsManager.MatomoName.clickName)
         }
         
         delegate?.showURL(url: urlSearch)
@@ -442,7 +448,9 @@ class FreespokeHomepage: UIView {
     
     @IBAction func btnFreespokeWayMiddle(_ sender: UIButton) {
         if let text = sender.titleLabel?.text {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.click.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeFreespoke.rawValue + text,
+                                              name: AnalyticsManager.MatomoName.clickName)
         }
         
         delegate?.showURL(url: urlShopping)
@@ -450,12 +458,14 @@ class FreespokeHomepage: UIView {
     
     @IBAction func btnFreespokeWayDown(_ sender: UIButton) {
         if let text = sender.titleLabel?.text {
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeFreespoke.rawValue + text, name: MatomoName.click.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeFreespoke.rawValue + text,
+                                              name: AnalyticsManager.MatomoName.clickName)
         }
         
         delegate?.showURL(url: urlTrending)
     }
-
+    
     @IBAction func btnBookmarks(_ sender: Any) {
         delegate?.didPressBookmarks()
     }
@@ -463,6 +473,9 @@ class FreespokeHomepage: UIView {
     @IBAction func btnTrendingNews(_ sender: Any) {
         //pageTrending = pageTrending + 1
         //getTrendngStory(page: pageTrending)
+        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                          action: AnalyticsManager.MatomoAction.appHomeTrendingNewsStoryViewMoreClick.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         
         delegate?.showURL(url: "https://freespoke.com/news/what-is-hot")
     }
@@ -474,6 +487,9 @@ class FreespokeHomepage: UIView {
     @IBAction func btnShopUsa(_ sender: Any) {
         //pageShoppping = pageShoppping + 1
         //getShopppingCollection(page: pageShoppping)
+        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                          action: AnalyticsManager.MatomoAction.appHomeShopUsaViewMoreClick.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
         
         delegate?.showURL(url: "https://freespoke.com/shop")
     }
@@ -481,7 +497,7 @@ class FreespokeHomepage: UIView {
 
 extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
+        
         switch collectionView {
         case collectionViewBookmarks:
             if arrBookmarks.isEmpty {
@@ -551,7 +567,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "bookmarkCellIdentifier", for: indexPath) as? BookmarkCollectionViewCell {
                 
                 let bookmark = arrBookmarks[indexPath.row]
-
+                
                 let url = URL(string: "http://www.google.com/s2/favicons?sz=\(32)&domain=\(bookmark.tileURL.absoluteString)")
                 
                 //let url = URL(string: "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://freespoke-support.freshdesk.com/support/tickets/new&size=32")
@@ -568,14 +584,14 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
                 
                 return cell
             }
-        
+            
         case collectionViewTrendingNews:
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trendingNewsCellIdentifier", for: indexPath) as? TrendingNewsCollectionViewCell {
                 
-                if indexPath.row < arrTrendingStory.count {
+                if indexPath.row < self.arrTrendingStory.count {
                     
                     
-                    let story = arrTrendingStory[indexPath.row]
+                    let story = self.arrTrendingStory[indexPath.row]
                     
                     cell.lblTitle.text = story.name
                     
@@ -673,30 +689,24 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             }
             
         case collectionViewRecentlyViewd:
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recentlyViewedCellIdentifier", for: indexPath) as? RecentlyViewedCollectionViewCell {
-                
-                let bookmark = arrRecenlyViewed[indexPath.row]
-                
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recentlyViewedCellIdentifier", for: indexPath) as? RecentlyViewedCollectionViewCell,
+               indexPath.row < self.arrRecenlyViewed.count {
+                let bookmark = self.arrRecenlyViewed[indexPath.row]
                 if let strUrl = bookmark.urlString {
                     let url = URL(string: "http://www.google.com/s2/favicons?sz=\(32)&domain=\(strUrl)")
-                    
                     cell.imgView.kf.setImage(with: url)
                 }
-                
                 cell.lblTitle.text = bookmark.displayTitle
-                
                 return cell
             }
             
         case collectionViewShopUsa:
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "shopUsaCellIdentifier", for: indexPath) as? ShopUsaCollectionViewCell {
-                
-                let story = arrShoppingCollection[indexPath.row]
-                
-                cell.lblTitle.text = story.title
-                let url = URL(string: story.thumbnail)
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "shopUsaCellIdentifier", for: indexPath) as? ShopUsaCollectionViewCell,
+               indexPath.row < self.arrShoppingCollection.count {
+                let shop = arrShoppingCollection[indexPath.row]
+                cell.lblTitle.text = shop.title
+                let url = URL(string: shop.thumbnail)
                 cell.imgView.kf.setImage(with: url)
-                
                 return cell
             }
             
@@ -712,32 +722,42 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch collectionView {
         case collectionViewBookmarks:
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeBookmarks.rawValue, name: MatomoName.click.rawValue, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeBookmarks.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
             
             let site = arrBookmarks[indexPath.row]
             
             delegate?.showURL(url: site.url)
-        
-        case collectionViewTrendingNews:
-            let story = arrTrendingStory[indexPath.row]
             
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeNews.rawValue, name: story.name, value: nil)
+        case collectionViewTrendingNews:
+            guard indexPath.row < self.arrTrendingStory.count else { return }
+            let story = self.arrTrendingStory[indexPath.row]
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeTrendingNewsStoryClick.rawValue,
+                                              name: story.name,
+                                              url: story.url.asURL)
             
             delegate?.showURL(url: story.url)
             
         case collectionViewRecentlyViewd:
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeRecently.rawValue, name: MatomoName.click.rawValue, value: nil)
-            
-            let site = arrRecenlyViewed[indexPath.row]
-            
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeRecently.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
+            guard indexPath.row < self.arrRecenlyViewed.count else { return }
+            let site = self.arrRecenlyViewed[indexPath.row]
             if let url = site.urlString {
                 delegate?.showURL(url: url)
             }
             
         case collectionViewShopUsa:
+            guard indexPath.row < self.arrShoppingCollection.count else { return }
             let shop = arrShoppingCollection[indexPath.row]
             
-            MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appHome.rawValue, action: MatomoAction.appHomeShop.rawValue, name: shop.url, value: nil)
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeShopUsaClick.rawValue,
+                                              name: shop.title,
+                                              url: shop.url.asURL)
             
             delegate?.showURL(url: shop.url)
             
@@ -747,11 +767,11 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+        
         switch collectionView {
         case collectionViewBookmarks:
             return CGSize(width: 81, height: 77)
-        
+            
         case collectionViewTrendingNews:
             var noOfCellsInRow = 1
             
@@ -762,7 +782,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             }
             let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
             let totalSpace = flowLayout.sectionInset.left + flowLayout.sectionInset.right + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
-
+            
             let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
             return CGSize(width: size, height: 296)
             
@@ -780,7 +800,7 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
             
             let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
             let totalSpace = flowLayout.sectionInset.left + flowLayout.sectionInset.right + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
-
+            
             let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
             return CGSize(width: size, height: 213)
             
@@ -792,7 +812,8 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
 
 extension FreespokeHomepage: TrendingNewsCollectionViewCellDelegate {
     func didBtnPhoto(indexPath: IndexPath) {
-        let story = arrTrendingStory[indexPath.row]
+        guard indexPath.row < self.arrTrendingStory.count else { return }
+        let story = self.arrTrendingStory[indexPath.row]
         
         var image = story.mainImageAttribution
         
@@ -804,6 +825,7 @@ extension FreespokeHomepage: TrendingNewsCollectionViewCellDelegate {
     }
     
     func didBtnViewSummary(indexPath: IndexPath) {
+        guard indexPath.row < self.arrTrendingStory.count else { return }
         let story = arrTrendingStory[indexPath.row]
         
         delegate?.showURL(url: story.url)
@@ -822,7 +844,7 @@ class TrendingStory: Equatable, Hashable {
     var mainImageUrl: String
     var mainImageAttribution: String
     var publisher_icons: [JSON]
-
+    
     init(ID: Int, url: String, name: String, updated_at: String, sources: Int, bias_left: Int, bias_middle: Int, bias_right: Int, mainImageUrl: String, mainImageAttribution: String, publisher_icons: [JSON]) {
         self.ID = ID
         self.url = url
@@ -845,30 +867,6 @@ class TrendingStory: Equatable, Hashable {
 }
 
 func ==(lhs: TrendingStory, rhs: TrendingStory) -> Bool {
-    return lhs.url == rhs.url
-}
-
-class Shopping: Equatable, Hashable {
-    var ID: Int
-    var title: String
-    var url: String
-    var thumbnail: String
-
-    init(ID: Int, url: String, title: String, thumbnail: String) {
-        self.ID = ID
-        self.title = title
-        self.url = url
-        self.thumbnail = thumbnail
-    }
-    
-    var hashValue: Int {
-        get {
-            return ID.hashValue << 15 + title.hashValue
-        }
-    }
-}
-
-func ==(lhs: Shopping, rhs: Shopping) -> Bool {
     return lhs.url == rhs.url
 }
 

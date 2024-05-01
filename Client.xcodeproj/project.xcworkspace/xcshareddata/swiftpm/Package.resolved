@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "appauth-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/openid/AppAuth-iOS.git",
+      "state" : {
+        "revision" : "71cde449f13d453227e687458144bde372d30fc7",
+        "version" : "1.6.2"
+      }
+    },
+    {
       "identity" : "dip",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/AliSoftware/Dip.git",
@@ -61,6 +70,15 @@
       "state" : {
         "revision" : "6ae03883c3b7d22e72e2a5937ad5dd8765d9c31d",
         "version" : "4.33.4"
+      }
+    },
+    {
+      "identity" : "jam",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/brianmichel/Jam.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "80d110d2c1e9d23b68fd7164902d02c03967ddc1"
       }
     },
     {

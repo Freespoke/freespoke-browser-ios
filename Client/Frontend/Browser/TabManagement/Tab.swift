@@ -318,24 +318,45 @@ class Tab: NSObject {
             guard noImageMode != oldValue else { return }
 
             contentBlocker?.noImageMode(enabled: noImageMode)
-
-            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+            
+            UserScriptManager.shared.injectUserScriptsIntoTab(self,
+                                                              nightMode: LegacyThemeManager.instance.currentName == .dark,
+                                                              noImageMode: noImageMode)
         }
     }
+    
+//    var nightMode: Bool {
+//        didSet {
+////            guard nightMode != oldValue else { return }
+//            print("TEST: nightMode did set: ", nightMode)
+//            webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+//            
+////            if (window.__firefox__){window.__firefox__.NightMode.setEnabled(false);}
+//            
+////            webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+//            // For WKWebView background color to take effect, isOpaque must be false,
+//            // which is counter-intuitive. Default is true. The color is previously
+//            // set to black in the WKWebView init.
+//            webView?.isOpaque = !nightMode
+//
+//            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: !nightMode, noImageMode: noImageMode)
+//            print("TEST: injectUserScriptsIntoTab: ", nightMode)
+//        }
+//    }
 
-    var nightMode: Bool {
-        didSet {
-            guard nightMode != oldValue else { return }
-
-            webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
-            // For WKWebView background color to take effect, isOpaque must be false,
-            // which is counter-intuitive. Default is true. The color is previously
-            // set to black in the WKWebView init.
-            webView?.isOpaque = !nightMode
-
-            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
-        }
-    }
+//    var nightMode: Bool {
+//        didSet {
+//            guard nightMode != oldValue else { return }
+//
+//            webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+//            // For WKWebView background color to take effect, isOpaque must be false,
+//            // which is counter-intuitive. Default is true. The color is previously
+//            // set to black in the WKWebView init.
+//            webView?.isOpaque = !nightMode
+//
+//            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+//        }
+//    }
 
     var contentBlocker: FirefoxTabContentBlocker?
 
@@ -386,7 +407,7 @@ class Tab: NSObject {
          faviconHelper: SiteImageHandler = DefaultSiteImageHandler.factory(),
          logger: Logger = DefaultLogger.shared) {
         self.configuration = configuration
-        self.nightMode = false
+//        self.nightMode = LegacyThemeManager.instance.currentName == .dark
         self.noImageMode = false
         self.profile = profile
         self.metadataManager = TabMetadataManager(metadataObserver: profile.places)
@@ -464,8 +485,13 @@ class Tab: NSObject {
             configureEdgeSwipeGestureRecognizers()
             self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
             self.webView?.addObserver(self, forKeyPath: KVOConstants.title.rawValue, options: .new, context: nil)
-            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+            let nightMode = LegacyThemeManager.instance.currentName == .dark
+            UserScriptManager.shared.injectUserScriptsIntoTab(self,
+                                                              nightMode: nightMode,
+                                                              noImageMode: noImageMode)
             tabDelegate?.tab?(self, didCreateWebView: webView)
+            AdBlockManager.shared.disableAdBlock(forWebView: webView)
+            self.prepareBlocker()
         }
     }
 
@@ -492,9 +518,19 @@ class Tab: NSObject {
 
             if let restoreURL = URL(string: "\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)?history=\(json)") {
                 let request = PrivilegedRequest(url: restoreURL) as URLRequest
-                webView.load(request)
+                
+                Task { [weak self] in
+                    guard let self = self else { return }
+                    if let shouldEnableAdBlocker = try? await self.shouldEnableAdBlocker(url: request.url) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                            AdBlockManager.shared.shouldAddBlockRuleList(isShouldAddBlockList: shouldEnableAdBlocker,
+                                                                         forWebView: webView, request: request)
+                        })
+                    }
+                }
                 lastRequest = request
                 isRestoring = false
+
             }
         } else if let request = lastRequest {
             webView.load(request)
@@ -562,30 +598,100 @@ class Tab: NSObject {
     func goToBackForwardListItem(_ item: WKBackForwardListItem) {
         _ = webView?.go(to: item)
     }
-
-    @discardableResult func loadRequest(_ request: URLRequest) -> WKNavigation? {
+    
+//    @discardableResult func loadRequest_FindForFix(_ request: URLRequest) async throws -> WKNavigation? {
+//        print("webView: \(webView)")
+//        if let webView = webView {
+//            // Convert about:reader?url=http://example.com URLs to local ReaderMode URLs
+//            
+//            let result = Task<WKNavigation?, Error>.detached {
+////                if let shouldEnableAdBlocker = try? await self.shouldEnableAdBlocker(url: request.url) {
+////                    AdBlockManager.shared.shouldAddBlockRuleList(isShouldAddBlockList: shouldEnableAdBlocker,
+////                                                                 forWebView: webView)
+////                } else {
+////                    print("cannotCreateValue")
+////                }
+//                
+//                if let url = request.url,
+//                   let syncedReaderModeURL = url.decodeReaderModeURL,
+//                   let localReaderModeURL = syncedReaderModeURL.encodeReaderModeURL(WebServer.sharedInstance.baseReaderModeURL()) {
+//                    let readerModeRequest = PrivilegedRequest(url: localReaderModeURL) as URLRequest
+//                    self.lastRequest = readerModeRequest
+//                    return await webView.load(readerModeRequest)
+//                }
+//                
+//                self.lastRequest = request
+//                print("request test: \(request)")
+//                if let url = request.url, url.isFileURL, request.isPrivileged {
+//                    return await webView.loadFileURL(url, allowingReadAccessTo: url)
+//                }
+//                return await webView.load(request)
+//            }
+//            
+//            return try await result.value
+//        } else {
+//            print("webView cannot find: \(webView)")
+//            return nil
+//        }
+//    }
+    
+    func loadRequest_FindForFix(_ request: URLRequest, completion: ((WKNavigation?) -> Void)? = nil) {
         if let webView = webView {
             // Convert about:reader?url=http://example.com URLs to local ReaderMode URLs
+            
+            Task { [weak self] in
+                if let shouldEnableAdBlocker = try? await self?.shouldEnableAdBlocker(url: request.url) {
+                    AdBlockManager.shared.shouldAddBlockRuleList(isShouldAddBlockList: shouldEnableAdBlocker,
+                                                                 forWebView: webView)
+                } else {
+                    print("cannotCreateValue")
+                }
+            }
+            
+            
             if let url = request.url,
                let syncedReaderModeURL = url.decodeReaderModeURL,
                let localReaderModeURL = syncedReaderModeURL.encodeReaderModeURL(WebServer.sharedInstance.baseReaderModeURL()) {
                 let readerModeRequest = PrivilegedRequest(url: localReaderModeURL) as URLRequest
                 lastRequest = readerModeRequest
-                return webView.load(readerModeRequest)
+                webView.load(readerModeRequest)
+                completion?(webView.load(readerModeRequest))
+                return
             }
             lastRequest = request
             if let url = request.url, url.isFileURL, request.isPrivileged {
-                return webView.loadFileURL(url, allowingReadAccessTo: url)
+                webView.loadFileURL(url, allowingReadAccessTo: url)
+                completion?(webView.loadFileURL(url, allowingReadAccessTo: url))
+                return
             }
-            return webView.load(request)
+            webView.load(request)
+            completion?(webView.load(request))
+            return
+        } else {
+            completion?(nil)
         }
-        return nil
     }
-
+    
     func stop() {
         webView?.stopLoading()
     }
-
+    
+    func shouldEnableAdBlocker(url: URL?) async throws -> Bool {
+        let result = Task<Bool, Error> {
+            guard let shouldBlockAds = try? await AdBlockManager.shared.shouldBlockAds(), shouldBlockAds else { 
+                return false
+            }
+            guard let url = url, let host = url.host else {
+                return false
+            }
+            guard let domains = UserDefaults.standard.object(forKey: SettingsKeys.domains) as? [String] else { 
+                return true
+            }
+            return !domains.contains(where: { url.absoluteString.contains($0) })
+        }
+        return try await result.value
+    }
+    
     func reload(bypassCache: Bool = false) {
         // If the current page is an error page, and the reload button is tapped, load the original URL
         if let url = webView?.url, let internalUrl = InternalURL(url), let page = internalUrl.originalURLFromErrorPage {
@@ -791,6 +897,36 @@ class Tab: NSObject {
 
     func applyTheme() {
         UITextField.appearance().keyboardAppearance = isPrivate ? .dark : (LegacyThemeManager.instance.currentName == .dark ? .dark : .light)
+        
+//        self.nightMode = isPrivate ? true : (LegacyThemeManager.instance.currentName == .dark ? true : false)
+        
+        let nightMode = LegacyThemeManager.instance.currentName == .dark
+        print("TEST: nightMode did set: ", nightMode)
+//        webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+        
+        //            if (window.__firefox__){window.__firefox__.NightMode.setEnabled(false);}
+        
+        //            webView?.evaluateJavascriptInDefaultContentWorld("window.__firefox__.NightMode.setEnabled(\(nightMode))")
+        // For WKWebView background color to take effect, isOpaque must be false,
+        // which is counter-intuitive. Default is true. The color is previously
+        // set to black in the WKWebView init.
+        webView?.isOpaque = !nightMode
+        
+        print("TEST: injectUserScriptsIntoTab: ", nightMode)
+        
+        UserScriptManager.shared.injectUserScriptsIntoTab(self,
+                                                          nightMode: nightMode,
+                                                          noImageMode: noImageMode)
+        
+//        if let url = webView?.url {
+//            if url.absoluteString.contains("freespoke.com") == true {
+//                UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: !nightMode, noImageMode: noImageMode)
+//            } else {
+//                UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+//            }
+//        } else {
+//            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
+//        }
     }
 
     func getProviderForUrl() -> SearchEngine {

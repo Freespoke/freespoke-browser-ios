@@ -2711,6 +2711,12 @@ extension String {
             tableName: nil,
             value: "Reading List",
             comment: "Label for the button, displayed in the menu, takes you to to Reading List screen when pressed.")
+        // Reading list
+        public static let AddToWhitelist = MZLocalizedString(
+            "Menu.AddToWhitelist.Label",
+            tableName: nil,
+            value: "Add to Whitelist",
+            comment: "Label for the button, displayed in the menu, takes you to Add to white list action when pressed.")
         public static let AddReadingList = MZLocalizedString(
             "Menu.AddReadingList.Label.v99",
             tableName: nil,
@@ -3585,6 +3591,11 @@ extension String {
         tableName: "LoginManager",
         value: nil,
         comment: "Prompt title when deleting logins")
+    public static let DomainTitleForAlert = MZLocalizedString(
+        "Domain",
+        tableName: "Ad blocker",
+        value: nil,
+        comment: "User did not eter the domain")
     public static let DeleteLoginAlertSyncedMessage = MZLocalizedString(
         "Logins will be removed from all connected devices.",
         tableName: "LoginManager",

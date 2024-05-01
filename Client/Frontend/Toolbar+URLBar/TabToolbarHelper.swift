@@ -4,7 +4,6 @@
 
 import UIKit
 import Shared
-import MatomoTracker
 
 protocol TabToolbarProtocol: AnyObject {
     var tabToolbarDelegate: TabToolbarDelegate? { get set }
@@ -289,7 +288,9 @@ open class TabToolbarHelper: NSObject {
     }
 
     func didClickHome() {
-        MatomoTracker.shared.track(eventWithCategory: MatomoCategory.appMenu.rawValue, action: MatomoAction.appMenuTab.rawValue + "Home", name: MatomoName.click.rawValue, value: nil)
+        AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Home",
+                                          name: AnalyticsManager.MatomoName.clickName)
         
         toolbar.tabToolbarDelegate?.tabToolbarDidPressHome(toolbar, button: toolbar.appMenuButton)
     }
@@ -332,23 +333,26 @@ open class TabToolbarHelper: NSObject {
 
 extension UIButton {
     func alignTextBelow(spacing: CGFloat = 6.0) {
-        guard let image = self.imageView?.image else {
-            return
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            guard let image = self.imageView?.image else {
+                return
+            }
+
+            guard let titleLabel = self.titleLabel else {
+                return
+            }
+
+            guard let titleText = titleLabel.text else {
+                return
+            }
+
+            let titleSize = titleText.size(withAttributes: [
+                NSAttributedString.Key.font: UIFont(name: "SourceSansPro-SemiBold", size: 10)
+            ])
+
+            self.titleEdgeInsets = UIEdgeInsets(top: spacing, left: -image.size.width, bottom: -image.size.height, right: 0)
+            self.imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0, bottom: 0, right: -titleSize.width)
         }
-
-        guard let titleLabel = self.titleLabel else {
-            return
-        }
-
-        guard let titleText = titleLabel.text else {
-            return
-        }
-
-        let titleSize = titleText.size(withAttributes: [
-            NSAttributedString.Key.font: UIFont(name: "SourceSansPro-SemiBold", size: 10)
-        ])
-
-        titleEdgeInsets = UIEdgeInsets(top: spacing, left: -image.size.width, bottom: -image.size.height, right: 0)
-        imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0, bottom: 0, right: -titleSize.width)
     }
 }

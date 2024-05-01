@@ -26,7 +26,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.5</string>
+	<string>2.2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -56,7 +56,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>334</string>
+	<string>362</string>
 	<key>INIntentsSupported</key>
 	<array>
 		<string>QuickActionIntent</string>
@@ -125,6 +125,18 @@
 	<string>$(SENTRY_CLOUD_DSN)</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>SourceSerifPro-Black.otf</string>
+		<string>SourceSerifPro-BlackIt.otf</string>
+		<string>SourceSerifPro-Bold.otf</string>
+		<string>SourceSerifPro-BoldIt.otf</string>
+		<string>SourceSerifPro-ExtraLight.otf</string>
+		<string>SourceSerifPro-ExtraLightIt.otf</string>
+		<string>SourceSerifPro-It.otf</string>
+		<string>SourceSerifPro-Light.otf</string>
+		<string>SourceSerifPro-LightIt.otf</string>
+		<string>SourceSerifPro-Regular.otf</string>
+		<string>SourceSerifPro-Semibold.otf</string>
+		<string>SourceSerifPro-SemiboldIt.otf</string>
 		<string>SourceSansPro-SemiBoldItalic.ttf</string>
 		<string>SourceSansPro-SemiBold.ttf</string>
 		<string>SourceSansPro-Regular.ttf</string>
@@ -240,9 +252,9 @@
 	<key>branch_key</key>
 	<dict>
 		<key>live</key>
-		<string>live_key_xxxx</string>
+		<string>key_live_fh0ZarV2dz3xfRdw0Ri2FhfoDAcPpiw6</string>
 		<key>test</key>
-		<string>test_key_xxxx</string>
+		<string>key_test_bc00gvR1bt7zoHcw0Qk4LgkmvBgGflPk</string>
 	</dict>
 	<key>branch_universal_link_domains</key>
 	<array>
@@ -250,5 +262,7 @@
 		<string>freespoke-alternate.app.link</string>
 		<string>freespoke.test-app.link</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>$(USER_INTERFACE_STYLE)</string>
 </dict>
 </plist>

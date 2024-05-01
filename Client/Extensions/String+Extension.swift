@@ -39,3 +39,15 @@ extension String {
         return attributedString
     }
 }
+// MARK: Validate domain
+extension String {
+    func isValidDomain() -> Bool {
+        guard !self.isEmpty else { return false }
+        let regex = try! NSRegularExpression(pattern: "^([a-zA-Z0-9-]{1,63}\\.)+[a-zA-Z]{2,6}$")
+        // Check if domain matches the regex
+        let range = NSRange(location: 0, length: utf16.count)
+        let match = regex.firstMatch(in: self, range: range)
+        
+        return match != nil
+    }
+}

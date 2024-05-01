@@ -570,8 +570,8 @@ class BrowserViewController: UIViewController {
         urlBar.translatesAutoresizingMaskIntoConstraints = false
         urlBar.delegate = self
         urlBar.tabToolbarDelegate = self
+        urlBar.addToParent(parent: isBottomSearchBar ? overKeyboardContainer : header, addToTop: false)
         
-        urlBar.addToParent(parent: isBottomSearchBar ? overKeyboardContainer : header)
         view.addSubview(header)
         view.addSubview(bottomContentStackView)
         view.addSubview(overKeyboardContainer)
@@ -580,7 +580,7 @@ class BrowserViewController: UIViewController {
         bottomContainer.addArrangedSubview(toolbar)
         view.addSubview(bottomContainer)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // On iPhone, if we are about to show the On-Boarding, blank out the tab so that it does
@@ -737,7 +737,7 @@ class BrowserViewController: UIViewController {
     }
 
     private func updateLegacyTheme() {
-        if !NightModeHelper.isActivated() && LegacyThemeManager.instance.systemThemeIsOn {
+        if !NightModeHelper.hasEnabledDarkTheme() && LegacyThemeManager.instance.systemThemeIsOn {
             let userInterfaceStyle = traitCollection.userInterfaceStyle
             LegacyThemeManager.instance.current = userInterfaceStyle == .dark ? LegacyDarkTheme() : LegacyNormalTheme()
         }
@@ -1155,6 +1155,34 @@ class BrowserViewController: UIViewController {
         controller = DismissableNavigationViewController(rootViewController: libraryViewController)
         self.present(controller, animated: true, completion: nil)
     }
+    
+    func addToWhiteList(url: URL) {
+        guard let host = url.host else { return }
+        AdBlockManager.shared.saveDomainToWhiteListIfNotSavedYet(domain: host,
+                                                                 completion: { [weak self] savingStatus in
+            guard let self = self else { return }
+            switch savingStatus {
+            case .saved:
+                let userInfo: [String: Any] = [NotificationKeyNameForValue.host.rawValue: host]
+                NotificationCenter.default.post(name: Notification.Name.disableAdBlockerForCurrentDomain, object: nil, userInfo: userInfo)
+                UIUtils.showTwoButtonsAlertInNewWindow(title: "Add to Whitelist",
+                                                       message: "\(host) has been added to your adblock whitelist. Advertisements will not be blocked on this site.",
+                                                       titleForSecondButton: "Manage Whitelist",
+                                                       secondCompletion: { [weak self] in
+                    guard let self = self else { return }
+                    self.homepageViewController?.displayManageWhiteListVC()
+                })
+            case .alreadyContains:
+                UIUtils.showTwoButtonsAlertInNewWindow(title: "Add to Whitelist",
+                                                       message: "You already have \(host) added to your whitelist.",
+                                                       titleForSecondButton: "Manage Whitelist",
+                                                       secondCompletion: { [weak self] in
+                    guard let self = self else { return }
+                    self.homepageViewController?.displayManageWhiteListVC()
+                })
+            }
+        })
+    }
 
     fileprivate func createSearchControllerIfNeeded() {
         guard self.searchController == nil else { return }
@@ -1228,12 +1256,14 @@ class BrowserViewController: UIViewController {
     func finishEditingAndSubmit(_ url: URL, visitType: VisitType, forTab tab: Tab) {
         urlBar.currentURL = url
         leaveOverlayMode(didCancel: false)
-
-        if let nav = tab.loadRequest(URLRequest(url: url)) {
-            self.recordNavigationInTab(tab, navigation: nav, visitType: visitType)
-        }
+        
+        tab.loadRequest_FindForFix(URLRequest(url: url), completion: { [weak self] request in
+            guard let request = request else { return }
+            self?.recordNavigationInTab(tab, navigation: request, visitType: visitType)
+        })
+        
     }
-
+    
     func addBookmark(url: String, title: String? = nil) {
         var title = (title ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         if title.isEmpty {
@@ -1685,6 +1715,10 @@ class BrowserViewController: UIViewController {
     }
 
     func presentShareSheet(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
+        AnalyticsManager.trackMatomoEvent(category: .appShareCategory,
+                                          action: AnalyticsManager.MatomoAction.appWebWrapperShareAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
+
         let helper = ShareExtensionHelper(url: url, tab: tab)
         let controller = helper.createActivityViewController({ [unowned self] completed, activityType in
             switch activityType {
@@ -1993,11 +2027,29 @@ extension BrowserViewController: TabDelegate {
 
         tab.addContentScript(LocalRequestHelper(), name: LocalRequestHelper.name())
 
-        let blocker = FirefoxTabContentBlocker(tab: tab, prefs: profile.prefs)
-        tab.contentBlocker = blocker
-        tab.addContentScript(blocker, name: FirefoxTabContentBlocker.name())
+//        let blocker = FirefoxTabContentBlocker(tab: tab, prefs: profile.prefs)
+//        tab.contentBlocker = blocker
+//        tab.addContentScript(blocker, name: FirefoxTabContentBlocker.name())
 
         tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name())
+        
+        // Freespoke events
+        
+        let freespokeLoginHelper = FreespokeAuthEventLoginHelper(tab: tab)
+        freespokeLoginHelper.delegate = self
+        tab.addContentScriptToPage(freespokeLoginHelper, name: FreespokeAuthEventLoginHelper.name())
+        
+        let freespokeLogoutHelper = FreespokeAuthEventLogoutHelper(tab: tab)
+        freespokeLogoutHelper.delegate = self
+        tab.addContentScriptToPage(freespokeLogoutHelper, name: FreespokeAuthEventLogoutHelper.name())
+        
+        let freespokeAccountUpdatedHelper = FreespokeAuthEventAccountUpdatedHelper(tab: tab)
+        freespokeAccountUpdatedHelper.delegate = self
+        tab.addContentScriptToPage(freespokeAccountUpdatedHelper, name: FreespokeAuthEventAccountUpdatedHelper.name())
+        
+        let freespokeDeactivateAccountHelper = FreespokeAuthEventDeactivateAccountHelper(tab: tab)
+        freespokeDeactivateAccountHelper.delegate = self
+        tab.addContentScriptToPage(freespokeDeactivateAccountHelper, name: FreespokeAuthEventDeactivateAccountHelper.name())
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -2035,7 +2087,7 @@ extension BrowserViewController: TabDelegate {
 
     func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar) {
         bottomContentStackView.removeArrangedView(bar)
-    }
+    }    
 }
 
 // MARK: - LibraryPanelDelegate
@@ -2532,13 +2584,11 @@ extension BrowserViewController {
         self.introVCPresentHelper(introViewController: introViewController)
         */
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "OnboardingController") as! OnboardingController
-        vc.currentTheme = themeManager.currentTheme
+        let vc = OnboardingWelcomeScreen()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
         
-        vc.modalPresentationStyle = .fullScreen
-        
-        present(vc, animated: true) {
+        present(navVC, animated: true) {
             self.setupHomepageOnBackground()
         }
     }
@@ -2562,7 +2612,7 @@ extension BrowserViewController {
     private func setupHomepageOnBackground() {
         if let homePageURL = NewTabHomePageAccessors.getHomePage(self.profile.prefs),
            let tab = self.tabManager.selectedTab, DeviceInfo.hasConnectivity() {
-            tab.loadRequest(URLRequest(url: homePageURL))
+            tab.loadRequest_FindForFix(URLRequest(url: homePageURL))
         }
     }
 
@@ -2843,6 +2893,23 @@ extension BrowserViewController: TabTrayDelegate {
     func tabTrayDidRequestTabsSettings() {
         showSettingsWithDeeplink(to: .customizeTabs)
     }
+}
+
+// MARK: Feespoke account events
+extension BrowserViewController: FreespokeAuthEventLoginHelperDelegate {
+    func freespokeAuthEventLoginHelper(_ helper: FreespokeAuthEventLoginHelper, userLoggedInForTab tab: Tab) { }
+}
+
+extension BrowserViewController: FreespokeAuthEventLogoutHelperDelegate {
+    func freespokeAuthEventLogoutHelper(_ helper: FreespokeAuthEventLogoutHelper, userLoggedOutForTab tab: Tab) { }
+}
+
+extension BrowserViewController: FreespokeAuthEventAccountUpdatedHelperDelegate {
+    func freespokeAuthEventAccountUpdatedHelper(_ helper: FreespokeAuthEventAccountUpdatedHelper, userAccountUpdatedInTab tab: Tab) { }
+}
+
+extension BrowserViewController: FreespokeAuthEventDeactivateAccountHelperDelegate {
+    func freespokeAuthEventDeactivateAccountHelper(_ helper: FreespokeAuthEventDeactivateAccountHelper, userAccountDeactivatedForTab tab: Tab) { }
 }
 
 // MARK: Browser Chrome Theming

@@ -123,7 +123,10 @@ open class GradientProgressBar: UIProgressView {
 
     func resetProgressBar() {
         // Call on super instead so no animation layers are created
-        super.setProgress(0, animated: false)
+        DispatchQueue.main.async {
+            super.setProgress(0, animated: false)
+        }
+        
         isHidden = true // The URLBar will unhide the view before starting the next animation.
     }
 
@@ -163,16 +166,24 @@ open class GradientProgressBar: UIProgressView {
     }
 
     override open func setProgress(_ progress: Float, animated: Bool) {
-        if progress != 0 && progress < self.progress && self.progress != 1 {
-            return
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            if progress != 0 && progress < self.progress && self.progress != 1 {
+                return
+            }
+            // Setup animations
+            self.gradientLayer.removeAnimation(forKey: "position")
+            if self.gradientLayer.animation(forKey: "colorChange") == nil {
+                self.animateGradient()
+            }
         }
-        // Setup animations
-        gradientLayer.removeAnimation(forKey: "position")
-        if gradientLayer.animation(forKey: "colorChange") == nil {
-            animateGradient()
+        DispatchQueue.main.async {
+            super.setProgress(progress, animated: animated)
         }
-        super.setProgress(progress, animated: animated)
-        updateAlphaMaskLayerWidth(animated: animated)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.updateAlphaMaskLayerWidth(animated: animated)
+        }
     }
 }
 

@@ -12,11 +12,11 @@ enum FreespokeEnvironment {
     case staging
     
     static var current: FreespokeEnvironment {
-    #if STAGING
+#if STAGING
         return .staging
-    #else
+#else
         return .production
-    #endif
+#endif
     }
 }
 
@@ -48,12 +48,34 @@ enum MenuCellImageType: String {
 }
 
 enum Constants: String {
-    static var apiBaseURL: String {
-        switch FreespokeEnvironment.current {
-        case .production:
-            return "https://api.freespoke.com/v2"
-        case .staging:
-            return "https://api.staging.freespoke.com/v2"
+    
+    // MARK: Drawing Constants
+    
+    enum DrawingSizes {
+        static let profileAvatarSize: CGFloat = 40
+        // dynamic width value
+        static let iPadContentWidthFactorPortrait = 0.75
+        static let iPadContentWidthFactorLandscape = 0.55
+        // hardcoded width value
+        static let iPadContentWidthStaticValue: CGFloat = 480
+    }
+    
+    enum EasyListsURL {        
+        static let easyList = "https://easylist.to/easylist/easylist.txt"
+        static let easyPrivacyList = "https://easylist.to/easylist/easyprivacy.txt"
+        static let easyFanboyAnnoyance = "https://secure.fanboy.co.nz/fanboy-annoyance.txt"
+    }
+    
+    // MARK: - URLs
+    
+    enum URLs {
+        static var accountProfileURL: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                return "https://freespoke.com/account/profile"
+            case .staging:
+                return "https://staging.freespoke.com/account/profile"
+            }
         }
     }
     
@@ -71,17 +93,15 @@ enum Constants: String {
     case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
     case electionURL = "https://freespoke.com/election/2024"
+    case appleNativeSubscriptions = "itms-apps://apps.apple.com/account/subscriptions" // "https://apps.apple.com/account/subscriptions"
     
     // MARK: - One Signal
-    
     enum OneSignalConstants {
         static var oneSignalId: String {
             switch FreespokeEnvironment.current {
             case .production:
-                // TODO: should be replaced to production app id. For now will be used staging app id
-                return "de8ebc15-f8ef-427a-b1c1-f312ce831eea"
+                return "8c38e904-be26-4ed0-9343-4186ab6c7f82"
             case .staging:
-                // one signall app id (stagincId = "de8ebc15-f8ef-427a-b1c1-f312ce831eea")
                 return "de8ebc15-f8ef-427a-b1c1-f312ce831eea"
             }
         }
@@ -97,23 +117,35 @@ extension UIColor {
     static let darkBackground = Utils.hexStringToUIColor(hex: "161616")
     static let gray7 = Utils.hexStringToUIColor(hex: "F8F9FB")
     static let gray2 = Utils.hexStringToUIColor(hex: "606671")
+    static let onboardingDark = Utils.hexStringToUIColor(hex: "#1D1D1D")
+    static let onboardingTitleDark = Utils.hexStringToUIColor(hex: "#081A33")
+    static let greenColor = Utils.hexStringToUIColor(hex: "#149590")
+    static let lavenderGreyColor = Utils.hexStringToUIColor(hex: "#E6E8EF")
+    static let neutralsGray5 = Utils.hexStringToUIColor(hex: "#E1E5EB")
+    static let blackFS = Utils.hexStringToUIColor(hex: "#E1E5EB")
+    static let neutralsGray06 = Utils.hexStringToUIColor(hex: "#EDF0F5")
+    static let neutralsGray01 = Utils.hexStringToUIColor(hex: "#2F3644")
+    static let neutralsGray05 = Utils.hexStringToUIColor(hex: "#E1E5EB")
+    static let charcoalGrayColor = Utils.hexStringToUIColor(hex: "#292929")
+    static let gunmetalGrayColor = Utils.hexStringToUIColor(hex: "#525252")
+    static let fxOffWhite1 = Utils.hexStringToUIColor(hex: "#DADEE3")
 }
 
 class Utils {
     class func hexStringToUIColor (hex:String) -> UIColor {
-        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-
+        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
         if (cString.hasPrefix("#")) {
             cString.remove(at: cString.startIndex)
         }
-
+        
         if ((cString.count) != 6) {
             return UIColor.gray
         }
-
-        var rgbValue:UInt64 = 0
+        
+        var rgbValue: UInt64 = 0
         Scanner(string: cString).scanHexInt64(&rgbValue)
-
+        
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
@@ -121,48 +153,4 @@ class Utils {
             alpha: CGFloat(1.0)
         )
     }
-}
-
-enum Matomo {
-    static var baseURL: String {
-        switch FreespokeEnvironment.current {
-        case .production:
-            return "https://example.com/matomo.php"
-        case .staging:
-            return "https://example.com/matomo.php"
-        }
-    }
-    
-    static var productionSiteId   = "6"
-    static var staggingSiteId     = "7"
-}
-
-enum MatomoCategory: String {
-    case appEntry           = "app entry"
-    case appMenu            = "app menu"
-    case appHome            = "app home"
-    case appTabs            = "app tabs"
-    case appShare           = "app share"
-}
-
-enum MatomoAction: String {
-    case appMenuTab         = "app menu tab click - "
-    case appHomeSearch      = "app home search"
-    case appHomeBookmarks   = "app home my bookmarks click"
-    case appHomeNews        = "app home trending news story view summary click"
-    case appHomeRecently    = "app home recently viewed click"
-    case appHomeShop        = "app home shop usa store product click"
-    case appHomeFreespoke   = "app home the freespoke way click - "
-    case appTabsCloseTabsMenu   = "app tabs close tabs menu"
-    case appTabsNewTab          = "app tabs new tab click"
-    case appTabsCloseAllTabs    = "app tabs close all tabs click"
-    case appTabsPrivateBrowsing = "app tabs private browsing click"
-    case appTabsRegularBrowsing = "app tabs regular browsing click"
-    case appShareMenu           = "app share from menu"
-}
-
-enum MatomoName: String {
-    case open               = "open"
-    case click              = "click"
-    case search             = "search"
 }

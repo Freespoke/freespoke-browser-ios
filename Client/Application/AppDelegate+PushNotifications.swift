@@ -114,8 +114,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                     if UIApplication.shared.applicationState == .active {
                         let object = OpenTabNotificationObject(type: .switchToTabForURLOrOpen(url))
                         NotificationCenter.default.post(name: .OpenTabNotification, object: object)
-                    }
-                    else {
+                    } else {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             if UIApplication.shared.applicationState == .active {
                                 let object = OpenTabNotificationObject(type: .switchToTabForURLOrOpen(url))

@@ -92,8 +92,9 @@ class LegacyThemeManager {
     }
 
     @objc private func applicationDidBecomeActive() {
-        let nightMode = UserDefaults.standard.bool(forKey: "profile.NightModeStatus")
-        if !nightMode && LegacyThemeManager.instance.systemThemeIsOn {
+        print("TEST: LegacyThemeManager applicationDidBecomeActive(): ", UIScreen.main.traitCollection.userInterfaceStyle.rawValue)
+//        let nightMode = UserDefaults.standard.bool(forKey: "profile.NightModeStatus")
+        if LegacyThemeManager.instance.systemThemeIsOn {
             let userInterfaceStyle = UIScreen.main.traitCollection.userInterfaceStyle
             LegacyThemeManager.instance.current = userInterfaceStyle == .dark ? LegacyDarkTheme() : LegacyNormalTheme()
         }

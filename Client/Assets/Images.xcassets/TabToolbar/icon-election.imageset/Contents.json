@@ -1,18 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "icon-election@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "icon-election@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "icon-election.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

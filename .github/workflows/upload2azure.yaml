@@ -1,0 +1,36 @@
+name: Upload Latest Release to Azure Blob Storage
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  upload-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Azure CLI
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+
+    - name: Install Azure CLI
+      run: az extension add --name storage-preview
+
+    - name: Get latest release asset URL
+      id: get_asset
+      run: |
+        asset_url=$(curl -s "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" | jq -r '.assets[0].browser_download_url')
+        echo "::set-output name=url::$asset_url"
+
+    - name: Upload release to Azure Blob Storage
+      run: |
+        az storage blob upload \
+          --account-name ffmobilesource \
+          --account-key ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }} \
+          --container-name downloads \
+          --file $(basename ${{ steps.get_asset.outputs.url }}) \
+          --name freespoke-mobile-ios.zip

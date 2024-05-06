@@ -162,7 +162,7 @@ class EnhancedTrackingProtectionMenuVC: UIViewController, Themeable {
     override func viewDidLoad() {
         super.viewDidLoad()
         if asPopover {
-            var height: CGFloat = 385
+            var height: CGFloat = 200
             if toggleContainerShouldBeHidden {
                 height = 285
             }

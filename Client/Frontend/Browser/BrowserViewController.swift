@@ -153,6 +153,7 @@ class BrowserViewController: UIViewController {
     private var keyboardPressesHandlerValue: Any?
     var themeManager: ThemeManager
     var logger: Logger
+    var menuHeight: CGFloat?
 
     @available(iOS 13.4, *)
     func keyboardPressesHandler() -> KeyboardPressesHandler {

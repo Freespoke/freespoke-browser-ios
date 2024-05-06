@@ -14,11 +14,13 @@ class SlideOverPresentationController: UIPresentationController {
     let blurEffectView: UIVisualEffectView!
     var tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer()
     var globalETPStatus: Bool
+    var menuHeight: CGFloat?
 
-    init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, withGlobalETPStatus status: Bool) {
+    init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, menuHeight: CGFloat?, withGlobalETPStatus status: Bool) {
         globalETPStatus = status
         let blurEffect = UIBlurEffect(style: .dark)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
+        self.menuHeight = menuHeight
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
 
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissController))
@@ -28,12 +30,14 @@ class SlideOverPresentationController: UIPresentationController {
     }
 
     override var frameOfPresentedViewInContainerView: CGRect {
-        var menuHeight: CGFloat
-        if globalETPStatus {
-            menuHeight = SlideOverUXConstants.ETPMenuHeightForGlobalOn
-        } else {
-            menuHeight = SlideOverUXConstants.ETPMenuHeightForGlobalOff
+        if self.menuHeight == nil {
+            if globalETPStatus {
+                menuHeight = SlideOverUXConstants.ETPMenuHeightForGlobalOn
+            } else {
+                menuHeight = SlideOverUXConstants.ETPMenuHeightForGlobalOff
+            }
         }
+        guard let menuHeight = self.menuHeight else { return .zero }
 
         let yPosition = self.containerView!.frame.height - menuHeight
         var xPosition: CGFloat = 0

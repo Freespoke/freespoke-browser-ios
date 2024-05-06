@@ -192,8 +192,8 @@ class EnhancedTrackingProtectionMenuVC: UIViewController, Themeable {
 
         setupHeaderView()
         setupConnectionStatusView()
-        setupToggleView()
-        setupProtectionSettingsView()
+//        setupToggleView()
+//        setupProtectionSettingsView()
         setupViewActions()
 
         NSLayoutConstraint.activate(constraints)
@@ -225,7 +225,7 @@ class EnhancedTrackingProtectionMenuVC: UIViewController, Themeable {
             horizontalLine.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor),
             horizontalLine.topAnchor.constraint(equalTo: favicon.bottomAnchor, constant: ETPMenuUX.UX.Line.distanceFromFavicon),
             horizontalLine.heightAnchor.constraint(equalToConstant: ETPMenuUX.UX.Line.height),
-            headerContainer.bottomAnchor.constraint(equalTo: horizontalLine.bottomAnchor)
+            horizontalLine.bottomAnchor.constraint(equalTo: headerContainer.bottomAnchor)
         ]
 
         if asPopover {

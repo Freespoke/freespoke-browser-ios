@@ -47,7 +47,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>http://</string>
+				<string>http</string>
 			</array>
 		</dict>
 		<dict>
@@ -55,7 +55,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>https://</string>
+				<string>https</string>
 			</array>
 		</dict>
 	</array>

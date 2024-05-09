@@ -1,6 +1,7 @@
 name: Upload Latest Release to Azure Blob Storage
 
 on:
+  workflow_dispatch: # This triggers the workflow manually
   release:
     types: [published]
 

@@ -35,20 +35,11 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.freespoke.app</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>freespokeapp</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
 			<string>$(MOZ_BUNDLE_ID)</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>freespokeapp</string>
+				<string>$(MOZ_PUBLIC_URL_SCHEME)</string>
+				<string>$(MOZ_INTERNAL_URL_SCHEME)</string>
 			</array>
 		</dict>
 	</array>

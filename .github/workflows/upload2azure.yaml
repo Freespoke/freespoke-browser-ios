@@ -13,13 +13,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Azure CLI
-      uses: azure/CLI@v1
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Azure CLI script
+      uses: azure/cli@v2
       with:
         azcliversion: latest
-
-    - name: Install Azure CLI
-      run: az extension add --name storage-preview
+        inlineScript: |
+          az account show
+          az storage -h
 
     - name: Get latest release asset URL
       id: get_asset

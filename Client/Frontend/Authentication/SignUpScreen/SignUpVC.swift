@@ -239,7 +239,8 @@ extension SignUpVC {
         guard let password = self.scrollableContentView.passwordItem.getText() else { return }
         
         self.btnNext.startIndicator()
-        self.viewModel.registerUser(firstName: firstName,
+        self.viewModel.registerUser(parentVC: self,
+                                    firstName: firstName,
                                     lastName: lastName,
                                     email: email,
                                     password: password,

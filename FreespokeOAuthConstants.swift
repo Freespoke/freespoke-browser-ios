@@ -16,12 +16,22 @@ final class OAuthConstants {
     }
     
     static let clientId = "public"
+    
     static var callBackURLOAuthLogin: String {
             switch FreespokeEnvironment.current {
             case .production:
                 return "com.freespoke:/iosappcallbackauth"
             case .staging:
                 return "com.freespoke:/iosappcallbackauth"
+            }
+    }
+    
+    static var callBackURLOAuthRegisterAutoLogin: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                return "com.freespoke:/iosregisterautologin"
+            case .staging:
+                return "com.freespoke:/iosregisterautologin"
             }
     }
     

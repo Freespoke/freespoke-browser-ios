@@ -8,7 +8,11 @@ extension EndPoint {
                 NetworkLayerConstants.ParameterKeys.firstName: firstName,
                 NetworkLayerConstants.ParameterKeys.lastName: lastName,
                 NetworkLayerConstants.ParameterKeys.email: email,
-                NetworkLayerConstants.ParameterKeys.password: password
+                NetworkLayerConstants.ParameterKeys.password: password,
+                NetworkLayerConstants.ParameterKeys.magicLinkConfig: [
+                    NetworkLayerConstants.ParameterKeys.clientId: NetworkLayerConstants.ParameterValues.publicValue,
+                    NetworkLayerConstants.ParameterKeys.redirectUri: OAuthConstants.callBackURLOAuthRegisterAutoLogin,
+                ]
             ]
             return .requestParametersAndHeaders(bodyParameters: bodyParameters,
                                                 bodyEncoding: .jsonEncoding,

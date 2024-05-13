@@ -61,6 +61,8 @@
 		014841022B7E915E005CD610 /* SubscriptionPrivilegesItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014841002B7E915E005CD610 /* SubscriptionPrivilegesItem.swift */; };
 		014841042B7F7598005CD610 /* SubscriptionsVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014841032B7F7598005CD610 /* SubscriptionsVCViewModel.swift */; };
 		014841052B7F7598005CD610 /* SubscriptionsVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014841032B7F7598005CD610 /* SubscriptionsVCViewModel.swift */; };
+		01524B7C2BEEB96F00E32017 /* freespoke_loader_torch_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 01524B7B2BEEB96F00E32017 /* freespoke_loader_torch_light.gif */; };
+		01524B7D2BEEB96F00E32017 /* freespoke_loader_torch_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 01524B7B2BEEB96F00E32017 /* freespoke_loader_torch_light.gif */; };
 		01567C2E2B7BAC1B0026066A /* LabelWithUnderlinedButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01567C2D2B7BAC1B0026066A /* LabelWithUnderlinedButtonView.swift */; };
 		01567C2F2B7BAC1B0026066A /* LabelWithUnderlinedButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01567C2D2B7BAC1B0026066A /* LabelWithUnderlinedButtonView.swift */; };
 		01567C352B7C07720026066A /* UnderlinedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01567C342B7C07720026066A /* UnderlinedButton.swift */; };
@@ -103,8 +105,6 @@
 		0181A4212B863702005BE1F6 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0181A41F2B863702005BE1F6 /* Keychain.swift */; };
 		0181DA472BAE1296004B9801 /* freespoke_loader_torch_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0181DA452BAE1291004B9801 /* freespoke_loader_torch_dark.gif */; };
 		0181DA482BAE1296004B9801 /* freespoke_loader_torch_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0181DA452BAE1291004B9801 /* freespoke_loader_torch_dark.gif */; };
-		0181DA492BAE1296004B9801 /* freespoke_loader_torch_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0181DA462BAE1296004B9801 /* freespoke_loader_torch_light.gif */; };
-		0181DA4A2BAE1296004B9801 /* freespoke_loader_torch_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0181DA462BAE1296004B9801 /* freespoke_loader_torch_light.gif */; };
 		01823F912B8D592700986B73 /* LogoutFreespokeUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01823F902B8D592700986B73 /* LogoutFreespokeUser.swift */; };
 		01823F922B8D592700986B73 /* LogoutFreespokeUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01823F902B8D592700986B73 /* LogoutFreespokeUser.swift */; };
 		01823F942B8D6C6400986B73 /* FormDataUrlEncoded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01823F932B8D6C6400986B73 /* FormDataUrlEncoded.swift */; };
@@ -2696,6 +2696,7 @@
 		014840FD2B7E3D8F005CD610 /* SubscriptionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsContentView.swift; sourceTree = "<group>"; };
 		014841002B7E915E005CD610 /* SubscriptionPrivilegesItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionPrivilegesItem.swift; sourceTree = "<group>"; };
 		014841032B7F7598005CD610 /* SubscriptionsVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsVCViewModel.swift; sourceTree = "<group>"; };
+		01524B7B2BEEB96F00E32017 /* freespoke_loader_torch_light.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = freespoke_loader_torch_light.gif; sourceTree = "<group>"; };
 		01567C2D2B7BAC1B0026066A /* LabelWithUnderlinedButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithUnderlinedButtonView.swift; sourceTree = "<group>"; };
 		01567C342B7C07720026066A /* UnderlinedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedButton.swift; sourceTree = "<group>"; };
 		01567C382B7C0D230026066A /* OnboardingBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBaseViewController.swift; sourceTree = "<group>"; };
@@ -2718,7 +2719,6 @@
 		0181A41C2B861CF7005BE1F6 /* FreespokeJWTDecodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreespokeJWTDecodeModel.swift; sourceTree = "<group>"; };
 		0181A41F2B863702005BE1F6 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		0181DA452BAE1291004B9801 /* freespoke_loader_torch_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = freespoke_loader_torch_dark.gif; sourceTree = "<group>"; };
-		0181DA462BAE1296004B9801 /* freespoke_loader_torch_light.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = freespoke_loader_torch_light.gif; sourceTree = "<group>"; };
 		01823F902B8D592700986B73 /* LogoutFreespokeUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutFreespokeUser.swift; sourceTree = "<group>"; };
 		01823F932B8D6C6400986B73 /* FormDataUrlEncoded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDataUrlEncoded.swift; sourceTree = "<group>"; };
 		01823F962B8DF7C700986B73 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
@@ -4661,8 +4661,8 @@
 		0181DA442BAE1243004B9801 /* GifImages */ = {
 			isa = PBXGroup;
 			children = (
+				01524B7B2BEEB96F00E32017 /* freespoke_loader_torch_light.gif */,
 				0181DA452BAE1291004B9801 /* freespoke_loader_torch_dark.gif */,
-				0181DA462BAE1296004B9801 /* freespoke_loader_torch_light.gif */,
 			);
 			path = GifImages;
 			sourceTree = "<group>";
@@ -9000,6 +9000,7 @@
 				01BD25A12B6CF7EB00B8B9EB /* SearchPlugins in Resources */,
 				01BD25A22B6CF7EB00B8B9EB /* pocketglobalfeed.json in Resources */,
 				01BD25A32B6CF7EB00B8B9EB /* FreespokeHomepage.xib in Resources */,
+				01524B7D2BEEB96F00E32017 /* freespoke_loader_torch_light.gif in Resources */,
 				01BD25A42B6CF7EB00B8B9EB /* MailSchemes.plist in Resources */,
 				01BD25A52B6CF7EB00B8B9EB /* SourceSansPro-SemiBold.ttf in Resources */,
 				0EB329702B8BCF2600326992 /* ultimateAdBlock.json in Resources */,
@@ -9016,7 +9017,6 @@
 				01BD25AE2B6CF7EB00B8B9EB /* SourceSerifPro-It.otf in Resources */,
 				01BD25AF2B6CF7EB00B8B9EB /* SourceSerifPro-BoldIt.otf in Resources */,
 				01BD25B02B6CF7EB00B8B9EB /* Main.storyboard in Resources */,
-				0181DA4A2BAE1296004B9801 /* freespoke_loader_torch_light.gif in Resources */,
 				01BD25B12B6CF7EB00B8B9EB /* ShopUsaCollectionViewCell.xib in Resources */,
 				01BD25B22B6CF7EB00B8B9EB /* SmokeXCUITests.xctestplan in Resources */,
 				01BD25B32B6CF7EB00B8B9EB /* Update.xcassets in Resources */,
@@ -9173,6 +9173,7 @@
 				0E8033922BC829B50057889F /* easy-privacy.txt in Resources */,
 				2F88741A2A5C91CB002A84D9 /* Fennec.entitlements in Resources */,
 				39D056382665235700FBEE59 /* initial_experiments.json in Resources */,
+				01524B7C2BEEB96F00E32017 /* freespoke_loader_torch_light.gif in Resources */,
 				C8B0F5F8283B7D38007AE65D /* pocketsponsoredfeed.json in Resources */,
 				D38A1EE01CB458EC0080C842 /* CertError.html in Resources */,
 				8AEE62CB2756BA34003207D1 /* DownloadHelper.js in Resources */,
@@ -9243,7 +9244,6 @@
 				2F18F88D2A55ED430061D517 /* SourceSerifPro-It.otf in Resources */,
 				2F18F8962A55ED430061D517 /* SourceSerifPro-BoldIt.otf in Resources */,
 				2F18E17029C763B100F222A3 /* Main.storyboard in Resources */,
-				0181DA492BAE1296004B9801 /* freespoke_loader_torch_light.gif in Resources */,
 				2F745E412A8E11EB00A4085B /* ShopUsaCollectionViewCell.xib in Resources */,
 				E1AF3566286DE5F800960045 /* SmokeXCUITests.xctestplan in Resources */,
 				43A5643923CD1E1C00B6857D /* Update.xcassets in Resources */,

@@ -52,6 +52,27 @@ class FreespokeAuthService {
         })
     }
     
+    // MARK: - Auto Login
+    func performAutoLogin(parentVC: UIViewController, linkURL: URL, successCompletion: (() -> Void)?, failureCompletion: (( _ error: Error?) -> Void)?) {
+        DispatchQueue.main.async {
+            let vc = OAuthLoginVC(activityIndicatorEnabled: true, source: .registerAutoLogin)
+            vc.authRegisterAutoLoginCompletion = { vc in
+                vc.motionDismissViewController()
+                successCompletion?()
+            }
+            
+            vc.timeoutCompletion = { vc in
+                vc.motionDismissViewController()
+                successCompletion?()
+            }
+            
+            vc.startLoadingWebView(url: linkURL)
+            vc.startTimeoutTimer(with: 10)
+            vc.isModalInPresentation = true
+            parentVC.present(vc, animated: true, completion: nil)
+        }
+    }
+    
     // MARK: - Authentication with Apple account
     func performAuthWithApple(successCompletion: (( _ apiAuthModel: FreespokeAuthModel) -> Void)?, failureCompletion: (( _ error: Error) -> Void)?) {
         guard let issuer = URL(string: OAuthConstants.openIdIssuer),
@@ -131,7 +152,8 @@ class FreespokeAuthService {
                 
                 let apiAuth = FreespokeAuthModel(id: idToken,
                                                  accessToken: accessToken,
-                                                 refreshToken: refreshToken)
+                                                 refreshToken: refreshToken,
+                                                 magicLink: nil)
                 if let error = error {
                     completion?(nil, error)
                 } else {

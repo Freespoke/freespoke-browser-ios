@@ -784,7 +784,7 @@ class AboutFreespokeSetting: Setting {
 
     override func onClick(_ navigationController: UINavigationController?) {
         navigationController?.dismiss(animated: true) {
-            if let url = URL(string: Constants.aboutFreespokeURL.rawValue) {
+            if let url = URL(string: Constants.AppInternalBrowserURLs.aboutFreespokeURL) {
                 self.delegate?.settingsOpenURLInNewTab(url)
             }
         }
@@ -814,7 +814,7 @@ class TermsSetting: Setting {
 
     override func onClick(_ navigationController: UINavigationController?) {
         navigationController?.dismiss(animated: true) {
-            if let url = URL(string: "https://freespoke.com/terms-of-service") {
+            if let url = URL(string: Constants.AppInternalBrowserURLs.termsOfServiceURL) {
                 self.delegate?.settingsOpenURLInNewTab(url)
             }
         }
@@ -1087,7 +1087,7 @@ class PrivacyPolicySetting: Setting {
     override func onClick(_ navigationController: UINavigationController?) {
         //setUpAndPushSettingsContentViewController(navigationController, )
         navigationController?.dismiss(animated: true) {
-            if let url = URL(string: "https://freespoke.com/privacy-policy") {
+            if let url = URL(string: Constants.AppInternalBrowserURLs.privacyPolicyURL) {
                 self.delegate?.settingsOpenURLInNewTab(url)
             }
         }

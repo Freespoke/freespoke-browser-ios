@@ -507,7 +507,7 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
         tab.navigationDelegate = self.navDelegate
         
         if let request = request {
-            tab.loadRequest_FindForFix(request)
+            tab.loadRequest(request)
         } else if !isPopup {
             let newTabChoice = NewTabAccessors.getNewTabPage(profile.prefs)
             tab.newTabPageType = newTabChoice
@@ -516,17 +516,17 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
                 // We definitely have a homepage if we've got here
                 // (so we can safely dereference it).
                 let url = NewTabHomePageAccessors.getHomePage(profile.prefs)!
-                tab.loadRequest_FindForFix(URLRequest(url: url))
+                tab.loadRequest(URLRequest(url: url))
             case .freespoke:
                 if let url = URL(string: Constants.freespokeURL.rawValue) {
-                    tab.loadRequest_FindForFix(URLRequest(url: url))
+                    tab.loadRequest(URLRequest(url: url))
                 }
             default:
                 // The common case, where the NewTabPage enum defines
                 // one of the about:home pages.
                 guard tab.webView != nil else { return }
                 if let url = newTabChoice.url {
-                    tab.loadRequest_FindForFix(PrivilegedRequest(url: url) as URLRequest)
+                    tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
                     tab.url = url
                 }
             }
@@ -885,7 +885,7 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
         } else if page == .topSites, let homeUrl = homeUrl {
             let home = existingTab ?? addTab(isPrivate: privateMode)
             
-            home.loadRequest_FindForFix(PrivilegedRequest(url: homeUrl) as URLRequest)
+            home.loadRequest(PrivilegedRequest(url: homeUrl) as URLRequest)
             
             home.url = homeUrl
             return home

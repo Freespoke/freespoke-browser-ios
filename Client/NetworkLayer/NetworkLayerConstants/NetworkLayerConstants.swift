@@ -18,7 +18,7 @@ enum NetworkLayerConstants {
         static var baseServerUrl: String {
             switch FreespokeEnvironment.current {
             case .production:
-//                return "https://api.staging.freespoke.com"
+                //                return "https://api.staging.freespoke.com"
                 return "https://api.freespoke.com"
             case .staging:
                 return "https://api.staging.freespoke.com"
@@ -28,7 +28,7 @@ enum NetworkLayerConstants {
         static var oAuthBaseUrl: String {
             switch FreespokeEnvironment.current {
             case .production:
-//                return "https://auth.staging.freespoke.com"
+                //                return "https://auth.staging.freespoke.com"
                 return "https://accounts.freespoke.com"
             case .staging:
                 return "https://auth.staging.freespoke.com"
@@ -51,7 +51,7 @@ enum NetworkLayerConstants {
         static var logoutPath: String {
             switch FreespokeEnvironment.current {
             case .production:
-//                return "/realms/freespoke-staging/protocol/openid-connect/logout"
+                //                return "/realms/freespoke-staging/protocol/openid-connect/logout"
                 return "/realms/freespoke/protocol/openid-connect/logout"
             case .staging:
                 return "/realms/freespoke-staging/protocol/openid-connect/logout"
@@ -72,7 +72,7 @@ enum NetworkLayerConstants {
     }
     
     // MARK: Header Keys
-
+    
     enum HeaderKeys {
         static let xClientSecret = "x-client-secret"
         static let authorization = "Authorization"
@@ -81,13 +81,14 @@ enum NetworkLayerConstants {
     }
     
     // MARK: Header Values
-
+    
     enum HeaderValue {
         static let applicationJson = "application/json"
         static let applicationFormUrlencoded = "application/x-www-form-urlencoded"
     }
+    
     // MARK: Parameter Keys
-
+    
     enum ParameterKeys {
         static let firstName = "firstName"
         static let lastName = "lastName"
@@ -98,5 +99,13 @@ enum NetworkLayerConstants {
         static let signedPayload = "signedPayload"
         static let page = "page"
         static let perPage = "per_page"
+        static let magicLinkConfig = "magic_link_config"
+        static let redirectUri = "redirect_uri"
+    }
+    
+    // MARK: Parameter Values
+
+    enum ParameterValues {
+        static let publicValue = "public"
     }
 }

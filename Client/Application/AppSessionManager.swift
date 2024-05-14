@@ -22,6 +22,7 @@ protocol AppSessionProvider {
     
     func userType() async throws -> UserType
     func performRegisterFreespokeUser(firstName: String, lastName: String, email: String, password: String, completion: @escaping (_ authModel: FreespokeAuthModel?, _ error: CustomError?) -> Void)
+    func performAutoLogin(parentVC: UIViewController, linkURL: URL, successCompletion: (() -> Void)?, failureCompletion: (( _ error: Error?) -> Void)?)
     func performFreespokeLogin(parentVC: UIViewController, successCompletion: (( _ apiAuthModel: FreespokeAuthModel) -> Void)?)
     func performSignInWithApple(successCompletion: (( _ apiAuthModel: FreespokeAuthModel) -> Void)?, failureCompletion: (( _ error: Error) -> Void)?)
     func performRefreshFreespokeToken(completion: (( _ apiAuthModel: FreespokeAuthModel?, _ error: Error?) -> Void)?)
@@ -136,6 +137,11 @@ class AppSessionManager: AppSessionProvider {
                                                  email: email,
                                                  password: password,
                                                  completion: completion)
+    }
+    
+    // MARK: - Auto Login
+    func performAutoLogin(parentVC: UIViewController, linkURL: URL, successCompletion: (() -> Void)?, failureCompletion: (( _ error: Error?) -> Void)?) {
+        authService.performAutoLogin(parentVC: parentVC, linkURL: linkURL, successCompletion: successCompletion, failureCompletion: failureCompletion)
     }
     
     // MARK: Login Freespoke User

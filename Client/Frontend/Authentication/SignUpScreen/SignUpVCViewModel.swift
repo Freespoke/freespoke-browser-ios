@@ -2,7 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-import Foundation
+import UIKit
 
 protocol SignUpVCViewModelDelegate: AnyObject {
 }
@@ -16,7 +16,8 @@ class SignUpVCViewModel {
         self.isOnboarding = isOnboarding
     }
     
-    func registerUser(firstName: String,
+    func registerUser(parentVC: UIViewController,
+                      firstName: String,
                       lastName: String,
                       email: String,
                       password: String,
@@ -27,7 +28,18 @@ class SignUpVCViewModel {
                                                               password: password,
                                                               completion: { authResponse, error in
             if authResponse != nil {
-                completion?(nil)
+                if let link = authResponse?.magicLink?.link, let linkURL = URL(string: link) {
+                    AppSessionManager.shared.performAutoLogin(parentVC: parentVC,
+                                                              linkURL: linkURL,
+                                                              successCompletion: {
+                        completion?(nil)
+                    },
+                                                              failureCompletion: { error in
+                        completion?(nil)
+                    })
+                } else {
+                    completion?(nil)
+                }
             } else {
                 completion?(error ?? CustomError.somethingWentWrong)
             }

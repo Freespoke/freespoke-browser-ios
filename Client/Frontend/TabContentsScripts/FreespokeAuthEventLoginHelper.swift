@@ -30,7 +30,8 @@ class FreespokeAuthEventLoginHelper: TabContentScript {
         
         let authInfo = FreespokeAuthModel(id: idToken,
                                           accessToken: accessToken,
-                                          refreshToken: refreshToken)
+                                          refreshToken: refreshToken,
+                                          magicLink: nil)
         AppSessionManager.shared.webWrapperEventUserLoggedIn(authInfo: authInfo)
         DispatchQueue.main.async {
             self.delegate?.freespokeAuthEventLoginHelper(self, userLoggedInForTab: tab)

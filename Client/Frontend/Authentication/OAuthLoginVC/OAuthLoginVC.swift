@@ -8,11 +8,12 @@ import AppAuth
 import Shared
 import Common
 
-class OAuthLoginVC: UIViewController {
+class OAuthLoginVC: UIViewController, Themeable {
     enum OAuthLoginSource {
         case generalLogin
         case signInWithApple
         case accountPage
+        case registerAutoLogin
     }
     
     private var btnClose: UIButton = {
@@ -49,11 +50,26 @@ class OAuthLoginVC: UIViewController {
     }
     
     var authorizationRequest: OIDAuthorizationRequest?
-    var oAuthAuthorizaionCompletion: ((_ apiAuth: FreespokeAuthModel?, _ error: Error?) -> Void)?
     
-    init(activityIndicatorEnabled: Bool, source: OAuthLoginSource) {
+    var themeManager: ThemeManager
+    var notificationCenter: NotificationProtocol
+    var themeObserver: NSObjectProtocol?
+    
+    // MARK: Timeout
+    private var timeoutTimer: Timer?
+    private var timeoutExpireTimeInterval = 10
+    
+    // MARK: Completions
+    var oAuthAuthorizaionCompletion: ((_ apiAuth: FreespokeAuthModel?, _ error: Error?) -> Void)?
+    var authRegisterAutoLoginCompletion: ((_ viewController: UIViewController) -> Void)?
+    var timeoutCompletion: ((_ viewController: UIViewController) -> Void)?
+    
+    init(activityIndicatorEnabled: Bool, source: OAuthLoginSource, themeManager: ThemeManager = AppContainer.shared.resolve(),
+         notificationCenter: NotificationProtocol = NotificationCenter.default) {
         self.activityIndicatorEnabled = activityIndicatorEnabled
         self.source = source
+        self.themeManager = themeManager
+        self.notificationCenter = notificationCenter
         
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .formSheet
@@ -113,8 +129,19 @@ class OAuthLoginVC: UIViewController {
         switch self.source {
         case .signInWithApple:
             self.subscribeToNotifications()
-        case .accountPage, .generalLogin:
+        case .accountPage, .generalLogin, .registerAutoLogin:
             break
+        }
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.timeoutTimer != nil, self.isMovingFromParent || self.isBeingDismissed {
+            self.stopTimeoutTimer()
         }
     }
     
@@ -152,7 +179,7 @@ class OAuthLoginVC: UIViewController {
         ])
     }
     
-    private func applyTheme() {
+    func applyTheme() {
         if let theme = currentTheme {
             self.webView.isOpaque = false
             switch theme.type {
@@ -207,7 +234,8 @@ class OAuthLoginVC: UIViewController {
     private func addingViews() {
         switch self.source {
         case .signInWithApple,
-                .generalLogin:
+                .generalLogin,
+                .registerAutoLogin:
             self.view.addSubview(self.webView)
         case .accountPage:
             self.view.addSubview(self.webView)
@@ -220,7 +248,8 @@ class OAuthLoginVC: UIViewController {
         
         switch self.source {
         case .signInWithApple,
-                .generalLogin:
+                .generalLogin,
+                .registerAutoLogin:
             self.webView.pinToView(view: self.view, safeAreaLayout: true, withInsets: UIEdgeInsets(equalInset: 0))
         case .accountPage:
             NSLayoutConstraint.activate([
@@ -266,7 +295,7 @@ class OAuthLoginVC: UIViewController {
         self.loadingIndicatorView = nil
     }
     
-    private func handleCallbackUrl(callBackUrl: URL) {
+    private func handleOAuthLoginCallbackUrl(callBackUrl: URL) {
         if let request = self.authorizationRequest {
             let components = URLComponents(url: callBackUrl, resolvingAgainstBaseURL: false)
             
@@ -298,7 +327,8 @@ class OAuthLoginVC: UIViewController {
                     
                     let apiAuth = FreespokeAuthModel(id: idToken,
                                                      accessToken: accessToken,
-                                                     refreshToken: refreshToken)
+                                                     refreshToken: refreshToken, 
+                                                     magicLink: nil)
                     Keychain.authInfo = apiAuth
                     sSelf.oAuthAuthorizaionCompletion?(apiAuth, nil)
                 }
@@ -306,6 +336,10 @@ class OAuthLoginVC: UIViewController {
         } else {
             print("TEST: callBackUrl: ", callBackUrl)
         }
+    }
+    
+    private func handleRegisterAutoLoginCallbackUrl(callBackUrl: URL) {
+        self.authRegisterAutoLoginCompletion?(self)
     }
 }
 
@@ -317,10 +351,15 @@ extension OAuthLoginVC: WKUIDelegate, WKNavigationDelegate {
             return
         }
         
-        let loginCallBackUrl = "\(url.scheme ?? ""):\(url.relativePath)"
+        let callBackUrl = "\(url.scheme ?? ""):\(url.relativePath)"
         
-        if loginCallBackUrl == OAuthConstants.callBackURLOAuthLogin {
-            self.handleCallbackUrl(callBackUrl: url)
+        print("DEBUG: callBackUrl: ", callBackUrl)
+        
+        if callBackUrl == OAuthConstants.callBackURLOAuthLogin {
+            self.handleOAuthLoginCallbackUrl(callBackUrl: url)
+            decisionHandler(.cancel)
+        } else if callBackUrl == OAuthConstants.callBackURLOAuthRegisterAutoLogin {
+            self.handleRegisterAutoLoginCallbackUrl(callBackUrl: url)
             decisionHandler(.cancel)
         } else {
             webView.customUserAgent = UserAgent.getUserAgent(domain: url.baseDomain ?? "")
@@ -339,6 +378,8 @@ extension OAuthLoginVC: WKUIDelegate, WKNavigationDelegate {
     }
 }
 
+// MARK: Close button
+
 extension OAuthLoginVC {
     private func addCloseAction() {
         self.btnClose.addTarget(self,
@@ -351,6 +392,29 @@ extension OAuthLoginVC {
             guard let self = self else { return }
             self.motionDismissViewController()
         }
+    }
+}
+
+// MARK: Timeout
+
+extension OAuthLoginVC {
+    
+    func startTimeoutTimer(with timeInterval: TimeInterval) {
+        self.timeoutTimer = Timer.scheduledTimer(timeInterval: TimeInterval(self.timeoutExpireTimeInterval),
+                                                 target: self,
+                                                 selector: #selector(self.timeoutTimeExpired),
+                                                 userInfo: nil,
+                                                 repeats: false)
+    }
+    
+    @objc private func timeoutTimeExpired() {
+        self.stopTimeoutTimer()
+        self.timeoutCompletion?(self)
+    }
+    
+    private func stopTimeoutTimer() {
+        self.timeoutTimer?.invalidate()
+        self.timeoutTimer = nil
     }
 }
 

@@ -33,11 +33,18 @@ jobs:
         asset_url=$(curl -s "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" | jq -r '.zipball_url')
         echo "::set-output name=url::$asset_url"
 
+    - name: Download release asset
+      run: |
+        wget -O latest_release.zip "${{ steps.get_asset.outputs.url }}"
+
+    - name: Rename release asset
+      run: mv latest_release.zip freespoke-default.zip
+
     - name: Upload release to Azure Blob Storage
       run: |
         az storage blob upload \
           --account-name ffmobilesource \
           --account-key ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }} \
           --container-name downloads \
-          --file $(basename ${{ steps.get_asset.outputs.url }}) \
+          --file freespoke-default.zip \
           --name freespoke-mobile-ios.zip

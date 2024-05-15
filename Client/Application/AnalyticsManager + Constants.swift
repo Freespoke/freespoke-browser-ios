@@ -95,3 +95,46 @@ extension AnalyticsManager {
         case appOnbCreateAccAllowNotificationsClickAction = "app onboard create account allow notifications click" 					// ob009
     }
 }
+
+// MARK: - UTM
+extension AnalyticsManager {
+    enum UTM {
+        case sourceFreespokeApp
+        
+        // MARK: Keys
+        static private var utmSourceKey = "utm_source"
+        
+        // MARK: Values
+        static private var utmFreespokeAppValue = "freespoke_app"
+        
+        // MARK: Functions
+        static func addUtmQuery(_ utm: UTM, for urlString: String) -> String {
+            if var urlComponents = URLComponents(string: urlString) {
+                var queryItems = [URLQueryItem]()
+                let newQueryParam = URLQueryItem(name: "\(AnalyticsManager.UTM.utmSourceKey)",
+                                                 value: "\(AnalyticsManager.UTM.utmFreespokeAppValue)")
+                if let existingQueryItems = urlComponents.queryItems {
+                    if !existingQueryItems.contains(newQueryParam) {
+                        queryItems.append(newQueryParam)
+                    }
+                    queryItems.append(contentsOf: existingQueryItems)
+                } else {
+                    queryItems.append(newQueryParam)
+                }
+                
+                urlComponents.queryItems = queryItems
+                
+                // Reconstruct the URL
+                if let newURL = urlComponents.url {
+                    return newURL.absoluteString
+                } else {
+                    print("DEBUG: Error: Unable to construct URL with additional query parameters.")
+                    return urlString
+                }
+            } else {
+                print("DEBUG: Error: Invalid URL format.")
+                return urlString
+            }
+        }
+    }
+}

@@ -443,7 +443,9 @@ class FreespokeHomepage: UIView {
                                               name: AnalyticsManager.MatomoName.clickName)
         }
         
-        delegate?.showURL(url: urlSearch)
+        let newURL = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: self.urlSearch)
+        self.urlSearch = newURL
+        delegate?.showURL(url: self.urlSearch)
     }
     
     @IBAction func btnFreespokeWayMiddle(_ sender: UIButton) {
@@ -453,7 +455,9 @@ class FreespokeHomepage: UIView {
                                               name: AnalyticsManager.MatomoName.clickName)
         }
         
-        delegate?.showURL(url: urlShopping)
+        let newURL = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: self.urlShopping)
+        self.urlShopping = newURL
+        delegate?.showURL(url: self.urlShopping)
     }
     
     @IBAction func btnFreespokeWayDown(_ sender: UIButton) {
@@ -463,7 +467,9 @@ class FreespokeHomepage: UIView {
                                               name: AnalyticsManager.MatomoName.clickName)
         }
         
-        delegate?.showURL(url: urlTrending)
+        let newURL = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: self.urlTrending)
+        self.urlTrending = newURL
+        delegate?.showURL(url: self.urlTrending)
     }
     
     @IBAction func btnBookmarks(_ sender: Any) {
@@ -477,7 +483,7 @@ class FreespokeHomepage: UIView {
                                           action: AnalyticsManager.MatomoAction.appHomeTrendingNewsStoryViewMoreClick.rawValue,
                                           name: AnalyticsManager.MatomoName.clickName)
         
-        delegate?.showURL(url: "https://freespoke.com/news/what-is-hot")
+        delegate?.showURL(url: Constants.AppInternalBrowserURLs.viewMoreTrendingNewsURL)
     }
     
     @IBAction func btnRecentlyViewed(_ sender: Any) {
@@ -491,7 +497,7 @@ class FreespokeHomepage: UIView {
                                           action: AnalyticsManager.MatomoAction.appHomeShopUsaViewMoreClick.rawValue,
                                           name: AnalyticsManager.MatomoName.clickName)
         
-        delegate?.showURL(url: "https://freespoke.com/shop")
+        delegate?.showURL(url: Constants.AppInternalBrowserURLs.viewMoreShopsURL)
     }
 }
 
@@ -737,8 +743,8 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
                                               action: AnalyticsManager.MatomoAction.appHomeTrendingNewsStoryClick.rawValue,
                                               name: story.name,
                                               url: story.url.asURL)
-            
-            delegate?.showURL(url: story.url)
+            let modifiedURL = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: story.url)
+            delegate?.showURL(url: modifiedURL)
             
         case collectionViewRecentlyViewd:
             AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
@@ -759,7 +765,8 @@ extension FreespokeHomepage: UICollectionViewDataSource, UICollectionViewDelegat
                                               name: shop.title,
                                               url: shop.url.asURL)
             
-            delegate?.showURL(url: shop.url)
+            let modifiedURL = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: shop.url)
+            delegate?.showURL(url: modifiedURL)
             
         default:
             break

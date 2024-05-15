@@ -24,12 +24,12 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         
         
         if page == .homePage, let homePageURL = HomeButtonHomePageAccessors.getHomePage(self.profile.prefs) {
-            tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePageURL) as URLRequest)
+            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePageURL) as URLRequest)
         } else if let homePanelURL = page.url {
-            tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePanelURL) as URLRequest)
+            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
         } else if page == .freespoke {
             if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
-                tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: homePanelURL) as URLRequest)
+                tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
             }
         }
         
@@ -85,7 +85,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
                                               action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "News",
                                               name: AnalyticsManager.MatomoName.clickName)
             
-            openLinkURL(Constants.newsURL.rawValue)
+            openLinkURL(Constants.AppInternalBrowserURLs.newsURL)
             
             //urlBar.alpha = 1.0
         }
@@ -119,7 +119,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
                                               action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Election",
                                               name: AnalyticsManager.MatomoName.clickName)
             
-            openLinkURL(Constants.electionURL.rawValue)
+            openLinkURL(Constants.AppInternalBrowserURLs.electionURL)
         }
         else {
             /*
@@ -343,7 +343,7 @@ extension BrowserViewController: MenuControllerDelegate {
     
     func openLinkURL(_ strUrl: String) {
         if let url = URL(string: strUrl) {
-            tabManager.selectedTab?.loadRequest_FindForFix(PrivilegedRequest(url: url) as URLRequest)
+            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
         }
     }
     

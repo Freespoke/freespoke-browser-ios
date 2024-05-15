@@ -32,7 +32,6 @@ class FreefolkProfileVC: UIViewController, Themeable {
     var themeObserver: NSObjectProtocol?
     
     var getInTouchClosure: (() -> Void)?
-    var accountClickedClosure: (() -> Void)?
     var appThemeClickedClosure: (() -> Void)?
     
     init(viewModel: FreefolkProfileViewModel, themeManager: ThemeManager = AppContainer.shared.resolve(),
@@ -403,7 +402,7 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     private func accountCellClicked() {
-        guard let accountURL = URL(string: Constants.URLs.accountProfileURL) else { return }
+        guard let accountURL = URL(string: Constants.AppInternalBrowserURLs.accountProfileURL) else { return }
         
         DispatchQueue.main.async {
             let vc = OAuthLoginVC(activityIndicatorEnabled: false, source: .accountPage)

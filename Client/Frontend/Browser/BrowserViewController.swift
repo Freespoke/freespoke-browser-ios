@@ -1258,7 +1258,7 @@ class BrowserViewController: UIViewController {
         urlBar.currentURL = url
         leaveOverlayMode(didCancel: false)
         
-        tab.loadRequest_FindForFix(URLRequest(url: url), completion: { [weak self] request in
+        tab.loadRequest(URLRequest(url: url), completion: { [weak self] request in
             guard let request = request else { return }
             self?.recordNavigationInTab(tab, navigation: request, visitType: visitType)
         })
@@ -2613,7 +2613,7 @@ extension BrowserViewController {
     private func setupHomepageOnBackground() {
         if let homePageURL = NewTabHomePageAccessors.getHomePage(self.profile.prefs),
            let tab = self.tabManager.selectedTab, DeviceInfo.hasConnectivity() {
-            tab.loadRequest_FindForFix(URLRequest(url: homePageURL))
+            tab.loadRequest(URLRequest(url: homePageURL))
         }
     }
 

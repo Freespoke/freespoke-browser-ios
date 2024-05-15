@@ -60,22 +60,67 @@ enum Constants: String {
         static let iPadContentWidthStaticValue: CGFloat = 480
     }
     
-    enum EasyListsURL {        
+    enum EasyListsURL {
         static let easyList = "https://easylist.to/easylist/easylist.txt"
         static let easyPrivacyList = "https://easylist.to/easylist/easyprivacy.txt"
         static let easyFanboyAnnoyance = "https://secure.fanboy.co.nz/fanboy-annoyance.txt"
     }
     
     // MARK: - URLs
-    
-    enum URLs {
+    enum AppInternalBrowserURLs {
         static var accountProfileURL: String {
             switch FreespokeEnvironment.current {
             case .production:
-                return "https://freespoke.com/account/profile"
+                let originUrl = "https://freespoke.com/account/profile"
+                let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+                return modifiedUrl
             case .staging:
-                return "https://staging.freespoke.com/account/profile"
+                let originUrl = "https://staging.freespoke.com/account/profile"
+                let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+                return modifiedUrl
             }
+        }
+        
+        static var newsURL: String {
+            let newsOriginUrl = "https://freespoke.com/news"
+            let newsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: newsOriginUrl)
+            return newsModifiedUrl
+        }
+        
+        static var electionURL: String {
+            let electionOriginUrl = "https://freespoke.com/election/2024"
+            let electionModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: electionOriginUrl)
+            return electionModifiedUrl
+        }
+        
+        static var viewMoreTrendingNewsURL: String {
+            let viewMoreTrendingNewsOriginUrl = "https://freespoke.com/news/what-is-hot"
+            let viewMoreTrendingNewsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: viewMoreTrendingNewsOriginUrl)
+            return viewMoreTrendingNewsModifiedUrl
+        }
+        
+        static var viewMoreShopsURL: String {
+            let viewMoreShopsOriginUrl = "https://freespoke.com/shop"
+            let viewMoreShopsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: viewMoreShopsOriginUrl)
+            return viewMoreShopsModifiedUrl
+        }
+        
+        static var aboutFreespokeURL: String {
+            let originUrl = "https://freespoke.com/about"
+            let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+            return modifiedUrl
+        }
+        
+        static var termsOfServiceURL: String {
+            let originUrl = "https://freespoke.com/terms-of-service"
+            let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+            return modifiedUrl
+        }
+        
+        static var privacyPolicyURL: String {
+            let originUrl = "https://freespoke.com/privacy-policy"
+            let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+            return modifiedUrl
         }
     }
     
@@ -88,11 +133,10 @@ enum Constants: String {
     case ourNewslettersURL = "https://about.freespoke.com/SignUp"
     case freespokePremiumURL = "https://subscriptions.freespoke.com/signup"
     case getInTouchURL = "https://freespoke-support.freshdesk.com/support/tickets/new"
-    case newsURL = "https://freespoke.com/news"
+    
     case shopURL = "https://freespoke.com/products"
-    case aboutFreespokeURL = "https://freespoke.com/about"
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
-    case electionURL = "https://freespoke.com/election/2024"
+    
     case appleNativeSubscriptions = "itms-apps://apps.apple.com/account/subscriptions" // "https://apps.apple.com/account/subscriptions"
     
     // MARK: - One Signal

@@ -503,7 +503,7 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
     private func getAboutAction() -> PhotonRowActions {
         return SingleActionViewModel(title: "About Freespoke",
                                      iconString: ImageIdentifiers.help) { [weak self] _ in
-            if let url = URL(string: Constants.aboutFreespokeURL.rawValue) {
+            if let url = URL(string: Constants.AppInternalBrowserURLs.aboutFreespokeURL) {
                 self?.delegate?.openURLInNewTab(url, isPrivate: false)
             }
             TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .help)

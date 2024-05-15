@@ -179,12 +179,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
                 profileVC.motionDismissViewController()
             }
             
-            profileVC.accountClickedClosure = { [weak self] in
-                self?.showURL(url: Constants.URLs.accountProfileURL)
-                TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .account)
-                profileVC.motionDismissViewController()
-            }
-            
             profileVC.appThemeClickedClosure = { [weak self] in
                 guard let  self = self else { return }
                 let themeSettingsController = ThemeSettingsController()

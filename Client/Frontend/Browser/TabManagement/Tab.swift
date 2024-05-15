@@ -635,7 +635,7 @@ class Tab: NSObject {
 //        }
 //    }
     
-    func loadRequest_FindForFix(_ request: URLRequest, completion: ((WKNavigation?) -> Void)? = nil) {
+    func loadRequest(_ request: URLRequest, completion: ((WKNavigation?) -> Void)? = nil) {
         if let webView = webView {
             // Convert about:reader?url=http://example.com URLs to local ReaderMode URLs
             

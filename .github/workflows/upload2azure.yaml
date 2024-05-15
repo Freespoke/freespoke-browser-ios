@@ -35,10 +35,7 @@ jobs:
 
     - name: Download release asset
       run: |
-        wget -O latest_release.zip "${{ steps.get_asset.outputs.url }}"
-
-    - name: Rename release asset
-      run: mv latest_release.zip freespoke-default.zip
+        wget -O freespoke-default.zip "${{ steps.get_asset.outputs.url }}"
 
     - name: Upload release to Azure Blob Storage
       run: |

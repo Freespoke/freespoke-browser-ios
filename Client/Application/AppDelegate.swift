@@ -88,9 +88,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    level: .info,
                    category: .lifecycle)
         
-        // Branch init
-        self.setupBranchSDK(launchOptions: launchOptions)
-        
         // pushNotificationSetup()
         appLaunchUtil?.setUpPostLaunchDependencies()
         backgroundSyncUtil = BackgroundSyncUtil(profile: profile, application: application)
@@ -153,6 +150,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        OneSignal.promptForPushNotifications(userResponse: { accepted in
 //            print("User accepted notification: \(accepted)")
 //        })
+        
+        // Branch init
+        self.setupBranchSDK(launchOptions: launchOptions)
         
         // Matomo tracker
         MatomoTracker.shared.isOptedOut = false
@@ -366,10 +366,9 @@ extension AppDelegate {
             Branch.setUseTestBranchKey(true)
         }
         
-        // This version of initSession includes the source UIScene in the callback
-        BranchScene.shared().initSession(launchOptions: launchOptions, registerDeepLinkHandler: { (params, error, scene) in
-            print("DEBUG: setupBranchSDK with params: ", params as? [String: AnyObject] ?? {})
-        })
+        Branch.getInstance().initSession(launchOptions: launchOptions) { (params, error) in
+            print("TEST: setupBranchSDK with params: ", params as? [String: AnyObject] ?? {})
+        }
     }
 }
 

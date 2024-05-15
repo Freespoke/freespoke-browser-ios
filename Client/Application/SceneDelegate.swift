@@ -52,13 +52,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         var themeManager: ThemeManager = AppContainer.shared.resolve()
         themeManager.window = window
 
-        // workaround for SceneDelegate continueUserActivity not getting called on cold start
-        if let userActivity = connectionOptions.userActivities.first {
-            BranchScene.shared().scene(scene, continue: userActivity)
-        } else if !connectionOptions.urlContexts.isEmpty {
-            BranchScene.shared().scene(scene, openURLContexts: connectionOptions.urlContexts)
-        }
-        
         handleDeeplinkOrShortcutsAtLaunch(with: connectionOptions, on: scene)
     }
 
@@ -95,7 +88,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         openURLContexts URLContexts: Set<UIOpenURLContext>
     ) {
         BranchScene.shared().scene(scene, openURLContexts: URLContexts)
-        
         guard let url = URLContexts.first?.url,
               let routerPath = NavigationPath(url: url) else { return }
 
@@ -122,7 +114,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     /// Use this method to handle Handoff-related data or other activities.
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         BranchScene.shared().scene(scene, continue: userActivity)
-        
         if userActivity.activityType == SiriShortcuts.activityType.openURL.rawValue {
             browserViewController.openBlankNewTab(focusLocationField: false)
         }

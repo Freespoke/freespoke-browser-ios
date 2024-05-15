@@ -40,22 +40,18 @@
 			<array>
 				<string>$(MOZ_PUBLIC_URL_SCHEME)</string>
 				<string>$(MOZ_INTERNAL_URL_SCHEME)</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
 				<string>http</string>
+				<string>https</string>
 			</array>
 		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>$(MOZ_BUNDLE_ID)</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>https</string>
+				<string>freespokeapp</string>
 			</array>
 		</dict>
 	</array>
@@ -236,8 +232,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>UIUserInterfaceStyle</key>
-	<string>$(USER_INTERFACE_STYLE)</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>UTImportedTypeDeclarations</key>
@@ -264,8 +258,11 @@
 	</dict>
 	<key>branch_universal_link_domains</key>
 	<array>
+		<string>freespoke.app.link</string>
+		<string>freespoke-alternate.app.link</string>
 		<string>freespoke.test-app.link</string>
-		<string>freespoke-alternate.test-app.link</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>$(USER_INTERFACE_STYLE)</string>
 </dict>
 </plist>

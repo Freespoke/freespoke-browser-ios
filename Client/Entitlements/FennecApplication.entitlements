@@ -10,8 +10,10 @@
 	</array>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:freespoke-alternate.test-app.link</string>
+		<string>applinks:freespoke.app.link</string>
+		<string>applinks:freespoke-alternate.app.link</string>
 		<string>applinks:freespoke.test-app.link</string>
+		<string>applinks:freespoke-alternate.test-app.link</string>
 	</array>
 	<key>com.apple.developer.authentication-services.autofill-credential-provider</key>
 	<true/>

@@ -189,7 +189,7 @@ class AppSettingsTableViewController: SettingsTableViewController, FeatureFlagga
         var privacySettings = [Setting]()
         
         //|     Hide Password option from Settings
-        //privacySettings.append(LoginsSetting(settings: self, delegate: settingsDelegate))
+        privacySettings.append(LoginsSetting(settings: self, delegate: settingsDelegate))
 
         privacySettings.append(ClearPrivateDataSetting(settings: self))
 

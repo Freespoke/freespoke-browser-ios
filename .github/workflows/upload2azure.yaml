@@ -43,5 +43,6 @@ jobs:
           --auth-mode login \
           --account-name ffmobilesource \
           --container-name downloads \
+          --overwrite
           --file freespoke-default.zip \
           --name freespoke-mobile-ios.zip

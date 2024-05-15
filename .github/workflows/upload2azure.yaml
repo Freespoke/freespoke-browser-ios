@@ -30,7 +30,7 @@ jobs:
     - name: Get latest release asset URL
       id: get_asset
       run: |
-        asset_url=$(curl -s "https://api.github.com/repos/freespoke/${GITHUB_REPOSITORY}/releases/latest" | jq -r '.assets[0].browser_download_url')
+        asset_url=$(curl -s "https://api.github.com/repos/freespoke/${GITHUB_REPOSITORY}/releases/latest" | jq -r '.zipball_url')
         echo "::set-output name=url::$asset_url"
 
     - name: Upload release to Azure Blob Storage

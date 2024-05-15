@@ -44,7 +44,6 @@ jobs:
       run: |
         az storage blob upload \
           --account-name ffmobilesource \
-          --account-key ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }} \
           --container-name downloads \
           --file freespoke-default.zip \
           --name freespoke-mobile-ios.zip

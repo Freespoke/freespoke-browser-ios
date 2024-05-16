@@ -366,6 +366,9 @@ extension AppDelegate {
             Branch.setUseTestBranchKey(true)
         }
         
+        // Call `checkPasteboardOnInstall()` before Branch initialization
+        Branch.getInstance().checkPasteboardOnInstall()
+        
         // This version of initSession includes the source UIScene in the callback
         BranchScene.shared().initSession(launchOptions: launchOptions, registerDeepLinkHandler: { (params, error, scene) in
             print("DEBUG: setupBranchSDK with params: ", params as? [String: AnyObject] ?? {})

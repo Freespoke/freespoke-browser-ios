@@ -8,6 +8,8 @@ import Shared
 import Account
 import LocalAuthentication
 import Glean
+import AdSupport
+import AppTrackingTransparency
 
 // This file contains all of the settings available in the main settings screen of the app.
 
@@ -788,6 +790,57 @@ class AboutFreespokeSetting: Setting {
                 self.delegate?.settingsOpenURLInNewTab(url)
             }
         }
+    }
+    
+    override func onLongPress(_ navigationController: UINavigationController?) {
+        copyIdentifiersAndPresentAlert(by: navigationController)
+    }
+    
+    func copyIdentifiersAndPresentAlert(by navigationController: UINavigationController?) {
+        let alertTitle: String = .SettingsCopyAppVersionAlertTitle
+        let alert = AlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+        getSelectedCell(by: navigationController)?.setSelected(false, animated: true)
+        
+        UIPasteboard.general.string = self.getIdentifiersDetailsForCopy()
+        
+        navigationController?.topViewController?.present(alert, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                alert.dismiss(animated: true)
+            }
+        }
+    }
+    
+    private func getIdentifiersDetailsForCopy() -> String {
+        var fullDetails = ""
+        
+        let version = "\(AppName.shortName) \(AppInfo.appVersion) (\(AppInfo.buildNumber))"
+        fullDetails += version
+        
+        let idfaDetails = ASIdentifierManager.identifierForAdvertising()
+        
+        var idfaDetailsString = "IsAdvertisingTrackingEnabled: \(idfaDetails.isAdvertisingTrackingEnabled)"
+        var idfvDetailsString = ""
+        
+        if idfaDetails.isAdvertisingTrackingEnabled, let idfa = idfaDetails.idfa {
+            idfaDetailsString += "\nIdentifier for Advertisers (IDFA):\n\(idfa)"
+        }
+        
+        if let idfv = ASIdentifierManager.identifierForVendor {
+            idfvDetailsString += "\nIdentifier for Vendor (IDFV):\n\(idfv)"
+        }
+        
+        fullDetails += "\n\n"
+        fullDetails += idfaDetailsString
+        fullDetails += "\n\n"
+        fullDetails += idfvDetailsString
+        return fullDetails
+    }
+    
+    func getSelectedCell(by navigationController: UINavigationController?) -> UITableViewCell? {
+        let controller = navigationController?.topViewController
+        let tableView = (controller as? AppSettingsTableViewController)?.tableView
+        guard let indexPath = tableView?.indexPathForSelectedRow else { return nil }
+        return tableView?.cellForRow(at: indexPath)
     }
 }
 

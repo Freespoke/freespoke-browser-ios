@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		01000F9F2BE10F85008DB712 /* SubscriptionsClickableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */; };
 		01000FA02BE10F85008DB712 /* SubscriptionsClickableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */; };
+		0110682B2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0110682A2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift */; };
+		0110682C2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0110682A2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift */; };
 		01117E872BDC25D700DF571F /* GetShoppingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E862BDC25D700DF571F /* GetShoppingCollection.swift */; };
 		01117E882BDC25D700DF571F /* GetShoppingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E862BDC25D700DF571F /* GetShoppingCollection.swift */; };
 		01117E8A2BDC26F400DF571F /* ShoppingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E892BDC26F400DF571F /* ShoppingModel.swift */; };
@@ -2669,6 +2671,7 @@
 /* Begin PBXFileReference section */
 		00B144CD8BEF73CF75ED7639 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Menu.strings; sourceTree = "<group>"; };
 		01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsClickableTextView.swift; sourceTree = "<group>"; };
+		0110682A2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASIdentifierManager + Extensions.swift"; sourceTree = "<group>"; };
 		01117E862BDC25D700DF571F /* GetShoppingCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShoppingCollection.swift; sourceTree = "<group>"; };
 		01117E892BDC26F400DF571F /* ShoppingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingModel.swift; sourceTree = "<group>"; };
 		011A0C3D2BCAA9A200B9C555 /* ProfileCellTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellTitleView.swift; sourceTree = "<group>"; };
@@ -5255,6 +5258,7 @@
 			isa = PBXGroup;
 			children = (
 				9609F4C926B57CE800F81493 /* Calendar+Extension.swift */,
+				0110682A2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift */,
 				E1442FBE294782B6003680B0 /* CGRect+Extension.swift */,
 				E1442FC1294782C2003680B0 /* NSAttributedString+Extension.swift */,
 				E1A6AB4528CA6A4C00EBEBDD /* String+Extension.swift */,
@@ -10198,6 +10202,7 @@
 				01E9F51A2B7F958F0034DE09 /* PremiumUnlockedContentView.swift in Sources */,
 				01BD25392B6CF7EB00B8B9EB /* SessionRestoreHelper.swift in Sources */,
 				01BD253A2B6CF7EB00B8B9EB /* AppDelegate+SyncSentTabs.swift in Sources */,
+				0110682C2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift in Sources */,
 				01BD253B2B6CF7EB00B8B9EB /* MailtoLinkHandler.swift in Sources */,
 				01BD253C2B6CF7EB00B8B9EB /* BookmarksPanel.swift in Sources */,
 				01ADAA922B86A5C10009754E /* NetworkService.swift in Sources */,
@@ -11326,6 +11331,7 @@
 				F35B8D2D1D6383E9008E3D61 /* SessionRestoreHelper.swift in Sources */,
 				EB98550124226EF70040F24B /* AppDelegate+SyncSentTabs.swift in Sources */,
 				744ED5611DBFEB8D00A2B5BE /* MailtoLinkHandler.swift in Sources */,
+				0110682B2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift in Sources */,
 				59A68E0B4ABBF55E14819668 /* BookmarksPanel.swift in Sources */,
 				01ADAA912B86A5C10009754E /* NetworkService.swift in Sources */,
 				D04D1B862097859B0074B35F /* DownloadToast.swift in Sources */,

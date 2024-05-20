@@ -130,7 +130,7 @@ class MenuController: UIViewController {
     }
     
     private func shareFresspoke() {
-        guard let url = URL(string: Constants.freespokeURL.rawValue) else { return }
+        guard let url = URL(string: Constants.freespokeURL) else { return }
         
         let helper = ShareExtensionHelper(url: url, tab: nil)
         let controller = helper.createActivityViewController({ completed, activityType in

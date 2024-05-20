@@ -13,8 +13,23 @@ class GoogleTopSiteManager {
         static let googleGUID = "DefaultGoogleGUID"
 
         // US and rest of the world google urls
-        static let usUrl = "https://freespoke.com/"
-        static let rowUrl = "https://freespoke.com/"
+        static var usUrl: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                return "https://freespoke.com/"
+            case .staging, .development:
+                return "https://staging.freespoke.com/"
+            }
+        }
+        
+        static var rowUrl: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                return "https://freespoke.com/"
+            case .staging, .development:
+                return "https://staging.freespoke.com/"
+            }
+        }
 
         // The number of tiles taken by Google top site manager
         static let reservedSpaceCount = 1

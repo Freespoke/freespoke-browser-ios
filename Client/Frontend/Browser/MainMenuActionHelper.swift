@@ -524,7 +524,7 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         return SingleActionViewModel(title: "Share Freespoke",
                                      iconString: "menu-share-freespoke") { [weak self] _ in
             guard let self = self else { return }
-            guard let url = URL(string: Constants.freespokeURL.rawValue),
+            guard let url = URL(string: Constants.freespokeURL),
                   let presentableVC = self.menuActionDelegate as? PresentableVC
             else { return }
             

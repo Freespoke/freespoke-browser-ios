@@ -7,7 +7,6 @@ import UIKit
 
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressHome(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        
         //|     Reload all items on freespoke home
         if !isHome {
             homepageViewController?.reloadFreespokeHomepage()
@@ -28,7 +27,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         } else if let homePanelURL = page.url {
             tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
         } else if page == .freespoke {
-            if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
+            if let homePanelURL = URL(string: Constants.freespokeURL) {
                 tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
             }
         }

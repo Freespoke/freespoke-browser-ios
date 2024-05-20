@@ -518,7 +518,7 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
                 let url = NewTabHomePageAccessors.getHomePage(profile.prefs)!
                 tab.loadRequest(URLRequest(url: url))
             case .freespoke:
-                if let url = URL(string: Constants.freespokeURL.rawValue) {
+                if let url = URL(string: Constants.freespokeURL) {
                     tab.loadRequest(URLRequest(url: url))
                 }
             default:

@@ -624,7 +624,7 @@ class BrowserViewController: UIViewController {
         addBookmarkWithoutEditToast(url: "https://freespoke.com/join/step-1", title: "Join")
         addBookmarkWithoutEditToast(url: Constants.freespokeBlogURL.rawValue, title: "Blog")
         addBookmarkWithoutEditToast(url: Constants.getInTouchURL.rawValue, title: "Contact")
-        addBookmarkWithoutEditToast(url: Constants.freespokeURL.rawValue, title: "Freespoke")
+        addBookmarkWithoutEditToast(url: Constants.freespokeURL, title: "Freespoke")
         
         homepageViewController?.freespokeHomepageView.reloadAllItems()
     }

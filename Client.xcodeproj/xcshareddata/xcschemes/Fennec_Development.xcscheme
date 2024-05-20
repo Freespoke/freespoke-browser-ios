@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1520"
+   LastUpgradeVersion = "1530"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,23 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "01BD23372B6CF7EB00B8B9EB"
-               BuildableName = "Fennec_Staging.app"
-               BlueprintName = "Fennec_Staging"
+               BlueprintIdentifier = "018867242BF7C8A9001F12E0"
+               BuildableName = "Fennec_Development.app"
+               BlueprintName = "Fennec_Development"
                ReferencedContainer = "container:Client.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Fennec_Staging"
+      buildConfiguration = "Fennec_Development"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Fennec_Staging"
+      buildConfiguration = "Fennec_Development"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -43,15 +43,15 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "01BD23372B6CF7EB00B8B9EB"
-            BuildableName = "Fennec_Staging.app"
-            BlueprintName = "Fennec_Staging"
+            BlueprintIdentifier = "018867242BF7C8A9001F12E0"
+            BuildableName = "Fennec_Development.app"
+            BlueprintName = "Fennec_Development"
             ReferencedContainer = "container:Client.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Fennec_Staging"
+      buildConfiguration = "Fennec_Development"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -60,18 +60,18 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "01BD23372B6CF7EB00B8B9EB"
-            BuildableName = "Fennec_Staging.app"
-            BlueprintName = "Fennec_Staging"
+            BlueprintIdentifier = "018867242BF7C8A9001F12E0"
+            BuildableName = "Fennec_Development.app"
+            BlueprintName = "Fennec_Development"
             ReferencedContainer = "container:Client.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Fennec_Staging">
+      buildConfiguration = "Fennec_Development">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Fennec_Staging"
+      buildConfiguration = "Fennec_Development"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

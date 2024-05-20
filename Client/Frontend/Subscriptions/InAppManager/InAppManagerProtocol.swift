@@ -9,25 +9,19 @@ import StoreKit
 struct ProductIdentifiers {
     static var monthlySubscription: String {
         switch FreespokeEnvironment.current {
-        case .production:
-            "premium_monthly_v2" // NEW
-            // "premium_monthly" // OLD
-        case .staging:
-            "premium_monthly_v2" // NEW
-//            "premium_monthly"  // TODO: remove before upload staging build
-            //            "MonthlyRenewableSubscription_staging"   // TODO: uncommit before upload staging build
+        case .production, .staging:
+            return "premium_monthly_v2"
+        case .development:
+            return "MonthlyRenewableSubscription_staging"
         }
     }
     
     static var yearlySubscription: String {
         switch FreespokeEnvironment.current {
-        case .production:
-            "premium_annual_v2"  // NEW
-            // "premium_annual"  // OLD
-        case .staging:
-            "premium_annual_v2"  // NEW
-//            "premium_annual"  // TODO: remove before upload staging build
-            //            "YearlyRenewableSubscription_staging"   // TODO: uncommit before upload staging build
+        case .production, .staging:
+            return "premium_annual_v2"
+        case .development:
+            return "YearlyRenewableSubscription_staging"
         }
     }
 }

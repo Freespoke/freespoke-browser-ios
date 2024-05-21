@@ -3827,6 +3827,11 @@ extension String {
         tableName: nil,
         value: "Search",
         comment: "Accessibility Label for the tab toolbar Search button")
+    public static let TabToolbarElectionAccessibilityLabel = MZLocalizedString(
+        "Election",
+        tableName: nil,
+        value: nil,
+        comment: "Accessibility label for the Election button in the tab toolbar.")
     public static let TabToolbarBackAccessibilityLabel = MZLocalizedString(
         "Back",
         tableName: nil,

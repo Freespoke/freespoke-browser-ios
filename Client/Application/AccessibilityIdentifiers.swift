@@ -15,6 +15,7 @@ public struct AccessibilityIdentifiers {
     struct Toolbar {
         static let settingsMenuButton = "TabToolbar.menuButton"
         static let homeButton = "TabToolbar.homeButton"
+        static let electionButton = "TabToolbar.electionButton"
         static let trackingProtection = "TabLocationView.trackingProtectionButton"
         static let readerModeButton = "TabLocationView.readerModeButton"
         static let reloadButton = "TabLocationView.reloadButton"

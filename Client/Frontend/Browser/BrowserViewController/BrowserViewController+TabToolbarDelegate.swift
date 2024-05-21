@@ -112,16 +112,27 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         generator.impactOccurred()
         showBackForwardList()
     }
+    
+    func tabToolbarDidPressElection(_ tabToolbar: any TabToolbarProtocol, button: UIButton) {
+        AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Election",
+                                          name: AnalyticsManager.MatomoName.clickName)
+        
+        openLinkURL(Constants.AppInternalBrowserURLs.electionURL)
+    }
+    
+    func tabToolbarDidLongPressElection(_ tabToolbar: any TabToolbarProtocol, button: UIButton) {
+        
+    }
 
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
             AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
-                                              action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Election",
+                                              action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Shop",
                                               name: AnalyticsManager.MatomoName.clickName)
             
-            openLinkURL(Constants.AppInternalBrowserURLs.electionURL)
-        }
-        else {
+            openLinkURL(Constants.AppInternalBrowserURLs.viewMoreShopsURL)
+        } else {
             /*
             if !isNewTab {
                 if UIDevice.current.userInterfaceIdiom == .phone {

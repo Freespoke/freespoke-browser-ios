@@ -15,6 +15,7 @@ class TabToolbar: UIView {
     let appMenuButton = ToolbarButton()
     let bookmarksButton = ToolbarButton()
     let forwardButton = ToolbarButton()
+    let electionButton = ToolbarButton()
     let backButton = ToolbarButton()
     let multiStateButton = ToolbarButton()
     let actionButtons: [NotificationThemeable & UIButton]
@@ -30,7 +31,8 @@ class TabToolbar: UIView {
 
     // MARK: - Initializers
     private override init(frame: CGRect) {
-        actionButtons = [backButton, forwardButton, multiStateButton, addNewTabButton, tabsButton, appMenuButton]
+        actionButtons = [backButton, forwardButton, self.electionButton, multiStateButton, addNewTabButton, tabsButton, appMenuButton]
+
         super.init(frame: frame)
         setupAccessibility()
 
@@ -70,6 +72,7 @@ class TabToolbar: UIView {
     private func setupAccessibility() {
         backButton.accessibilityIdentifier = "TabToolbar.backButton"
         forwardButton.accessibilityIdentifier = "TabToolbar.forwardButton"
+        self.electionButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.electionButton
         multiStateButton.accessibilityIdentifier = "TabToolbar.multiStateButton"
         tabsButton.accessibilityIdentifier = "TabToolbar.tabsButton"
         addNewTabButton.accessibilityIdentifier = "TabToolbar.addNewTabButton"

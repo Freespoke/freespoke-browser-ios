@@ -78,7 +78,7 @@ class URLBarColor {
         }
     }
 
-    var readerModeButtonSelected: UIColor { return UIColor.Photon.Blue40 }
+    var readerModeButtonSelected: UIColor { return UIColor.Photon.FreespokeGreenColor }
     var readerModeButtonUnselected: UIColor { return UIColor.Photon.Grey50 }
     var pageOptionsSelected: UIColor { return readerModeButtonSelected }
     var pageOptionsUnselected: UIColor { return UIColor.legacyTheme.browser.tint }
@@ -92,7 +92,7 @@ class BrowserColor {
 
 // The back/forward/refresh/menu button (bottom toolbar)
 class ToolbarButtonColor {
-    var selectedTint: UIColor { return UIColor.Photon.Blue40 }
+    var selectedTint: UIColor { return UIColor.Photon.FreespokeGreenColor }
     var disabledTint: UIColor { return UIColor.Photon.Grey30 }
 }
 

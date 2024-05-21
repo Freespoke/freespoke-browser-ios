@@ -191,6 +191,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     var homeButton = ToolbarButton()
     var addNewTabButton = ToolbarButton()
     var forwardButton = ToolbarButton()
+    var electionButton = ToolbarButton()
     var multiStateButton = ToolbarButton()
 
     var backButton: ToolbarButton = {
@@ -206,6 +207,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         self.appMenuButton,
         self.addNewTabButton,
         self.forwardButton,
+        self.electionButton,
         self.backButton,
         self.multiStateButton]
 
@@ -251,7 +253,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         locationContainer.addSubview(locationView)
 
         [scrollToTopButton, line, tabsButton, progressBar, cancelButton, showQRScannerButton,
-         homeButton, bookmarksButton, appMenuButton, addNewTabButton, forwardButton, backButton,
+         homeButton, bookmarksButton, appMenuButton, addNewTabButton, forwardButton, backButton, electionButton,
          multiStateButton, locationContainer].forEach {
             addSubview($0)
         }
@@ -305,8 +307,14 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
 //            make.width.equalTo(URLBarViewUX.SearchIconImageWidth)
 //        }
 
-        multiStateButton.snp.makeConstraints { make in
+        self.electionButton.snp.makeConstraints { make in
             make.leading.equalTo(self.forwardButton.snp.trailing)
+            make.centerY.equalTo(self)
+            make.size.equalTo(URLBarViewUX.ButtonHeight)
+        }
+        
+        multiStateButton.snp.makeConstraints { make in
+            make.leading.equalTo(self.electionButton.snp.trailing)
             make.centerY.equalTo(self)
             make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
@@ -591,6 +599,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         homeButton.isHidden = !toolbarIsShowing || !topTabsIsShowing
         bookmarksButton.isHidden = !toolbarIsShowing || !topTabsIsShowing
         forwardButton.isHidden = !toolbarIsShowing
+        electionButton.isHidden = !toolbarIsShowing
         backButton.isHidden = !toolbarIsShowing
         tabsButton.isHidden = !toolbarIsShowing || topTabsIsShowing
         multiStateButton.isHidden = !toolbarIsShowing
@@ -607,6 +616,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         bookmarksButton.alpha = inOverlayMode ? 0 : 1
         addNewTabButton.alpha = inOverlayMode ? 0 : 1
         forwardButton.alpha = inOverlayMode ? 0 : 1
+        electionButton.alpha = inOverlayMode ? 0 : 1
         backButton.alpha = inOverlayMode ? 0 : 1
         multiStateButton.alpha = inOverlayMode ? 0 : 1
 
@@ -639,6 +649,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         homeButton.isHidden = !toolbarIsShowing || inOverlayMode || !topTabsIsShowing
         bookmarksButton.isHidden = !toolbarIsShowing || inOverlayMode || !topTabsIsShowing
         forwardButton.isHidden = !toolbarIsShowing || inOverlayMode
+        electionButton.isHidden = !toolbarIsShowing || inOverlayMode
         backButton.isHidden = !toolbarIsShowing || inOverlayMode
         tabsButton.isHidden = !toolbarIsShowing || inOverlayMode || topTabsIsShowing
         multiStateButton.isHidden = !toolbarIsShowing || inOverlayMode
@@ -742,7 +753,8 @@ extension URLBarView: TabToolbarProtocol {
                 return [locationTextField, cancelButton]
             } else {
                 if toolbarIsShowing {
-                    return [backButton, forwardButton, multiStateButton, locationView, tabsButton, homeButton, bookmarksButton, appMenuButton, addNewTabButton, progressBar]
+                    return [backButton, forwardButton, self.electionButton, multiStateButton, locationView, tabsButton, homeButton, bookmarksButton, appMenuButton, addNewTabButton, progressBar]
+
                 } else {
                     return [locationView, progressBar]
                 }

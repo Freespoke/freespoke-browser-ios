@@ -111,6 +111,7 @@ extension UIColor {
         static let Green80 = UIColor(rgb: 0x005e5e)
         static let Green90 = UIColor(rgb: 0x08403f)
         static let GreenShamrock = UIColor(rgb: 0x2ac3a2) // identical to Green60
+        static let FreespokeGreenColor = UIColor(rgb: 0x149590)
 
         static let Yellow05 = UIColor(rgb: 0xffffcc)
         static let Yellow10 = UIColor(rgb: 0xffff98)

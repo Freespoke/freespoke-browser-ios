@@ -18291,8 +18291,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mozilla/glean-swift";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 52.7.0;
 			};
 		};
 		2FE7CAA62A817D71008F4181 /* XCRemoteSwiftPackageReference "matomo-sdk-ios" */ = {

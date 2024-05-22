@@ -15,7 +15,7 @@ extension AnalyticsManager {
             switch FreespokeEnvironment.current {
             case .production:
                 return "6"
-            case .staging:
+            case .staging, .development:
                 return "7"
             }
         }

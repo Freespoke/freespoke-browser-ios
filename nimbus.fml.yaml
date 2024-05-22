@@ -13,6 +13,7 @@ channels:
   - beta
   - release
   - Fennec_Staging
+  - Fennec_Development
 
 include:
   - nimbus-features/contextualHintFeature.yaml

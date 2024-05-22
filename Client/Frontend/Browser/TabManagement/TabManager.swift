@@ -518,7 +518,7 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
                 let url = NewTabHomePageAccessors.getHomePage(profile.prefs)!
                 tab.loadRequest(URLRequest(url: url))
             case .freespoke:
-                if let url = URL(string: Constants.freespokeURL.rawValue) {
+                if let url = URL(string: Constants.AppInternalBrowserURLs.freespokeURL) {
                     tab.loadRequest(URLRequest(url: url))
                 }
             default:
@@ -532,7 +532,6 @@ class TabManager: NSObject, FeatureFlaggable, TabManagerProtocol {
             }
         }
         
-
         tab.noImageMode = NoImageModeHelper.isActivated(profile.prefs)
 
         if flushToDisk {

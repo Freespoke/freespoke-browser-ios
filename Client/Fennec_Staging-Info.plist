@@ -46,7 +46,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>1</string>
 	<key>INIntentsSupported</key>
 	<array>
 		<string>QuickActionIntent</string>
@@ -250,8 +250,6 @@
 	</dict>
 	<key>branch_universal_link_domains</key>
 	<array>
-		<string>freespoke.app.link</string>
-		<string>freespoke-alternate.app.link</string>
 		<string>freespoke.test-app.link</string>
 		<string>freespoke-alternate.test-app.link</string>
 	</array>

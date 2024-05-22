@@ -28,7 +28,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         } else if let homePanelURL = page.url {
             tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
         } else if page == .freespoke {
-            if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
+            if let homePanelURL = URL(string: Constants.AppInternalBrowserURLs.freespokeURL) {
                 tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
             }
         }
@@ -37,7 +37,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 //        switch page {
 //        case .freespoke:
 //            tabManager.startAtHomeCheck()
-////            if let homePanelURL = URL(string: Constants.freespokeURL.rawValue) {
+////            if let homePanelURL = URL(string: Constants.AppInternalBrowserURLs.freespokeURL) {
 ////                tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: homePanelURL) as URLRequest)
 ////            }
 //

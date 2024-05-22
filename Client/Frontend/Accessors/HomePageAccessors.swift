@@ -30,6 +30,6 @@ class HomeButtonHomePageAccessors {
     }
     
     static func getFreespokePage() -> URL? {
-        return URL(string: Constants.freespokeURL.rawValue)
+        return URL(string: Constants.AppInternalBrowserURLs.freespokeURL)
     }
 }

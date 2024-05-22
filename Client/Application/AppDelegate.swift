@@ -362,7 +362,7 @@ extension AppDelegate {
         switch FreespokeEnvironment.current {
         case .production:
             Branch.setUseTestBranchKey(false)
-        case .staging:
+        case .staging, .development:
             Branch.setUseTestBranchKey(true)
         }
         

@@ -10,10 +10,13 @@ import UIKit
 enum FreespokeEnvironment {
     case production
     case staging
+    case development
     
     static var current: FreespokeEnvironment {
 #if STAGING
         return .staging
+#elseif DEVELOPMENT
+        return .development
 #else
         return .production
 #endif
@@ -74,7 +77,7 @@ enum Constants: String {
                 let originUrl = "https://freespoke.com/account/profile"
                 let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
                 return modifiedUrl
-            case .staging:
+            case .staging, .development:
                 let originUrl = "https://staging.freespoke.com/account/profile"
                 let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
                 return modifiedUrl
@@ -82,49 +85,107 @@ enum Constants: String {
         }
         
         static var newsURL: String {
-            let newsOriginUrl = "https://freespoke.com/news"
-            let newsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: newsOriginUrl)
-            return newsModifiedUrl
+            switch FreespokeEnvironment.current {
+            case .production:
+                let newsOriginUrl = "https://freespoke.com/news"
+                let newsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: newsOriginUrl)
+                return newsModifiedUrl
+            case .staging, .development:
+                let newsOriginUrl = "https://staging.freespoke.com/news"
+                let newsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: newsOriginUrl)
+                return newsModifiedUrl
+            }
         }
         
         static var electionURL: String {
-            let electionOriginUrl = "https://freespoke.com/election/2024"
-            let electionModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: electionOriginUrl)
-            return electionModifiedUrl
+            switch FreespokeEnvironment.current {
+            case .production:
+                let originUrl = "https://freespoke.com/election/2024"
+                let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+                return modifiedUrl
+            case .staging, .development:
+                let originUrl = "https://staging.freespoke.com/election/2024"
+                let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+                return modifiedUrl
+            }
         }
         
         static var viewMoreTrendingNewsURL: String {
-            let viewMoreTrendingNewsOriginUrl = "https://freespoke.com/news/what-is-hot"
-            let viewMoreTrendingNewsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: viewMoreTrendingNewsOriginUrl)
-            return viewMoreTrendingNewsModifiedUrl
+            switch FreespokeEnvironment.current {
+            case .production:
+                let viewMoreTrendingNewsOriginUrl = "https://freespoke.com/news/what-is-hot"
+                let viewMoreTrendingNewsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: viewMoreTrendingNewsOriginUrl)
+                return viewMoreTrendingNewsModifiedUrl
+            case .staging, .development:
+                let viewMoreTrendingNewsOriginUrl = "https://staging.freespoke.com/news/what-is-hot"
+                let viewMoreTrendingNewsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: viewMoreTrendingNewsOriginUrl)
+                return viewMoreTrendingNewsModifiedUrl
+            }
         }
         
         static var viewMoreShopsURL: String {
-            let viewMoreShopsOriginUrl = "https://freespoke.com/shop"
-            let viewMoreShopsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: viewMoreShopsOriginUrl)
-            return viewMoreShopsModifiedUrl
+            switch FreespokeEnvironment.current {
+            case .production:
+                let viewMoreShopsOriginUrl = "https://freespoke.com/shop"
+                let viewMoreShopsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: viewMoreShopsOriginUrl)
+                return viewMoreShopsModifiedUrl
+            case .staging, .development:
+                let viewMoreShopsOriginUrl = "https://staging.freespoke.com/shop"
+                let viewMoreShopsModifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: viewMoreShopsOriginUrl)
+                return viewMoreShopsModifiedUrl
+            }
         }
         
         static var aboutFreespokeURL: String {
-            let originUrl = "https://freespoke.com/about"
-            let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
-            return modifiedUrl
+            switch FreespokeEnvironment.current {
+            case .production:
+                let originUrl = "https://freespoke.com/about"
+                let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+                return modifiedUrl
+            case .staging, .development:
+                let originUrl = "https://staging.freespoke.com/about"
+                let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+                return modifiedUrl
+            }
         }
         
         static var termsOfServiceURL: String {
-            let originUrl = "https://freespoke.com/terms-of-service"
-            let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
-            return modifiedUrl
+            switch FreespokeEnvironment.current {
+            case .production:
+                let originUrl = "https://freespoke.com/terms-of-service"
+                let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+                return modifiedUrl
+            case .staging, .development:
+                let originUrl = "https://staging.freespoke.com/terms-of-service"
+                let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+                return modifiedUrl
+            }
+
         }
         
         static var privacyPolicyURL: String {
-            let originUrl = "https://freespoke.com/privacy-policy"
-            let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
-            return modifiedUrl
+            switch FreespokeEnvironment.current {
+            case .production:
+                let originUrl = "https://freespoke.com/privacy-policy"
+                let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+                return modifiedUrl
+            case .staging, .development:
+                let originUrl = "https://staging.freespoke.com/privacy-policy"
+                let modifiedUrl = AnalyticsManager.UTM.addUtmQuery(.sourceFreespokeApp, for: originUrl)
+                return modifiedUrl
+            }
+        }
+
+        static var freespokeURL: String {
+            switch FreespokeEnvironment.current {
+            case .production:
+                return "https://freespoke.com/"
+            case .staging, .development:
+                return "https://staging.freespoke.com/"
+            }
         }
     }
     
-    case freespokeURL = "https://freespoke.com/"
     case twitterURL = "https://twitter.com/FreespokeSearch/"
     case linkedinURL = "https://www.linkedin.com/company/freespoke-search/"
     case instagramURL = "https://www.instagram.com/freespokesearch/"
@@ -134,7 +195,15 @@ enum Constants: String {
     case freespokePremiumURL = "https://subscriptions.freespoke.com/signup"
     case getInTouchURL = "https://freespoke-support.freshdesk.com/support/tickets/new"
     
-    case shopURL = "https://freespoke.com/products"
+    static var shopURL: String {
+        switch FreespokeEnvironment.current {
+        case .production:
+            return "https://freespoke.com/products"
+        case .staging, .development:
+            return "https://staging.freespoke.com/products"
+        }
+    }
+
     case githubiOSURL = "https://github.com/Freespoke/freespoke-browser-ios"
     
     case appleNativeSubscriptions = "itms-apps://apps.apple.com/account/subscriptions" // "https://apps.apple.com/account/subscriptions"
@@ -145,7 +214,7 @@ enum Constants: String {
             switch FreespokeEnvironment.current {
             case .production:
                 return "8c38e904-be26-4ed0-9343-4186ab6c7f82"
-            case .staging:
+            case .staging, .development:
                 return "de8ebc15-f8ef-427a-b1c1-f312ce831eea"
             }
         }

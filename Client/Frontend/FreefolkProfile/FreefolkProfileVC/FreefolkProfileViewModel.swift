@@ -83,10 +83,12 @@ class FreefolkProfileViewModel {
                         .logout
                     ]
                     
+                    // MARK: this functionality is hidden for now, but it will be used in the future. Please don't remome this!!!
+                    /*
                     if let decodedJWTToken = AppSessionManager.shared.decodedJWTToken, !decodedJWTToken.emailVerified {
                         self.cellTypes.insert(.verifyEmail, at: 0)
                     }
-                    
+                    */
                     self.delegate?.reloadTableView()
                     
                 case .premiumOriginalApple, .premiumNotApple, .premiumBecauseAppleAccountHasSubscription, .unauthorizedWithPremium:
@@ -100,11 +102,13 @@ class FreefolkProfileViewModel {
                         .shareFreespoke,
                         .logout
                     ]
-                    
+                    // MARK: this functionality is hidden for now, but it will be used in the future. Please don't remome this!!!
+                    /*
                     if let decodedJWTToken = AppSessionManager.shared.decodedJWTToken, !decodedJWTToken.emailVerified {
                         self.cellTypes.insert(.verifyEmail, at: 0)
                     }
-                    
+                    */
+                     
                     if !self.cellTypes.contains(.verifyEmail) {
                         self.cellTypes.insert(.adBlocker, at: 2)
                     } else {

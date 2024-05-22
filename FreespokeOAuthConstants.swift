@@ -10,7 +10,7 @@ final class OAuthConstants {
             case .production:
 //                return "https://auth.staging.freespoke.com/realms/freespoke-staging"
                 return "https://accounts.freespoke.com/realms/freespoke"
-            case .staging:
+            case .staging, .development:
                 return "https://auth.staging.freespoke.com/realms/freespoke-staging"
             }
     }
@@ -21,7 +21,7 @@ final class OAuthConstants {
             switch FreespokeEnvironment.current {
             case .production:
                 return "com.freespoke:/iosappcallbackauth"
-            case .staging:
+            case .staging, .development:
                 return "com.freespoke:/iosappcallbackauth"
             }
     }
@@ -30,7 +30,7 @@ final class OAuthConstants {
             switch FreespokeEnvironment.current {
             case .production:
                 return "com.freespoke:/iosregisterautologin"
-            case .staging:
+            case .staging, .development:
                 return "com.freespoke:/iosregisterautologin"
             }
     }
@@ -39,7 +39,7 @@ final class OAuthConstants {
             switch FreespokeEnvironment.current {
             case .production:
                 return "com.freespoke:/iosappcallbacklogout"
-            case .staging:
+            case .staging, .development:
                 return "com.freespoke:/iosappcallbacklogout"
             }
     }

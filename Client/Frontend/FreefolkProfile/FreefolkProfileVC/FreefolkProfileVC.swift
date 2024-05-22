@@ -201,7 +201,7 @@ class FreefolkProfileVC: UIViewController, Themeable {
     }
     
     private func shareFreespoke() {
-        guard let url = URL(string: Constants.freespokeURL.rawValue) else { return }
+        guard let url = URL(string: Constants.AppInternalBrowserURLs.freespokeURL) else { return }
         let helper = ShareExtensionHelper(url: url, tab: nil)
         let controller = helper.createActivityViewController { _, _ in }
         if let popoverPresentationController = controller.popoverPresentationController {

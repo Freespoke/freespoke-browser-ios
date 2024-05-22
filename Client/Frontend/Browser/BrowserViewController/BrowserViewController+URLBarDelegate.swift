@@ -151,7 +151,7 @@ extension BrowserViewController: URLBarDelegate {
     }
     
     private func shareFresspoke(_ button: UIButton) {
-        guard let url = URL(string: Constants.freespokeURL.rawValue) else { return }
+        guard let url = URL(string: Constants.AppInternalBrowserURLs.freespokeURL) else { return }
         
         let helper = ShareExtensionHelper(url: url, tab: nil)
         let controller = helper.createActivityViewController({ completed, activityType in

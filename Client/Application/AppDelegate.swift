@@ -84,6 +84,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        
+        print("DEBUG: didFinishLaunchingWithOptions FreespokeEnvironment.current: ", FreespokeEnvironment.current)
+        print("DEBUG: didFinishLaunchingWithOptions Bundle.main.bundleIdentifier: ", Bundle.main.bundleIdentifier)
+        print("DEBUG: didFinishLaunchingWithOptions ProductIdentifiers.monthlySubscription: ", ProductIdentifiers.monthlySubscription)
+        print("DEBUG: didFinishLaunchingWithOptions ProductIdentifiers.yearlySubscription: ", ProductIdentifiers.yearlySubscription)
+
+        
         logger.log("didFinishLaunchingWithOptions start",
                    level: .info,
                    category: .lifecycle)
@@ -362,7 +369,7 @@ extension AppDelegate {
         switch FreespokeEnvironment.current {
         case .production:
             Branch.setUseTestBranchKey(false)
-        case .staging:
+        case .staging, .development:
             Branch.setUseTestBranchKey(true)
         }
         

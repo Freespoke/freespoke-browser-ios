@@ -3554,6 +3554,7 @@
 		011C971A2BBEDC5B00B96A36 /* AnalyticsManager + Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager + Constants.swift"; sourceTree = "<group>"; };
 		011EE7FC2BE0E23700FAB30B /* SubscribeActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeActionButton.swift; sourceTree = "<group>"; };
 		0129AF852BFE381B0098EFF2 /* Fennec_Staging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Fennec_Staging-Info.plist"; sourceTree = "<group>"; };
+		0129AF862BFE3F5E0098EFF2 /* Fennec_Development-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Fennec_Development-Info.plist"; sourceTree = "<group>"; };
 		012C3AB72B80DEE3007EC4AF /* SignUpVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVCViewModel.swift; sourceTree = "<group>"; };
 		012C3ABB2B80E31A007EC4AF /* SignUpContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpContentView.swift; sourceTree = "<group>"; };
 		012C3ABE2B80E872007EC4AF /* SignInWithAppleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleItemView.swift; sourceTree = "<group>"; };
@@ -3587,7 +3588,6 @@
 		016C3BC52BC42F17007CBC5D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		016C915F2BFE0FB8006520D0 /* Fennec_Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Fennec_Development.xcconfig; path = Configuration/Fennec_Development.xcconfig; sourceTree = "<group>"; };
 		016C94B82BFE13DC006520D0 /* Fennec_Staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fennec_Staging.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		016C94B92BFE13DC006520D0 /* Fennec_Development copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Fennec_Development copy-Info.plist"; path = "/Users/nick/Documents/projects/freespoke-browser-ios/Fennec_Development copy-Info.plist"; sourceTree = "<absolute>"; };
 		017D2DB62BB7391000A1B20C /* RestorePurchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchase.swift; sourceTree = "<group>"; };
 		017D2DB92BB7399B00A1B20C /* RestorePurchaseResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchaseResponseModel.swift; sourceTree = "<group>"; };
 		0181A4032B83B2CD005BE1F6 /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
@@ -8759,7 +8759,6 @@
 				28CE83EF1A1D246900576538 /* Third-Party Source */,
 				E15A8B2B286CFD48004BB2B8 /* Tests */,
 				43BE578B278BA4D900491291 /* RustMozillaAppServices-Info.plist */,
-				016C94B92BFE13DC006520D0 /* Fennec_Development copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -8813,6 +8812,7 @@
 				39A359BD1BFCCE7B006B9E87 /* Helpers */,
 				F84B22431A09165600AAB793 /* Info.plist */,
 				0129AF852BFE381B0098EFF2 /* Fennec_Staging-Info.plist */,
+				0129AF862BFE3F5E0098EFF2 /* Fennec_Development-Info.plist */,
 				7B2142FC1E5E055000CDD3FC /* InfoPlist.strings */,
 				74821FFD1DB6D3AC00EEEA72 /* MailSchemes.plist */,
 				ACD605D124B35EEE00EE4454 /* metrics.yaml */,
@@ -14295,7 +14295,7 @@
 			baseConfigurationReference = 016C915F2BFE0FB8006520D0 /* Fennec_Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSETCATALOG_COMPILER_APPICON_NAME)";
 				CODE_SIGN_ENTITLEMENTS = "$(CODE_SIGN_ENTITLEMENTS)";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -14833,7 +14833,7 @@
 			baseConfigurationReference = E60961861B62B8A700DD640F /* Fennec.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSETCATALOG_COMPILER_APPICON_NAME)";
 				CODE_SIGN_ENTITLEMENTS = "$(CODE_SIGN_ENTITLEMENTS)";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -14872,7 +14872,7 @@
 			baseConfigurationReference = 016B6DF92B62796A00AA65EE /* Fennec_Staging.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSETCATALOG_COMPILER_APPICON_NAME)";
 				CODE_SIGN_ENTITLEMENTS = "$(CODE_SIGN_ENTITLEMENTS)";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;

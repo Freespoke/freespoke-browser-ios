@@ -23,17 +23,17 @@
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Fennec_Staging"
+      buildConfiguration = "Fennec_Development"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Fennec_Staging"
+      buildConfiguration = "Fennec_Development"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      launchStyle = "1"
+      launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
@@ -51,7 +51,7 @@
       </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Fennec_Staging"
+      buildConfiguration = "Fennec_Development"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -68,10 +68,10 @@
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Fennec_Staging">
+      buildConfiguration = "Fennec_Development">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Fennec_Staging"
+      buildConfiguration = "Fennec_Development"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

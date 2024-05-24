@@ -42,7 +42,7 @@ jobs:
         az storage blob upload \
           --auth-mode login \
           --account-name ffmobilesource \
-          --container-name downloads \
+          --container-name "$web" \
           --overwrite \
           --file freespoke-default.zip \
           --name freespoke-mobile-ios.zip

@@ -1,9 +1,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
+
 import Foundation
 
-class ShareButton: UIButton {
+class LockButton: UIButton {
     // MARK: - Variables
 
     var selectedTintColor: UIColor!
@@ -35,8 +36,8 @@ class ShareButton: UIButton {
         applyTheme()
 
         clipsToBounds = false
-        setImage(UIImage.templateImageNamed(ImageIdentifiers.share), for: .normal)
-        imageView?.contentMode = .scaleAspectFit
+        setImage(UIImage.templateImageNamed(ImageIdentifiers.imgLock), for: .normal)
+        imageView?.contentMode = .scaleAspectFill
         adjustsImageWhenHighlighted = false
     }
 
@@ -47,11 +48,11 @@ class ShareButton: UIButton {
 
 // MARK: - Theme protocols
 
-extension ShareButton: NotificationThemeable {
+extension LockButton: NotificationThemeable {
     func applyTheme() {
-        selectedTintColor = UIColor.Photon.Grey70
+        selectedTintColor = UIColor.legacyTheme.toolbarButton.selectedTint
         disabledTintColor = UIColor.Photon.Grey50
-        unselectedTintColor = UIColor.Photon.Grey50
+        unselectedTintColor = UIColor.legacyTheme.browser.tint
         tintColor = isEnabled ? unselectedTintColor : disabledTintColor
         imageView?.tintColor = tintColor
     }

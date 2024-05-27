@@ -90,7 +90,7 @@ class FreefolkProfileVC: UIViewController, Themeable {
                 self.contentView.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor, constant: 0),
                 self.contentView.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: 0),
                 self.contentView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-//                self.contentView.widthAnchor.constraint(equalToConstant: (self.view.frame.width * Constants.DrawingSizes.iPadContentWidthFactorPortrait)),
+//                self.contentMainStackView.widthAnchor.constraint(equalToConstant: (self.view.frame.width * Constants.DrawingSizes.iPadContentWidthFactorPortrait)),
                 self.contentView.widthAnchor.constraint(equalToConstant: Constants.DrawingSizes.iPadContentWidthStaticValue),
                 self.contentView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
                 self.titleLbl.topAnchor.constraint(equalTo: customTitleView.bottomAnchor, constant: 50)

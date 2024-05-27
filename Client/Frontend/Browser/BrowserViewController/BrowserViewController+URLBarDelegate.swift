@@ -90,21 +90,15 @@ extension BrowserViewController: URLBarDelegate {
             let isBookmarkedSite = profile.places.isBookmarked(url: tabUrl.absoluteString).value.successValue ?? false
             
             if !isBookmarkedSite {
-                tabLocationView.shareButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.actionRemoveBookmark), for: .normal)
+                tabLocationView.rightToolBarView.btnBookmark.setImage(UIImage.templateImageNamed(ImageIdentifiers.actionRemoveBookmark), for: .normal)
                 
                 self.addBookmark(url: tabUrl.absoluteString, title: selectedtab.title)
             }
             else {
-                tabLocationView.shareButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.addToBookmark), for: .normal)
+                tabLocationView.rightToolBarView.btnBookmark.setImage(UIImage.templateImageNamed(ImageIdentifiers.addToBookmark), for: .normal)
                 
                 self.removeBookmark(url: tabUrl.absoluteString)
             }
-            
-            //            presentShareSheet(tabUrl,
-            //                              tab: selectedtab,
-            //                              sourceView: shareView,
-            //                              sourceRect: CGRect.null,
-            //                              arrowDirection: isBottomSearchBar ? .down : .up)
         }
     }
     
@@ -195,7 +189,7 @@ extension BrowserViewController: URLBarDelegate {
             } else {
                 etpVC.asPopover = true
                 etpVC.modalPresentationStyle = .popover
-                etpVC.popoverPresentationController?.sourceView = urlBar.locationView.trackingProtectionButton
+                etpVC.popoverPresentationController?.sourceView = urlBar.locationView.lockURLView.btnTrackingPtotection
                 etpVC.popoverPresentationController?.permittedArrowDirections = .up
                 etpVC.popoverPresentationController?.delegate = self
             }

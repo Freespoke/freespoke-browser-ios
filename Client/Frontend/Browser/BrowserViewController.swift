@@ -1030,7 +1030,7 @@ class BrowserViewController: UIViewController {
             })
 
         // Make sure reload button is hidden on homepage
-        urlBar.locationView.reloadButton.reloadButtonState = .disabled
+        urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = .disabled
     }
 
     /// Once the homepage is created, browserViewController keeps a reference to it, never setting it to nil during
@@ -1082,14 +1082,14 @@ class BrowserViewController: UIViewController {
             })
 
         // Make sure reload button is working after leaving homepage
-        urlBar.locationView.reloadButton.reloadButtonState = .reload
+        urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = .reload
     }
 
     func updateInContentHomePanel(_ url: URL?, focusUrlBar: Bool = false) {
         let isAboutHomeURL = url.flatMap { InternalURL($0)?.isAboutHomeURL } ?? false
         guard let url = url else {
             hideHomepage()
-            urlBar.locationView.reloadButton.reloadButtonState = .disabled
+            urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = .disabled
             return
         }
 
@@ -1372,13 +1372,13 @@ class BrowserViewController: UIViewController {
         
         // No tab
         if let tab = tabManager.selectedTab {
-            urlBar.locationView.reloadButton.reloadButtonState = .disabled
+            urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = .disabled
             navigationToolbar.updateMiddleButtonState(state)
             currentMiddleButtonState = state
             
             // Tab with starting page
             if tab.isURLStartingPage {
-                urlBar.locationView.reloadButton.reloadButtonState = .disabled
+                urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = .disabled
                 navigationToolbar.updateMiddleButtonState(state)
                 currentMiddleButtonState = state
                 
@@ -1412,7 +1412,7 @@ class BrowserViewController: UIViewController {
 
         navigationToolbar.updateMiddleButtonState(state)
         if !toolbar.isHidden {
-            urlBar.locationView.reloadButton.reloadButtonState = isLoading ? .stop : .reload
+            urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = isLoading ? .stop : .reload
         }
         currentMiddleButtonState = state
     }
@@ -1574,10 +1574,10 @@ class BrowserViewController: UIViewController {
             let isBookmarkedSite = profile.places.isBookmarked(url: displayUrl.absoluteString).value.successValue ?? false
             
             if isBookmarkedSite {
-                urlBar.locationView.shareButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.actionRemoveBookmark), for: .normal)
+                urlBar.locationView.rightToolBarView.btnBookmark.setImage(UIImage.templateImageNamed(ImageIdentifiers.actionRemoveBookmark), for: .normal)
             }
             else {
-                urlBar.locationView.shareButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.addToBookmark), for: .normal)
+                urlBar.locationView.rightToolBarView.btnBookmark.setImage(UIImage.templateImageNamed(ImageIdentifiers.addToBookmark), for: .normal)
             }
         }
     }

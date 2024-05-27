@@ -1718,6 +1718,15 @@
 		0E7A4B042B9E0ED500ADF4B4 /* DomainTxtCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7A4B022B9E0ED500ADF4B4 /* DomainTxtCell.swift */; };
 		0E8033912BC829B50057889F /* fanboy-annoyance.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0E80338F2BC829B50057889F /* fanboy-annoyance.txt */; };
 		0E8033922BC829B50057889F /* easy-privacy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0E8033902BC829B50057889F /* easy-privacy.txt */; };
+		0E89DB962BFE7F1700F0587B /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E89DB952BFE7F1700F0587B /* BookmarkButton.swift */; };
+		0E89DB972BFE7F1700F0587B /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E89DB952BFE7F1700F0587B /* BookmarkButton.swift */; };
+		0E89DB992BFF475B00F0587B /* LockURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E89DB982BFF475B00F0587B /* LockURLView.swift */; };
+		0E89DB9A2BFF475B00F0587B /* LockURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E89DB982BFF475B00F0587B /* LockURLView.swift */; };
+		0E89DB9B2BFF600800F0587B /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E89DB952BFE7F1700F0587B /* BookmarkButton.swift */; };
+		0E89DB9C2BFF601B00F0587B /* LockURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E89DB982BFF475B00F0587B /* LockURLView.swift */; };
+		0E9273832BFF901D003B87AF /* RightToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9273822BFF901D003B87AF /* RightToolBarView.swift */; };
+		0E9273842BFF901D003B87AF /* RightToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9273822BFF901D003B87AF /* RightToolBarView.swift */; };
+		0E9273852BFF901D003B87AF /* RightToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9273822BFF901D003B87AF /* RightToolBarView.swift */; };
 		0EB329502B8BC99900326992 /* AddDelegate + Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB3294F2B8BC99900326992 /* AddDelegate + Filters.swift */; };
 		0EB3295C2B8BCC4A00326992 /* ultimateAdBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329532B8BCC4800326992 /* ultimateAdBlock.json */; };
 		0EB3295D2B8BCC4A00326992 /* adaway.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EB329542B8BCC4800326992 /* adaway.json */; };
@@ -3701,6 +3710,9 @@
 		0E7A4B022B9E0ED500ADF4B4 /* DomainTxtCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainTxtCell.swift; sourceTree = "<group>"; };
 		0E80338F2BC829B50057889F /* fanboy-annoyance.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "fanboy-annoyance.txt"; sourceTree = "<group>"; };
 		0E8033902BC829B50057889F /* easy-privacy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "easy-privacy.txt"; sourceTree = "<group>"; };
+		0E89DB952BFE7F1700F0587B /* BookmarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkButton.swift; sourceTree = "<group>"; };
+		0E89DB982BFF475B00F0587B /* LockURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockURLView.swift; sourceTree = "<group>"; };
+		0E9273822BFF901D003B87AF /* RightToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightToolBarView.swift; sourceTree = "<group>"; };
 		0EB3294F2B8BC99900326992 /* AddDelegate + Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddDelegate + Filters.swift"; sourceTree = "<group>"; };
 		0EB329532B8BCC4800326992 /* ultimateAdBlock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ultimateAdBlock.json; sourceTree = "<group>"; };
 		0EB329542B8BCC4800326992 /* adaway.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = adaway.json; sourceTree = "<group>"; };
@@ -5877,6 +5889,18 @@
 			path = DomainTxtCell;
 			sourceTree = "<group>";
 		};
+		0E9273862BFF91B3003B87AF /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				0E89DB952BFE7F1700F0587B /* BookmarkButton.swift */,
+				43DB9783292D6846002E0B9F /* ShareButton.swift */,
+				8AD40FC927BADC4B00672675 /* StatefulButton.swift */,
+				8AD40FC827BADC4B00672675 /* ReaderModeButton.swift */,
+				8AD40FD427BB1C1000672675 /* LockButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
 		0EB329522B8BCB3700326992 /* AdBlockFilters */ = {
 			isa = PBXGroup;
 			children = (
@@ -7107,10 +7131,7 @@
 		8AD40FB727BAD1D600672675 /* Toolbar+URLBar */ = {
 			isa = PBXGroup;
 			children = (
-				8AD40FD427BB1C1000672675 /* LockButton.swift */,
-				8AD40FC827BADC4B00672675 /* ReaderModeButton.swift */,
-				8AD40FC927BADC4B00672675 /* StatefulButton.swift */,
-				43DB9783292D6846002E0B9F /* ShareButton.swift */,
+				0E9273862BFF91B3003B87AF /* Buttons */,
 				E4CD9F2C1A6DC91200318571 /* TabLocationView.swift */,
 				8AD40FCC27BADC5B00672675 /* TabLocationContainerView.swift */,
 				D314E7F51A37B98700426A76 /* TabToolbar.swift */,
@@ -7120,6 +7141,8 @@
 				0BF0DB931A8545800039F300 /* URLBarView.swift */,
 				8AD40FCE27BADC6A00672675 /* URLTextField.swift */,
 				0E5CDE5E2BA0B3F700930A5A /* AdBlockerSwitcherView.swift */,
+				0E89DB982BFF475B00F0587B /* LockURLView.swift */,
+				0E9273822BFF901D003B87AF /* RightToolBarView.swift */,
 			);
 			path = "Toolbar+URLBar";
 			sourceTree = "<group>";
@@ -10986,6 +11009,7 @@
 				016C92372BFE13DC006520D0 /* UIUtils.swift in Sources */,
 				016C92382BFE13DC006520D0 /* LibraryViewController+ToolbarActions.swift in Sources */,
 				016C92392BFE13DC006520D0 /* WallpaperNetworkModule.swift in Sources */,
+				0E9273842BFF901D003B87AF /* RightToolBarView.swift in Sources */,
 				016C923A2BFE13DC006520D0 /* UIPasteboard+Extension.swift in Sources */,
 				016C923B2BFE13DC006520D0 /* WallpaperMetadataCodableProtocol.swift in Sources */,
 				016C923C2BFE13DC006520D0 /* AdBlockerCell.swift in Sources */,
@@ -11286,6 +11310,7 @@
 				016C93632BFE13DC006520D0 /* PremiumCell.swift in Sources */,
 				016C93642BFE13DC006520D0 /* BrowserViewController+TabToolbarDelegate.swift in Sources */,
 				016C93652BFE13DC006520D0 /* CreditCardHelper.swift in Sources */,
+				0E89DB9C2BFF601B00F0587B /* LockURLView.swift in Sources */,
 				016C93662BFE13DC006520D0 /* SwipeAnimator.swift in Sources */,
 				016C93672BFE13DC006520D0 /* SimpleToast.swift in Sources */,
 				016C93682BFE13DC006520D0 /* PocketStory.swift in Sources */,
@@ -11310,6 +11335,7 @@
 				016C937B2BFE13DC006520D0 /* UIImageColors.swift in Sources */,
 				016C937C2BFE13DC006520D0 /* ASGroup.swift in Sources */,
 				016C937D2BFE13DC006520D0 /* AdBlockManager.swift in Sources */,
+				0E89DB9B2BFF600800F0587B /* BookmarkButton.swift in Sources */,
 				016C937E2BFE13DC006520D0 /* NewTabAccessors.swift in Sources */,
 				016C937F2BFE13DC006520D0 /* JumpBackInCell.swift in Sources */,
 				016C93802BFE13DC006520D0 /* HomepageViewModel.swift in Sources */,
@@ -11629,6 +11655,7 @@
 				0181A4082B85148E005BE1F6 /* UIUtils.swift in Sources */,
 				01BD23E32B6CF7EB00B8B9EB /* LibraryViewController+ToolbarActions.swift in Sources */,
 				01BD23E42B6CF7EB00B8B9EB /* WallpaperNetworkModule.swift in Sources */,
+				0E9273852BFF901D003B87AF /* RightToolBarView.swift in Sources */,
 				01BD23E52B6CF7EB00B8B9EB /* UIPasteboard+Extension.swift in Sources */,
 				01BD23E62B6CF7EB00B8B9EB /* WallpaperMetadataCodableProtocol.swift in Sources */,
 				0E0DAA092B98ACE500EADBD0 /* AdBlockerCell.swift in Sources */,
@@ -11929,6 +11956,7 @@
 				011A0C432BCB08AF00B9C555 /* PremiumCell.swift in Sources */,
 				01BD24E12B6CF7EB00B8B9EB /* BrowserViewController+TabToolbarDelegate.swift in Sources */,
 				01BD24E22B6CF7EB00B8B9EB /* CreditCardHelper.swift in Sources */,
+				0E89DB9A2BFF475B00F0587B /* LockURLView.swift in Sources */,
 				01BD24E32B6CF7EB00B8B9EB /* SwipeAnimator.swift in Sources */,
 				01BD24E42B6CF7EB00B8B9EB /* SimpleToast.swift in Sources */,
 				01BD24E52B6CF7EB00B8B9EB /* PocketStory.swift in Sources */,
@@ -11953,6 +11981,7 @@
 				01BD24F42B6CF7EB00B8B9EB /* UIImageColors.swift in Sources */,
 				01BD24F52B6CF7EB00B8B9EB /* ASGroup.swift in Sources */,
 				0EB329692B8BCEF900326992 /* AdBlockManager.swift in Sources */,
+				0E89DB972BFE7F1700F0587B /* BookmarkButton.swift in Sources */,
 				01BD24F62B6CF7EB00B8B9EB /* NewTabAccessors.swift in Sources */,
 				01BD24F72B6CF7EB00B8B9EB /* JumpBackInCell.swift in Sources */,
 				01BD24F82B6CF7EB00B8B9EB /* HomepageViewModel.swift in Sources */,
@@ -12758,6 +12787,7 @@
 				21D7B60628077CA5003F7E94 /* LibraryViewController+ToolbarActions.swift in Sources */,
 				C869912C28917688007ACC5C /* WallpaperNetworkModule.swift in Sources */,
 				E1442FD8294782D9003680B0 /* UIPasteboard+Extension.swift in Sources */,
+				0E9273832BFF901D003B87AF /* RightToolBarView.swift in Sources */,
 				C8A4137428BE58C900D8EFEA /* WallpaperMetadataCodableProtocol.swift in Sources */,
 				8A93080927BFE88F0052167D /* PhotonActionSheetContainerCell.swift in Sources */,
 				0E0DAA082B98ACE500EADBD0 /* AdBlockerCell.swift in Sources */,
@@ -13058,6 +13088,7 @@
 				011A0C422BCB08AF00B9C555 /* PremiumCell.swift in Sources */,
 				44481A572B7A26BC003BBD6E /* ProfileIconView.swift in Sources */,
 				EBE26B57220C959D00D1D99A /* BrowserViewController+TabToolbarDelegate.swift in Sources */,
+				0E89DB992BFF475B00F0587B /* LockURLView.swift in Sources */,
 				0BA02DB22942605600C92603 /* CreditCardHelper.swift in Sources */,
 				E68AEDB01B18F81A00133D99 /* SwipeAnimator.swift in Sources */,
 				01ADAA852B86A5C10009754E /* RegisterFreespokeUser.swift in Sources */,
@@ -13082,6 +13113,7 @@
 				D0B9483422A03468002F4AA1 /* BookmarkDetailPanel.swift in Sources */,
 				3B6889C51D66950E002AC85E /* UIImageColors.swift in Sources */,
 				968BD7EB27DFF0F8003148B3 /* ASGroup.swift in Sources */,
+				0E89DB962BFE7F1700F0587B /* BookmarkButton.swift in Sources */,
 				392ED7E41D0AEF56009D9B62 /* NewTabAccessors.swift in Sources */,
 				8A9AC465276CEC4E0047F5B0 /* JumpBackInCell.swift in Sources */,
 				01823F9A2B8DFE9F00986B73 /* EmailTextField.swift in Sources */,

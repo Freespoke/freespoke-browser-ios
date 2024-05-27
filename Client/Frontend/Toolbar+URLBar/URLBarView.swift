@@ -493,7 +493,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         if !toolbarIsShowing {
             updateConstraintsIfNeeded()
         }
-        locationView.reloadButton.isHidden = hideReloadButton
+        locationView.rightToolBarView.btnReload.isHidden = hideReloadButton
         updateViewsForOverlayModeAndToolbarChanges()
     }
 
@@ -516,12 +516,12 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     /// We hide reload button on iPad, but not in multitasking mode
     func updateReaderModeState(_ state: ReaderModeState, hideReloadButton: Bool) {
         locationView.readerModeState = state
-        locationView.reloadButton.isHidden = hideReloadButton
+        locationView.rightToolBarView.btnReload.isHidden = hideReloadButton
     }
 
     /// We hide reload button on iPad, but not in multitasking mode
     func shouldHideReloadButton(_ isHidden: Bool) {
-        locationView.reloadButton.isHidden = isHidden
+        locationView.rightToolBarView.btnReload.isHidden = isHidden
     }
 
     func setAutocompleteSuggestion(_ suggestion: String?) {
@@ -606,7 +606,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     }
 
     func transitionToOverlay(_ didCancel: Bool = false) {
-        locationView.contentView.alpha = inOverlayMode ? 0 : 1
+        locationView.contentMainStackView.alpha = inOverlayMode ? 0 : 1
         cancelButton.alpha = inOverlayMode ? 1 : 0
         showQRScannerButton.alpha = inOverlayMode ? 1 : 0
         progressBar.alpha = inOverlayMode || didCancel ? 0 : 1
@@ -632,7 +632,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         } else {
             // Shrink the editable text field back to the size of the location view before hiding it.
             locationTextField?.snp.remakeConstraints { make in
-                make.edges.equalTo(self.locationView.urlTextField)
+                make.edges.equalTo(self.locationView.lockURLView.urlTextField)
             }
         }
     }
@@ -772,7 +772,7 @@ extension URLBarView: TabLocationViewDelegate {
     }
 
     func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView) {
-        delegate?.urlBarDidLongPressReload(self, from: tabLocationView.reloadButton)
+        delegate?.urlBarDidLongPressReload(self, from: tabLocationView.rightToolBarView.btnReload)
     }
 
     func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView) {
@@ -791,7 +791,7 @@ extension URLBarView: TabLocationViewDelegate {
     }
 
     func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView) {
-        let state = locationView.reloadButton.isHidden ? .reload : locationView.reloadButton.reloadButtonState
+        let state = locationView.rightToolBarView.btnReload.isHidden ? .reload : locationView.rightToolBarView.btnReload.reloadButtonState
 
         switch state {
         case .reload:
@@ -817,7 +817,7 @@ extension URLBarView: TabLocationViewDelegate {
         delegate?.urlBarPressShare(tabLocationView, urlBar: self, shareView: button)
     }
 
-    func tabLocationViewDidTapShare(_ tabLocationView: TabLocationView, button: UIButton) {
+    func tabLocationViewDidTapBookmarkBtn(_ tabLocationView: TabLocationView, button: UIButton) {
         delegate?.urlBarDidPressShare(tabLocationView, urlBar: self, shareView: button)
     }
 

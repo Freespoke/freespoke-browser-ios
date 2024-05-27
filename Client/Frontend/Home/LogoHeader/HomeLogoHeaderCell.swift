@@ -62,7 +62,7 @@ class HomeLogoHeaderCell: UICollectionViewCell, ReusableCell {
             logoImage.heightAnchor.constraint(equalToConstant: UX.Logo.imageSize),
             logoImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor,
                                                constant: -99),
-            //logoImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            //logoImage.leadingAnchor.constraint(equalTo: contentMainStackView.leadingAnchor),
             logoImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
                                               constant: UX.Logo.bottomConstant),
 

@@ -56,6 +56,7 @@ public struct ImageIdentifiers {
     public static let libraryReadingList = "library-readinglist"
     public static let lockBlocked = "lock_blocked"
     public static let lockVerifed = "lock_verified"
+    public static let imgLock = "imgLock"
     public static let logo = "Freespoke Torch - Light Mode"
     public static let menuBadge = "menuBadge"
     public static let menuChevron = "menu-Disclosure"
@@ -109,4 +110,8 @@ public struct ImageIdentifiers {
     public static let warning = "menu-warning"
     public static let whatsNew = "whatsnew"
     public static let xMark = "nav-stop"
+    public static let readerModeAvailable = "ReaderModeAvailable"
+    public static let readerModeActive = "ReaderModeActive"
+    public static let imgUpload = "imgUpload"
+    
 }

@@ -4,7 +4,7 @@
 
 import Foundation
 
-class LockButton: UIButton {
+class BookmarkButton: UIButton {
     // MARK: - Variables
 
     var selectedTintColor: UIColor!
@@ -36,8 +36,8 @@ class LockButton: UIButton {
         applyTheme()
 
         clipsToBounds = false
-        setImage(UIImage.templateImageNamed(ImageIdentifiers.lockVerifed), for: .normal)
-        imageView?.contentMode = .scaleAspectFill
+        setImage(UIImage.templateImageNamed(ImageIdentifiers.share), for: .normal)
+        imageView?.contentMode = .scaleAspectFit
         adjustsImageWhenHighlighted = false
     }
 
@@ -48,11 +48,11 @@ class LockButton: UIButton {
 
 // MARK: - Theme protocols
 
-extension LockButton: NotificationThemeable {
+extension BookmarkButton: NotificationThemeable {
     func applyTheme() {
-        selectedTintColor = UIColor.legacyTheme.toolbarButton.selectedTint
+        selectedTintColor = UIColor.Photon.Grey70
         disabledTintColor = UIColor.Photon.Grey50
-        unselectedTintColor = UIColor.legacyTheme.browser.tint
+        unselectedTintColor = UIColor.Photon.Grey50
         tintColor = isEnabled ? unselectedTintColor : disabledTintColor
         imageView?.tintColor = tintColor
     }

@@ -1,10 +1,8 @@
-## Build generated
-##build/
-##DerivedData/
+# Build generated
 UserInterfaceState.xcuserstate
 */xcuserdata/*
 
-#python environment
+# python environment
 python-env/
 __pycache__
 .pytest_cache

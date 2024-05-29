@@ -10,14 +10,14 @@ __pycache__
 *venv/
 
 # Nimbus
-nimbus-fml/
+# nimbus-fml/
 
 # Nimbus build artifacts.
-bin/nimbus-fml-configuration.local.sh
-bin/nimbus-fml.sh
-firefox-ios/nimbus-fml-configuration.local.sh
-firefox-ios/bin/nimbus-fml.sh
-firefox-ios/bin/nimbus-fml-configuration.local.sh
+# bin/nimbus-fml-configuration.local.sh
+# bin/nimbus-fml.sh
+# firefox-ios/nimbus-fml-configuration.local.sh
+# firefox-ios/bin/nimbus-fml.sh
+# firefox-ios/bin/nimbus-fml-configuration.local.sh
 
 
 # Required for Glean

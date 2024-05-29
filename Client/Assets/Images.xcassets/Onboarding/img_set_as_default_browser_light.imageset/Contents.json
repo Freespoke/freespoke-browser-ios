@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "img_set_as_default_browser_light.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

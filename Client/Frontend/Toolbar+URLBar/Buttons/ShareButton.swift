@@ -24,7 +24,7 @@ class ShareButton: UIButton {
 
     override var tintColor: UIColor! {
         didSet {
-            self.imageView?.tintColor = self.tintColor
+            self.imageView?.tintColor = UIColor.greenColor
         }
     }
 
@@ -33,7 +33,6 @@ class ShareButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyTheme()
-
         clipsToBounds = false
         setImage(UIImage.templateImageNamed(ImageIdentifiers.imgUpload), for: .normal)
         imageView?.contentMode = .scaleAspectFit
@@ -49,9 +48,9 @@ class ShareButton: UIButton {
 
 extension ShareButton: NotificationThemeable {
     func applyTheme() {
-        selectedTintColor = UIColor.Photon.Grey70
-        disabledTintColor = UIColor.Photon.Grey50
-        unselectedTintColor = UIColor.Photon.Grey50
+        selectedTintColor = UIColor.greenColor//UIColor.Photon.Grey70
+        disabledTintColor = UIColor.greenColor//UIColor.Photon.Grey50
+        unselectedTintColor = UIColor.greenColor//UIColor.Photon.Grey50
         tintColor = isEnabled ? unselectedTintColor : disabledTintColor
         imageView?.tintColor = tintColor
     }

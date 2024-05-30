@@ -34,6 +34,9 @@ final class LockURLView: UIView {
         trackingProtectionButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.trackingProtection
     }
     
+    private var constraintWithText: [NSLayoutConstraint] = []
+    private var constraintsWithoutText: [NSLayoutConstraint] = []
+    
     lazy var urlTextField: URLTextField = .build { txt in
         // Prevent the field from compressing the toolbar buttons on the 4S in landscape.
         txt.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 50), for: .horizontal)
@@ -65,7 +68,7 @@ final class LockURLView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func prepareUI() {  }
+    private func prepareUI() { /*self.backgroundColor = .green*/ }
     
     private func addingViews() {
         self.addSubview(self.contentView)
@@ -81,8 +84,8 @@ final class LockURLView: UIView {
         self.urlTextField.translatesAutoresizingMaskIntoConstraints = false
         
         self.contentView.pinToView(view: self)
-      
-        NSLayoutConstraint.activate([
+        
+        self.constraintWithText = [
             self.contentItemsView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             self.contentItemsView.leadingAnchor.constraint(greaterThanOrEqualTo: self.contentView.leadingAnchor),
             self.contentItemsView.trailingAnchor.constraint(lessThanOrEqualTo: self.contentView.trailingAnchor),
@@ -101,7 +104,20 @@ final class LockURLView: UIView {
             self.btnTrackingPtotection.widthAnchor.constraint(equalToConstant: 30),
             self.btnTrackingPtotection.heightAnchor.constraint(equalToConstant: 40),
         
-        ])
+        ]
+        
+        self.constraintsWithoutText = [
+            self.contentItemsView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            self.contentItemsView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            self.contentItemsView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            self.contentItemsView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+            
+            self.urlTextField.topAnchor.constraint(equalTo: self.contentItemsView.topAnchor, constant: 0),
+            self.urlTextField.leadingAnchor.constraint(equalTo: self.contentItemsView.leadingAnchor, constant: 0),
+            self.urlTextField.trailingAnchor.constraint(equalTo: self.contentItemsView.trailingAnchor, constant: 0),
+            self.urlTextField.bottomAnchor.constraint(equalTo: self.contentItemsView.bottomAnchor, constant: 0),
+        ]
+        self.activateCurrentConstraint(isShouldActivateWithText: false)
     }
     
     @objc func didPressTPShieldButton(_ button: UIButton) {
@@ -150,7 +166,18 @@ final class LockURLView: UIView {
     func shouldHideProtectionBtn(isHidden: Bool) {
         self.btnTrackingPtotection.isHidden = isHidden
         self.urlTextField.updateTextRect(isSpecial: isHidden)
-        
+        self.activateCurrentConstraint(isShouldActivateWithText: !isHidden)
+    }
+    
+    private func activateCurrentConstraint(isShouldActivateWithText: Bool) {
+        switch isShouldActivateWithText {
+        case true:
+            NSLayoutConstraint.deactivate(self.constraintsWithoutText)
+            NSLayoutConstraint.activate(self.constraintWithText)
+        case false:
+            NSLayoutConstraint.deactivate(self.constraintWithText)
+            NSLayoutConstraint.activate(self.constraintsWithoutText)
+        }
     }
 }
 

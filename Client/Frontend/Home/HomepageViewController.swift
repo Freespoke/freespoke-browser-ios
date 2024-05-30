@@ -197,49 +197,26 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     }
     
     func checkFreespokeHomepage() {
-        if isHome {
-            if !isNewTab {
-                if isSearching {
-                    if let freespokeHomepageView = freespokeHomepageView {
-                        UIView.animate(
-                            withDuration: 0.2,
-                            animations: {
-                                self.freespokeHomepageView.alpha = 0
-                            }, completion: {_ in
-                            })
-                    }
-                }
-                else {
-                    if let freespokeHomepageView = freespokeHomepageView {
-                        UIView.animate(
-                            withDuration: 0.2,
-                            animations: {
-                                self.freespokeHomepageView.alpha = 1
-                            }, completion: {_ in
-                            })
-                    }
-                }
+        switch self.isHome {
+        case true:
+            switch self.isNewTab {
+            case true:
+                self.shouldHideHomePageViewWithAnimation(shouldHide: self.isSearching)
+            case false:
+                self.shouldHideHomePageViewWithAnimation(shouldHide: self.isSearching)
             }
-            else {
-                if let freespokeHomepageView = freespokeHomepageView {
-                    UIView.animate(
-                        withDuration: 0.2,
-                        animations: {
-                            self.freespokeHomepageView.alpha = 0
-                        }, completion: {_ in
-                        })
-                }
-            }
+        case false:
+            self.shouldHideHomePageViewWithAnimation(shouldHide: self.isSearching)
         }
-        else {
-            if let freespokeHomepageView = freespokeHomepageView {
-                UIView.animate(
-                    withDuration: 0.2,
-                    animations: {
-                        self.freespokeHomepageView.alpha = 0
-                    }, completion: {_ in
-                    })
-            }
+    }
+    
+    private func shouldHideHomePageViewWithAnimation(shouldHide: Bool) {
+        if let _ = freespokeHomepageView {
+            UIView.animate(
+                withDuration: 0.2,
+                animations: { [weak self] in
+                    self?.freespokeHomepageView.alpha = shouldHide ? 0 : 1
+                })
         }
     }
     

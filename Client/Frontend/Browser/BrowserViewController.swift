@@ -1030,7 +1030,8 @@ class BrowserViewController: UIViewController {
             })
 
         // Make sure reload button is hidden on homepage
-        urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = .disabled
+        urlBar.locationView.rightToolBarView.updateStatusForReloadBtn(status: .disabled)
+        self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: true))
     }
 
     /// Once the homepage is created, browserViewController keeps a reference to it, never setting it to nil during
@@ -1082,14 +1083,15 @@ class BrowserViewController: UIViewController {
             })
 
         // Make sure reload button is working after leaving homepage
-        urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = .reload
+        urlBar.locationView.rightToolBarView.updateStatusForReloadBtn(status: .reload)
     }
 
     func updateInContentHomePanel(_ url: URL?, focusUrlBar: Bool = false) {
         let isAboutHomeURL = url.flatMap { InternalURL($0)?.isAboutHomeURL } ?? false
         guard let url = url else {
             hideHomepage()
-            urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = .disabled
+            urlBar.locationView.rightToolBarView.updateStatusForReloadBtn(status: .disabled)
+            self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: true))
             return
         }
 
@@ -1372,13 +1374,16 @@ class BrowserViewController: UIViewController {
         
         // No tab
         if let tab = tabManager.selectedTab {
-            urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = .disabled
+            let status: ReloadButtonState = isLoading ? .stop : .reload
+            urlBar.locationView.rightToolBarView.updateStatusForReloadBtn(status: status)
+            self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: isLoading))
             navigationToolbar.updateMiddleButtonState(state)
             currentMiddleButtonState = state
             
             // Tab with starting page
             if tab.isURLStartingPage {
-                urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = .disabled
+                urlBar.locationView.rightToolBarView.updateStatusForReloadBtn(status: .disabled)
+                self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: true))
                 navigationToolbar.updateMiddleButtonState(state)
                 currentMiddleButtonState = state
                 
@@ -1412,35 +1417,15 @@ class BrowserViewController: UIViewController {
 
         navigationToolbar.updateMiddleButtonState(state)
         if !toolbar.isHidden {
-            urlBar.locationView.rightToolBarView.btnReload.reloadButtonState = isLoading ? .stop : .reload
+            let status: ReloadButtonState = isLoading ? .stop : .reload
+            print("status for reload btn: \(status)")
+            urlBar.locationView.rightToolBarView.updateStatusForReloadBtn(status: status)
+            self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: isLoading))
         }
         currentMiddleButtonState = state
     }
     
-    func setValues(isHome: Bool, isNewTab: Bool, isSearching: Bool) {
-        /*
-        if isHome {
-            if !isNewTab {
-                if isSearching {
-                    urlBar.alpha = 1
-                }
-                else {
-                    if UIDevice.current.userInterfaceIdiom == .phone {
-                        urlBar.alpha = 0
-                    } else {
-                        urlBar.alpha = 1
-                    }
-                }
-            }
-            else {
-                urlBar.alpha = 1
-            }
-        }
-        else {
-            urlBar.alpha = 1
-        }
-        */
-        
+    func setValues(isHome: Bool, isNewTab: Bool, isSearching: Bool) {        
         homepageViewController?.isHome = isHome
         homepageViewController?.isNewTab = isNewTab
         homepageViewController?.isSearching = isSearching

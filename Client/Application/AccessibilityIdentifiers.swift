@@ -20,6 +20,7 @@ public struct AccessibilityIdentifiers {
         static let readerModeButton = "TabLocationView.readerModeButton"
         static let reloadButton = "TabLocationView.reloadButton"
         static let shareButton = "TabLocationView.shareButton"
+        static let bookmarkButton = "TabLocationView.bookmarkButton"
     }
 
     struct Browser {

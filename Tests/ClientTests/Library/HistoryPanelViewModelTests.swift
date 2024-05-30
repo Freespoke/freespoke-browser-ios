@@ -86,7 +86,7 @@ class HistoryPanelViewModelTests: XCTestCase {
         }
     }
 
-    func testEmptyStateText_ForSearch() {
+    func testEmptyStateText() {
         subject.isSearchInProgress = true
         XCTAssertEqual(subject.emptyStateText, .LibraryPanel.History.NoHistoryResult)
     }

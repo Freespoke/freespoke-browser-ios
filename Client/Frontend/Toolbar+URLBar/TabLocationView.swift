@@ -18,7 +18,7 @@ protocol TabLocationViewDelegate: AnyObject {
 
     /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
     @discardableResult func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool
-    func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView)
+    func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, button: UIButton)
     func tabLocationViewLocationAccessibilityActions(_ tabLocationView: TabLocationView) -> [UIAccessibilityCustomAction]?
 }
 
@@ -58,7 +58,6 @@ class TabLocationView: UIView, FeatureFlaggable {
         didSet {
             updateTextWithURL()
             self.lockURLView.shouldHideProtectionBtn(isHidden: !isValidHttpUrlProtocol)
-//            bookmarkBtn.isHidden = !(shouldEnableShareButtonFeature && isValidHttpUrlProtocol)
             setNeedsUpdateConstraints()
         }
     }
@@ -72,10 +71,10 @@ class TabLocationView: UIView, FeatureFlaggable {
 
     var readerModeState: ReaderModeState {
         get {
-            return readerModeButton.readerModeState
+            return btnReaderMode.readerModeState
         }
         set (newReaderModeState) {
-            guard newReaderModeState != self.readerModeButton.readerModeState else { return }
+            guard newReaderModeState != self.btnReaderMode.readerModeState else { return }
             setReaderModeState(newReaderModeState)
         }
     }
@@ -88,7 +87,7 @@ class TabLocationView: UIView, FeatureFlaggable {
         lockURLView.delegate = self
     })
 
-    private lazy var readerModeButton: ReaderModeButton = .build { readerModeButton in
+    private lazy var btnReaderMode: ReaderModeButton = .build { readerModeButton in
         readerModeButton.addTarget(self, action: #selector(self.tapReaderModeButton(_:)), for: .touchUpInside)
         readerModeButton.addGestureRecognizer(
             UILongPressGestureRecognizer(target: self,
@@ -125,7 +124,7 @@ class TabLocationView: UIView, FeatureFlaggable {
         let space1px = UIView.build()
         space1px.widthAnchor.constraint(equalToConstant: 1).isActive = true
 
-        let subviews = [readerModeButton, lockURLView, rightToolBarView]
+        let subviews = [btnReaderMode, lockURLView, rightToolBarView]
         
         subviews.forEach({ [weak self] in self?.contentMainStackView.addArrangedSubview($0) })
         
@@ -145,8 +144,8 @@ class TabLocationView: UIView, FeatureFlaggable {
         let widthForLockUrlView = UIScreen.main.bounds.width - totalWidth
         
         NSLayoutConstraint.activate([
-            readerModeButton.widthAnchor.constraint(equalToConstant: UX.buttonSize),
-            readerModeButton.heightAnchor.constraint(equalToConstant: UX.buttonSize),
+            btnReaderMode.widthAnchor.constraint(equalToConstant: UX.buttonSize),
+            btnReaderMode.heightAnchor.constraint(equalToConstant: UX.buttonSize),
         ])
         
         self.lockURLView.translatesAutoresizingMaskIntoConstraints = false
@@ -154,7 +153,7 @@ class TabLocationView: UIView, FeatureFlaggable {
             self.lockURLView.widthAnchor.constraint(greaterThanOrEqualToConstant: 50)
         ])
 
-        readerModeButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        btnReaderMode.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         rightToolBarView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         lockURLView.setContentHuggingPriority(.defaultLow, for: .horizontal)
         lockURLView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -175,7 +174,7 @@ class TabLocationView: UIView, FeatureFlaggable {
 
     // MARK: - Accessibility
 
-    private lazy var _accessibilityElements = [readerModeButton, lockURLView, rightToolBarView]
+    private lazy var _accessibilityElements = [btnReaderMode, lockURLView, rightToolBarView]
 
     override var accessibilityElements: [Any]? {
         get {
@@ -221,6 +220,14 @@ class TabLocationView: UIView, FeatureFlaggable {
     private func updateTextWithURL() {
         self.lockURLView.updateURL(url: self.url)
     }
+    
+    func shouldHideButtons(typeBtns: RigthToolBarTypeBtnsHidden) {
+        self.rightToolBarView.shouldHideBtns(typeBtns: typeBtns)
+        switch typeBtns {
+        case .all(let isHidden):
+            self.btnReaderMode.isHidden = isHidden
+        }
+    }
 }
 
 extension TabLocationView: LockURLViewDelegate {
@@ -246,8 +253,8 @@ extension TabLocationView: RightToolBarViewDelegate {
         self.delegate?.tabLocationViewDidTapReload(self)
     }
     
-    func tabLocationViewDidLongPressReload() {
-        self.delegate?.tabLocationViewDidLongPressReload(self)
+    func tabLocationViewDidLongPressReload(button: UIButton) {
+        self.delegate?.tabLocationViewDidLongPressReload(self, button: button)
     }
 }
 // MARK: - Private
@@ -257,12 +264,12 @@ private extension TabLocationView {
     }
 
     func setReaderModeState(_ newReaderModeState: ReaderModeState) {
-        let wasHidden = readerModeButton.isHidden
-        self.readerModeButton.readerModeState = newReaderModeState
-        readerModeButton.isHidden = (newReaderModeState == ReaderModeState.unavailable)
-        if wasHidden != readerModeButton.isHidden {
+        let wasHidden = btnReaderMode.isHidden
+        self.btnReaderMode.readerModeState = newReaderModeState
+        self.btnReaderMode.isHidden = (newReaderModeState == ReaderModeState.unavailable)
+        if wasHidden != btnReaderMode.isHidden {
             UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged, argument: nil)
-            if !readerModeButton.isHidden {
+            if !btnReaderMode.isHidden {
                 // Delay the Reader Mode accessibility announcement briefly to prevent interruptions.
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
                     UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: String.ReaderModeAvailableVoiceOverAnnouncement)
@@ -270,7 +277,7 @@ private extension TabLocationView {
             }
         }
         UIView.animate(withDuration: 0.1, animations: { () -> Void in
-            self.readerModeButton.alpha = newReaderModeState == .unavailable ? 0 : 1
+            self.btnReaderMode.alpha = newReaderModeState == .unavailable ? 0 : 1
         })
     }
 }
@@ -309,7 +316,7 @@ extension TabLocationView: UIDragInteractionDelegate {
 extension TabLocationView: NotificationThemeable {
     func applyTheme() {
         self.lockURLView.applyTheme()
-        readerModeButton.applyTheme()
+        btnReaderMode.applyTheme()
         let color = LegacyThemeManager.instance.currentName == .dark ? UIColor(white: 0.3, alpha: 0.6): UIColor.legacyTheme.textField.background
         menuBadge.badge.tintBackground(color: color)
     }

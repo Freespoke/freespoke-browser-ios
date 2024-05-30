@@ -493,7 +493,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         if !toolbarIsShowing {
             updateConstraintsIfNeeded()
         }
-        locationView.rightToolBarView.btnReload.isHidden = hideReloadButton
+        self.locationView.shouldHideButtons(typeBtns: .all(isHidden: hideReloadButton))
         updateViewsForOverlayModeAndToolbarChanges()
     }
 
@@ -516,12 +516,12 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     /// We hide reload button on iPad, but not in multitasking mode
     func updateReaderModeState(_ state: ReaderModeState, hideReloadButton: Bool) {
         locationView.readerModeState = state
-        locationView.rightToolBarView.btnReload.isHidden = hideReloadButton
+        self.locationView.shouldHideButtons(typeBtns: .all(isHidden: hideReloadButton))
     }
 
     /// We hide reload button on iPad, but not in multitasking mode
     func shouldHideReloadButton(_ isHidden: Bool) {
-        locationView.rightToolBarView.btnReload.isHidden = isHidden
+        self.locationView.shouldHideButtons(typeBtns: .all(isHidden: isHidden))
     }
 
     func setAutocompleteSuggestion(_ suggestion: String?) {
@@ -771,8 +771,8 @@ extension URLBarView: TabLocationViewDelegate {
         return delegate?.urlBarDidLongPressReaderMode(self) ?? false
     }
 
-    func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView) {
-        delegate?.urlBarDidLongPressReload(self, from: tabLocationView.rightToolBarView.btnReload)
+    func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, button: UIButton) {
+        delegate?.urlBarDidLongPressReload(self, from: button)
     }
 
     func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView) {
@@ -791,14 +791,16 @@ extension URLBarView: TabLocationViewDelegate {
     }
 
     func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView) {
-        let state = locationView.rightToolBarView.btnReload.isHidden ? .reload : locationView.rightToolBarView.btnReload.reloadButtonState
+        let state = locationView.rightToolBarView.getHiddenValueForBtnReload() ? .reload : locationView.rightToolBarView.getStatusForBtnReload()
 
         switch state {
         case .reload:
             delegate?.urlBarDidPressReload(self)
             TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .reloadFromUrlBar)
+            self.locationView.shouldHideButtons(typeBtns: .all(isHidden: true))
         case .stop:
             delegate?.urlBarDidPressStop(self)
+            self.locationView.shouldHideButtons(typeBtns: .all(isHidden: false))
         case .disabled:
             // do nothing
             break

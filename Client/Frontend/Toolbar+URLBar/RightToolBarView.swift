@@ -8,7 +8,11 @@ protocol RightToolBarViewDelegate {
     func tabLocationViewDidTapBookmarkBtn(button: UIButton)
     func tabLocationViewTapShare(button: UIButton)
     func tabLocationViewDidTapReload()
-    func tabLocationViewDidLongPressReload()
+    func tabLocationViewDidLongPressReload(button: UIButton)
+}
+
+enum RigthToolBarTypeBtnsHidden {
+    case all(isHidden: Bool)
 }
 
 final class RightToolBarView: UIView {
@@ -29,10 +33,11 @@ final class RightToolBarView: UIView {
         bookmarkButton.clipsToBounds = false
         bookmarkButton.tintColor = UIColor.Photon.Grey50
         bookmarkButton.contentHorizontalAlignment = .center
-        bookmarkButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.shareButton
+        bookmarkButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.bookmarkButton
+        bookmarkButton.isHidden = true
     }
 
-    lazy var btnReload: StatefulButton = {
+    lazy private var btnReload: StatefulButton = {
         let reloadButton = StatefulButton(frame: .zero, state: .disabled)
         reloadButton.addTarget(self, action: #selector(tapOnBtnReload), for: .touchUpInside)
         reloadButton.addGestureRecognizer(
@@ -44,6 +49,7 @@ final class RightToolBarView: UIView {
         reloadButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.reloadButton
         reloadButton.isAccessibilityElement = true
         reloadButton.translatesAutoresizingMaskIntoConstraints = false
+        reloadButton.isHidden = true
         return reloadButton
     }()
     
@@ -53,6 +59,7 @@ final class RightToolBarView: UIView {
         shareButton.tintColor = UIColor.Photon.Grey50
         shareButton.contentHorizontalAlignment = .center
         shareButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.shareButton
+        shareButton.isHidden = true
     }
     
     override init(frame: CGRect) {
@@ -98,7 +105,28 @@ final class RightToolBarView: UIView {
     
     @objc func longPressOnBtnReload(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began {
-            self.delegate?.tabLocationViewDidLongPressReload()
+            self.delegate?.tabLocationViewDidLongPressReload(button: self.btnReload)
         }
+    }
+    
+    func shouldHideBtns(typeBtns: RigthToolBarTypeBtnsHidden) {
+        switch typeBtns {
+        case .all(let isHidden):
+            self.btnShare.isHidden = isHidden
+            self.btnReload.isHidden = isHidden
+            self.btnBookmark.isHidden = isHidden
+        }
+    }
+    
+    func getHiddenValueForBtnReload() -> Bool {
+        return self.btnReload.isHidden
+    }
+    
+    func getStatusForBtnReload() -> ReloadButtonState {
+        return self.btnReload.reloadButtonState
+    }
+    
+    func updateStatusForReloadBtn(status: ReloadButtonState) {
+        self.btnReload.reloadButtonState = status
     }
 }

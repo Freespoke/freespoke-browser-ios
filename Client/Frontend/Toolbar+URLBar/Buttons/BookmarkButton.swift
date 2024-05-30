@@ -36,7 +36,7 @@ class BookmarkButton: UIButton {
         applyTheme()
 
         clipsToBounds = false
-        setImage(UIImage.templateImageNamed(ImageIdentifiers.share), for: .normal)
+        setImage(UIImage.templateImageNamed(ImageIdentifiers.addToBookmark), for: .normal)
         imageView?.contentMode = .scaleAspectFit
         adjustsImageWhenHighlighted = false
     }

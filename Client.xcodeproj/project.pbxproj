@@ -14221,7 +14221,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 336;
+				CURRENT_PROJECT_VERSION = "";
 				DEVELOPMENT_TEAM = 5BK5Z66P7D;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = "$(INFOPLIST_FILE)";
@@ -14232,7 +14232,6 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
@@ -15037,7 +15036,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 336;
+				CURRENT_PROJECT_VERSION = "";
 				DEVELOPMENT_TEAM = 5BK5Z66P7D;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = "$(INFOPLIST_FILE)";
@@ -15048,7 +15047,6 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
@@ -16375,7 +16373,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 336;
+				CURRENT_PROJECT_VERSION = "";
 				DEVELOPMENT_TEAM = 43AQ936H96;
 				INFOPLIST_FILE = "$(INFOPLIST_FILE)";
 				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
@@ -16385,7 +16383,6 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
@@ -16709,7 +16706,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 336;
+				CURRENT_PROJECT_VERSION = "";
 				DEVELOPMENT_TEAM = "";
 				EXCLUDED_SOURCE_FILE_NAMES = CredentialProvider.appex;
 				INFOPLIST_FILE = "$(INFOPLIST_FILE)";
@@ -16720,7 +16717,6 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
@@ -17004,7 +17000,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 336;
+				CURRENT_PROJECT_VERSION = "";
 				DEVELOPMENT_TEAM = 43AQ936H96;
 				INFOPLIST_FILE = "$(INFOPLIST_FILE)";
 				INFOPLIST_KEY_UIUserInterfaceStyle = "$(USER_INTERFACE_STYLE)";
@@ -17014,7 +17010,6 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (
@@ -17524,7 +17519,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 336;
+				CURRENT_PROJECT_VERSION = "";
 				DEVELOPMENT_TEAM = 5BK5Z66P7D;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = "$(INFOPLIST_FILE)";
@@ -17535,7 +17530,6 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.2.0;
 				MOZ_BUNDLE_DISPLAY_NAME = "${MOZ_BUNDLE_DISPLAY_NAME}";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				OTHER_LDFLAGS = (

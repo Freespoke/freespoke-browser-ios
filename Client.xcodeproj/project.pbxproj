@@ -14339,7 +14339,7 @@
 				DEVELOPMENT_TEAM = 5BK5Z66P7D;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = Extensions/ShareTo/Info.plist;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				OTHER_SWIFT_FLAGS = "-DMOZ_CHANNEL_FENNEC -DMOZ_TARGET_SHARETO";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID).$(PRODUCT_NAME)";
@@ -14457,7 +14457,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -14809,7 +14809,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -15053,7 +15053,7 @@
 					"-ObjC",
 					"-lxml2",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.freespoke.app;
 				PRODUCT_MODULE_NAME = Client;
 				PRODUCT_NAME = Client;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -15075,7 +15075,7 @@
 				DEVELOPMENT_TEAM = 5BK5Z66P7D;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = Extensions/ShareTo/Info.plist;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				OTHER_SWIFT_FLAGS = "-DMOZ_CHANNEL_FENNEC -DMOZ_TARGET_SHARETO";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID).$(PRODUCT_NAME)";
@@ -15193,7 +15193,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -15545,7 +15545,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -15688,7 +15688,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -15765,7 +15765,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -15841,7 +15841,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -15917,7 +15917,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "${MOZ_BUNDLE_ID}";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -16419,7 +16419,7 @@
 				CURRENT_PROJECT_VERSION = 204;
 				DEVELOPMENT_TEAM = 43AQ936H96;
 				INFOPLIST_FILE = Extensions/ShareTo/Info.plist;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				OTHER_SWIFT_FLAGS = "-DMOZ_CHANNEL_RELEASE -DMOZ_TARGET_SHARETO";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID).$(PRODUCT_NAME)";
@@ -16743,7 +16743,7 @@
 				CURRENT_PROJECT_VERSION = 204;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Extensions/ShareTo/Info.plist;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				OTHER_SWIFT_FLAGS = "-DMOZ_CHANNEL_FENNEC -DMOZ_TARGET_SHARETO";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID).$(PRODUCT_NAME)";
@@ -17046,7 +17046,7 @@
 				CURRENT_PROJECT_VERSION = 204;
 				DEVELOPMENT_TEAM = 43AQ936H96;
 				INFOPLIST_FILE = Extensions/ShareTo/Info.plist;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				OTHER_SWIFT_FLAGS = "-DMOZ_CHANNEL_BETA -DMOZ_TARGET_SHARETO";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID).$(PRODUCT_NAME)";
@@ -17252,7 +17252,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -17326,7 +17326,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -17401,7 +17401,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -17476,7 +17476,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -17536,7 +17536,7 @@
 					"-ObjC",
 					"-lxml2",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.freespoke.app;
 				PRODUCT_MODULE_NAME = Client;
 				PRODUCT_NAME = Client;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -17571,7 +17571,7 @@
 				DEVELOPMENT_TEAM = 5BK5Z66P7D;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = Extensions/ShareTo/Info.plist;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				MOZ_BUNDLE_ID = "$(MOZ_BUNDLE_ID)";
 				OTHER_SWIFT_FLAGS = "-DMOZ_CHANNEL_FENNEC -DMOZ_TARGET_SHARETO";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID).$(PRODUCT_NAME)";

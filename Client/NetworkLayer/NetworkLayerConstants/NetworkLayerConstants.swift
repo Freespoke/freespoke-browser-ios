@@ -66,6 +66,18 @@ enum NetworkLayerConstants {
             return "/accounts/restore-purchase/ios"
         }
         
+        static var getBreakingNewsPath: String {
+            return "/breaking_news"
+        }
+        
+        static var getStoryFeedPath: String {
+            return "/v2/feed/story"
+        }
+        
+        static var getAdvertisementPath: String {
+            return "/v2/messaging"
+        }
+        
         static var getShoppingCollectionPath: String {
             return "/v2/shop/collections"
         }
@@ -98,9 +110,12 @@ enum NetworkLayerConstants {
         static let refreshToken = "refresh_token"
         static let signedPayload = "signedPayload"
         static let page = "page"
-        static let perPage = "per_page"
+        static let perPageUnderscored = "per_page"
+        static let perPageCamelCased = "perPage"
         static let magicLinkConfig = "magic_link_config"
         static let redirectUri = "redirect_uri"
+        static let features = "features"
+        static let location = "location"
     }
     
     // MARK: Parameter Values

@@ -21,4 +21,8 @@ class UnderlinedButton: BaseTouchableButton {
         
         self.setAttributedTitle(attributedString, for: .normal)
     }
+    
+    override func setTitleColor(_ color: UIColor?, for state: UIControl.State) {
+        self.underline(text: self.title(for: state))
+    }
 }

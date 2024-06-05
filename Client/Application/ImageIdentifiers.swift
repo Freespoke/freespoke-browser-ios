@@ -113,5 +113,9 @@ public struct ImageIdentifiers {
     public static let readerModeAvailable = "ReaderModeAvailable"
     public static let readerModeActive = "ReaderModeActive"
     public static let imgUpload = "imgUpload"
-    
+    public static let imgBiasLeftIcon = "img_bias_left_icon"
+    public static let imgBiasRightIcon = "img_bias_right_icon"
+    public static let imgTweetLogo = "img_tweet_logo"
+    public static let imgShopsStore = "img_shops_store"
+    public static let imgAiGeneratedIcon = "img_ai_generated_icon"
 }

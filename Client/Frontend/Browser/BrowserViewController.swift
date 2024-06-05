@@ -625,8 +625,6 @@ class BrowserViewController: UIViewController {
         addBookmarkWithoutEditToast(url: Constants.freespokeBlogURL.rawValue, title: "Blog")
         addBookmarkWithoutEditToast(url: Constants.getInTouchURL.rawValue, title: "Contact")
         addBookmarkWithoutEditToast(url: Constants.AppInternalBrowserURLs.freespokeURL, title: "Freespoke")
-        
-        homepageViewController?.freespokeHomepageView.reloadAllItems()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -2158,6 +2156,26 @@ extension BrowserViewController: FreespokeHomepageDelegate {
         //urlBar.alpha = 1
         
         focusLocationTextField(forTab: tabManager.selectedTab)
+    }
+    
+    func didPressShare(_ button: UIButton, url: URL) {
+        
+        let helper = ShareExtensionHelper(url: url, tab: nil)
+        let controller = helper.createActivityViewController({ completed, activityType in
+        })
+        
+        if let popoverPresentationController = controller.popoverPresentationController {
+            popoverPresentationController.sourceView = button
+            popoverPresentationController.sourceRect = button.bounds
+            popoverPresentationController.permittedArrowDirections = [.up, .down]
+            //popoverPresentationController.delegate = self
+        }
+
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    func didPressMicrophone() {
+        print("DEBUG: BrowserViewController didTapMicrophoneButton()!!!")
     }
     
     func showURL(url: String) {

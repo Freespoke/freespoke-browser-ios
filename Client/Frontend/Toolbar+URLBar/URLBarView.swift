@@ -19,6 +19,7 @@ private struct URLBarViewUX {
     static let TextFieldCornerRadius: CGFloat = 8
     static let TextFieldBorderWidth: CGFloat = 0
     static let TextFieldBorderWidthSelected: CGFloat = 0//4
+    static let UrlBarBorderWidth: CGFloat = 1
     static let ProgressBarHeight: CGFloat = 3
     static let SearchIconImageWidth: CGFloat = 30
     static let TabsButtonRotationOffset: CGFloat = 1.5
@@ -105,6 +106,14 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     /// is *not* tied to the location text field's editing state; for instance, when selecting
     /// a panel, the first responder will be resigned, yet the overlay mode UI is still active.
     var inOverlayMode = false
+    
+    let borderView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = URLBarViewUX.TextFieldCornerRadius
+        view.layer.borderWidth = URLBarViewUX.UrlBarBorderWidth
+        return view
+    }()
 
     lazy var locationView: TabLocationView = {
         let locationView = TabLocationView()
@@ -252,7 +261,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     fileprivate func commonInit() {
         locationContainer.addSubview(locationView)
 
-        [scrollToTopButton, line, tabsButton, progressBar, cancelButton, showQRScannerButton,
+        [borderView, scrollToTopButton, line, tabsButton, progressBar, cancelButton, showQRScannerButton,
          homeButton, bookmarksButton, appMenuButton, addNewTabButton, forwardButton, backButton, electionButton,
          multiStateButton, locationContainer].forEach {
             addSubview($0)
@@ -272,6 +281,13 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     }
 
     fileprivate func setupConstraints() {
+        borderView.snp.makeConstraints { make in
+            let heightMin = URLBarViewUX.LocationHeight + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
+            make.height.greaterThanOrEqualTo(heightMin)
+            make.trailing.equalTo(self.safeArea.trailing).inset(4)
+            make.leading.equalTo(self.safeArea.leading).inset(4)
+            make.centerY.equalTo(self)
+        }
         scrollToTopButton.snp.makeConstraints { make in
             make.top.equalTo(self)
             make.left.right.equalTo(locationContainer)
@@ -369,8 +385,6 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
             } else {
                 make.bottom.equalTo(self)
             }
-
-            make.leading.trailing.equalTo(self)
             make.height.equalTo(1)
         }
 
@@ -421,7 +435,6 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
                 make.height.greaterThanOrEqualTo(URLBarViewUX.LocationHeight+2)
                 make.centerY.equalTo(self)
             }
-            self.locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidth
             self.locationView.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationContainer).inset(UIEdgeInsets(equalInset: URLBarViewUX.TextFieldBorderWidth))
             }
@@ -624,12 +637,13 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         locationContainer.layer.borderColor = borderColor.cgColor
 
         if inOverlayMode {
-            line.isHidden = inOverlayMode
+            line.isHidden = true
             // Make the editable text field span the entire URL bar, covering the lock and reader icons.
             locationTextField?.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationView)
             }
         } else {
+            line.isHidden = false
             // Shrink the editable text field back to the size of the location view before hiding it.
             locationTextField?.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationView.lockURLView.urlTextField)
@@ -898,19 +912,17 @@ extension URLBarView: NotificationThemeable {
         switch LegacyThemeManager.instance.currentName {
         case .normal:
             backgroundColor = .gray7
-            locationView.backgroundColor = inOverlayMode ? UIColor.gray7 : UIColor.legacyTheme.textField.background
-            cancelButton.backgroundColor = Utils.hexStringToUIColor(hex: "EDF0F5")
-            
+            self.borderView.backgroundColor = UIColor.gray7
+            self.borderView.layer.borderColor = UIColor.neutralsGray5.cgColor
+            cancelButton.backgroundColor = .clear
         case .dark:
-            cancelButton.backgroundColor = .white.withAlphaComponent(0.05)
+            cancelButton.backgroundColor = .clear
             backgroundColor = .darkBackground
-            locationView.backgroundColor = inOverlayMode ? UIColor.darkBackground : UIColor.white.withAlphaComponent(0.05)//legacyTheme.textField.background
+            self.borderView.backgroundColor = UIColor.freespokeBlack05
+            self.borderView.layer.borderColor = UIColor.neutralsGray01.cgColor
         }
 
         locationBorderColor = UIColor.legacyTheme.urlbar.border
-        //locationView.backgroundColor = inOverlayMode ? UIColor.legacyTheme.textField.backgroundInOverlay : UIColor.legacyTheme.textField.background
-         //UIColor.white.withAlphaComponent(0.05)
-        locationContainer.backgroundColor = UIColor.legacyTheme.textField.background
 
         privateModeBadge.badge.tintBackground(color: UIColor.legacyTheme.browser.background)
         appMenuBadge.badge.tintBackground(color: UIColor.legacyTheme.browser.background)

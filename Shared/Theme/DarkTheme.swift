@@ -71,4 +71,10 @@ private struct DarkColourPalette: ThemeColourPalette {
 
     // MARK: - Shadow
     var shadowDefault: UIColor = FXColors.DarkGrey90.withAlphaComponent(0.16)
+    
+    // MARK: - Labels
+    var neutralsGrey: UIColor = FXColors.NeutralsGrey3
+    
+    // MARK: - Views
+    var neutralViewGrey: UIColor = FXColors.NeutralsGrey1
 }

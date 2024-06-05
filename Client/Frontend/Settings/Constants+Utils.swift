@@ -258,6 +258,7 @@ extension UIColor {
     static let charcoalGrayColor = Utils.hexStringToUIColor(hex: "#292929")
     static let gunmetalGrayColor = Utils.hexStringToUIColor(hex: "#525252")
     static let fxOffWhite1 = Utils.hexStringToUIColor(hex: "#DADEE3")
+    static let freespokeBlack05 = Utils.hexStringToUIColor(hex: "#FFFFFF").withAlphaComponent(0.05)
     static let orangeColor = Utils.hexStringToUIColor(hex: "#FD531F")
     static let brand600BlueLead = Utils.hexStringToUIColor(hex: "#2168CC")
     static let crimsonRed = Utils.hexStringToUIColor(hex: "#C43351")

@@ -811,6 +811,19 @@ class BrowserViewController: UIViewController {
         bottomContentStackView.snp.remakeConstraints { remake in
             adjustBottomContentStackView(remake)
         }
+        
+        urlBar.snp.makeConstraints { make in
+            if self.urlBar.inOverlayMode {
+                make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintForToolbarInOverlayMode)
+                make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintForToolbarInOverlayMode)
+            } else {
+                make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintForToolbar)
+                make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintForToolbar)
+            }
+        }
+        urlBar.line.snp.makeConstraints { make in
+            make.left.right.equalTo(self.view)
+        }
 
         adjustBottomSearchBarForKeyboard()
     }
@@ -2185,6 +2198,12 @@ extension BrowserViewController: FreespokeHomepageDelegate {
 
 // MARK: HomePanelDelegate
 extension BrowserViewController: HomePanelDelegate {
+    
+    func didTappedOnTrendingCell(storyFeedItemModel: StoryFeedItemModel) {
+        guard let url = storyFeedItemModel.links?.seeMoreLink else { return }
+        openLinkURL(url)
+    }
+    
     func homePanelDidRequestToOpenLibrary(panel: LibraryPanelType) {
         showLibrary(panel: panel)
         view.endEditing(true)

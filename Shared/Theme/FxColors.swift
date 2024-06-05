@@ -35,6 +35,10 @@ class FXColors {
     static let DarkGrey70 = UIColor(rgb: 0x23222b)
     static let DarkGrey80 = UIColor(rgb: 0x1c1b22)
     static let DarkGrey90 = UIColor(rgb: 0x15141a)
+    static let NeutralsGrey1 = UIColor(rgb: 0x2F3644)
+    static let NeutralsGrey2 = UIColor(rgb: 0x606671)
+    static let NeutralsGrey3 = UIColor(rgb: 0x9AA2B2)
+    static let NeutralsGrey5 = UIColor(rgb: 0xE1E5EB)
 
     // MARK: - Blue
     static let Blue05 = UIColor(rgb: 0xaaf2ff)

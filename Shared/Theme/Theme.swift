@@ -100,4 +100,10 @@ public protocol ThemeColourPalette {
 
     // MARK: - Shadow
     var shadowDefault: UIColor { get }
+    
+    // MARK: - Labels
+    var neutralsGrey: UIColor { get }
+    
+    // MARK: - Views
+    var neutralViewGrey: UIColor { get }
 }

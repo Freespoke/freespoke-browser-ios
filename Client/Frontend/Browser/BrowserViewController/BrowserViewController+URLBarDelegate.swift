@@ -394,6 +394,7 @@ extension BrowserViewController: URLBarDelegate {
             
             setValues(isHome: isHome, isNewTab: isNewTab, isSearching: true)
         }
+        self.searchBarMoveToTop()
     }
 
     func urlBarDidLeaveOverlayMode(_ urlBar: URLBarView) {
@@ -401,10 +402,45 @@ extension BrowserViewController: URLBarDelegate {
         
         destroySearchController()
         updateInContentHomePanel(tabManager.selectedTab?.url as URL?)
+        self.searchBarMoveToBottom()
     }
 
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView) {
         dismissVisibleMenus()
+    }
+    
+    func searchBarMoveToTop() {
+        let newPositionIsBottom = false
+        let newParent = header
+        urlBar.removeFromParent()
+        urlBar.addToParent(parent: newParent)
+
+        if let readerModeBar = readerModeBar {
+            readerModeBar.removeFromParent()
+            readerModeBar.addToParent(parent: newParent, addToTop: true)
+        }
+        
+        self.isBottomSearchBar = newPositionIsBottom
+        updateViewConstraints()
+        toolbar.setNeedsDisplay()
+        urlBar.updateConstraints()
+    }
+    
+    func searchBarMoveToBottom() {
+        let newPositionIsBottom = true
+        let newParent = overKeyboardContainer
+        urlBar.removeFromParent()
+        urlBar.addToParent(parent: newParent)
+
+        if let readerModeBar = readerModeBar {
+            readerModeBar.removeFromParent()
+            readerModeBar.addToParent(parent: newParent, addToTop: false)
+        }
+        
+        self.isBottomSearchBar = newPositionIsBottom
+        updateViewConstraints()
+        toolbar.setNeedsDisplay()
+        urlBar.updateConstraints()
     }
 }
 

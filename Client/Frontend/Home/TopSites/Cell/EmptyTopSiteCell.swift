@@ -31,8 +31,8 @@ class EmptyTopSiteCell: UICollectionViewCell, ReusableCell {
 
         NSLayoutConstraint.activate([
             emptyBG.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            emptyBG.widthAnchor.constraint(equalToConstant: TopSiteItemCell.UX.imageBackgroundSize.width),
-            emptyBG.heightAnchor.constraint(equalToConstant: TopSiteItemCell.UX.imageBackgroundSize.height),
+            emptyBG.widthAnchor.constraint(equalToConstant: BookmarkItemCell.UX.imageBackgroundSize.width),
+            emptyBG.heightAnchor.constraint(equalToConstant: BookmarkItemCell.UX.imageBackgroundSize.height),
             emptyBG.topAnchor.constraint(equalTo: contentView.topAnchor),
         ])
     }

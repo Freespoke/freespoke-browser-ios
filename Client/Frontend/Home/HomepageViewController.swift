@@ -41,12 +41,14 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     private lazy var wallpaperView: WallpaperBackgroundView = .build { _ in }
     private var jumpBackInContextualHintViewController: ContextualHintViewController
     private var syncTabContextualHintViewController: ContextualHintViewController
-    private var collectionView: UICollectionView! = nil
+//    private var searchCollectionView: UICollectionView! = nil
     private var logger: Logger
     
     var themeManager: ThemeManager
     var notificationCenter: NotificationProtocol
     var themeObserver: NSObjectProtocol?
+    
+    let freespokeHomepageViewModel = FreespokeHomepageViewModel()
     
     var isHome = false
     var isNewTab = false
@@ -59,14 +61,20 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         let statusBarFrame = statusBarFrame ?? CGRect.zero
         let statusBarView = UIView(frame: statusBarFrame)
         view.addSubview(statusBarView)
+        statusBarView.isHidden = true
         return statusBarView
     }()
     
     // Content stack views contains collection view.
-    lazy var contentStackView: UIStackView = .build { stackView in
-        stackView.backgroundColor = .clear
-        stackView.axis = .vertical
-    }
+//    lazy var contentStackView: UIStackView = .build { stackView in
+//        stackView.backgroundColor = .clear
+//        stackView.axis = .vertical
+//    }
+    
+    lazy var searchPageView: SearchPageView = {
+        let view = SearchPageView(viewModel: self.viewModel, freespokeHomepageViewModel: self.freespokeHomepageViewModel, themeManager: self.themeManager, delegate: self)
+        return view
+    }()
     
     var currentTab: Tab? {
         return tabManager.selectedTab
@@ -162,7 +170,9 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     }
     
     private func addFreespokeHomepageView() {
-        self.freespokeHomepageView = FreespokeHomepage(viewModel: FreespokeHomepageViewModel())
+        self.freespokeHomepageView = FreespokeHomepage(viewModel: self.freespokeHomepageViewModel)
+//        freespokeHomepageView.profile = profile
+//        freespokeHomepageView.getRecentBookmarks()
         self.freespokeHomepageView.delegate = self
         self.view.addSubview(self.freespokeHomepageView)
     }
@@ -276,34 +286,35 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     // MARK: - Layout
     
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds,
-                                          collectionViewLayout: createLayout())
-        
-        HomepageSectionType.cellTypes.forEach {
-            collectionView.register($0, forCellWithReuseIdentifier: $0.cellIdentifier)
-        }
-        collectionView.register(LabelButtonHeaderView.self,
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: LabelButtonHeaderView.cellIdentifier)
-        
-        collectionView.keyboardDismissMode = .onDrag
-        collectionView.addGestureRecognizer(longPressRecognizer)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = .clear
-        collectionView.accessibilityIdentifier = a11y.collectionView
-        contentStackView.addArrangedSubview(collectionView)
+//        searchCollectionView = UICollectionView(frame: view.bounds,
+//                                          collectionViewLayout: createLayout())
+//        
+//        HomepageSectionType.cellTypes.forEach {
+//            searchCollectionView.register($0, forCellWithReuseIdentifier: $0.cellIdentifier)
+//        }
+//        searchCollectionView.register(LabelButtonHeaderView.self,
+//                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+//                                withReuseIdentifier: LabelButtonHeaderView.cellIdentifier)
+//        
+//        searchCollectionView.keyboardDismissMode = .onDrag
+//        searchCollectionView.addGestureRecognizer(longPressRecognizer)
+//        searchCollectionView.delegate = self
+//        searchCollectionView.dataSource = self
+//        searchCollectionView.showsVerticalScrollIndicator = false
+//        searchCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        searchCollectionView.backgroundColor = .clear
+//        searchCollectionView.accessibilityIdentifier = a11y.collectionView
+//        contentStackView.addArrangedSubview(searchCollectionView)
     }
     
     func configureContentStackView() {
-        view.addSubview(contentStackView)
+        view.addSubview(self.searchPageView)
+        self.searchPageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: view.topAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            contentStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            searchPageView.topAnchor.constraint(equalTo: view.topAnchor),
+            searchPageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            searchPageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            searchPageView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
     
@@ -319,34 +330,34 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         view.sendSubviewToBack(wallpaperView)
     }
     
-    func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { [weak self]
-            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            guard let self = self,
-                  let viewModel = self.viewModel.getSectionViewModel(shownSection: sectionIndex),
-                  viewModel.shouldShow
-            else { return nil }
-            return viewModel.section(for: layoutEnvironment.traitCollection, size: self.view.frame.size)
-        }
-        return layout
-    }
+//    func createLayout() -> UICollectionViewLayout {
+//        let layout = UICollectionViewCompositionalLayout { [weak self]
+//            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+//            guard let self = self,
+//                  let viewModel = self.viewModel.getSectionViewModel(shownSection: sectionIndex), viewModel.shouldShow
+//            else { return nil }
+//            let lay = viewModel.section(for: layoutEnvironment.traitCollection, size: self.view.frame.size)
+//            return lay
+//        }
+//        return layout
+//    }
     
     // MARK: Long press
     
-    private lazy var longPressRecognizer: UILongPressGestureRecognizer = {
-        return UILongPressGestureRecognizer(target: self, action: #selector(longPress))
-    }()
-    
-    @objc fileprivate func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
-        guard longPressGestureRecognizer.state == .began else { return }
-        
-        let point = longPressGestureRecognizer.location(in: collectionView)
-        guard let indexPath = collectionView.indexPathForItem(at: point),
-              let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler
-        else { return }
-        
-        viewModel.handleLongPress(with: collectionView, indexPath: indexPath)
-    }
+//    private lazy var longPressRecognizer: UILongPressGestureRecognizer = {
+//        return UILongPressGestureRecognizer(target: self, action: #selector(longPress))
+//    }()
+//    
+//    @objc fileprivate func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+//        guard longPressGestureRecognizer.state == .began else { return }
+//        
+//        let point = longPressGestureRecognizer.location(in: searchCollectionView)
+//        guard let indexPath = searchCollectionView.indexPathForItem(at: point),
+//              let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler
+//        else { return }
+//        
+//        viewModel.handleLongPress(with: searchCollectionView, indexPath: indexPath)
+//    }
     
     // MARK: - Homepage view cycle
     /// Normal view controller view cycles cannot be relied on the homepage since the current way of showing and hiding the homepage is through alpha.
@@ -379,22 +390,10 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     /// since it's `.regular` on both. We reloadOnRotation from viewWillTransition in that case.
     private func reloadOnRotation(newSize: CGSize) {
         logger.log("Reload on rotation to new size \(newSize)", level: .info, category: .homepage)
-        
         if presentedViewController as? PhotonActionSheet != nil {
             presentedViewController?.dismiss(animated: false, completion: nil)
         }
-        
-        // Force the entire collection view to re-layout
-        viewModel.refreshData(for: traitCollection, size: newSize)
-        collectionView.reloadData()
-        collectionView.collectionViewLayout.invalidateLayout()
-        
-        // This pushes a reload to the end of the main queue after all the work associated with
-        // rotating has been completed. This is important because some of the cells layout are
-        // based on the screen state
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+        self.searchPageView.reloadOnRotation(newSize: newSize)
     }
     
     private func adjustPrivacySensitiveSections(notification: Notification) {
@@ -422,10 +421,11 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
                 view.backgroundColor = .darkBackground
             }
         }
+        self.searchPageView.applyTheme()
     }
     
     func scrollToTop(animated: Bool = false) {
-        collectionView?.setContentOffset(.zero, animated: animated)
+        self.searchPageView.scrollToTop(animated: animated)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -439,30 +439,22 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         }
     }
     
-    func updatePocketCellsWithVisibleRatio(cells: [UICollectionViewCell], relativeRect: CGRect) {
-        guard let window = UIWindow.keyWindow else { return }
-        for cell in cells {
-            // For every story cell get it's frame relative to the window
-            let targetRect = cell.superview.map { window.convert(cell.frame, from: $0) } ?? .zero
-            
-            // TODO: If visibility ratio is over 50% sponsored content can be marked as seen by the user
-            _ = targetRect.visibilityRatio(relativeTo: relativeRect)
-        }
-    }
+//    func updatePocketCellsWithVisibleRatio(cells: [UICollectionViewCell], relativeRect: CGRect) {
+//        guard let window = UIWindow.keyWindow else { return }
+//        for cell in cells {
+//            // For every story cell get it's frame relative to the window
+//            let targetRect = cell.superview.map { window.convert(cell.frame, from: $0) } ?? .zero
+//            
+//            // TODO: If visibility ratio is over 50% sponsored content can be marked as seen by the user
+//            _ = targetRect.visibilityRatio(relativeTo: relativeRect)
+//        }
+//    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Find visible pocket cells that holds pocket stories
-        let cells = self.collectionView.visibleCells.filter { $0.reuseIdentifier == PocketStandardCell.cellIdentifier }
-        
         // Relative frame is the collectionView frame plus the status bar height
-        let relativeRect = CGRect(
-            x: collectionView.frame.minX,
-            y: collectionView.frame.minY,
-            width: collectionView.frame.width,
-            height: collectionView.frame.height + UIWindow.statusBarHeight
-        )
-        updatePocketCellsWithVisibleRatio(cells: cells, relativeRect: relativeRect)
-        
+ 
+        self.searchPageView.updatePocketCellsWithVisibleRatio()
         updateStatusBar(theme: themeManager.currentTheme)
     }
     
@@ -502,15 +494,15 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     
     // MARK: - Contextual hint
     
-    private func prepareJumpBackInContextualHint(onView headerView: LabelButtonHeaderView) {
+    private func prepareAndJumpBackInContextualHint(onView lblTitle: UILabel) {
         guard jumpBackInContextualHintViewController.shouldPresentHint(),
               !viewModel.shouldDisplayHomeTabBanner,
-              !headerView.frame.isEmpty
+              !lblTitle.frame.isEmpty
         else { return }
         
         // Calculate label header view frame to add as source rect for CFR
-        var rect = headerView.convert(headerView.titleLabel.frame, to: collectionView)
-        rect = collectionView.convert(rect, to: view)
+        var rect = lblTitle.convert(lblTitle.frame, to: self.searchPageView)
+        rect = self.searchPageView.convert(rect, to: view)
         
         jumpBackInContextualHintViewController.configure(
             anchor: view,
@@ -550,65 +542,75 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     }
 }
 
-// MARK: - CollectionView Data Source
-
-extension HomepageViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionHeader,
-              let headerView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: UICollectionView.elementKindSectionHeader,
-                withReuseIdentifier: LabelButtonHeaderView.cellIdentifier,
-                for: indexPath) as? LabelButtonHeaderView,
-              let sectionViewModel = viewModel.getSectionViewModel(shownSection: indexPath.section)
-        else { return UICollectionReusableView() }
-        
-        // Configure header only if section is shown
-        let headerViewModel = sectionViewModel.shouldShow ? sectionViewModel.headerViewModel : LabelButtonHeaderViewModel.emptyHeader
-        headerView.configure(viewModel: headerViewModel, theme: themeManager.currentTheme)
-        
-        // Jump back in header specific setup
-        if sectionViewModel.sectionType == .jumpBackIn {
-            self.viewModel.jumpBackInViewModel.sendImpressionTelemetry()
-            // Moving called after header view gets configured
-            // and delaying to wait for header view layout readjust
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-                self?.prepareJumpBackInContextualHint(onView: headerView)
-            }
-        }
-        return headerView
+extension HomepageViewController: SearchPageViewDelegate {
+    func prepareJumpBackInContextualHint(view: UILabel) {
+        self.prepareAndJumpBackInContextualHint(onView: view)
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel.shownSections.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.getSectionViewModel(shownSection: section)?.numberOfItemsInSection() ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler else {
-            return UICollectionViewCell()
-        }
-        
-        return viewModel.configure(collectionView, at: indexPath)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func didSelectRowFromSearchPage(indexPath: IndexPath) {
         guard let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler else { return }
         viewModel.didSelectItem(at: indexPath, homePanelDelegate: homePanelDelegate, libraryPanelDelegate: libraryPanelDelegate)
     }
 }
+
+// MARK: - CollectionView Data Source
+
+//extension HomepageViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        guard kind == UICollectionView.elementKindSectionHeader,
+//              let headerView = collectionView.dequeueReusableSupplementaryView(
+//                ofKind: UICollectionView.elementKindSectionHeader,
+//                withReuseIdentifier: LabelButtonHeaderView.cellIdentifier,
+//                for: indexPath) as? LabelButtonHeaderView,
+//              let sectionViewModel = viewModel.getSectionViewModel(shownSection: indexPath.section)
+//        else { return UICollectionReusableView() }
+//        
+//        // Configure header only if section is shown
+//        let headerViewModel = sectionViewModel.shouldShow ? sectionViewModel.headerViewModel : LabelButtonHeaderViewModel.emptyHeader
+//        headerView.configure(viewModel: headerViewModel, theme: themeManager.currentTheme)
+//        
+//        // Jump back in header specific setup
+//        if sectionViewModel.sectionType == .jumpBackIn {
+//            self.viewModel.jumpBackInViewModel.sendImpressionTelemetry()
+//            // Moving called after header view gets configured
+//            // and delaying to wait for header view layout readjust
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+//                self?.prepareAndJumpBackInContextualHint(onView: headerView)
+//            }
+//        }
+//        headerView.backgroundColor = .green
+//        return headerView
+//    }
+//    
+//    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        let count = viewModel.shownSections.count
+//        print("number of sections: \(count)")
+//        return count
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return viewModel.getSectionViewModel(shownSection: section)?.numberOfItemsInSection() ?? 0
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler else {
+//            return UICollectionViewCell()
+//        }
+//        
+//        return viewModel.configure(collectionView, at: indexPath)
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        guard let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler else { return }
+//        viewModel.didSelectItem(at: indexPath, homePanelDelegate: homePanelDelegate, libraryPanelDelegate: libraryPanelDelegate)
+//    }
+//}
 
 // MARK: - Actions Handling
 
 private extension HomepageViewController {
     // Setup all the tap and long press actions on cells in each sections
     private func setupSectionsAction() {
-        // Header view
-        viewModel.headerViewModel.onTapAction = { _ in
-            // No action currently set if the logo button is tapped.
-        }
         
         // Message card
         viewModel.messageCardViewModel.dismissClosure = { [weak self] in
@@ -625,10 +627,16 @@ private extension HomepageViewController {
             self?.contextMenuHelper.presentContextMenu(for: site, with: sourceView, sectionType: .topSites)
         }
         
+        viewModel.topSiteViewModel.headerButtonAction = { [weak self] button in
+            self?.openBookmarks(button)
+        }
+        
         // Recently saved
         viewModel.recentlySavedViewModel.headerButtonAction = { [weak self] button in
             self?.openBookmarks(button)
         }
+        
+        viewModel.topSiteViewModel
         
         // Jumpback in
         viewModel.jumpBackInViewModel.onTapGroup = { [weak self] tab in
@@ -704,8 +712,7 @@ private extension HomepageViewController {
         
         viewModel.pocketViewModel.onScroll = { [weak self] cells in
             guard let window = UIWindow.keyWindow, let self = self else { return }
-            let cells = self.collectionView.visibleCells.filter { $0.reuseIdentifier == PocketStandardCell.cellIdentifier }
-            self.updatePocketCellsWithVisibleRatio(cells: cells, relativeRect: window.bounds)
+            self.searchPageView.updatePocketCellsWithVisibleRatio(window.bounds)
         }
         
         // Customize home
@@ -798,7 +805,7 @@ private extension HomepageViewController {
     
     func getPopoverSourceRect(sourceView: UIView?) -> CGRect {
         let cellRect = sourceView?.frame ?? .zero
-        let cellFrameInSuperview = self.collectionView?.convert(cellRect, to: self.collectionView) ?? .zero
+        let cellFrameInSuperview = self.searchPageView.convert(cellRect, to: self.searchPageView)
         
         return CGRect(origin: CGPoint(x: cellFrameInSuperview.size.width / 2,
                                       y: cellFrameInSuperview.height / 2),
@@ -837,15 +844,14 @@ extension HomepageViewController {
     // 1 = status bar background is opaque
     var scrollOffset: CGFloat {
         // Status bar height can be 0 on iPhone in landscape mode.
-        guard let scrollView = collectionView,
-              isBottomSearchBar,
+        guard isBottomSearchBar,
               let statusBarHeight: CGFloat = statusBarFrame?.height,
               statusBarHeight > 0
         else { return 0 }
         
         // The scrollview content offset is automatically adjusted to account for the status bar.
         // We want to start showing the status bar background as soon as the user scrolls.
-        var offset = (scrollView.contentOffset.y + statusBarHeight) / statusBarHeight
+        var offset = (self.searchPageView.getOffsetY() + statusBarHeight) / statusBarHeight
         
         if offset > 1 {
             offset = 1
@@ -904,8 +910,7 @@ extension HomepageViewController: HomepageViewModelDelegate {
             guard let self = self else { return }
             
             self.viewModel.refreshData(for: self.traitCollection, size: self.view.frame.size)
-            self.collectionView.reloadData()
-            self.collectionView.collectionViewLayout.invalidateLayout()
+            self.searchPageView.reloadData()
         }
     }
 }

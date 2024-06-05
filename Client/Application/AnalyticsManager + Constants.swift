@@ -63,6 +63,7 @@ extension AnalyticsManager {
         case appHomeRecently                 = "app home recently viewed click"						// home004
         case appHomeShopUsaClick             = "app home shop usa click"							// home005
         case appHomeFreespoke                = "app home the freespoke way click - "				// home006
+        case appHomeBreakingNewsStoryViewAllClick = "app home breaking news story view all click"
         
         case appHomeTrendingNewsStoryClick   = "app home trending news story click"					// home0041
         case appHomeShopUsaViewMoreClick     = "app home shop usa view more click"					// home0051

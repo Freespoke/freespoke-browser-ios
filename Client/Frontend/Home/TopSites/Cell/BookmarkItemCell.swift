@@ -9,7 +9,7 @@ import Storage
 import UIKit
 
 /// The TopSite cell that appears in the ASHorizontalScrollView.
-class TopSiteItemCell: UICollectionViewCell, ReusableCell {
+class BookmarkItemCell: UICollectionViewCell, ReusableCell {
     // MARK: - Variables
 
     private var homeTopSite: TopSite?
@@ -246,7 +246,7 @@ class TopSiteItemCell: UICollectionViewCell, ReusableCell {
 }
 
 // MARK: ThemeApplicable
-extension TopSiteItemCell: ThemeApplicable {
+extension BookmarkItemCell: ThemeApplicable {
     func applyTheme(theme: Theme) {
         pinImageView.tintColor = textColor ?? theme.colors.iconPrimary
         titleLabel.textColor = textColor ?? theme.colors.textPrimary
@@ -258,7 +258,7 @@ extension TopSiteItemCell: ThemeApplicable {
 }
 
 // MARK: - Blurrable
-extension TopSiteItemCell: Blurrable {
+extension BookmarkItemCell: Blurrable {
     func adjustBlur(theme: Theme) {
         rootContainer.setNeedsLayout()
         rootContainer.layoutIfNeeded()

@@ -111,7 +111,7 @@ class OneLineTableViewCell: UITableViewCell,
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
                                                  constant: -UX.verticalMargin),
 
-            //bottomSeparatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            //bottomSeparatorView.leadingAnchor.constraint(equalTo: lblTitle.leadingAnchor),
             //bottomSeparatorView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             //bottomSeparatorView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             //bottomSeparatorView.heightAnchor.constraint(equalToConstant: UX.separatorViewHeight)

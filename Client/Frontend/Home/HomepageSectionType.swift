@@ -5,9 +5,9 @@
 import Foundation
 
 enum HomepageSectionType: Int, CaseIterable {
-    case logoHeader
     case messageCard
     case topSites
+    case trendingNews
     case jumpBackIn
     case recentlySaved
     case historyHighlights
@@ -19,7 +19,8 @@ enum HomepageSectionType: Int, CaseIterable {
         case .pocket: return .FirefoxHomepage.Pocket.SectionTitle
         case .jumpBackIn: return .FirefoxHomeJumpBackInSectionTitle
         case .recentlySaved: return .RecentlySavedSectionTitle
-        case .topSites: return .ASShortcutsTitle
+        case .topSites: return .MyBookmarksTitle
+        case .trendingNews: return .TrendingNewsTitle
         case .historyHighlights: return .FirefoxHomepage.HistoryHighlights.Title
         default: return nil
         }
@@ -27,9 +28,9 @@ enum HomepageSectionType: Int, CaseIterable {
 
     var cellIdentifier: String {
         switch self {
-        case .logoHeader: return HomeLogoHeaderCell.cellIdentifier
         case .messageCard: return HomepageMessageCardCell.cellIdentifier
         case .topSites: return "" // Top sites has more than 1 cell type, dequeuing is done through FxHomeSectionHandler protocol
+        case .trendingNews: return TrendingItemCell.cellIdentifier
         case .pocket: return "" // Pocket has more than 1 cell type, dequeuing is done through FxHomeSectionHandler protocol
         case .jumpBackIn: return "" // JumpBackIn has more than 1 cell type, dequeuing is done through FxHomeSectionHandler protocol
         case .recentlySaved: return RecentlySavedCell.cellIdentifier
@@ -39,9 +40,10 @@ enum HomepageSectionType: Int, CaseIterable {
     }
 
     static var cellTypes: [ReusableCell.Type] {
-        return [HomeLogoHeaderCell.self,
-                HomepageMessageCardCell.self,
-                TopSiteItemCell.self,
+        return [HomepageMessageCardCell.self,
+                BookmarkItemCell.self,
+                TrendingItemCell.self,
+                ViewRecentlyCell.self,
                 EmptyTopSiteCell.self,
                 JumpBackInCell.self,
                 PocketDiscoverCell.self,

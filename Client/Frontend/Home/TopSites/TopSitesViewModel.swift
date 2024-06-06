@@ -10,7 +10,7 @@ class TopSitesViewModel {
     struct UX {
         static let cellEstimatedSize: CGSize = CGSize(width: 85, height: 94)
         static let cardSpacing: CGFloat = 16
-        static let minCards: Int = 4
+        static let minCards: Int = 5
     }
 
     weak var delegate: HomepageDataModelDelegate?
@@ -29,6 +29,8 @@ class TopSitesViewModel {
     private let topSiteHistoryManager: TopSiteHistoryManager
     private let googleTopSiteManager: GoogleTopSiteManager
     private var wallpaperManager: WallpaperManager
+    
+    var headerButtonAction: ((UIButton) -> Void)?
 
     init(profile: Profile,
          isZeroSearch: Bool = false,
@@ -120,16 +122,17 @@ extension TopSitesViewModel: HomepageViewModelProtocol, FeatureFlaggable {
 
     var headerViewModel: LabelButtonHeaderViewModel {
         // Only show a header if the firefox browser logo isn't showing
-        let shouldShow = !featureFlags.isFeatureEnabled(.wallpapers, checking: .buildOnly)
+//        let shouldShow = !featureFlags.isFeatureEnabled(.wallpapers, checking: .buildOnly)
         var textColor: UIColor?
         if wallpaperManager.featureAvailable {
             textColor = wallpaperManager.currentWallpaper.textColor
         }
 
         return LabelButtonHeaderViewModel(
-            title: shouldShow ? HomepageSectionType.topSites.title: nil,
+            title: HomepageSectionType.topSites.title,
             titleA11yIdentifier: AccessibilityIdentifiers.FirefoxHomepage.SectionTitles.topSites,
-            isButtonHidden: true,
+            isButtonHidden: false,
+            buttonAction: self.headerButtonAction,
             textColor: textColor)
     }
 
@@ -152,27 +155,37 @@ extension TopSitesViewModel: HomepageViewModelProtocol, FeatureFlaggable {
             widthDimension: .fractionalWidth(1),
             heightDimension: .estimated(UX.cellEstimatedSize.height)
         )
-
+        
         let interface = TopSitesUIInterface(trait: traitCollection, availableWidth: size.width)
         let sectionDimension = dimensionManager.getSectionDimension(for: topSites,
                                                                     numberOfRows: topSitesDataAdaptor.numberOfRows,
                                                                     interface: interface)
+        
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        subitem: item,
                                                        count: sectionDimension.numberOfTilesPerRow)
         group.interItemSpacing = NSCollectionLayoutSpacing.fixed(UX.cardSpacing)
         let section = NSCollectionLayoutSection(group: group)
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                heightDimension: .estimated(34))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
+                                                                 elementKind: UICollectionView.elementKindSectionHeader,
+                                                                 alignment: .top)
+        section.boundarySupplementaryItems = [header]
 
         let leadingInset = HomepageViewModel.UX.leadingInset(traitCollection: traitCollection)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0,
-                                                        leading: leadingInset,
-                                                        bottom: HomepageViewModel.UX.spacingBetweenSections - TopSiteItemCell.UX.bottomSpace,
-                                                        trailing: leadingInset)
+        section.contentInsets = NSDirectionalEdgeInsets(
+            top: 12,
+            leading: leadingInset,
+            bottom: 50,
+            trailing: leadingInset)
+
         section.interGroupSpacing = UX.cardSpacing
 
         return section
     }
-
+    
     var hasData: Bool {
         return !topSites.isEmpty
     }
@@ -183,11 +196,15 @@ extension TopSitesViewModel: HomepageViewModelProtocol, FeatureFlaggable {
                      device: UIUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom) {
         let interface = TopSitesUIInterface(trait: traitCollection,
                                             availableWidth: size.width)
+        
+        print("top sites Count: \(topSites.count)")
+        
         let sectionDimension = dimensionManager.getSectionDimension(for: topSites,
                                                                     numberOfRows: topSitesDataAdaptor.numberOfRows,
                                                                     interface: interface)
         topSitesDataAdaptor.recalculateTopSiteData(for: sectionDimension.numberOfTilesPerRow)
         topSites = topSitesDataAdaptor.getTopSitesData()
+        
         numberOfItems = sectionDimension.numberOfRows * sectionDimension.numberOfTilesPerRow
     }
 
@@ -215,7 +232,7 @@ extension TopSitesViewModel: TopSitesManagerDelegate {
 extension TopSitesViewModel: HomepageSectionHandler {
     func configure(_ collectionView: UICollectionView,
                    at indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(cellType: TopSiteItemCell.self, for: indexPath),
+        if let cell = collectionView.dequeueReusableCell(cellType: BookmarkItemCell.self, for: indexPath),
            let contentItem = topSites[safe: indexPath.row] {
             var textColor: UIColor?
             if wallpaperManager.featureAvailable {
@@ -232,7 +249,6 @@ extension TopSitesViewModel: HomepageSectionHandler {
             cell.applyTheme(theme: theme)
             return cell
         }
-
         return UICollectionViewCell()
     }
 

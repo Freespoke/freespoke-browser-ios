@@ -801,15 +801,30 @@ class BrowserViewController: UIViewController {
 
         // Remake constraints even if we're already showing the home controller.
         // The home controller may change sizes if we tap the URL bar while on about:home.
-        homepageViewController?.view.snp.remakeConstraints { make in
-            make.top.equalTo(isBottomSearchBar ? view : header.snp.bottom)
-            make.left.right.equalTo(view)
-            let homePageBottomOffset: CGFloat = isBottomSearchBar ? urlBarHeightConstraintValue ?? 0 : 0
-            make.bottom.equalTo(bottomContainer.snp.top).offset(-homePageBottomOffset)
+        if self.homepageViewController?.view.superview != nil {
+            homepageViewController?.view.snp.remakeConstraints { make in
+                make.top.equalTo(isBottomSearchBar ? view : header.snp.bottom)
+                make.left.right.equalTo(view)
+                let homePageBottomOffset: CGFloat = isBottomSearchBar ? urlBarHeightConstraintValue ?? 0 : 0
+                make.bottom.equalTo(bottomContainer.snp.top).offset(-homePageBottomOffset)
+            }
         }
-
+  
         bottomContentStackView.snp.remakeConstraints { remake in
             adjustBottomContentStackView(remake)
+        }
+        
+        urlBar.snp.makeConstraints { make in
+            if self.urlBar.inOverlayMode {
+                make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintForToolbarInOverlayMode)
+                make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintForToolbarInOverlayMode)
+            } else {
+                make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintForToolbar)
+                make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintForToolbar)
+            }
+        }
+        urlBar.line.snp.makeConstraints { make in
+            make.left.right.equalTo(self.view)
         }
 
         adjustBottomSearchBarForKeyboard()
@@ -1035,21 +1050,27 @@ class BrowserViewController: UIViewController {
     /// Once the homepage is created, browserViewController keeps a reference to it, never setting it to nil during
     /// an app session. The homepage can be nil in the case of a user having a Blank Page or custom URL as it's new tab and homepage
     private func createHomepage(inline: Bool) {
-        let homepageViewController = HomepageViewController(
+        self.homepageViewController = HomepageViewController(
             profile: profile,
             tabManager: tabManager,
             urlBar: urlBar)
-        homepageViewController.delegate = self
-        homepageViewController.homePanelDelegate = self
-        homepageViewController.libraryPanelDelegate = self
-        homepageViewController.sendToDeviceDelegate = self
-        self.homepageViewController = homepageViewController
-        addChild(homepageViewController)
-        view.addSubview(homepageViewController.view)
-        homepageViewController.didMove(toParent: self)
+        guard self.homepageViewController != nil  else { return }
+        
+        self.view.addSubview(self.homepageViewController!.view)
+        self.addChild(self.homepageViewController!)
+        self.view.layoutIfNeeded()
+        
+        self.homepageViewController!.didMove(toParent: self)
         // When we first create the homepage, set it's alpha to 0 to ensure we trigger the custom homepage view cycles
-        homepageViewController.view.alpha = 0
-        view.bringSubviewToFront(overKeyboardContainer)
+        self.homepageViewController!.view.alpha = 0
+        self.view.bringSubviewToFront(self.overKeyboardContainer)
+        
+        self.homepageViewController!.delegate = self
+        self.homepageViewController!.homePanelDelegate = self
+        self.homepageViewController!.libraryPanelDelegate = self
+        self.homepageViewController!.sendToDeviceDelegate = self
+        
+        
     }
 
     func hideHomepage(completion: (() -> Void)? = nil) {
@@ -2185,6 +2206,7 @@ extension BrowserViewController: FreespokeHomepageDelegate {
 
 // MARK: HomePanelDelegate
 extension BrowserViewController: HomePanelDelegate {
+    
     func homePanelDidRequestToOpenLibrary(panel: LibraryPanelType) {
         showLibrary(panel: panel)
         view.endEditing(true)

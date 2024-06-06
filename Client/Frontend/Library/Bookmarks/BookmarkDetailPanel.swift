@@ -341,12 +341,12 @@ class BookmarkDetailPanel: SiteTableViewController {
 //        }
 //            // Disable folder selection when creating a new bookmark or folder.
 //            if isNew {
-//                cell.titleLabel.alpha = 0.5
+//                cell.lblTitle.alpha = 0.5
 //                cell.leftImageView.alpha = 0.5
 //                cell.selectionStyle = .none
 //                cell.isUserInteractionEnabled = false
 //            } else {
-//                cell.titleLabel.alpha = 1.0
+//                cell.lblTitle.alpha = 1.0
 //                cell.leftImageView.alpha = 1.0
 //                cell.selectionStyle = .default
 //                cell.isUserInteractionEnabled = true
@@ -362,9 +362,9 @@ class BookmarkDetailPanel: SiteTableViewController {
 //                }
 //
 //                if item.folder.isRoot, let localizedString = LocalizedRootBookmarkFolderStrings[item.folder.guid] {
-//                    cell.titleLabel.text = localizedString
+//                    cell.lblTitle.text = localizedString
 //                } else {
-//                    cell.titleLabel.text = item.folder.title
+//                    cell.lblTitle.text = item.folder.title
 //                }
 //
 //                cell.indentationLevel = min(item.indent, maxIndentationLevel)
@@ -376,9 +376,9 @@ class BookmarkDetailPanel: SiteTableViewController {
 //                }
 //            } else {
 //                if parentBookmarkFolder.isRoot, let localizedString = LocalizedRootBookmarkFolderStrings[parentBookmarkFolder.guid] {
-//                    cell.titleLabel.text = localizedString
+//                    cell.lblTitle.text = localizedString
 //                } else {
-//                    cell.titleLabel.text = parentBookmarkFolder.title
+//                    cell.lblTitle.text = parentBookmarkFolder.title
 //                }
 //
 //                cell.indentationLevel = 0

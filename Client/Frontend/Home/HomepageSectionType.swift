@@ -43,6 +43,7 @@ enum HomepageSectionType: Int, CaseIterable {
         return [HomepageMessageCardCell.self,
                 BookmarkItemCell.self,
                 TrendingItemCell.self,
+                ViewRecentlyCell.self,
                 EmptyTopSiteCell.self,
                 JumpBackInCell.self,
                 PocketDiscoverCell.self,

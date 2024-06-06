@@ -31,8 +31,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     
     private var viewModel: HomepageViewModel
     
-    var freespokeHomepageView: FreespokeHomepage!
-    
     private var contextMenuHelper: HomepageContextMenuHelper
     private var tabManager: TabManagerProtocol
     
@@ -41,14 +39,17 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     private lazy var wallpaperView: WallpaperBackgroundView = .build { _ in }
     private var jumpBackInContextualHintViewController: ContextualHintViewController
     private var syncTabContextualHintViewController: ContextualHintViewController
-//    private var searchCollectionView: UICollectionView! = nil
     private var logger: Logger
     
     var themeManager: ThemeManager
     var notificationCenter: NotificationProtocol
     var themeObserver: NSObjectProtocol?
     
-    let freespokeHomepageViewModel = FreespokeHomepageViewModel()
+    private let freespokeHomepageViewModel = FreespokeHomepageViewModel()
+    private lazy var freespokeHomepageView: FreespokeHomepage = {
+        let view = FreespokeHomepage(viewModel: self.freespokeHomepageViewModel)
+        return view
+    }()
     
     var isHome = false
     var isNewTab = false
@@ -64,12 +65,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         statusBarView.isHidden = true
         return statusBarView
     }()
-    
-    // Content stack views contains collection view.
-//    lazy var contentStackView: UIStackView = .build { stackView in
-//        stackView.backgroundColor = .clear
-//        stackView.axis = .vertical
-//    }
     
     lazy var searchPageView: SearchPageView = {
         let view = SearchPageView(viewModel: self.viewModel, freespokeHomepageViewModel: self.freespokeHomepageViewModel, themeManager: self.themeManager, delegate: self)
@@ -140,7 +135,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         
         configureWallpaperView()
         configureContentStackView()
-        configureCollectionView()
         
         // Delay setting up the view model delegate to ensure the views have been configured first
         self.viewModel.delegate = self
@@ -170,16 +164,19 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     }
     
     private func addFreespokeHomepageView() {
-        self.freespokeHomepageView = FreespokeHomepage(viewModel: self.freespokeHomepageViewModel)
-//        freespokeHomepageView.profile = profile
-//        freespokeHomepageView.getRecentBookmarks()
         self.freespokeHomepageView.delegate = self
         self.view.addSubview(self.freespokeHomepageView)
     }
     
     private func addFreespokeHomepageViewConstraints() {
         self.freespokeHomepageView.translatesAutoresizingMaskIntoConstraints = false
-        self.freespokeHomepageView.pinToView(view: self.view)
+        
+        NSLayoutConstraint.activate([
+            self.freespokeHomepageView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.freespokeHomepageView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.freespokeHomepageView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.freespokeHomepageView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
     
     func displayFreefolkProfileVC() {
@@ -226,19 +223,15 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     }
     
     private func shouldHideHomePageViewWithAnimation(shouldHide: Bool) {
-        if let _ = freespokeHomepageView {
-            UIView.animate(
-                withDuration: 0.2,
-                animations: { [weak self] in
-                    self?.freespokeHomepageView.alpha = shouldHide ? 0 : 1
-                })
-        }
+        UIView.animate(
+            withDuration: 0.2,
+            animations: { [weak self] in
+                self?.freespokeHomepageView.alpha = shouldHide ? 0 : 1
+            })
     }
     
     func reloadFreespokeHomepage() {
-        if let freespokeHomepageView = freespokeHomepageView {
-            freespokeHomepageView.reloadAllItems()
-        }
+        self.freespokeHomepageView.reloadAllItems()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -285,28 +278,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     
     // MARK: - Layout
     
-    func configureCollectionView() {
-//        searchCollectionView = UICollectionView(frame: view.bounds,
-//                                          collectionViewLayout: createLayout())
-//        
-//        HomepageSectionType.cellTypes.forEach {
-//            searchCollectionView.register($0, forCellWithReuseIdentifier: $0.cellIdentifier)
-//        }
-//        searchCollectionView.register(LabelButtonHeaderView.self,
-//                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-//                                withReuseIdentifier: LabelButtonHeaderView.cellIdentifier)
-//        
-//        searchCollectionView.keyboardDismissMode = .onDrag
-//        searchCollectionView.addGestureRecognizer(longPressRecognizer)
-//        searchCollectionView.delegate = self
-//        searchCollectionView.dataSource = self
-//        searchCollectionView.showsVerticalScrollIndicator = false
-//        searchCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        searchCollectionView.backgroundColor = .clear
-//        searchCollectionView.accessibilityIdentifier = a11y.collectionView
-//        contentStackView.addArrangedSubview(searchCollectionView)
-    }
-    
     func configureContentStackView() {
         view.addSubview(self.searchPageView)
         self.searchPageView.translatesAutoresizingMaskIntoConstraints = false
@@ -329,35 +300,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         
         view.sendSubviewToBack(wallpaperView)
     }
-    
-//    func createLayout() -> UICollectionViewLayout {
-//        let layout = UICollectionViewCompositionalLayout { [weak self]
-//            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-//            guard let self = self,
-//                  let viewModel = self.viewModel.getSectionViewModel(shownSection: sectionIndex), viewModel.shouldShow
-//            else { return nil }
-//            let lay = viewModel.section(for: layoutEnvironment.traitCollection, size: self.view.frame.size)
-//            return lay
-//        }
-//        return layout
-//    }
-    
-    // MARK: Long press
-    
-//    private lazy var longPressRecognizer: UILongPressGestureRecognizer = {
-//        return UILongPressGestureRecognizer(target: self, action: #selector(longPress))
-//    }()
-//    
-//    @objc fileprivate func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
-//        guard longPressGestureRecognizer.state == .began else { return }
-//        
-//        let point = longPressGestureRecognizer.location(in: searchCollectionView)
-//        guard let indexPath = searchCollectionView.indexPathForItem(at: point),
-//              let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler
-//        else { return }
-//        
-//        viewModel.handleLongPress(with: searchCollectionView, indexPath: indexPath)
-//    }
     
     // MARK: - Homepage view cycle
     /// Normal view controller view cycles cannot be relied on the homepage since the current way of showing and hiding the homepage is through alpha.
@@ -411,8 +353,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         let theme = themeManager.currentTheme
         viewModel.theme = theme
         updateStatusBar(theme: theme)
-        
-        if let freespokeHomepageView = freespokeHomepageView {
             freespokeHomepageView.applyTheme(currentTheme: theme)
             switch theme.type {
             case .light:
@@ -420,7 +360,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
             case .dark:
                 view.backgroundColor = .darkBackground
             }
-        }
         self.searchPageView.applyTheme()
     }
     
@@ -428,27 +367,13 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         self.searchPageView.scrollToTop(animated: animated)
     }
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        //|     don't close the view on homepage
-        //dismissKeyboard()
-    }
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {  }
     
     @objc private func dismissKeyboard() {
         if currentTab?.lastKnownUrl?.absoluteString.hasPrefix("internal://") ?? false {
             urlBar.leaveOverlayMode()
         }
     }
-    
-//    func updatePocketCellsWithVisibleRatio(cells: [UICollectionViewCell], relativeRect: CGRect) {
-//        guard let window = UIWindow.keyWindow else { return }
-//        for cell in cells {
-//            // For every story cell get it's frame relative to the window
-//            let targetRect = cell.superview.map { window.convert(cell.frame, from: $0) } ?? .zero
-//            
-//            // TODO: If visibility ratio is over 50% sponsored content can be marked as seen by the user
-//            _ = targetRect.visibilityRatio(relativeTo: relativeRect)
-//        }
-//    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Find visible pocket cells that holds pocket stories
@@ -553,59 +478,6 @@ extension HomepageViewController: SearchPageViewDelegate {
     }
 }
 
-// MARK: - CollectionView Data Source
-
-//extension HomepageViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        guard kind == UICollectionView.elementKindSectionHeader,
-//              let headerView = collectionView.dequeueReusableSupplementaryView(
-//                ofKind: UICollectionView.elementKindSectionHeader,
-//                withReuseIdentifier: LabelButtonHeaderView.cellIdentifier,
-//                for: indexPath) as? LabelButtonHeaderView,
-//              let sectionViewModel = viewModel.getSectionViewModel(shownSection: indexPath.section)
-//        else { return UICollectionReusableView() }
-//        
-//        // Configure header only if section is shown
-//        let headerViewModel = sectionViewModel.shouldShow ? sectionViewModel.headerViewModel : LabelButtonHeaderViewModel.emptyHeader
-//        headerView.configure(viewModel: headerViewModel, theme: themeManager.currentTheme)
-//        
-//        // Jump back in header specific setup
-//        if sectionViewModel.sectionType == .jumpBackIn {
-//            self.viewModel.jumpBackInViewModel.sendImpressionTelemetry()
-//            // Moving called after header view gets configured
-//            // and delaying to wait for header view layout readjust
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-//                self?.prepareAndJumpBackInContextualHint(onView: headerView)
-//            }
-//        }
-//        headerView.backgroundColor = .green
-//        return headerView
-//    }
-//    
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        let count = viewModel.shownSections.count
-//        print("number of sections: \(count)")
-//        return count
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return viewModel.getSectionViewModel(shownSection: section)?.numberOfItemsInSection() ?? 0
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler else {
-//            return UICollectionViewCell()
-//        }
-//        
-//        return viewModel.configure(collectionView, at: indexPath)
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        guard let viewModel = viewModel.getSectionViewModel(shownSection: indexPath.section) as? HomepageSectionHandler else { return }
-//        viewModel.didSelectItem(at: indexPath, homePanelDelegate: homePanelDelegate, libraryPanelDelegate: libraryPanelDelegate)
-//    }
-//}
-
 // MARK: - Actions Handling
 
 private extension HomepageViewController {
@@ -635,9 +507,7 @@ private extension HomepageViewController {
         viewModel.recentlySavedViewModel.headerButtonAction = { [weak self] button in
             self?.openBookmarks(button)
         }
-        
-        viewModel.topSiteViewModel
-        
+                
         // Jumpback in
         viewModel.jumpBackInViewModel.onTapGroup = { [weak self] tab in
             self?.homePanelDelegate?.homePanelDidRequestToOpenTabTray(withFocusedTab: tab)
@@ -645,6 +515,11 @@ private extension HomepageViewController {
         
         viewModel.jumpBackInViewModel.headerButtonAction = { [weak self] button in
             self?.openTabTray(button)
+        }
+        
+        viewModel.trendingNewsModel.closureDidTapOnViewRecentlyCell = { [weak self] btn in
+            guard let sSelf = self else { return }
+            self?.openHistory(btn)
         }
         
         viewModel.jumpBackInViewModel.syncedTabsShowAllAction = { [weak self] in
@@ -679,7 +554,14 @@ private extension HomepageViewController {
             self?.prepareSyncedTabContextualHint(onCell: syncedTabCell)
         }
         
-        // History highlights
+        viewModel.trendingNewsModel.closureDidTappedOnTrendingCell = { [weak self] storyFeedItemModel in
+            guard let sSelf = self else { return }
+            guard let urlStr = storyFeedItemModel.links?.seeMoreLink, let url = URL(string: urlStr) else { return }
+            sSelf.homePanelDelegate?.homePanel(didSelectURL: url,
+                                               visitType: .link,
+                                               isGoogleTopSite: false)
+        }
+        // History highlights 
         viewModel.historyHighlightsViewModel.onTapItem = { [weak self] highlight in
             guard let url = highlight.siteUrl else {
                 self?.openHistoryHighlightsSearchGroup(item: highlight)

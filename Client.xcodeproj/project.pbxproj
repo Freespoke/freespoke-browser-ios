@@ -1857,6 +1857,9 @@
 		0EC2C7D92C0FA0E500A14B09 /* TrendingNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC2C7D82C0FA0E500A14B09 /* TrendingNewsModel.swift */; };
 		0EC2C7DA2C0FA0E500A14B09 /* TrendingNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC2C7D82C0FA0E500A14B09 /* TrendingNewsModel.swift */; };
 		0EC2C7DB2C0FA0E500A14B09 /* TrendingNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC2C7D82C0FA0E500A14B09 /* TrendingNewsModel.swift */; };
+		0EC2C7DD2C11E0DF00A14B09 /* ViewRecentlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC2C7DC2C11E0DF00A14B09 /* ViewRecentlyCell.swift */; };
+		0EC2C7DE2C11E0DF00A14B09 /* ViewRecentlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC2C7DC2C11E0DF00A14B09 /* ViewRecentlyCell.swift */; };
+		0EC2C7DF2C11E0DF00A14B09 /* ViewRecentlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC2C7DC2C11E0DF00A14B09 /* ViewRecentlyCell.swift */; };
 		0ED860E72BC0A7B500B75F8F /* Jam in Frameworks */ = {isa = PBXBuildFile; productRef = 0ED860E62BC0A7B500B75F8F /* Jam */; };
 		0ED860E92BC0A7C900B75F8F /* Jam in Frameworks */ = {isa = PBXBuildFile; productRef = 0ED860E82BC0A7C900B75F8F /* Jam */; };
 		0ED860EB2BC0AC1600B75F8F /* easy-list.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0ED860EA2BC0AC1600B75F8F /* easy-list.txt */; };
@@ -3868,6 +3871,7 @@
 		0EC2C7D02C0F24DC00A14B09 /* RightArrowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightArrowButton.swift; sourceTree = "<group>"; };
 		0EC2C7D42C0F854700A14B09 /* TrendingItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingItemCell.swift; sourceTree = "<group>"; };
 		0EC2C7D82C0FA0E500A14B09 /* TrendingNewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingNewsModel.swift; sourceTree = "<group>"; };
+		0EC2C7DC2C11E0DF00A14B09 /* ViewRecentlyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRecentlyCell.swift; sourceTree = "<group>"; };
 		0ED860EA2BC0AC1600B75F8F /* easy-list.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "easy-list.txt"; sourceTree = "<group>"; };
 		0EE8AC502BBAD1D800778F2D /* easyList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = easyList.json; sourceTree = "<group>"; };
 		0EE8AC562BBB65F000778F2D /* easyFanboyAnnoyance.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = easyFanboyAnnoyance.json; sourceTree = "<group>"; };
@@ -7259,6 +7263,7 @@
 				8AB8571E27D931B40075C173 /* EmptyTopSiteCell.swift */,
 				3BB50E101D6274CD004B33DF /* BookmarkItemCell.swift */,
 				0EC2C7D42C0F854700A14B09 /* TrendingItemCell.swift */,
+				0EC2C7DC2C11E0DF00A14B09 /* ViewRecentlyCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -11748,6 +11753,7 @@
 				0EC2C7D22C0F24DC00A14B09 /* RightArrowButton.swift in Sources */,
 				016C93CB2BFE13DC006520D0 /* SessionRestoreHelper.swift in Sources */,
 				016C93CC2BFE13DC006520D0 /* AppDelegate+SyncSentTabs.swift in Sources */,
+				0EC2C7DE2C11E0DF00A14B09 /* ViewRecentlyCell.swift in Sources */,
 				016C93CD2BFE13DC006520D0 /* ASIdentifierManager + Extensions.swift in Sources */,
 				016C93CE2BFE13DC006520D0 /* MailtoLinkHandler.swift in Sources */,
 				016C93CF2BFE13DC006520D0 /* BookmarksPanel.swift in Sources */,
@@ -11914,6 +11920,7 @@
 				01823F9E2B8E09FE00986B73 /* UIDevice + Extensions.swift in Sources */,
 				01BD23A92B6CF7EB00B8B9EB /* BrowserViewController+ReaderMode.swift in Sources */,
 				01BD23AA2B6CF7EB00B8B9EB /* Throttler.swift in Sources */,
+				0EC2C7DF2C11E0DF00A14B09 /* ViewRecentlyCell.swift in Sources */,
 				01BD23AB2B6CF7EB00B8B9EB /* SingleActionViewModel.swift in Sources */,
 				01BD23AC2B6CF7EB00B8B9EB /* CanRemoveQuickActionBookmark.swift in Sources */,
 				01BD23AD2B6CF7EB00B8B9EB /* OpenTabNotificationObject.swift in Sources */,
@@ -13084,6 +13091,7 @@
 				01823F9D2B8E09FE00986B73 /* UIDevice + Extensions.swift in Sources */,
 				96D95016270238500079D39D /* Throttler.swift in Sources */,
 				8A93080B27C01AD60052167D /* SingleActionViewModel.swift in Sources */,
+				0EC2C7DD2C11E0DF00A14B09 /* ViewRecentlyCell.swift in Sources */,
 				8A7368AD27924AAF005D7704 /* CanRemoveQuickActionBookmark.swift in Sources */,
 				8A0621B829428FBD005D1EFD /* OpenTabNotificationObject.swift in Sources */,
 				C8D0D6F2281C182D00AFAED9 /* FeatureFlagUserPrefsMigrationUtility.swift in Sources */,

@@ -16,104 +16,37 @@ class TrendingNewsModel {
     }
 
     weak var delegate: HomepageDataModelDelegate?
-//    var isZeroSearch: Bool
     var theme: Theme
-//    var tilePressedHandler: ((Site, Bool) -> Void)?
-//    var tileLongPressedHandler: ((Site, UIView?) -> Void)?
-
-//    private let profile: Profile
-//    private var sentImpressionTelemetry = [String: Bool]()
-//    private var topSites: [TopSite] = []
-//    private let dimensionManager: TopSitesDimension
-//    private var numberOfItems: Int = 0
-
-//    private let topSitesDataAdaptor: TopSitesDataAdaptor
-//    private let topSiteHistoryManager: TopSiteHistoryManager
-//    private let googleTopSiteManager: GoogleTopSiteManager
-//    private var wallpaperManager: WallpaperManager
     
     private var trendingStory: StoryFeedModel?
+    
+    var closureDidTapOnViewRecentlyCell: ((UIButton) -> Void)?
+    var closureDidTappedOnTrendingCell: ((StoryFeedItemModel) -> Void)?
     
     init(profile: Profile,
          isZeroSearch: Bool = false,
          theme: Theme,
          wallpaperManager: WallpaperManager) {
-//        self.profile = profile
-//        self.isZeroSearch = isZeroSearch
         self.theme = theme
-//        self.dimensionManager = TopSitesDimensionImplementation()
-
-//        self.topSiteHistoryManager = TopSiteHistoryManager(profile: profile)
-//        self.googleTopSiteManager = GoogleTopSiteManager(prefs: profile.prefs)
-//        let adaptor = TopSitesDataAdaptorImplementation(profile: profile,
-//                                                        topSiteHistoryManager: topSiteHistoryManager,
-//                                                        googleTopSiteManager: googleTopSiteManager)
-//        topSitesDataAdaptor = adaptor
-//        self.wallpaperManager = wallpaperManager
-//        adaptor.delegate = self
     }
 
-    func tilePressed(site: TopSite, position: Int) {
-//        topSitePressTracking(homeTopSite: site, position: position)
-//        tilePressedHandler?(site.site, site.isGoogleURL)
-    }
+    func tilePressed(site: TopSite, position: Int) { }
 
     // MARK: - Telemetry
 
-    func sendImpressionTelemetry(_ homeTopSite: TopSite, position: Int) {
-//        guard !hasSentImpressionForTile(homeTopSite) else { return }
-//        homeTopSite.impressionTracking(position: position)
-    }
+    func sendImpressionTelemetry(_ homeTopSite: TopSite, position: Int) { }
 
-    private func topSitePressTracking(homeTopSite: TopSite, position: Int) {
-//        // Top site extra
-//        let type = homeTopSite.getTelemetrySiteType()
-//        let topSiteExtra = [TelemetryWrapper.EventExtraKey.topSitePosition.rawValue: "\(position)",
-//                            TelemetryWrapper.EventExtraKey.topSiteTileType.rawValue: type]
-//
-//        // Origin extra
-//        let originExtra = TelemetryWrapper.getOriginExtras(isZeroSearch: isZeroSearch)
-//        let extras = originExtra.merge(with: topSiteExtra)
-//
-//        TelemetryWrapper.recordEvent(category: .action,
-//                                     method: .tap,
-//                                     object: .topSiteTile,
-//                                     value: nil,
-//                                     extras: extras)
-//
-//        // Sponsored tile specific telemetry
-//        if let tile = homeTopSite.site as? SponsoredTile {
-//            SponsoredTileTelemetry.sendClickTelemetry(tile: tile, position: position)
-//        }
-    }
+    private func topSitePressTracking(homeTopSite: TopSite, position: Int) { }
 
-    private func hasSentImpressionForTile(_ homeTopSite: TopSite) -> Bool {
-//        guard sentImpressionTelemetry[homeTopSite.site.url] != nil else {
-//            sentImpressionTelemetry[homeTopSite.site.url] = true
-//            return false
-//        }
-        return true
-    }
+    private func hasSentImpressionForTile(_ homeTopSite: TopSite) -> Bool { return true }
 
     // MARK: - Context actions
 
-    func hideURLFromTopSites(_ site: Site) {
-//        topSiteHistoryManager.removeDefaultTopSitesTile(site: site)
-//        // We make sure to remove all history for URL so it doesn't show anymore in the
-//        // top sites, this is the approach that Android takes too.
-//        self.profile.places.deleteVisitsFor(url: site.url).uponQueue(.main) { _ in
-//            NotificationCenter.default.post(name: .TopSitesUpdated, object: self)
-//        }
-    }
+    func hideURLFromTopSites(_ site: Site) {  }
 
-    func pinTopSite(_ site: Site) {
-//        _ = profile.pinnedSites.addPinnedTopSite(site)
-    }
+    func pinTopSite(_ site: Site) { }
 
-    func removePinTopSite(_ site: Site) {
-//        googleTopSiteManager.removeGoogleTopSite(site: site)
-//        topSiteHistoryManager.removeTopSite(site: site)
-    }
+    func removePinTopSite(_ site: Site) {  }
     
     func updateTrendingNews(trendingNews: StoryFeedModel) {
         self.trendingStory = trendingNews
@@ -140,7 +73,7 @@ extension TrendingNewsModel: HomepageViewModelProtocol, FeatureFlaggable {
 
     func numberOfItemsInSection() -> Int {
         let count = self.trendingStory?.stories?.count ?? 0
-        return count > 4 ? 4 : count//numberOfItems
+        return count > 4 ? (4 + 1) : (count + 1)
     }
 
     func section(for traitCollection: UITraitCollection, size: CGSize) -> NSCollectionLayoutSection {
@@ -183,64 +116,38 @@ extension TrendingNewsModel: HomepageViewModelProtocol, FeatureFlaggable {
     func refreshData(for traitCollection: UITraitCollection,
                      size: CGSize,
                      isPortrait: Bool = UIWindow.isPortrait,
-                     device: UIUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom) {
-//        let interface = TopSitesUIInterface(trait: traitCollection,
-//                                            availableWidth: size.width)
-//        
-//        print("top sites Count: \(topSites.count)")
-//        
-//        let sectionDimension = dimensionManager.getSectionDimension(for: topSites,
-//                                                                    numberOfRows: topSitesDataAdaptor.numberOfRows,
-//                                                                    interface: interface)
-//        topSitesDataAdaptor.recalculateTopSiteData(for: sectionDimension.numberOfTilesPerRow)
-//        topSites = topSitesDataAdaptor.getTopSitesData()
-        
-//        numberOfItems = self.breakingNews?.data.count ?? 0//sectionDimension.numberOfRows * sectionDimension.numberOfTilesPerRow
-    }
+                     device: UIUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom) {  }
 
-    func screenWasShown() {
-//        sentImpressionTelemetry = [String: Bool]()
-    }
+    func screenWasShown() { }
 
     func setTheme(theme: Theme) {
         self.theme = theme
     }
 }
 
-// MARK: - FxHomeTopSitesManagerDelegate
-//extension TrendingNewsModel: TopSitesManagerDelegate {
-//    func didLoadNewData() {
-//        ensureMainThread {
-//            self.topSites = self.topSitesDataAdaptor.getTopSitesData()
-//            guard self.isEnabled else { return }
-//            self.delegate?.reloadView()
-//        }
-//    }
-//}
-
 // MARK: - FxHomeSectionHandler
 extension TrendingNewsModel: HomepageSectionHandler {
     func configure(_ collectionView: UICollectionView,
                    at indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(cellType: TrendingItemCell.self, for: indexPath) {
+        let isLastItem: Bool = self.numberOfItemsInSection()  == indexPath.row + 1
+        switch isLastItem {
+        case true:
+            guard let cell = collectionView.dequeueReusableCell(cellType: ViewRecentlyCell.self, for: indexPath) else { return UICollectionViewCell() }
+            cell.closureTappedOnBtnAction = { [weak self] btn in self?.closureDidTapOnViewRecentlyCell?(btn) }
+            cell.applyTheme(theme: self.theme)
+            return cell
+        case false:
+            guard let cell = collectionView.dequeueReusableCell(cellType: TrendingItemCell.self, for: indexPath) else { return UICollectionViewCell() }
             if (self.trendingStory?.stories?.count ?? 0) > indexPath.row, let trendingModel = self.trendingStory?.stories?[indexPath.row] {
                 let name: String =  trendingModel.name ?? ""
                 cell.setData(title: name)
             }
-            
             cell.applyTheme(theme: self.theme)
             return cell
-        } else {
-            return UICollectionViewCell()
         }
-        
     }
 
-    func configure(_ cell: UICollectionViewCell,
-                   at indexPath: IndexPath) -> UICollectionViewCell {
-        // Setup is done through configure(collectionView:indexPath:), shouldn't be called
-        return UICollectionViewCell()
-    }
+    func configure(_ cell: UICollectionViewCell, at indexPath: IndexPath) -> UICollectionViewCell { return UICollectionViewCell() }
 
     func didSelectItem(at indexPath: IndexPath,
                        homePanelDelegate: HomePanelDelegate?,
@@ -248,15 +155,8 @@ extension TrendingNewsModel: HomepageSectionHandler {
         guard let stories = self.trendingStory?.stories else { return }
         guard stories.count > indexPath.row else { return }
         guard let item = self.trendingStory?.stories?[indexPath.row] else { return }
-        homePanelDelegate?.didTappedOnTrendingCell(storyFeedItemModel: item)
+        self.closureDidTappedOnTrendingCell?(item)
     }
 
-    func handleLongPress(with collectionView: UICollectionView, indexPath: IndexPath) {
-//        guard let tileLongPressedHandler = tileLongPressedHandler,
-//              let site = topSites[safe: indexPath.row]?.site
-//        else { return }
-//
-//        let sourceView = collectionView.cellForItem(at: indexPath)
-//        tileLongPressedHandler(site, sourceView)
-    }
+    func handleLongPress(with collectionView: UICollectionView, indexPath: IndexPath) { }
 }

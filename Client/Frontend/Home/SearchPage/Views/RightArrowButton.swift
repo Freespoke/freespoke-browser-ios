@@ -16,7 +16,7 @@ final class RightArrowButton: UIButton {
     
     private lazy var lblTitle: UILabel = {
         let lbl = UILabel()
-        lbl.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .title1, size: 16)
+        lbl.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .title1, size: 14)
         lbl.numberOfLines = 1
         lbl.text = self.title
         return lbl

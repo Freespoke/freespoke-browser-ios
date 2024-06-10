@@ -75,11 +75,20 @@ class DefaultSearchEngineProvider: SearchEngineProvider {
             return
         }
 
-        guard let defaultSearchPrefs = DefaultSearchPrefs(with: pluginDirectory.appendingPathComponent("list.json")) else {
+        var listName: String = "list.json"
+
+        #if STAGING
+        listName = "listStaging.json"
+        #elseif DEVELOPMENT
+        listName = "listStaging.json"
+        #endif
+        
+        guard let defaultSearchPrefs = DefaultSearchPrefs(with: pluginDirectory.appendingPathComponent(listName)) else {
             assertionFailure("Failed to parse List.json")
             completion([])
             return
         }
+        
         let possibilities = possibleLanguageIdentifier
         let engineNames = defaultSearchPrefs.visibleDefaultEngines(for: possibilities, and: region)
         let defaultEngineName = defaultSearchPrefs.searchDefault(for: possibilities, and: region)

@@ -74,16 +74,21 @@ final class WhiteListViewModel {
     }
     
     func isEnteredTextDomain() -> Bool {
-        guard let domain = self.currentEnteredDomain,
-              domain.isValidDomain()
-        else {
+        guard let domain = self.currentEnteredDomain else { return false }
+        if let url = URL(string: domain), let host = url.host, host.isValidDomain() {
+            return true
+        } else if domain.isValidDomain() {
+            return true
+        } else {
             return false
         }
-        return true
     }
     
     func saveDomainIfNotSavedYet() {
-        guard let domain = self.currentEnteredDomain else { return }
+        guard var domain = self.currentEnteredDomain else { return }
+        if let url = URL(string: domain), let host = url.host {
+            domain = host
+        }
         AdBlockManager.shared.saveDomainToWhiteListIfNotSavedYet(domain: domain,
                                                                  completion: { [weak self] savingStatus in
             guard let self = self else { return }

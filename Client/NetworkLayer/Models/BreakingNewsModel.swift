@@ -46,10 +46,10 @@ struct BreakingNewsArticleModel: Codable {
 // MARK: - FullInfoModel
 struct FullInfoModel: Codable {
     let bias: BiasType?
-    let headline: String
-    let url: String
+    let headline: String?
+    let url: String?
     let datePublished: String?
-    let images: [String]
+    let images: [String]?
     let publisherName: String?
     let publisherIcon: String?
     
@@ -60,6 +60,35 @@ struct FullInfoModel: Codable {
         } else {
             return nil
         }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case bias = "bias"
+        case headline = "headline"
+        case url = "url"
+        case datePublished = "datePublished"
+        case images = "images"
+        case publisherName = "publisherName"
+        case publisherIcon = "publisherIcon"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let modelContainer = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if let biasString = try? modelContainer.decode(String?.self, forKey: .bias),
+            !biasString.isEmpty,
+        let bias = BiasType(rawValue: biasString) {
+            self.bias = bias
+        } else {
+            self.bias = nil
+        }
+        
+        self.headline = try? modelContainer.decode(String?.self, forKey: .headline)
+        self.url = try? modelContainer.decode(String?.self, forKey: .url)
+        self.datePublished = try? modelContainer.decode(String?.self, forKey: .datePublished)
+        self.images = try? modelContainer.decode([String]?.self, forKey: .images)
+        self.publisherName = try? modelContainer.decode(String?.self, forKey: .publisherName)
+        self.publisherIcon = try? modelContainer.decode(String?.self, forKey: .publisherIcon)
     }
 }
 

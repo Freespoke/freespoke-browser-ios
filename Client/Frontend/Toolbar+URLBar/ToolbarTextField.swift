@@ -15,15 +15,80 @@ class ToolbarTextField: AutocompleteTextField {
     }
 
     private var tintedClearImage: UIImage?
+    
+    private let sizeImgMicrophone: CGSize = CGSize(width: 30, height: 30)
+    
+    private var imgMicrophoneFrame: CGRect?
 
     // MARK: - Initializers
+    
+    private var imgMicrophone: UIImageView?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.prepareUI()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("DEBUG: Deinit textfield ->")
+    }
+        
+    private func prepareUI() {
+        self.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+    }
+    
+    func addingMicrophoneView() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
+            guard let self = self else { return }
+            guard self.imgMicrophone?.superview == nil else { return }
+            guard let window = UIApplication.shared.keyWindowCustom else { fatalError("Something went wrong for key window") }
+            guard let point = self.globalFrame else { return }
+            let newX = point.minX - self.sizeImgMicrophone.width/2
+            let newY = point.maxY - 6
+            let imgPoint = CGPoint(x: newX, y: newY)
+            
+            let imgView = UIImageView()
+            imgView.image = UIImage(named: "imgActiveMicrophone")
+            self.imgMicrophone = imgView
+            
+            window.addSubview(self.imgMicrophone!)
+            let imgFrame = CGRect(origin: imgPoint, size: self.sizeImgMicrophone)
+            self.imgMicrophoneFrame = imgFrame
+            self.imgMicrophone?.frame = imgFrame
+            self.textFieldDidChange()
+        })
+    }
+    
+    @objc func textFieldDidChange() {
+        guard let text = self.text else { return }
+        guard let imgFrame = self.imgMicrophoneFrame else { return }
+        let textSize = (text as NSString).size(withAttributes: [.font: self.font ?? UIFont.systemFont(ofSize: 17)])
+        let positionXForClear = self.bounds.width - super.clearButtonRect(forBounds: bounds).minX
+        let maxWidth = self.bounds.width - (positionXForClear + super.clearButtonRect(forBounds: bounds).width)
+        let clampedX = min(textSize.width, maxWidth)
+        let currentY = imgFrame.origin.y + self.sizeImgMicrophone.height / 2
+        let currentX = clampedX + (imgFrame.origin.x + self.sizeImgMicrophone.width / 2)
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            guard let self = self else { return }
+            self.imgMicrophone?.center = CGPoint(x: currentX, y: currentY)
+        }
+    }
+    
+    func removeMicrophoneFromSuperView() {
+        self.imgMicrophone?.removeFromSuperview()
+        self.imgMicrophone = nil
+    }
+    
+    func showFloatingMicrophoneView() {
+        self.addingMicrophoneView()
+    }
+    
+    func hideFloatingMicrophoneView() {
+        self.removeMicrophoneFromSuperView()
     }
 
     // MARK: - View setup
@@ -64,9 +129,8 @@ class ToolbarTextField: AutocompleteTextField {
 
 extension ToolbarTextField: NotificationThemeable {
     func applyTheme() {
-        backgroundColor = .clear//UIColor.legacyTheme.textField.backgroundInOverlay
-        //textColor = UIColor.legacyTheme.textField.textAndTint
-        //clearButtonTintColor = textColor
+        backgroundColor = .clear
+        
         clearButtonTintColor = Utils.hexStringToUIColor(hex: "#9AA2B2")
         
         switch LegacyThemeManager.instance.currentName {

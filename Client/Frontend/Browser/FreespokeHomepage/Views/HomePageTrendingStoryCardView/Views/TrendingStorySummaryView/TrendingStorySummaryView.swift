@@ -155,6 +155,10 @@ class TrendingStorySummaryView: UIView {
         paragraphStyle.lineSpacing = 22.5 - (self.summaryTextView.font?.lineHeight ?? 0) // Adjust line spacing to achieve 22.5 px line height
         paragraphStyle.paragraphSpacing = 8
         
+        mutableAttributedString.addAttribute(NSAttributedString.Key.font,
+                                             value: UIFont.sourceSansProFont(.regular, size: 15),
+                                             range: NSRange(location: 0, length: mutableAttributedString.length))
+        
         mutableAttributedString.addAttribute(NSAttributedString.Key.foregroundColor,
                                              value: currentTheme?.type == .dark ? UIColor.white : UIColor.neutralsGray01,
                                              range: NSRange(location: 0,

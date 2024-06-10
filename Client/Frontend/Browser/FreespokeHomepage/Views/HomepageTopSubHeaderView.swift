@@ -62,9 +62,9 @@ extension HomepageTopSubHeaderView {
     }
     
     private func setupText(currentTheme: Theme) {
-        let fullText = "Get the full picture. Learn more"
+        let fullText = "Search Beyond the Bias. Learn more"
         
-        let getTheFullPictureRange = (fullText as NSString).range(of: "Get the full picture. ")
+        let getTheFullPictureRange = (fullText as NSString).range(of: "Search Beyond the Bias. ")
         let learnMoreRange = (fullText as NSString).range(of: "Learn more")
         
         let attributedText = NSMutableAttributedString(string: fullText)

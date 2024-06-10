@@ -444,6 +444,10 @@ extension FreespokeHomepage {
             self?.delegate?.showURL(url: url)
         }
         
+        self.trendingStoryCardView1.didTapHeadlineActionButtonCompletion = { [weak self] url in
+            self?.delegate?.showURL(url: url)
+        }
+        
         self.trendingStoryCardView1.configure(with: storyItem)
         
         self.newsFeedStackView.addArrangedSubview(self.trendingStoryCardView1)
@@ -459,6 +463,10 @@ extension FreespokeHomepage {
         }
         
         self.trendingStoryCardView2.didTapSeeMoreButtonCompletion = { [weak self] url in
+            self?.delegate?.showURL(url: url)
+        }
+        
+        self.trendingStoryCardView2.didTapHeadlineActionButtonCompletion = { [weak self] url in
             self?.delegate?.showURL(url: url)
         }
         
@@ -480,6 +488,10 @@ extension FreespokeHomepage {
             self?.delegate?.showURL(url: url)
         }
         
+        self.trendingStoryCardView3.didTapHeadlineActionButtonCompletion = { [weak self] url in
+            self?.delegate?.showURL(url: url)
+        }
+        
         self.trendingStoryCardView3.configure(with: storyItem)
         
         self.newsFeedStackView.addArrangedSubview(self.trendingStoryCardView3)
@@ -495,6 +507,10 @@ extension FreespokeHomepage {
         }
         
         self.trendingStoryCardView4.didTapSeeMoreButtonCompletion = { [weak self] url in
+            self?.delegate?.showURL(url: url)
+        }
+        
+        self.trendingStoryCardView4.didTapHeadlineActionButtonCompletion = { [weak self] url in
             self?.delegate?.showURL(url: url)
         }
         

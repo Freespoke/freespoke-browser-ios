@@ -14,6 +14,7 @@ protocol TabLocationViewDelegate: AnyObject {
     func tabLocationViewDidTapShield(_ tabLocationView: TabLocationView)
     func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapBookmarkBtn(_ tabLocationView: TabLocationView, button: UIButton)
+    func tabLocationViewTapMicrophoneButton(_ tabLocationView: TabLocationView)
     func tabLocationViewTapShare(_ tabLocationView: TabLocationView, button: UIButton)
 
     /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
@@ -87,7 +88,8 @@ class TabLocationView: UIView, FeatureFlaggable {
         lockURLView.delegate = self
     })
 
-    private lazy var btnReaderMode: ReaderModeButton = .build { readerModeButton in
+    private lazy var btnReaderMode: ReaderModeButton = .build { [weak self] readerModeButton in
+        guard let self = self else { return }
         readerModeButton.addTarget(self, action: #selector(self.tapReaderModeButton(_:)), for: .touchUpInside)
         readerModeButton.addGestureRecognizer(
             UILongPressGestureRecognizer(target: self,
@@ -103,7 +105,7 @@ class TabLocationView: UIView, FeatureFlaggable {
                 selector: #selector(self.readerModeCustomAction))]
     }
     
-    lazy var rightToolBarView: RightToolBarView = .build { rightToolBarView in
+    lazy var rightToolBarView: RightToolBarView = .build { [weak self] rightToolBarView in
         rightToolBarView.delegate = self
     }
 
@@ -241,6 +243,10 @@ extension TabLocationView: LockURLViewDelegate {
 }
 
 extension TabLocationView: RightToolBarViewDelegate {
+    func tabLocationViewTapMicrophoneButton(button: UIButton) {
+        self.delegate?.tabLocationViewTapMicrophoneButton(self)
+    }
+    
     func tabLocationViewDidTapBookmarkBtn(button: UIButton) {
         self.delegate?.tabLocationViewDidTapBookmarkBtn(self, button: button)
     }

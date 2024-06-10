@@ -118,4 +118,9 @@ public struct ImageIdentifiers {
     public static let imgTweetLogo = "img_tweet_logo"
     public static let imgShopsStore = "img_shops_store"
     public static let imgAiGeneratedIcon = "img_ai_generated_icon"
+    public static let imgHomeSearchIcon = "img_home_search_icon"
+    public static let imgHomeMicrophoneIcon = "img_home_microphone_icon"
+    public static let imgMicrophoneTurnOff = "img_microphone_turn_off"
+    public static let imgMicrophoneTurnOn = "img_microphone_turn_on"
+    
 }

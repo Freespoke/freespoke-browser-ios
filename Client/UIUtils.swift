@@ -45,6 +45,45 @@ enum UIUtils {
             alert.show()
         }
     }
+    
+    // MARK: - display Open Settings Alert and navigate to general settings
+    
+    static func displayOpenSettingsAlert(title: String, message: String, btnOpenSettingsTitle: String, openSettingsButtonCompletion: (() -> Void)?, cancelButtonCompletion: (() -> Void)? = nil) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title,
+                                          message: message,
+                                          preferredStyle: .alert)
+            
+            let cancelAction = UIAlertAction(title: "Cancel",
+                                             style: .cancel,
+                                             handler: { _ in
+                cancelButtonCompletion?()
+            })
+            
+            cancelAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+            alert.addAction(cancelAction)
+            
+            let openSettingsAction = UIAlertAction(title: btnOpenSettingsTitle,
+                                                   style: UIAlertAction.Style.default,
+                                                   handler: { _ in
+                guard let appBundleIdentifier = Bundle.main.bundleIdentifier,
+                      let url = URL(string: UIApplication.openSettingsURLString + appBundleIdentifier),
+                      UIApplication.shared.canOpenURL(url) else { return }
+                DispatchQueue.main.async {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+                openSettingsButtonCompletion?()
+            })
+            
+            openSettingsAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+            alert.addAction(openSettingsAction)
+            
+            guard let topMostVC = UIApplication
+                .shared
+                .keyWindowPresentedController(includingTabBar: false) else { return }
+            topMostVC.present(alert, animated: true, completion: nil)
+        }
+    }
 }
 
 // MARK: - DBAlertController

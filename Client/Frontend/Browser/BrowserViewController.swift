@@ -152,6 +152,9 @@ class BrowserViewController: UIViewController {
 
     private var keyboardPressesHandlerValue: Any?
     var themeManager: ThemeManager
+    var notificationCenter: NotificationProtocol = NotificationCenter.default
+    var themeObserver: NSObjectProtocol?
+    
     var logger: Logger
     var menuHeight: CGFloat?
 
@@ -301,7 +304,11 @@ class BrowserViewController: UIViewController {
             updateTabCountUsingTabManager(self.tabManager)
         } else {
             toolbar.tabToolbarDelegate = nil
-            toolbar.isHidden = true
+            if self.urlBar.inOverlayMode {
+                self.toolbar.isHidden = false
+            } else {
+                self.toolbar.isHidden = true
+            }
         }
 
         appMenuBadgeUpdate()
@@ -435,7 +442,10 @@ class BrowserViewController: UIViewController {
         pasteAction = AccessibleAction(name: .PasteTitle, handler: { () -> Bool in
             if let pasteboardContents = UIPasteboard.general.string {
                 // Enter overlay mode and make the search controller appear.
-                self.urlBar.enterOverlayMode(pasteboardContents, pasted: true, search: true)
+                self.urlBar.enterOverlayMode(pasteboardContents,
+                                             pasted: true,
+                                             search: true,
+                                             voiceInput: false)
 
                 return true
             }
@@ -470,6 +480,9 @@ class BrowserViewController: UIViewController {
 
         // Awesomebar Location Telemetry
         SearchBarSettingsViewModel.recordLocationTelemetry(for: isBottomSearchBar ? .bottom : .top)
+        
+        self.listenForThemeChange(self.view)
+        self.applyTheme()
     }
     
     private func addOldTabsToBookmarks() {
@@ -686,7 +699,8 @@ class BrowserViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        statusBarOverlay.snp.remakeConstraints { make in
+        statusBarOverlay.snp.remakeConstraints { [weak self] make in
+            guard let self = self else { return }
             make.top.left.right.equalTo(self.view)
             make.height.equalTo(self.view.safeAreaInsets.top)
         }
@@ -745,40 +759,46 @@ class BrowserViewController: UIViewController {
     // MARK: - Constraints
 
     private func setupConstraints() {
-        urlBar.snp.makeConstraints { make in
-            urlBarHeightConstraint = make.height.equalTo(UIConstants.TopToolbarHeightMax).constraint
+        urlBar.snp.makeConstraints { [weak self] make in
+            guard let self = self else { return }
+            self.urlBarHeightConstraint = make.height.equalTo(UIConstants.TopToolbarHeightMax).constraint
         }
 
-        webViewContainerBackdrop.snp.makeConstraints { make in
-            make.edges.equalTo(view)
+        webViewContainerBackdrop.snp.makeConstraints { [weak self] make in
+            guard let self = self else { return }
+            make.edges.equalTo(self.view)
         }
     }
 
     override func updateViewConstraints() {
         super.updateViewConstraints()
 
-        header.snp.remakeConstraints { make in
+        header.snp.remakeConstraints { [weak self] make in
+            guard let self = self else { return }
             if isBottomSearchBar {
-                make.left.right.top.equalTo(view)
+                make.left.right.top.equalTo(self.view)
                 // Making sure we cover at least the status bar
-                make.bottom.equalTo(view.safeArea.top)
+                make.bottom.equalTo(self.view.safeArea.top)
             } else {
-                scrollController.headerTopConstraint = make.top.equalTo(view.safeArea.top).constraint
-                make.left.right.equalTo(view)
+                scrollController.headerTopConstraint = make.top.equalTo(self.view.safeArea.top).constraint
+                make.left.right.equalTo(self.view)
             }
         }
 
-        topTouchArea.snp.remakeConstraints { make in
-            make.top.left.right.equalTo(view)
+        topTouchArea.snp.remakeConstraints {[weak self] make in
+            guard let self = self else { return }
+            make.top.left.right.equalTo(self.view)
             make.height.equalTo(UX.ShowHeaderTapAreaHeight)
         }
 
-        readerModeBar?.snp.remakeConstraints { make in
+        readerModeBar?.snp.remakeConstraints { [weak self] make in
+            guard let self = self else { return }
             make.height.equalTo(UIConstants.ToolbarHeight)
         }
 
-        webViewContainer.snp.remakeConstraints { make in
-            make.left.right.equalTo(view)
+        webViewContainer.snp.remakeConstraints { [weak self] make in
+            guard let self = self else { return }
+            make.left.right.equalTo(self.view)
             make.top.equalTo(header.snp.bottom)
             make.bottom.equalTo(overKeyboardContainer.snp.top)
         }
@@ -788,33 +808,38 @@ class BrowserViewController: UIViewController {
             make.height.equalTo(UIConstants.BottomToolbarHeight)
         }
 
-        overKeyboardContainer.snp.remakeConstraints { make in
-            scrollController.overKeyboardContainerConstraint = make.bottom.equalTo(bottomContainer.snp.top).constraint
-            if !isBottomSearchBar { make.height.equalTo(0) }
-            make.leading.trailing.equalTo(view)
+        overKeyboardContainer.snp.remakeConstraints { [weak self] make in
+            guard let self = self else { return }
+            self.scrollController.overKeyboardContainerConstraint = make.bottom.equalTo(bottomContainer.snp.top).constraint
+            if !self.isBottomSearchBar { make.height.equalTo(0) }
+            make.leading.trailing.equalTo(self.view)
         }
 
-        bottomContainer.snp.remakeConstraints { make in
-            scrollController.bottomContainerConstraint = make.bottom.equalTo(view.snp.bottom).constraint
-            make.leading.trailing.equalTo(view)
+        bottomContainer.snp.remakeConstraints { [weak self] make in
+            guard let self = self else { return }
+            self.scrollController.bottomContainerConstraint = make.bottom.equalTo(self.view.snp.bottom).constraint
+            make.leading.trailing.equalTo(self.view)
         }
 
         // Remake constraints even if we're already showing the home controller.
         // The home controller may change sizes if we tap the URL bar while on about:home.
         if self.homepageViewController?.view.superview != nil {
-            homepageViewController?.view.snp.remakeConstraints { make in
-                make.top.equalTo(isBottomSearchBar ? view : header.snp.bottom)
-                make.left.right.equalTo(view)
-                let homePageBottomOffset: CGFloat = isBottomSearchBar ? urlBarHeightConstraintValue ?? 0 : 0
-                make.bottom.equalTo(bottomContainer.snp.top).offset(-homePageBottomOffset)
+            homepageViewController?.view.snp.remakeConstraints { [weak self] make in
+                guard let self = self else { return }
+                make.top.equalTo(self.header.snp.bottom)
+                make.left.right.equalTo(self.view)
+                let homePageBottomOffset: CGFloat = self.isBottomSearchBar ? self.urlBarHeightConstraintValue ?? 0 : 0
+                make.bottom.equalTo(self.bottomContainer.snp.top).offset(-homePageBottomOffset)
             }
         }
   
-        bottomContentStackView.snp.remakeConstraints { remake in
-            adjustBottomContentStackView(remake)
+        bottomContentStackView.snp.remakeConstraints { [weak self] remake in
+            guard let self = self else { return }
+            self.adjustBottomContentStackView(remake)
         }
         
-        urlBar.snp.makeConstraints { make in
+        urlBar.snp.makeConstraints { [weak self] make in
+            guard let self = self else { return }
             if self.urlBar.inOverlayMode {
                 make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintForToolbarInOverlayMode)
                 make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintForToolbarInOverlayMode)
@@ -823,7 +848,8 @@ class BrowserViewController: UIViewController {
                 make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintForToolbar)
             }
         }
-        urlBar.line.snp.makeConstraints { make in
+        urlBar.line.snp.makeConstraints { [weak self] make in
+            guard let self = self else { return }
             make.left.right.equalTo(self.view)
         }
 
@@ -897,10 +923,11 @@ class BrowserViewController: UIViewController {
         // We have to deactivate the original constraint, and remake the constraint
         // or else funky conflicts happen
         urlBarHeightConstraint.deactivate()
-        urlBar.snp.makeConstraints { make in
-            let height = heightWithPadding > UIConstants.TopToolbarHeightMax ? UIConstants.TopToolbarHeight : heightWithPadding
-            urlBarHeightConstraint = make.height.equalTo(height).constraint
-            urlBarHeightConstraintValue = height
+        urlBar.snp.makeConstraints { [weak self] make in
+            guard let self = self else { return }
+            let height = UIConstants.TopToolbarHeight
+            self.urlBarHeightConstraint = make.height.equalTo(height).constraint
+            self.urlBarHeightConstraintValue = height
         }
     }
 
@@ -1233,19 +1260,21 @@ class BrowserViewController: UIViewController {
             keyboardBackdrop = UIView()
             keyboardBackdrop?.backgroundColor = UIColor.legacyTheme.browser.background
             view.insertSubview(keyboardBackdrop!, belowSubview: overKeyboardContainer)
-            keyboardBackdrop?.snp.makeConstraints { make in
-                make.edges.equalTo(view)
+            keyboardBackdrop?.snp.makeConstraints { [weak self] make in
+                guard let self = self else { return }
+                make.edges.equalTo(self.view)
             }
             view.bringSubviewToFront(bottomContainer)
         }
 
         addChild(searchController)
         view.addSubview(searchController.view)
-        searchController.view.snp.makeConstraints { make in
-            make.top.equalTo(header.snp.bottom)
-            make.left.right.equalTo(view)
+        searchController.view.snp.makeConstraints { [weak self] make in
+            guard let self = self else { return }
+            make.top.equalTo(self.header.snp.bottom)
+            make.left.right.equalTo(self.view)
 
-            let constraintTarget = isBottomSearchBar ? overKeyboardContainer.snp.top : view.snp.bottom
+            let constraintTarget = self.isBottomSearchBar ? self.overKeyboardContainer.snp.top : self.view.snp.bottom
             make.bottom.equalTo(constraintTarget)
         }
 
@@ -1658,6 +1687,18 @@ class BrowserViewController: UIViewController {
             if let text = searchText {
                 self.urlBar.setLocation(text, search: true)
             }
+        }
+    }
+    
+    func focusLocationTextFieldForVoiceInput(forTab tab: Tab?) {
+//        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        // Without a delay, the text field fails to become first responder
+            // Check that the newly created tab is still selected.
+            // This let's the user spam the Cmd+T button without lots of responder changes.
+            guard tab == self.tabManager.selectedTab else { return }
+
+            self.urlBar.tabLocationViewTapMicrophoneButton(self.urlBar.locationView)
         }
     }
 
@@ -2169,14 +2210,7 @@ extension BrowserViewController: FreespokeHomepageDelegate {
     }
 
     func didPressSearch() {
-        homepageViewController?.isHome = true
-        homepageViewController?.isNewTab = false
-        homepageViewController?.isSearching = true
-        homepageViewController?.checkFreespokeHomepage()
-        
-        //urlBar.alpha = 1
-        
-        focusLocationTextField(forTab: tabManager.selectedTab)
+        self.activateSearchPage(voiceInput: false)
     }
     
     func didPressShare(_ button: UIButton, url: URL) {
@@ -2197,6 +2231,21 @@ extension BrowserViewController: FreespokeHomepageDelegate {
     
     func didPressMicrophone() {
         print("DEBUG: BrowserViewController didTapMicrophoneButton()!!!")
+        self.activateSearchPage(voiceInput: true)
+    }
+    
+    private func activateSearchPage(voiceInput: Bool) {
+        self.homepageViewController?.isHome = true
+        self.homepageViewController?.isNewTab = false
+        self.homepageViewController?.isSearching = true
+        self.homepageViewController?.checkFreespokeHomepage()
+        
+        //urlBar.alpha = 1
+        if voiceInput {
+            self.focusLocationTextFieldForVoiceInput(forTab: self.tabManager.selectedTab)
+        } else {
+            self.focusLocationTextField(forTab: self.tabManager.selectedTab)
+        }
     }
     
     func showURL(url: String) {
@@ -2206,7 +2255,6 @@ extension BrowserViewController: FreespokeHomepageDelegate {
 
 // MARK: HomePanelDelegate
 extension BrowserViewController: HomePanelDelegate {
-    
     func homePanelDidRequestToOpenLibrary(panel: LibraryPanelType) {
         showLibrary(panel: panel)
         view.endEditing(true)
@@ -2243,9 +2291,9 @@ extension BrowserViewController: HomePanelDelegate {
                                              buttonText: .ContextMenuButtonToastNewTabOpenedButtonText)
         let toast = ButtonToast(viewModel: viewModel,
                                 theme: themeManager.currentTheme,
-                                completion: { buttonPressed in
+                                completion: { [weak self] buttonPressed in
             if buttonPressed {
-                self.tabManager.selectTab(tab)
+                self?.tabManager.selectTab(tab)
             }
         })
         show(toast: toast)
@@ -2351,7 +2399,8 @@ extension BrowserViewController: TabManagerDelegate {
 
             scrollController.tab = tab
             webViewContainer.addSubview(webView)
-            webView.snp.makeConstraints { make in
+            webView.snp.makeConstraints { [weak self] make in
+                guard let self = self else { return }
                 make.left.right.top.bottom.equalTo(self.webViewContainer)
             }
 
@@ -2939,7 +2988,7 @@ extension BrowserViewController: FreespokeAuthEventDeactivateAccountHelperDelega
 }
 
 // MARK: Browser Chrome Theming
-extension BrowserViewController: NotificationThemeable {
+extension BrowserViewController: Themeable {
     func applyTheme() {
         guard self.isViewLoaded else { return }
         // TODO: Clean up after FXIOS-5109
@@ -2948,7 +2997,9 @@ extension BrowserViewController: NotificationThemeable {
                                             readerModeBar,
                                             topTabsViewController]
         ui.forEach { $0?.applyTheme() }
-
+        
+        self.header.backgroundColor = self.themeManager.currentTheme.type == .dark ? .darkBackground : .white
+        
         statusBarOverlay.backgroundColor = shouldShowTopTabsForTraitCollection(traitCollection) ? UIColor.legacyTheme.topTabs.background : urlBar.backgroundColor
         keyboardBackdrop?.backgroundColor = UIColor.legacyTheme.browser.background
         setNeedsStatusBarAppearanceUpdate()

@@ -43,7 +43,6 @@ class BreakingNewsCardCollectionView: UICollectionView {
 }
 
 extension BreakingNewsCardCollectionView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.breakingNews?.data.count ?? 0
     }

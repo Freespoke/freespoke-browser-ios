@@ -53,6 +53,11 @@ class HomePageTrendingStoryCardView: UIView {
         return lbl
     }()
     
+    private var btnHeadlineAction: UIButton = {
+        let btn = UIButton()
+        return btn
+    }()
+    
     private var buttonsStackView: UIStackView = {
         let sv = UIStackView()
         sv.axis = .horizontal
@@ -85,9 +90,11 @@ class HomePageTrendingStoryCardView: UIView {
         return view
     }()
     
+    
     private var storyItem: StoryFeedItemModel?
     
     var didTapShareButtonCompletion: ((_ button: UIButton, _ url: URL) -> Void)?
+    var didTapHeadlineActionButtonCompletion: ((_ url: String) -> Void)?
     var didTapSeeMoreButtonCompletion: ((_ url: String) -> Void)?
     var storyItemTappedClosure: ((_ url: String) -> Void)?
     
@@ -106,6 +113,7 @@ class HomePageTrendingStoryCardView: UIView {
         self.addSubviews()
         self.addSubviewsConstraints()
         
+        self.btnHeadlineAction.addTarget(self, action: #selector(self.didTapHeadlineActionButton(_:)), for: .touchUpInside)
         self.btnShare.addTarget(self, action: #selector(self.didTapShareButton(_:)), for: .touchUpInside)
         
         self.articlesContentView.storyItemTappedClosure = { [weak self] url in
@@ -181,9 +189,13 @@ extension HomePageTrendingStoryCardView {
     private func addSubviews() {
         self.addSubview(self.lineView)
         self.addSubview(self.lblTitle)
-        self.addSubview(self.btnShare)
+        
         self.addSubview(self.lblSubTitle)
         self.addSubview(self.lblUpdatedDate)
+        self.addSubview(self.btnHeadlineAction)
+        
+        self.addSubview(self.btnShare)
+        
         self.addSubview(self.buttonsStackView)
         self.addSubview(self.middleLineView)
         self.addSubview(self.contentStackView)
@@ -195,6 +207,7 @@ extension HomePageTrendingStoryCardView {
         self.btnShare.translatesAutoresizingMaskIntoConstraints = false
         self.lblSubTitle.translatesAutoresizingMaskIntoConstraints = false
         self.lblUpdatedDate.translatesAutoresizingMaskIntoConstraints = false
+        self.btnHeadlineAction.translatesAutoresizingMaskIntoConstraints = false
         self.buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
         self.middleLineView.translatesAutoresizingMaskIntoConstraints = false
         self.contentStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -218,12 +231,17 @@ extension HomePageTrendingStoryCardView {
             self.lblSubTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             self.lblSubTitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             
+            self.btnHeadlineAction.topAnchor.constraint(equalTo: self.lblSubTitle.topAnchor, constant: 0),
+            self.btnHeadlineAction.leadingAnchor.constraint(equalTo: self.lblSubTitle.leadingAnchor, constant: 0),
+            self.btnHeadlineAction.trailingAnchor.constraint(equalTo: self.lblSubTitle.trailingAnchor, constant: 0),
+            self.btnHeadlineAction.bottomAnchor.constraint(equalTo: self.lblUpdatedDate.bottomAnchor, constant: 0),
+            
             self.lblUpdatedDate.topAnchor.constraint(equalTo: self.lblSubTitle.bottomAnchor, constant: 8),
             self.lblUpdatedDate.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             self.lblUpdatedDate.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             
             self.buttonsStackView.topAnchor.constraint(equalTo: self.lblUpdatedDate.bottomAnchor, constant: 12),
-            self.buttonsStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            self.buttonsStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             self.buttonsStackView.bottomAnchor.constraint(equalTo: self.middleLineView.topAnchor, constant: 0),
             
             self.middleLineView.heightAnchor.constraint(equalToConstant: 1),
@@ -242,6 +260,12 @@ extension HomePageTrendingStoryCardView {
         guard let shareLinkString = storyItem.links?.shareLink else { return }
         guard let shareLink = URL(string: shareLinkString) else { return }
         self.didTapShareButtonCompletion?(sender, shareLink)
+    }
+    
+    @objc private func didTapHeadlineActionButton(_ sender: UIButton) {
+        guard let storyItem = self.storyItem else { return }
+        guard let shareLinkString = storyItem.links?.shareLink else { return }
+        self.didTapHeadlineActionButtonCompletion?(shareLinkString)
     }
     
     private func showArticles() {

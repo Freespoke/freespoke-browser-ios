@@ -30,16 +30,15 @@ class HomepageSearchBarView: UIView {
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Search anything privately..."
+        lbl.text = .TabLocationURLPlaceholder
         return lbl
     }()
     
     private lazy var imgMicroView: UIImageView = {
         let img = UIImageView()
-        img.contentMode = .scaleAspectFill
+        img.contentMode = .scaleAspectFit
         img.image = UIImage(named: "img_home_microphone_icon")
         img.layer.masksToBounds = true
-        img.isHidden = true
         return img
     }()
     
@@ -77,17 +76,17 @@ class HomepageSearchBarView: UIView {
             self.backgroundColor = UIColor.neutralsGray07
             self.layer.borderColor = UIColor.neutralsGray5.cgColor
             self.lblTitle.textColor = UIColor.onboardingTitleDark
-            self.imgSearchView.image = UIImage(named: "img_home_search_icon")?.withTintColor(UIColor.neutralsGray01,
+            self.imgSearchView.image = UIImage(named: ImageIdentifiers.imgHomeSearchIcon)?.withTintColor(UIColor.neutralsGray01,
                                                                                              renderingMode: .alwaysOriginal)
-            self.imgMicroView.image = UIImage(named: "img_home_microphone_icon")?.withTintColor(UIColor.neutralsGray01,
+            self.imgMicroView.image = UIImage(named: ImageIdentifiers.imgMicrophoneTurnOn)?.withTintColor(UIColor.neutralsGray01,
                                                                                                 renderingMode: .alwaysOriginal)
         case .dark:
             self.backgroundColor = UIColor.whiteColor.withAlphaComponent(0.05)
             self.layer.borderColor = UIColor.neutralsGray01.cgColor
             self.lblTitle.textColor = UIColor.gray7
-            self.imgSearchView.image = UIImage(named: "img_home_search_icon")?.withTintColor(UIColor.white,
+            self.imgSearchView.image = UIImage(named: ImageIdentifiers.imgHomeSearchIcon)?.withTintColor(UIColor.white,
                                                                                              renderingMode: .alwaysOriginal)
-            self.imgMicroView.image = UIImage(named: "img_home_microphone_icon")?.withTintColor(UIColor.white,
+            self.imgMicroView.image = UIImage(named: ImageIdentifiers.imgMicrophoneTurnOn)?.withTintColor(UIColor.white,
                                                                                                 renderingMode: .alwaysOriginal)
         }
     }
@@ -121,8 +120,8 @@ extension HomepageSearchBarView {
             self.imgMicroView.leadingAnchor.constraint(equalTo: self.lblTitle.trailingAnchor, constant: 10),
             self.imgMicroView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             self.imgMicroView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            self.imgMicroView.heightAnchor.constraint(equalToConstant: 30),
-            self.imgMicroView.widthAnchor.constraint(equalToConstant: 30)
+            self.imgMicroView.heightAnchor.constraint(equalToConstant: 20),
+            self.imgMicroView.widthAnchor.constraint(equalToConstant: 20)
         ])
         
         NSLayoutConstraint.activate([
@@ -131,11 +130,6 @@ extension HomepageSearchBarView {
     }
     
     @objc private func handleTap(_ gesture: UITapGestureRecognizer) {
-        // remove line below below when the imgMicroView will be unhidden
-        self.delegate?.didTapSearchBar()
-        
-        // uncommit lines below when the imgMicroView will be unhidden
-        /*
         let location = gesture.location(in: self)
         
         if self.imgMicroView.frame.contains(location) {
@@ -143,6 +137,5 @@ extension HomepageSearchBarView {
         } else {
             self.delegate?.didTapSearchBar()
         }
-         */
     }
 }

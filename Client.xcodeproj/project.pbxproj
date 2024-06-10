@@ -9,6 +9,15 @@
 /* Begin PBXBuildFile section */
 		01000F9F2BE10F85008DB712 /* SubscriptionsClickableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */; };
 		01000FA02BE10F85008DB712 /* SubscriptionsClickableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */; };
+		0106B22D2C13258C00DAF058 /* MicrophoneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B22C2C13258C00DAF058 /* MicrophoneButton.swift */; };
+		0106B22E2C13258C00DAF058 /* MicrophoneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B22C2C13258C00DAF058 /* MicrophoneButton.swift */; };
+		0106B22F2C13258C00DAF058 /* MicrophoneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B22C2C13258C00DAF058 /* MicrophoneButton.swift */; };
+		0106B2312C13608200DAF058 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2302C13608200DAF058 /* HapticFeedback.swift */; };
+		0106B2322C13608200DAF058 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2302C13608200DAF058 /* HapticFeedback.swift */; };
+		0106B2332C13608200DAF058 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2302C13608200DAF058 /* HapticFeedback.swift */; };
+		0106B2352C1360E000DAF058 /* Comparable + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2342C1360E000DAF058 /* Comparable + Extensions.swift */; };
+		0106B2362C1360E000DAF058 /* Comparable + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2342C1360E000DAF058 /* Comparable + Extensions.swift */; };
+		0106B2372C1360E000DAF058 /* Comparable + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2342C1360E000DAF058 /* Comparable + Extensions.swift */; };
 		0110682B2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0110682A2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift */; };
 		0110682C2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0110682A2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift */; };
 		01117E872BDC25D700DF571F /* GetShoppingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01117E862BDC25D700DF571F /* GetShoppingCollection.swift */; };
@@ -998,6 +1007,9 @@
 		01ADAAB42B8781110009754E /* OAuthLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ADAAB22B8781110009754E /* OAuthLoginVC.swift */; };
 		01B1EEB82B8BD7C100899E53 /* Notification.Name + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B1EEB72B8BD7C100899E53 /* Notification.Name + Extensions.swift */; };
 		01B1EEB92B8BD7C100899E53 /* Notification.Name + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B1EEB72B8BD7C100899E53 /* Notification.Name + Extensions.swift */; };
+		01B9E9332C10C5140047EDC9 /* VoiceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B9E9322C10C5140047EDC9 /* VoiceService.swift */; };
+		01B9E9342C10C5140047EDC9 /* VoiceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B9E9322C10C5140047EDC9 /* VoiceService.swift */; };
+		01B9E9352C10C5140047EDC9 /* VoiceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B9E9322C10C5140047EDC9 /* VoiceService.swift */; };
 		01BD23652B6CF7EB00B8B9EB /* PinnedSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5BD95B2878AA74000FE773 /* PinnedSite.swift */; };
 		01BD23662B6CF7EB00B8B9EB /* URLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4AC0EA28C929D700439F83 /* URLSessionProtocol.swift */; };
 		01BD23672B6CF7EB00B8B9EB /* LibraryPanelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30B101D1AA7F9C600C01CA3 /* LibraryPanelHelper.swift */; };
@@ -2911,7 +2923,6 @@
 		E1442FD8294782D9003680B0 /* UIPasteboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1442FCD294782D8003680B0 /* UIPasteboard+Extension.swift */; };
 		E1442FDA294782F7003680B0 /* UIPasteboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1442FCD294782D8003680B0 /* UIPasteboard+Extension.swift */; };
 		E1442FDB294782F9003680B0 /* UIPasteboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1442FCD294782D8003680B0 /* UIPasteboard+Extension.swift */; };
-		E1442FDC2947836E003680B0 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1442FCB294782D8003680B0 /* UIView+Extension.swift */; };
 		E1463D022981DA190074E16E /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1463D012981DA190074E16E /* NotificationManager.swift */; };
 		E1463D042982D0240074E16E /* NotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1463D032982D0240074E16E /* NotificationManagerTests.swift */; };
 		E1463D0629830E4F0074E16E /* MockUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1463D0529830E4F0074E16E /* MockUserNotificationCenter.swift */; };
@@ -3658,6 +3669,9 @@
 /* Begin PBXFileReference section */
 		00B144CD8BEF73CF75ED7639 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Menu.strings; sourceTree = "<group>"; };
 		01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsClickableTextView.swift; sourceTree = "<group>"; };
+		0106B22C2C13258C00DAF058 /* MicrophoneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneButton.swift; sourceTree = "<group>"; };
+		0106B2302C13608200DAF058 /* HapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedback.swift; sourceTree = "<group>"; };
+		0106B2342C1360E000DAF058 /* Comparable + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable + Extensions.swift"; sourceTree = "<group>"; };
 		0110682A2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASIdentifierManager + Extensions.swift"; sourceTree = "<group>"; };
 		01117E862BDC25D700DF571F /* GetShoppingCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShoppingCollection.swift; sourceTree = "<group>"; };
 		01117E892BDC26F400DF571F /* ShoppingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingModel.swift; sourceTree = "<group>"; };
@@ -3760,6 +3774,7 @@
 		01B1EEB52B8A9E2D00899E53 /* Fennec_StagingFennec.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Fennec_StagingFennec.entitlements; sourceTree = "<group>"; };
 		01B1EEB62B8A9E4B00899E53 /* ClientFennec.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ClientFennec.entitlements; sourceTree = "<group>"; };
 		01B1EEB72B8BD7C100899E53 /* Notification.Name + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name + Extensions.swift"; sourceTree = "<group>"; };
+		01B9E9322C10C5140047EDC9 /* VoiceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceService.swift; sourceTree = "<group>"; };
 		01BD26072B6CF7EB00B8B9EB /* Fennec_Development.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fennec_Development.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01BE9C2A2BC01A06002D3844 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
 		01BE9C2D2BC01D04002D3844 /* BaseTouchableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTouchableButton.swift; sourceTree = "<group>"; };
@@ -6205,6 +6220,7 @@
 				43DB9783292D6846002E0B9F /* ShareButton.swift */,
 				8AD40FC927BADC4B00672675 /* StatefulButton.swift */,
 				8AD40FC827BADC4B00672675 /* ReaderModeButton.swift */,
+				0106B22C2C13258C00DAF058 /* MicrophoneButton.swift */,
 				8AD40FD427BB1C1000672675 /* LockButton.swift */,
 			);
 			path = Buttons;
@@ -6562,6 +6578,7 @@
 				0E3B96752BC324E900A65D2F /* UserDefaults + Extensions.swift */,
 				01E2D4382C00D65200B1ED3A /* UITapGestureRecognizer + Extensions.swift */,
 				01D998492C0FBF8800C7B9DF /* CGPoint + Extensions.swift */,
+				0106B2342C1360E000DAF058 /* Comparable + Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -6866,6 +6883,8 @@
 				0133EDBE2BAF35D600FCEE4C /* UIUtils */,
 				0181A41F2B863702005BE1F6 /* Keychain.swift */,
 				0E5A03E12BACEE24001C3149 /* ScreenUtilities.swift */,
+				01B9E9322C10C5140047EDC9 /* VoiceService.swift */,
+				0106B2302C13608200DAF058 /* HapticFeedback.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -11310,6 +11329,7 @@
 				016C92342BFE13DC006520D0 /* Contile.swift in Sources */,
 				016C92352BFE13DC006520D0 /* RecentItemsHelper.swift in Sources */,
 				016C92362BFE13DC006520D0 /* LogoutCell.swift in Sources */,
+				0106B2322C13608200DAF058 /* HapticFeedback.swift in Sources */,
 				016C92372BFE13DC006520D0 /* UIUtils.swift in Sources */,
 				016C92382BFE13DC006520D0 /* LibraryViewController+ToolbarActions.swift in Sources */,
 				016C92392BFE13DC006520D0 /* WallpaperNetworkModule.swift in Sources */,
@@ -11627,6 +11647,7 @@
 				016C93582BFE13DC006520D0 /* FxAWebViewTelemetry.swift in Sources */,
 				016C93592BFE13DC006520D0 /* UIModalPresentationStyle+Photon.swift in Sources */,
 				016C935A2BFE13DC006520D0 /* PasswordTextField.swift in Sources */,
+				0106B2362C1360E000DAF058 /* Comparable + Extensions.swift in Sources */,
 				016C935B2BFE13DC006520D0 /* AutocompleteTextField.swift in Sources */,
 				016C935C2BFE13DC006520D0 /* SlideoverPresentationController.swift in Sources */,
 				016C935D2BFE13DC006520D0 /* ExperimentsTableView.swift in Sources */,
@@ -11706,6 +11727,7 @@
 				016C939F2BFE13DC006520D0 /* WhiteListHeaderView.swift in Sources */,
 				016C93A02BFE13DC006520D0 /* TopSitesViewModel.swift in Sources */,
 				016C93A12BFE13DC006520D0 /* WidgetIntents.intentdefinition in Sources */,
+				01B9E9342C10C5140047EDC9 /* VoiceService.swift in Sources */,
 				016C93A22BFE13DC006520D0 /* DownloadFileFetcher.swift in Sources */,
 				016C93A32BFE13DC006520D0 /* LoginOnboarding.swift in Sources */,
 				016C93A42BFE13DC006520D0 /* PocketSponsoredStory.swift in Sources */,
@@ -11783,6 +11805,7 @@
 				016C93E72BFE13DC006520D0 /* OnboardingWelcomeScreen.swift in Sources */,
 				016C93E82BFE13DC006520D0 /* RecentlySavedCell.swift in Sources */,
 				016C93E92BFE13DC006520D0 /* HistoryPanel+ContextMenuExtensions.swift in Sources */,
+				0106B22E2C13258C00DAF058 /* MicrophoneButton.swift in Sources */,
 				016C93EA2BFE13DC006520D0 /* HostingTableViewCell.swift in Sources */,
 				016C93EB2BFE13DC006520D0 /* AdsTelemetryHelper.swift in Sources */,
 				01E2D4422C039B5700B1ED3A /* HomePageBackgroundImageView.swift in Sources */,
@@ -12159,6 +12182,7 @@
 				01BD24652B6CF7EB00B8B9EB /* AppDelegate.swift in Sources */,
 				012591262C065B2A003B74B4 /* MoreNewsButton.swift in Sources */,
 				01BD24662B6CF7EB00B8B9EB /* UIViewController + Extension.swift in Sources */,
+				0106B22F2C13258C00DAF058 /* MicrophoneButton.swift in Sources */,
 				01FDF3A92C0E37E3000FE329 /* StorySummaryTopView.swift in Sources */,
 				01BD24672B6CF7EB00B8B9EB /* BrowserPrompts.swift in Sources */,
 				0181A41E2B861CF7005BE1F6 /* FreespokeJWTDecodeModel.swift in Sources */,
@@ -12281,6 +12305,7 @@
 				01FDF3902C0CB9EF000FE329 /* TrendingStoryTweetCollectionViewCell.swift in Sources */,
 				01117E882BDC25D700DF571F /* GetShoppingCollection.swift in Sources */,
 				012C3AB92B80DEE3007EC4AF /* SignUpVCViewModel.swift in Sources */,
+				0106B2332C13608200DAF058 /* HapticFeedback.swift in Sources */,
 				0181A4182B855D3A005BE1F6 /* FreespokeAuthModel.swift in Sources */,
 				01BD24C12B6CF7EB00B8B9EB /* Experiments.swift in Sources */,
 				014F9A092C088EA4006141FB /* GetAdvertisement.swift in Sources */,
@@ -12357,6 +12382,7 @@
 				01BD24F52B6CF7EB00B8B9EB /* ASGroup.swift in Sources */,
 				0EB329692B8BCEF900326992 /* AdBlockManager.swift in Sources */,
 				0E89DB972BFE7F1700F0587B /* BookmarkButton.swift in Sources */,
+				0106B2372C1360E000DAF058 /* Comparable + Extensions.swift in Sources */,
 				01BD24F62B6CF7EB00B8B9EB /* NewTabAccessors.swift in Sources */,
 				01BD24F72B6CF7EB00B8B9EB /* JumpBackInCell.swift in Sources */,
 				01BD24F82B6CF7EB00B8B9EB /* HomepageViewModel.swift in Sources */,
@@ -12396,6 +12422,7 @@
 				0EFC44BA2B97AEE200821B36 /* WhiteListHeaderView.swift in Sources */,
 				01BD25122B6CF7EB00B8B9EB /* TopSitesViewModel.swift in Sources */,
 				01BD25132B6CF7EB00B8B9EB /* WidgetIntents.intentdefinition in Sources */,
+				01B9E9352C10C5140047EDC9 /* VoiceService.swift in Sources */,
 				01BD25142B6CF7EB00B8B9EB /* DownloadFileFetcher.swift in Sources */,
 				01BD25152B6CF7EB00B8B9EB /* LoginOnboarding.swift in Sources */,
 				0EC2C7D72C0F854700A14B09 /* TrendingItemCell.swift in Sources */,
@@ -12990,7 +13017,6 @@
 				6025B109267B6BB300F59F6B /* NoSearchResultCell.swift in Sources */,
 				C8CE38BF265E71FE0009B09E /* UIImageExtension.swift in Sources */,
 				F85C7F14272104E3004BDBA4 /* Layout.swift in Sources */,
-				E1442FDC2947836E003680B0 /* UIView+Extension.swift in Sources */,
 				C874FC2826612BFF00EBE86E /* AlertControllerView.swift in Sources */,
 				C874FB3A2660E8B900EBE86E /* CredentialProviderPresenter.swift in Sources */,
 				E1442FC0294782B6003680B0 /* CGRect+Extension.swift in Sources */,
@@ -13330,6 +13356,7 @@
 				F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */,
 				012591242C065B2A003B74B4 /* MoreNewsButton.swift in Sources */,
 				E1442FD2294782D9003680B0 /* UIViewController + Extension.swift in Sources */,
+				0106B22D2C13258C00DAF058 /* MicrophoneButton.swift in Sources */,
 				01FDF3A72C0E37E3000FE329 /* StorySummaryTopView.swift in Sources */,
 				0181A41D2B861CF7005BE1F6 /* FreespokeJWTDecodeModel.swift in Sources */,
 				E653422D1C5944F90039DD9E /* BrowserPrompts.swift in Sources */,
@@ -13452,6 +13479,7 @@
 				01FDF38E2C0CB9EF000FE329 /* TrendingStoryTweetCollectionViewCell.swift in Sources */,
 				01117E872BDC25D700DF571F /* GetShoppingCollection.swift in Sources */,
 				012C3AB82B80DEE3007EC4AF /* SignUpVCViewModel.swift in Sources */,
+				0106B2312C13608200DAF058 /* HapticFeedback.swift in Sources */,
 				0181A4172B855D3A005BE1F6 /* FreespokeAuthModel.swift in Sources */,
 				01ADAA972B86A5C10009754E /* NetworkLayerConstants.swift in Sources */,
 				014F9A072C088EA4006141FB /* GetAdvertisement.swift in Sources */,
@@ -13528,6 +13556,7 @@
 				3B6889C51D66950E002AC85E /* UIImageColors.swift in Sources */,
 				968BD7EB27DFF0F8003148B3 /* ASGroup.swift in Sources */,
 				0E89DB962BFE7F1700F0587B /* BookmarkButton.swift in Sources */,
+				0106B2352C1360E000DAF058 /* Comparable + Extensions.swift in Sources */,
 				392ED7E41D0AEF56009D9B62 /* NewTabAccessors.swift in Sources */,
 				8A9AC465276CEC4E0047F5B0 /* JumpBackInCell.swift in Sources */,
 				01823F9A2B8DFE9F00986B73 /* EmailTextField.swift in Sources */,
@@ -13567,6 +13596,7 @@
 				D59431ED25E9912900F0BA82 /* WidgetIntents.intentdefinition in Sources */,
 				0EFC44B92B97AEE200821B36 /* WhiteListHeaderView.swift in Sources */,
 				213778632980448C00D01309 /* DownloadFileFetcher.swift in Sources */,
+				01B9E9332C10C5140047EDC9 /* VoiceService.swift in Sources */,
 				F85C7EDF2710B4DD004BDBA4 /* LoginOnboarding.swift in Sources */,
 				C8B0F5F5283B7CCE007AE65D /* PocketSponsoredStory.swift in Sources */,
 				0EC2C7D52C0F854700A14B09 /* TrendingItemCell.swift in Sources */,

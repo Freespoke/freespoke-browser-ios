@@ -277,12 +277,11 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     }
     
     // MARK: - Layout
-    
     func configureContentStackView() {
         view.addSubview(self.searchPageView)
         self.searchPageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            searchPageView.topAnchor.constraint(equalTo: view.topAnchor),
+            searchPageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 15),
             searchPageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchPageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             searchPageView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -353,13 +352,14 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         let theme = themeManager.currentTheme
         viewModel.theme = theme
         updateStatusBar(theme: theme)
-            freespokeHomepageView.applyTheme(currentTheme: theme)
-            switch theme.type {
-            case .light:
-                view.backgroundColor = theme.colors.layer1
-            case .dark:
-                view.backgroundColor = .darkBackground
-            }
+        freespokeHomepageView.applyTheme(currentTheme: theme)
+        
+        switch theme.type {
+        case .light:
+            view.backgroundColor = theme.colors.layer1
+        case .dark:
+            view.backgroundColor = .darkBackground
+        }
         self.searchPageView.applyTheme()
     }
     
@@ -507,7 +507,7 @@ private extension HomepageViewController {
         viewModel.recentlySavedViewModel.headerButtonAction = { [weak self] button in
             self?.openBookmarks(button)
         }
-                
+        
         // Jumpback in
         viewModel.jumpBackInViewModel.onTapGroup = { [weak self] tab in
             self?.homePanelDelegate?.homePanelDidRequestToOpenTabTray(withFocusedTab: tab)

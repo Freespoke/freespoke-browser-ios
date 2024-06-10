@@ -198,7 +198,7 @@ final class BreakingNewsTweetCollectionViewCell: UICollectionViewCell, Themeable
         
         switch self.themeManager.currentTheme.type {
         case .light:
-            self.backgroundColor = .white
+            self.backgroundColor = .clear
             self.contentView.backgroundColor = .white
             self.lineView.backgroundColor = UIColor.neutralsGray05
             self.contentView.layer.borderColor = UIColor.neutralsGray05.cgColor
@@ -208,7 +208,7 @@ final class BreakingNewsTweetCollectionViewCell: UICollectionViewCell, Themeable
             self.lblDescription.textColor = UIColor.neutralsGray01
         case .dark:
             self.backgroundColor = .clear
-            self.contentView.backgroundColor = .clear
+            self.contentView.backgroundColor = .darkBackground
             self.lineView.backgroundColor = UIColor.neutralsGray01
             self.contentView.layer.borderColor = UIColor.neutralsGray01.cgColor
             

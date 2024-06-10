@@ -49,7 +49,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 //        case .topSites:
 //            tabManager.startAtHomeCheck()
 //        }
-        
+        self.urlBar.leaveOverlayMode(didCancel: true)
         TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .home)
     }
 
@@ -105,6 +105,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             
             tabManager.selectedTab?.goBack()
         }
+        self.urlBar.leaveOverlayMode(didCancel: true)
     }
 
     func tabToolbarDidLongPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -117,7 +118,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
                                           action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Election",
                                           name: AnalyticsManager.MatomoName.clickName)
-        
+        self.urlBar.leaveOverlayMode(didCancel: true)
         openLinkURL(Constants.AppInternalBrowserURLs.electionURL)
     }
     
@@ -148,6 +149,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             
             tabManager.selectedTab?.goForward()
         }
+        self.urlBar.leaveOverlayMode(didCancel: true)
     }
 
     func tabToolbarDidLongPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -222,6 +224,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         else {
             showBookamrksAlert()
         }
+        self.urlBar.leaveOverlayMode(didCancel: true)
     }
 
     func getTabToolbarLongPressActionsForModeSwitching() -> [PhotonRowActions] {

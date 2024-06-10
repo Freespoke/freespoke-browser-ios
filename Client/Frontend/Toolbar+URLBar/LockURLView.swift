@@ -48,7 +48,7 @@ final class LockURLView: UIView {
         txt.accessibilityLabel = .TabLocationAddressBarAccessibilityLabel
         txt.font = UIFont.preferredFont(forTextStyle: .body)
         txt.adjustsFontForContentSizeCategory = true
-        txt.textAlignment = .center
+        txt.textAlignment = .left
 
         // Remove the default drop interaction from the URL text field so that our
         // custom drop interaction on the BVC can accept dropped URLs.

@@ -7,7 +7,7 @@ import UIKit
 // MARK: - keyWindow, keyWindowPresentedController
 
 extension UIApplication {
-    var keyWindow: UIWindow? {
+    var keyWindowCustom: UIWindow? {
         // Get connected scenes
         return UIApplication.shared.connectedScenes
         // Keep only active scenes, onscreen and visible to the user
@@ -21,7 +21,7 @@ extension UIApplication {
     }
     
     func keyWindowPresentedController(includingTabBar: Bool = true) -> UIViewController? {
-        var viewController = self.keyWindow?.rootViewController
+        var viewController = self.keyWindowCustom?.rootViewController
         
         // If root `UIViewController` is a `UITabBarController`
         if includingTabBar, let presentedController = viewController as? UITabBarController {

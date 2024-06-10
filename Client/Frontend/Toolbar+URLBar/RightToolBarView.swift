@@ -7,6 +7,7 @@ import Foundation
 protocol RightToolBarViewDelegate {
     func tabLocationViewDidTapBookmarkBtn(button: UIButton)
     func tabLocationViewTapShare(button: UIButton)
+    func tabLocationViewTapMicrophoneButton(button: UIButton)
     func tabLocationViewDidTapReload()
     func tabLocationViewDidLongPressReload(button: UIButton)
 }
@@ -53,7 +54,8 @@ final class RightToolBarView: UIView {
         return reloadButton
     }()
     
-    lazy var btnShare: ShareButton = .build { shareButton in
+    lazy var btnShare: ShareButton = .build {  [weak self] shareButton in
+        guard let self = self else { return }
         shareButton.addTarget(self, action: #selector(self.didPressOnBtnShare(_:)), for: .touchUpInside)
         shareButton.clipsToBounds = false
         shareButton.tintColor = UIColor.Photon.Grey50
@@ -61,6 +63,15 @@ final class RightToolBarView: UIView {
         shareButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.shareButton
         shareButton.isHidden = true
     }
+    
+    lazy var btnMicrophone: MicrophoneButton = {
+        let btn = MicrophoneButton()
+        btn.addTarget(self, action: #selector(self.didPressMicrophoneButton(_:)), for: .touchUpInside)
+        btn.clipsToBounds = false
+        btn.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.microphoneButton
+        btn.isHidden = false
+        return btn
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -82,6 +93,7 @@ final class RightToolBarView: UIView {
         self.stackView.addArrangedSubview(self.btnBookmark)
         self.stackView.addArrangedSubview(self.btnReload)
         self.stackView.addArrangedSubview(self.btnShare)
+        self.stackView.addArrangedSubview(self.btnMicrophone)
     }
     
     private func setupConstraints() {
@@ -89,6 +101,7 @@ final class RightToolBarView: UIView {
         self.btnBookmark.setSizeToView(width: self.sizeForBtns.width, height: self.sizeForBtns.height)
         self.btnReload.setSizeToView(width: self.sizeForBtns.width, height: self.sizeForBtns.height)
         self.btnShare.setSizeToView(width: self.sizeForBtns.width, height: self.sizeForBtns.height)
+        self.btnMicrophone.setSizeToView(width: self.sizeForBtns.width, height: self.sizeForBtns.height)
     }
     
     @objc func didPressOnBtnBookmark(_ button: UIButton) {
@@ -97,6 +110,10 @@ final class RightToolBarView: UIView {
     
     @objc func didPressOnBtnShare(_ button: UIButton) {
         self.delegate?.tabLocationViewTapShare(button: button)
+    }
+    
+    @objc func didPressMicrophoneButton(_ button: UIButton) {
+        self.delegate?.tabLocationViewTapMicrophoneButton(button: button)
     }
     
     @objc func tapOnBtnReload() {

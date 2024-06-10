@@ -81,6 +81,24 @@ struct StoryFeedTweetModel: Codable {
         case tweetId = "tweet_id"
         case url
     }
+    
+    init(from decoder: Decoder) throws {
+        let modelContainer = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try? modelContainer.decode(String?.self, forKey: .id)
+        self.author = try? modelContainer.decode(StoryFeedTweetAuthorModel?.self, forKey: .author)
+        if let biasString = try? modelContainer.decode(String?.self, forKey: .bias),
+            !biasString.isEmpty,
+        let bias = BiasType(rawValue: biasString) {
+            self.bias = bias
+        } else {
+            self.bias = nil
+        }
+        
+        self.datePublished = try? modelContainer.decode(String?.self, forKey: .datePublished)
+        self.text = try? modelContainer.decode(String?.self, forKey: .text)
+        self.tweetId = try? modelContainer.decode(String?.self, forKey: .tweetId)
+        self.url = try? modelContainer.decode(String?.self, forKey: .url)
+    }
 }
 
 struct StoryFeedTweetAuthorModel: Codable {
@@ -128,6 +146,38 @@ struct StoryFeedArticleModel: Codable {
         } else {
             return nil
         }
+    }
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case bias = "bias"
+        case datePublished = "datePublished"
+        case title = "title"
+        case images = "images"
+        case publisherIcon = "publisherIcon"
+        case publisherName = "publisherName"
+        case url = "url"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let modelContainer = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try? modelContainer.decode(String?.self, forKey: .id)
+        
+        if let biasString = try? modelContainer.decode(String?.self, forKey: .bias),
+            !biasString.isEmpty,
+        let bias = BiasType(rawValue: biasString) {
+            self.bias = bias
+        } else {
+            self.bias = nil
+        }
+        
+        self.datePublished = try? modelContainer.decode(String?.self, forKey: .datePublished)
+        self.title = try? modelContainer.decode(String?.self, forKey: .title)
+        self.images = try? modelContainer.decode([String]?.self, forKey: .images)
+        self.publisherIcon = try? modelContainer.decode(String?.self, forKey: .publisherIcon)
+        self.publisherName = try? modelContainer.decode(String?.self, forKey: .publisherName)
+        self.url = try? modelContainer.decode(String?.self, forKey: .url)
     }
 }
 

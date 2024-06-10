@@ -144,7 +144,7 @@ final class BreakingNewsArticleCollectionViewCell: UICollectionViewCell, Themeab
     
     func configure(article: BreakingNewsArticleModel) {
         self.article = article
-        if let imageUrl = article.fullInfo.images.first, let url = URL(string: imageUrl) {
+        if let imageUrl = article.fullInfo.images?.first, let url = URL(string: imageUrl) {
             self.imageView.kf.setImage(with: url)
         }
         

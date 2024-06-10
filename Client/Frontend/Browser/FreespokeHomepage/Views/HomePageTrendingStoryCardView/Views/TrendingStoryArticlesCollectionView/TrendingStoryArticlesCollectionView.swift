@@ -42,8 +42,9 @@ class TrendingStoryArticlesCollectionView: UICollectionView {
     
     func configure(with storyItem: StoryFeedItemModel) {
         var cells: [TrendingStoryArticlesCellType] = []
-        (storyItem.articles ?? []).forEach({ cells.append(.article(article: $0)) })
+        
         (storyItem.tweets ?? []).forEach({ cells.append(.tweet(tweet: $0)) })
+        (storyItem.articles ?? []).forEach({ cells.append(.article(article: $0)) })
         
         self.cellsArray = cells
         

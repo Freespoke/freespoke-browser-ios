@@ -178,7 +178,7 @@ class HomepageViewModel: FeatureFlaggable {
         Task {
             await jumpBackInAdaptor.setDelegate(delegate: jumpBackInViewModel)
         }
-
+        
         updateEnabledSections()
     }
 
@@ -218,6 +218,7 @@ class HomepageViewModel: FeatureFlaggable {
         childViewModels.forEach {
             if $0.shouldShow { shownSections.append($0.sectionType) }
         }
+        self.removeTrendingStory(trendingNews: self.trendingNewsModel.trendingStory)
 //        shownSections.remove(at: 0)
     }
 
@@ -239,7 +240,16 @@ class HomepageViewModel: FeatureFlaggable {
     }
     
     func updateTrendingNews(trendingNews: StoryFeedModel) {
+        self.removeTrendingStory(trendingNews: trendingNews)
         self.trendingNewsModel.updateTrendingNews(trendingNews: trendingNews)
+    }
+    
+    func removeTrendingStory(trendingNews: StoryFeedModel?) {
+        if let stories = trendingNews?.stories, stories.isEmpty{
+            self.shownSections.removeAll(where: { $0 == .trendingNews })
+        } else if trendingNews?.stories == nil {
+            self.shownSections.removeAll(where: { $0 == .trendingNews })
+        }
     }
 }
 

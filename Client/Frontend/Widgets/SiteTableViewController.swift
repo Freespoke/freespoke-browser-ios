@@ -143,7 +143,7 @@ class SiteTableViewController: UIViewController,
             switch LegacyThemeManager.instance.currentName {
             case .normal:
                 header.textLabel?.textColor = .blackColor
-                header.contentView.backgroundColor = .gray7
+                header.contentView.backgroundColor = .neutralsGray07
                 
             case .dark:
                 header.textLabel?.textColor = .white
@@ -172,7 +172,7 @@ class SiteTableViewController: UIViewController,
 
         switch LegacyThemeManager.instance.currentName {
         case .normal:
-            tableView.backgroundColor = .gray7
+            tableView.backgroundColor = .neutralsGray07
             
         case .dark:
             tableView.backgroundColor = .darkBackground

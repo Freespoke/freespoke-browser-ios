@@ -97,6 +97,7 @@ class HomePageTrendingStoryCardView: UIView {
     var didTapHeadlineActionButtonCompletion: ((_ url: String) -> Void)?
     var didTapSeeMoreButtonCompletion: ((_ url: String) -> Void)?
     var storyItemTappedClosure: ((_ url: String) -> Void)?
+    var summaryViewLinkTappedClosure: ((_ url: String) -> Void)?
     
     // MARK: Initializers
     
@@ -118,6 +119,10 @@ class HomePageTrendingStoryCardView: UIView {
         
         self.articlesContentView.storyItemTappedClosure = { [weak self] url in
             self?.storyItemTappedClosure?(url)
+        }
+        
+        self.summaryView.linkTappedClosure = { [weak self] url in
+            self?.summaryViewLinkTappedClosure?(url)
         }
     }
     

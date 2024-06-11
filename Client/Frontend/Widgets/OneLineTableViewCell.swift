@@ -152,7 +152,7 @@ class OneLineTableViewCell: UITableViewCell,
         
         switch LegacyThemeManager.instance.currentName {
         case .normal:
-            backgroundColor = .gray7
+            backgroundColor = .neutralsGray07
             titleLabel.textColor = .blackColor
             
         case .dark:

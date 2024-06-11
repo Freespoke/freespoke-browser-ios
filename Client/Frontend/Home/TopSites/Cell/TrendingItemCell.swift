@@ -56,19 +56,21 @@ final class TrendingItemCell: UICollectionViewCell, ReusableCell {
         
         NSLayoutConstraint.activate([
             self.imgIcon.topAnchor.constraint(greaterThanOrEqualTo: self.contentView.topAnchor, constant: 0),
-            self.imgIcon.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0),
-            self.imgIcon.trailingAnchor.constraint(equalTo: self.lblTitle.leadingAnchor, constant: -12),
             self.imgIcon.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            self.imgIcon.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0),
             self.imgIcon.bottomAnchor.constraint(lessThanOrEqualTo: self.viewSeparator.topAnchor, constant: 0),
+            self.imgIcon.widthAnchor.constraint(equalToConstant: 13),
+            self.imgIcon.heightAnchor.constraint(equalToConstant: 18),
             
             self.lblTitle.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 9),
+            self.lblTitle.leadingAnchor.constraint(equalTo: self.imgIcon.trailingAnchor, constant: 12),
             self.lblTitle.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -12),
             self.lblTitle.bottomAnchor.constraint(equalTo: self.viewSeparator.topAnchor, constant: -9),
             
             self.viewSeparator.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0),
             self.viewSeparator.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0),
             self.viewSeparator.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0),
-            self.viewSeparator.heightAnchor.constraint(equalToConstant: 1),
+            self.viewSeparator.heightAnchor.constraint(equalToConstant: 1)
         ])
     }
     
@@ -89,4 +91,3 @@ final class TrendingItemCell: UICollectionViewCell, ReusableCell {
         return size
     }
 }
-

@@ -33,11 +33,19 @@ protocol SearchBarLocationProvider: FeatureFlaggable {
 
 extension SearchBarLocationProvider {
     var isSearchBarLocationFeatureEnabled: Bool {
-        let isiPad = UIDevice.current.userInterfaceIdiom == .pad
-        let isFeatureEnabled = featureFlags.isFeatureEnabled(.bottomSearchBar, checking: .buildOnly)
+//        let isiPad = UIDevice.current.userInterfaceIdiom == .pad
+//        let isFeatureEnabled = featureFlags.isFeatureEnabled(.bottomSearchBar, checking: .buildOnly)
 
-        return isFeatureEnabled && !isiPad && !AppConstants.isRunningUITests
+//        return isFeatureEnabled && !isiPad && !AppConstants.isRunningUITests
+        return true
     }
+    
+//    var isSearchBarLocationFeatureEnabled: Bool {
+//        let isiPad = UIDevice.current.userInterfaceIdiom == .pad
+//        let isFeatureEnabled = featureFlags.isFeatureEnabled(.bottomSearchBar, checking: .buildOnly)
+//
+//        return isFeatureEnabled && !isiPad && !AppConstants.isRunningUITests
+//    }
     
     var isSearchBarLeatureEnabled: Bool {
         let isFeatureEnabled = featureFlags.isFeatureEnabled(.contextualHintForBookmarks, checking: .buildOnly)

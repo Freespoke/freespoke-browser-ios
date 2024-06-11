@@ -47,8 +47,8 @@ class VoiceService: NSObject {
         case .granted:
             completion(true)
         case .denied:
-            let alertTitle = "Speech Recognition Access"
-            let alertMessage = "To allow access to Speech Recognition, please visit your device's Settings App."
+            let alertTitle = "Microphone Access"
+            let alertMessage = "To allow access to Microphone, please visit your device's Settings App."
             let btnOpenSettingsTitle = "Allow Access in Settings App"
             
             UIUtils.displayOpenSettingsAlert(title: alertTitle,
@@ -57,7 +57,6 @@ class VoiceService: NSObject {
                                              openSettingsButtonCompletion: {
                 print("DEBUG: Here could be sent logger event for voiceOpenAppSettingsMicAccess")
             })
-            print("DEBUG: requestMicrophoneAuthorization denied!!!")
             completion(false)
         case .undetermined:
             AVAudioSession.sharedInstance().requestRecordPermission({ granted in
@@ -84,15 +83,12 @@ class VoiceService: NSObject {
                                                  openSettingsButtonCompletion: {
                     print("DEBUG: Here could be sent logger event for voiceOpenAppSettingsSpeechRecognAccess")
                 })
-                print("DEBUG: requestSpeechRecognizerAuthorization denied!!!")
                 completion(false)
             case .restricted:
                 let alertTitle = "Speech Recognition Access"
                 let alertMessage = "Speech recognition restricted on this device"
                 
                 UIUtils.showOkAlertInNewWindow(title: alertTitle, message: alertMessage)
-                print("DEBUG: Here could be sent logger event for speechRecognitionRestrictedOnThisDevice")
-                print("DEBUG: requestSpeechRecognizerAuthorization restricted!!!")
                 completion(false)
             case .notDetermined:
                 completion(false)

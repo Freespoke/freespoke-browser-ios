@@ -77,17 +77,17 @@ class HomepageSearchBarView: UIView {
             self.layer.borderColor = UIColor.neutralsGray5.cgColor
             self.lblTitle.textColor = UIColor.onboardingTitleDark
             self.imgSearchView.image = UIImage(named: ImageIdentifiers.imgHomeSearchIcon)?.withTintColor(UIColor.neutralsGray01,
-                                                                                             renderingMode: .alwaysOriginal)
+                                                                                                         renderingMode: .alwaysOriginal)
             self.imgMicroView.image = UIImage(named: ImageIdentifiers.imgMicrophoneTurnOn)?.withTintColor(UIColor.neutralsGray01,
-                                                                                                renderingMode: .alwaysOriginal)
+                                                                                                          renderingMode: .alwaysOriginal)
         case .dark:
             self.backgroundColor = UIColor.whiteColor.withAlphaComponent(0.05)
             self.layer.borderColor = UIColor.neutralsGray01.cgColor
-            self.lblTitle.textColor = UIColor.gray7
+            self.lblTitle.textColor = UIColor.neutralsGray07
             self.imgSearchView.image = UIImage(named: ImageIdentifiers.imgHomeSearchIcon)?.withTintColor(UIColor.white,
-                                                                                             renderingMode: .alwaysOriginal)
+                                                                                                         renderingMode: .alwaysOriginal)
             self.imgMicroView.image = UIImage(named: ImageIdentifiers.imgMicrophoneTurnOn)?.withTintColor(UIColor.white,
-                                                                                                renderingMode: .alwaysOriginal)
+                                                                                                          renderingMode: .alwaysOriginal)
         }
     }
 }

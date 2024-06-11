@@ -127,10 +127,10 @@ class FreefolkProfileVC: UIViewController, Themeable {
         case .dark:
             self.view.backgroundColor = UIColor.black
             self.tableView.backgroundColor = .clear
-            self.titleLbl.textColor = .gray7
+            self.titleLbl.textColor = .neutralsGray07
         case .light:
-            self.view.backgroundColor = .gray7
-            self.tableView.backgroundColor = .gray7
+            self.view.backgroundColor = .neutralsGray07
+            self.tableView.backgroundColor = .neutralsGray07
             self.titleLbl.textColor = .blackColor
         }
         
@@ -331,7 +331,7 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
                        currentTheme: self.themeManager.currentTheme)
         
         let theme = self.themeManager.currentTheme
-        cell.backgroundColor = (theme.type == .light) ? .gray7 : .clear
+        cell.backgroundColor = (theme.type == .light) ? .neutralsGray07 : .clear
         
         switch cellType {
         case .account:
@@ -414,7 +414,7 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
     
     private func configureLogoutCell(_ cell: LogoutCell) {
         let theme = self.themeManager.currentTheme
-        cell.backgroundColor = (theme.type == .light) ? .gray7 : .clear
+        cell.backgroundColor = (theme.type == .light) ? .neutralsGray07 : .clear
         cell.configureCell(textColor: (theme.type == .light) ? .blackColor : .whiteColor)
         
         cell.tapClosure = { [weak self] in

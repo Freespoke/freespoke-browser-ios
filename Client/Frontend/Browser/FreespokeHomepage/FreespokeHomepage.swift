@@ -290,7 +290,9 @@ extension FreespokeHomepage {
     private func addNewsFeedStackViewConstraints() {
         self.newsFeedStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.scrollableContentViewBottomConstraint = self.newsFeedStackView.bottomAnchor.constraint(equalTo: self.scrollableContentView.bottomAnchor, constant: 0)
+        let initialConstant: CGFloat = UIDevice.current.isPad ? -20 : 0
+        
+        self.scrollableContentViewBottomConstraint = self.newsFeedStackView.bottomAnchor.constraint(equalTo: self.scrollableContentView.bottomAnchor, constant: initialConstant)
         self.scrollableContentViewBottomConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
@@ -329,13 +331,21 @@ extension FreespokeHomepage {
                                                object: nil)
     }
     
-    @objc func orientationDidChange(_ notification: Notification) {
+    @objc func orientationDidChange() {
         let currentOrientation = UIDevice.current.orientation
         switch currentOrientation {
         case .portrait, .portraitUpsideDown:
-            self.scrollableContentViewBottomConstraint?.constant = 0
+            if UIDevice.current.isPad {
+                self.scrollableContentViewBottomConstraint?.constant = -20
+            } else {
+                self.scrollableContentViewBottomConstraint?.constant = 0
+            }
         case .landscapeLeft, .landscapeRight:
-            self.scrollableContentViewBottomConstraint?.constant = -24
+            if UIDevice.current.isPad {
+                self.scrollableContentViewBottomConstraint?.constant = -20
+            } else {
+                self.scrollableContentViewBottomConstraint?.constant = -20
+            }
         default:
             break
         }
@@ -448,6 +458,10 @@ extension FreespokeHomepage {
             self?.delegate?.showURL(url: url)
         }
         
+        self.trendingStoryCardView1.summaryViewLinkTappedClosure = { [weak self] url in
+            self?.delegate?.showURL(url: url)
+        }
+        
         self.trendingStoryCardView1.configure(with: storyItem)
         
         self.newsFeedStackView.addArrangedSubview(self.trendingStoryCardView1)
@@ -467,6 +481,10 @@ extension FreespokeHomepage {
         }
         
         self.trendingStoryCardView2.didTapHeadlineActionButtonCompletion = { [weak self] url in
+            self?.delegate?.showURL(url: url)
+        }
+        
+        self.trendingStoryCardView2.summaryViewLinkTappedClosure = { [weak self] url in
             self?.delegate?.showURL(url: url)
         }
         
@@ -492,6 +510,10 @@ extension FreespokeHomepage {
             self?.delegate?.showURL(url: url)
         }
         
+        self.trendingStoryCardView3.summaryViewLinkTappedClosure = { [weak self] url in
+            self?.delegate?.showURL(url: url)
+        }
+        
         self.trendingStoryCardView3.configure(with: storyItem)
         
         self.newsFeedStackView.addArrangedSubview(self.trendingStoryCardView3)
@@ -511,6 +533,10 @@ extension FreespokeHomepage {
         }
         
         self.trendingStoryCardView4.didTapHeadlineActionButtonCompletion = { [weak self] url in
+            self?.delegate?.showURL(url: url)
+        }
+        
+        self.trendingStoryCardView4.summaryViewLinkTappedClosure = { [weak self] url in
             self?.delegate?.showURL(url: url)
         }
         

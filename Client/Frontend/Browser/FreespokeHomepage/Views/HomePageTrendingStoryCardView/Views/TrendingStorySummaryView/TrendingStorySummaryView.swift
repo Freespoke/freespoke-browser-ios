@@ -19,7 +19,7 @@ class TrendingStorySummaryView: UIView {
         textView.isEditable = false
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = [.link]
-        textView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.brand600BlueLead]
+        textView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.hyperlinkHazeBlue]
         textView.backgroundColor = .clear
         textView.textContainerInset = UIEdgeInsets.zero
         textView.textContainer.lineFragmentPadding = 0
@@ -34,11 +34,13 @@ class TrendingStorySummaryView: UIView {
     
     private var summary: String = ""
     
-    private var defaultTextViewHeight: CGFloat = 325 // without sorces in summary view
+    private var defaultTextViewHeight: CGFloat = 325 // without sources in summary view
     
     private var summaryTextViewHeightConstraint: NSLayoutConstraint?
     
     private var currentTheme: Theme?
+    
+    var linkTappedClosure: ((_ url: String) -> Void)?
     
     // MARK: - Initializers
     
@@ -58,6 +60,8 @@ class TrendingStorySummaryView: UIView {
         self.addSubview(self.topView)
         self.addSubview(self.summaryTextView)
         self.addSubview(self.overlayView)
+        
+        self.summaryTextView.delegate = self
         
         self.topView.translatesAutoresizingMaskIntoConstraints = false
         self.summaryTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -103,6 +107,7 @@ class TrendingStorySummaryView: UIView {
         self.hideOverlayViewWithReadMoreButton()
         self.summaryTextViewHeightConstraint?.isActive = false
     }
+    
     private func showOverlayViewWithReadMoreButton() {
         self.overlayView.isHidden = false
     }
@@ -116,8 +121,7 @@ class TrendingStorySummaryView: UIView {
         self.topView.configure(sources: sources)
         
         if let attributedString = self.htmlToAttributedString(html: self.summary) {
-            let styledAttributedString = self.applyParagraphStyle(to: attributedString,
-                                                                  currentTheme: self.currentTheme)
+            let styledAttributedString = self.applyParagraphStyle(to: attributedString, currentTheme: self.currentTheme)
             self.summaryTextView.attributedText = styledAttributedString
         } else {
             self.summaryTextView.text = summary
@@ -127,18 +131,36 @@ class TrendingStorySummaryView: UIView {
     
     private func updateAttributedText() {
         if let attributedString = self.htmlToAttributedString(html: summary) {
-            let styledAttributedString = self.applyParagraphStyle(to: attributedString,
-                                                                  currentTheme: self.currentTheme)
+            let styledAttributedString = self.applyParagraphStyle(to: attributedString, currentTheme: self.currentTheme)
             self.summaryTextView.attributedText = styledAttributedString
         } else {
             self.summaryTextView.text = summary
         }
     }
     
+    // MARK: use this function below in case if you need use text styles with different sizes for headers and body
+    
     private func htmlToAttributedString(html: String) -> NSAttributedString? {
-        guard let data = html.data(using: .utf8) else { return nil }
+        let modifiedHtml = """
+        <style>
+            body { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; }
+            h1 { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; font-weight: bold; }
+            h2 { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; font-weight: bold; }
+            h3 { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; font-weight: bold; }
+            h4 { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; font-weight: bold; }
+            h5 { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; font-weight: bold; }
+            h6 { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; font-weight: bold; }
+            p { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; }
+            li { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; }
+            strong { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; font-weight: bold; }
+            em { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; font-style: italic; }
+            a { font-family: 'Source Sans Pro', sans-serif; font-size: 15px; text-decoration: none; }
+        </style>
+        \(html)
+        """
+        
         do {
-            return try NSAttributedString(data: data,
+            return try NSAttributedString(data: Data(modifiedHtml.utf8),
                                           options: [.documentType: NSAttributedString.DocumentType.html,
                                                     .characterEncoding: String.Encoding.utf8.rawValue],
                                           documentAttributes: nil)
@@ -148,16 +170,51 @@ class TrendingStorySummaryView: UIView {
         }
     }
     
+    // MARK: use this function below in case if you need set the same font and size for whole attributed string
+    /*
+    private func htmlToAttributedString(html: String) -> NSAttributedString? {
+        guard let data = html.data(using: .utf8) else { return nil }
+        
+        do {
+            let attributedString = try NSAttributedString(data: data,
+                                                          options: [.documentType: NSAttributedString.DocumentType.html,
+                                                                    .characterEncoding: String.Encoding.utf8.rawValue],
+                                                          documentAttributes: nil)
+            let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
+            
+            mutableAttributedString.addAttribute(NSAttributedString.Key.font,
+                                                 value: UIFont.sourceSansProFont(.regular, size: 15),
+                                                 range: NSRange(location: 0, length: mutableAttributedString.length))
+            
+            return mutableAttributedString
+        } catch {
+            print("Error converting HTML to NSAttributedString: \(error)")
+            return nil
+        }
+    }
+     */
+    
     private func applyParagraphStyle(to attributedString: NSAttributedString, currentTheme: Theme?) -> NSAttributedString {
         let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 22.5 - (self.summaryTextView.font?.lineHeight ?? 0) // Adjust line spacing to achieve 22.5 px line height
-        paragraphStyle.paragraphSpacing = 8
+        paragraphStyle.paragraphSpacing = 6
+        paragraphStyle.headIndent = 0
+        paragraphStyle.firstLineHeadIndent = 8
+
+        // Update bullet indentation
+        let tabStop = NSTextTab(textAlignment: .left, location: 12, options: [:])
+        paragraphStyle.tabStops = [tabStop]
+        paragraphStyle.defaultTabInterval = 12
         
-        mutableAttributedString.addAttribute(NSAttributedString.Key.font,
-                                             value: UIFont.sourceSansProFont(.regular, size: 15),
-                                             range: NSRange(location: 0, length: mutableAttributedString.length))
+        mutableAttributedString.enumerateAttribute(.paragraphStyle, in: NSRange(location: 0, length: mutableAttributedString.length)) { value, range, _ in
+            if let existingStyle = value as? NSMutableParagraphStyle {
+                existingStyle.headIndent = 12
+                existingStyle.firstLineHeadIndent = 12
+                mutableAttributedString.addAttribute(.paragraphStyle, value: existingStyle, range: range)
+            }
+        }
         
         mutableAttributedString.addAttribute(NSAttributedString.Key.foregroundColor,
                                              value: currentTheme?.type == .dark ? UIColor.white : UIColor.neutralsGray01,
@@ -168,4 +225,13 @@ class TrendingStorySummaryView: UIView {
         
         return mutableAttributedString
     }
+}
+
+// MARK: - UITextViewDelegate
+
+extension TrendingStorySummaryView: UITextViewDelegate {
+       func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+           self.linkTappedClosure?(URL.absoluteString)
+           return false
+       }
 }

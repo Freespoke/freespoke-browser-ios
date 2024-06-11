@@ -62,7 +62,7 @@ class OnboardingBaseViewController: UIViewController, Themeable {
             self.btnClose.setImage(closeImage, for: .normal)
             self.lineView.backgroundColor = UIColor.blackColor
         case .light:
-            self.view.backgroundColor = UIColor.gray7
+            self.view.backgroundColor = UIColor.neutralsGray07
             let closeImage = UIImage(named: "img_close_onboarding")?.withTintColor(.blackColor, renderingMode: .alwaysOriginal)
             self.btnClose.setImage(closeImage, for: .normal)
             self.lineView.backgroundColor = UIColor.whiteColor

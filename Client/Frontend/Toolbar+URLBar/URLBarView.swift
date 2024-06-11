@@ -503,26 +503,20 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         self.voiceService.checkPermissions(completion: { [weak self] granted in
             guard let self = self else { return }
             if granted {
-                DispatchQueue.main.async { [weak self] in
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: { [weak self] in
                     guard let self = self else { return }
                     if self.voiceService.isRunning {
-                        HapticFeedback.Notification.generate(.success)
                         self.stopDictation()
                     } else {
-                        HapticFeedback.Notification.generate(.success)
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: { [weak self] in
-                            guard let self = self else { return }
-                            self.startDictation()
-                        })
+                        self.startDictation()
                     }
-                }
+                })
             }
         })
     }
     
     @objc private func handleKeyboardWillHide(_ sender: NSNotification) {
         if self.voiceService.isRunning {
-            HapticFeedback.Notification.generate(.success)
             self.stopDictation()
         }
     }
@@ -1092,13 +1086,13 @@ extension URLBarView: NotificationThemeable {
         
         switch LegacyThemeManager.instance.currentName {
         case .normal:
-            self.backgroundColor = .gray7
-            self.borderView.backgroundColor = UIColor.gray7
+            self.backgroundColor = .neutralsGray07
+            self.borderView.backgroundColor = UIColor.neutralsGray06
             self.borderView.layer.borderColor = UIColor.neutralsGray5.cgColor
             self.cancelButton.backgroundColor = .clear
         case .dark:
             self.backgroundColor = .darkBackground
-            self.borderView.backgroundColor = UIColor.freespokeBlack05
+            self.borderView.backgroundColor = UIColor.freespokeWhite05
             self.borderView.layer.borderColor = UIColor.neutralsGray01.cgColor
             self.cancelButton.backgroundColor = .clear
         }

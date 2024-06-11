@@ -108,7 +108,7 @@ class VerifyEmailCell: UITableViewCell {
     
     private func applyTheme() {
         if let theme = currentTheme {
-            self.backgroundColor = (theme.type == .light) ? .gray7 : .black
+            self.backgroundColor = (theme.type == .light) ? .neutralsGray07 : .black
             self.borderView.backgroundColor = (theme.type == .light) ? .white : .black
             self.lblTitle.textColor = (theme.type == .light) ? .charcoalGrayColor : .white
             self.lblSubtitle.textColor = (theme.type == .light) ? .gunmetalGrayColor : .white

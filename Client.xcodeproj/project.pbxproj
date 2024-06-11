@@ -12,9 +12,6 @@
 		0106B22D2C13258C00DAF058 /* MicrophoneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B22C2C13258C00DAF058 /* MicrophoneButton.swift */; };
 		0106B22E2C13258C00DAF058 /* MicrophoneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B22C2C13258C00DAF058 /* MicrophoneButton.swift */; };
 		0106B22F2C13258C00DAF058 /* MicrophoneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B22C2C13258C00DAF058 /* MicrophoneButton.swift */; };
-		0106B2312C13608200DAF058 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2302C13608200DAF058 /* HapticFeedback.swift */; };
-		0106B2322C13608200DAF058 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2302C13608200DAF058 /* HapticFeedback.swift */; };
-		0106B2332C13608200DAF058 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2302C13608200DAF058 /* HapticFeedback.swift */; };
 		0106B2352C1360E000DAF058 /* Comparable + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2342C1360E000DAF058 /* Comparable + Extensions.swift */; };
 		0106B2362C1360E000DAF058 /* Comparable + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2342C1360E000DAF058 /* Comparable + Extensions.swift */; };
 		0106B2372C1360E000DAF058 /* Comparable + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0106B2342C1360E000DAF058 /* Comparable + Extensions.swift */; };
@@ -3670,7 +3667,6 @@
 		00B144CD8BEF73CF75ED7639 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Menu.strings; sourceTree = "<group>"; };
 		01000F9E2BE10F85008DB712 /* SubscriptionsClickableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsClickableTextView.swift; sourceTree = "<group>"; };
 		0106B22C2C13258C00DAF058 /* MicrophoneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneButton.swift; sourceTree = "<group>"; };
-		0106B2302C13608200DAF058 /* HapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedback.swift; sourceTree = "<group>"; };
 		0106B2342C1360E000DAF058 /* Comparable + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable + Extensions.swift"; sourceTree = "<group>"; };
 		0110682A2BF64F5E0021C34A /* ASIdentifierManager + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASIdentifierManager + Extensions.swift"; sourceTree = "<group>"; };
 		01117E862BDC25D700DF571F /* GetShoppingCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShoppingCollection.swift; sourceTree = "<group>"; };
@@ -6884,7 +6880,6 @@
 				0181A41F2B863702005BE1F6 /* Keychain.swift */,
 				0E5A03E12BACEE24001C3149 /* ScreenUtilities.swift */,
 				01B9E9322C10C5140047EDC9 /* VoiceService.swift */,
-				0106B2302C13608200DAF058 /* HapticFeedback.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -11329,7 +11324,6 @@
 				016C92342BFE13DC006520D0 /* Contile.swift in Sources */,
 				016C92352BFE13DC006520D0 /* RecentItemsHelper.swift in Sources */,
 				016C92362BFE13DC006520D0 /* LogoutCell.swift in Sources */,
-				0106B2322C13608200DAF058 /* HapticFeedback.swift in Sources */,
 				016C92372BFE13DC006520D0 /* UIUtils.swift in Sources */,
 				016C92382BFE13DC006520D0 /* LibraryViewController+ToolbarActions.swift in Sources */,
 				016C92392BFE13DC006520D0 /* WallpaperNetworkModule.swift in Sources */,
@@ -12305,7 +12299,6 @@
 				01FDF3902C0CB9EF000FE329 /* TrendingStoryTweetCollectionViewCell.swift in Sources */,
 				01117E882BDC25D700DF571F /* GetShoppingCollection.swift in Sources */,
 				012C3AB92B80DEE3007EC4AF /* SignUpVCViewModel.swift in Sources */,
-				0106B2332C13608200DAF058 /* HapticFeedback.swift in Sources */,
 				0181A4182B855D3A005BE1F6 /* FreespokeAuthModel.swift in Sources */,
 				01BD24C12B6CF7EB00B8B9EB /* Experiments.swift in Sources */,
 				014F9A092C088EA4006141FB /* GetAdvertisement.swift in Sources */,
@@ -13479,7 +13472,6 @@
 				01FDF38E2C0CB9EF000FE329 /* TrendingStoryTweetCollectionViewCell.swift in Sources */,
 				01117E872BDC25D700DF571F /* GetShoppingCollection.swift in Sources */,
 				012C3AB82B80DEE3007EC4AF /* SignUpVCViewModel.swift in Sources */,
-				0106B2312C13608200DAF058 /* HapticFeedback.swift in Sources */,
 				0181A4172B855D3A005BE1F6 /* FreespokeAuthModel.swift in Sources */,
 				01ADAA972B86A5C10009754E /* NetworkLayerConstants.swift in Sources */,
 				014F9A072C088EA4006141FB /* GetAdvertisement.swift in Sources */,

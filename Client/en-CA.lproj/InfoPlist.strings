@@ -14,7 +14,10 @@
 "NSLocationWhenInUseUsageDescription" = "Websites you visit may request your location.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Firefox uses your microphone to record and upload audio.";
+"NSMicrophoneUsageDescription" = "Freespoke uses your microphone to record and upload audio.";
+
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "Freespoke uses your microphone for speech recognition.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "This lets you save photos.";

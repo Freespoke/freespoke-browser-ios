@@ -97,6 +97,7 @@ class BrowserViewController: UIViewController {
     // OverKeyboardContainer contains the reader mode and maybe the bottom url bar
     var header: BaseAlphaStackView = .build { _ in }
     var overKeyboardContainer: BaseAlphaStackView = .build { _ in }
+    private var bottomBackgroundView = UIView()
     var bottomContainer: BaseAlphaStackView = .build { _ in }
 
     lazy var isBottomSearchBar: Bool = {
@@ -286,8 +287,9 @@ class BrowserViewController: UIViewController {
     }
 
     func updateToolbarStateForTraitCollection(_ newCollection: UITraitCollection) {
-        let showToolbar = shouldShowToolbarForTraitCollection(newCollection)
-        let showTopTabs = shouldShowTopTabsForTraitCollection(newCollection)
+        let showToolbar = UIDevice.current.isPad ? true : shouldShowToolbarForTraitCollection(newCollection)
+        // if need show TopTabsViewController you must set true and check constraints for header
+        let showTopTabs = false //UIDevice.current.isPad ? true : shouldShowTopTabsForTraitCollection(newCollection)
 
         let hideReloadButton = shouldUseiPadSetup(traitCollection: newCollection)
         urlBar.topTabsIsShowing = showTopTabs
@@ -307,7 +309,7 @@ class BrowserViewController: UIViewController {
             if self.urlBar.inOverlayMode {
                 self.toolbar.isHidden = false
             } else {
-                self.toolbar.isHidden = true
+                self.toolbar.isHidden = UIDevice.current.isPad ? false : true
             }
         }
 
@@ -592,7 +594,9 @@ class BrowserViewController: UIViewController {
 
         toolbar = TabToolbar()
         bottomContainer.addArrangedSubview(toolbar)
-        view.addSubview(bottomContainer)
+        
+        self.view.addSubview(self.bottomBackgroundView)
+        self.view.addSubview(self.bottomContainer)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -731,6 +735,7 @@ class BrowserViewController: UIViewController {
         coordinator.animate(alongsideTransition: { context in
             self.scrollController.updateMinimumZoom()
             self.topTabsViewController?.scrollToCurrentTab(false, centerCell: false)
+            self.updateViewConstraints()
             if let popover = self.displayedPopoverController {
                 self.updateDisplayedPopoverProperties?()
                 self.present(popover, animated: true, completion: nil)
@@ -775,6 +780,7 @@ class BrowserViewController: UIViewController {
 
         header.snp.remakeConstraints { [weak self] make in
             guard let self = self else { return }
+            
             if isBottomSearchBar {
                 make.left.right.top.equalTo(self.view)
                 // Making sure we cover at least the status bar
@@ -818,7 +824,18 @@ class BrowserViewController: UIViewController {
         bottomContainer.snp.remakeConstraints { [weak self] make in
             guard let self = self else { return }
             self.scrollController.bottomContainerConstraint = make.bottom.equalTo(self.view.snp.bottom).constraint
+            if UIDevice.current.isPad {
+                make.centerX.equalTo(self.view.snp.centerX)
+            } else {
+                make.leading.trailing.equalTo(self.view)
+            }
+        }
+        
+        self.bottomBackgroundView.snp.remakeConstraints { [weak self] make in
+            guard let self = self else { return }
+            self.scrollController.bottomContainerConstraint = make.bottom.equalTo(self.view.snp.bottom).constraint
             make.leading.trailing.equalTo(self.view)
+            make.top.equalTo(self.bottomContainer.snp.top)
         }
 
         // Remake constraints even if we're already showing the home controller.
@@ -2492,6 +2509,7 @@ extension BrowserViewController: TabManagerDelegate {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.applyTheme()
             }
+            self.homepageViewController?.reloadFreespokeHomepage()
         }
         tab.tabDelegate = self
     }
@@ -3000,6 +3018,8 @@ extension BrowserViewController: Themeable {
         
         self.header.backgroundColor = self.themeManager.currentTheme.type == .dark ? .darkBackground : .white
         
+        self.bottomBackgroundView.backgroundColor = self.themeManager.currentTheme.type == .dark ? .darkBackground : .neutralsGray07
+        
         statusBarOverlay.backgroundColor = shouldShowTopTabsForTraitCollection(traitCollection) ? UIColor.legacyTheme.topTabs.background : urlBar.backgroundColor
         keyboardBackdrop?.backgroundColor = UIColor.legacyTheme.browser.background
         setNeedsStatusBarAppearanceUpdate()
@@ -3018,6 +3038,8 @@ extension BrowserViewController: Themeable {
 
         guard let contentScript = tabManager.selectedTab?.getContentScript(name: ReaderMode.name()) else { return }
         applyThemeForPreferences(profile.prefs, contentScript: contentScript)
+
+        self.view.backgroundColor = self.themeManager.currentTheme.type == .dark ? .darkBackground : .neutralsGray07
     }
 }
 

@@ -241,7 +241,6 @@ extension UIColor {
     static let whiteColor = Utils.hexStringToUIColor(hex: "E1E5EB")
     static let lightGray = Utils.hexStringToUIColor(hex: "B5BCC9")
     static let darkBackground = Utils.hexStringToUIColor(hex: "161616")
-    static let gray7 = Utils.hexStringToUIColor(hex: "F8F9FB")
     static let gray2 = Utils.hexStringToUIColor(hex: "606671")
     static let onboardingDark = Utils.hexStringToUIColor(hex: "#1D1D1D")
     static let onboardingTitleDark = Utils.hexStringToUIColor(hex: "#081A33")
@@ -258,10 +257,11 @@ extension UIColor {
     static let charcoalGrayColor = Utils.hexStringToUIColor(hex: "#292929")
     static let gunmetalGrayColor = Utils.hexStringToUIColor(hex: "#525252")
     static let fxOffWhite1 = Utils.hexStringToUIColor(hex: "#DADEE3")
-    static let freespokeBlack05 = Utils.hexStringToUIColor(hex: "#FFFFFF").withAlphaComponent(0.05)
+    static let freespokeWhite05 = Utils.hexStringToUIColor(hex: "#FFFFFF").withAlphaComponent(0.05)
     static let orangeColor = Utils.hexStringToUIColor(hex: "#FD531F")
     static let brand600BlueLead = Utils.hexStringToUIColor(hex: "#2168CC")
     static let crimsonRed = Utils.hexStringToUIColor(hex: "#C43351")
+    static let hyperlinkHazeBlue = Utils.hexStringToUIColor(hex: "#4D96FE")
 }
 
 class Utils {

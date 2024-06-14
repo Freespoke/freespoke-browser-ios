@@ -357,8 +357,6 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
           }
       }
     
-    
-    
     func configureWallpaperView() {
         view.addSubview(wallpaperView)
         NSLayoutConstraint.activate([

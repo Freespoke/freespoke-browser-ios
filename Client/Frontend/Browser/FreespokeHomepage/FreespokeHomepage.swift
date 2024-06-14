@@ -65,6 +65,11 @@ class FreespokeHomepage: UIView {
     
     private var scrollableContentViewBottomConstraint: NSLayoutConstraint?
     
+    private var portraitPhoneConstraints: [NSLayoutConstraint] = []
+    private var landscapePhoneConstraints: [NSLayoutConstraint] = []
+    private var portraitPadConstraints: [NSLayoutConstraint] = []
+    private var landscapePadConstraints: [NSLayoutConstraint] = []
+    
     // MARK: Actions
     var profileIconTapClosure: (() -> Void)?
     private var cancellables = Set<AnyCancellable>()
@@ -244,12 +249,81 @@ extension FreespokeHomepage: HomepageSearchBarViewDelegate {
     private func addSearchBarViewConstraints() {
         self.searchBarView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
+        // Constraints for iPhone portrait
+        let portraitPhoneConstraints = [
             self.searchBarView.topAnchor.constraint(equalTo: self.topSubHeaderView.bottomAnchor, constant: 24),
             self.searchBarView.leadingAnchor.constraint(equalTo: self.scrollableContentView.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             self.searchBarView.trailingAnchor.constraint(equalTo: self.scrollableContentView.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             self.searchBarView.centerXAnchor.constraint(equalTo: self.scrollableContentView.centerXAnchor)
-        ])
+        ]
+        
+        portraitPhoneConstraints.forEach({ self.portraitPhoneConstraints.append($0) })
+        
+        // Constraints for iPhone landscape
+        let landscapePhoneConstraints = [
+            self.searchBarView.topAnchor.constraint(equalTo: self.topSubHeaderView.bottomAnchor, constant: 24),
+            self.searchBarView.leadingAnchor.constraint(greaterThanOrEqualTo: self.scrollableContentView.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            self.searchBarView.trailingAnchor.constraint(lessThanOrEqualTo: self.scrollableContentView.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            self.searchBarView.widthAnchor.constraint(equalToConstant: 374),
+            self.searchBarView.centerXAnchor.constraint(equalTo: self.scrollableContentView.centerXAnchor)
+        ]
+        
+        landscapePhoneConstraints.forEach({ self.landscapePhoneConstraints.append($0) })
+        
+        // Constraints for iPad portrait
+        let portraitPadConstraints = [
+            self.searchBarView.topAnchor.constraint(equalTo: self.topSubHeaderView.bottomAnchor, constant: 24),
+            self.searchBarView.leadingAnchor.constraint(greaterThanOrEqualTo: self.scrollableContentView.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            self.searchBarView.trailingAnchor.constraint(lessThanOrEqualTo: self.scrollableContentView.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            self.searchBarView.widthAnchor.constraint(equalToConstant: 374),
+            self.searchBarView.centerXAnchor.constraint(equalTo: self.scrollableContentView.centerXAnchor)
+        ]
+        
+        portraitPadConstraints.forEach({ self.portraitPadConstraints.append($0) })
+        
+        // Constraints for iPad landscape
+        let landscapePadConstraints = [
+            self.searchBarView.topAnchor.constraint(equalTo: self.topSubHeaderView.bottomAnchor, constant: 24),
+            self.searchBarView.leadingAnchor.constraint(greaterThanOrEqualTo: self.scrollableContentView.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            self.searchBarView.trailingAnchor.constraint(lessThanOrEqualTo: self.scrollableContentView.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            self.searchBarView.widthAnchor.constraint(equalToConstant: 454),
+            self.searchBarView.centerXAnchor.constraint(equalTo: self.scrollableContentView.centerXAnchor)
+        ]
+        
+        landscapePadConstraints.forEach({ self.landscapePadConstraints.append($0) })
+        
+        self.activateCurrentConstraints()
+    }
+    
+    private func activateCurrentConstraints() {
+        // Deactivate Constraints
+        NSLayoutConstraint.deactivate(self.portraitPhoneConstraints)
+        NSLayoutConstraint.deactivate(self.landscapePhoneConstraints)
+        NSLayoutConstraint.deactivate(self.portraitPadConstraints)
+        NSLayoutConstraint.deactivate(self.landscapePadConstraints)
+        
+        // Activate Constraints
+        let currentOrientation = UIDevice.current.orientation
+        switch currentOrientation {
+        case .portrait, .portraitUpsideDown:
+            if UIDevice.current.isPad {
+                NSLayoutConstraint.activate(self.portraitPadConstraints)
+            } else {
+                NSLayoutConstraint.activate(self.portraitPhoneConstraints)
+            }
+        case .landscapeLeft, .landscapeRight:
+            if UIDevice.current.isPad {
+                NSLayoutConstraint.activate(self.landscapePadConstraints)
+            } else {
+                NSLayoutConstraint.activate(self.landscapePhoneConstraints)
+            }
+        default:
+            if UIDevice.current.isPad {
+                NSLayoutConstraint.activate(self.portraitPadConstraints)
+            } else {
+                NSLayoutConstraint.activate(self.portraitPhoneConstraints)
+            }
+        }
     }
     
     func didTapSearchBar() {
@@ -332,6 +406,9 @@ extension FreespokeHomepage {
     }
     
     @objc func orientationDidChange() {
+        self.homePageBackgroundImageView.orientationDidChange()
+        self.activateCurrentConstraints()
+        
         let currentOrientation = UIDevice.current.orientation
         switch currentOrientation {
         case .portrait, .portraitUpsideDown:

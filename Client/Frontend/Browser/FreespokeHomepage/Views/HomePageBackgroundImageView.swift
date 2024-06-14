@@ -6,7 +6,6 @@ import UIKit
 import Shared
 
 class HomePageBackgroundImageView: UIView {
-    
     // MARK: - Properties
     
     private lazy var imgView: UIImageView = {
@@ -14,10 +13,11 @@ class HomePageBackgroundImageView: UIView {
         img.contentMode = .scaleAspectFill
         
         img.image = UIImage(named: "img_home_iceberg_background_image_light")
-//        img.image = UIImage(named: "iceberg-hompage-background-cropped")
         img.layer.masksToBounds = true
         return img
     }()
+    
+    private var imgViewHeightConstraint: NSLayoutConstraint?
     
     // MARK: Initializers
     
@@ -40,15 +40,38 @@ class HomePageBackgroundImageView: UIView {
         
     }
     
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        self.updateConstraints()
+    }
+    
     func applyTheme(currentTheme: Theme) {
         switch currentTheme.type {
         case .light:
             self.imgView.image = UIImage(named: "img_home_iceberg_background_image_light")
-//            self.imgView.image = UIImage(named: "iceberg-hompage-background-cropped")
         case .dark:
-            
             self.imgView.image = UIImage(named: "img_home_iceberg_background_image_dark")
-//            self.imgView.image = UIImage(named: "iceberg-hompage-background-cropped")
+        }
+    }
+    
+    func orientationDidChange() {
+        self.updateConstraints()
+    }
+    
+    override func updateConstraints() {
+        super.updateConstraints()
+        if UIDevice.current.isPad {
+            if ScreenUtilities.isLandscape {
+                self.imgViewHeightConstraint?.constant = 500
+            } else {
+                self.imgViewHeightConstraint?.constant = 360
+            }
+        } else {
+            if ScreenUtilities.isLandscape {
+                self.imgViewHeightConstraint?.constant = 300
+            } else {
+                self.imgViewHeightConstraint?.constant = 350
+            }
         }
     }
 }
@@ -56,7 +79,6 @@ class HomePageBackgroundImageView: UIView {
 // MARK: - Add Subviews
 
 extension HomePageBackgroundImageView {
-    
     private func addSubviews() {
         self.addSubview(self.imgView)
     }
@@ -64,12 +86,14 @@ extension HomePageBackgroundImageView {
     private func addSubviewsConstraints() {
         self.imgView.translatesAutoresizingMaskIntoConstraints = false
         
+        self.imgViewHeightConstraint = self.imgView.heightAnchor.constraint(equalToConstant: 350)
+        self.imgViewHeightConstraint?.isActive = true
+        
         NSLayoutConstraint.activate([
             self.imgView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             self.imgView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             self.imgView.topAnchor.constraint(equalTo: self.topAnchor),
-            self.imgView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            self.imgView.heightAnchor.constraint(equalToConstant: 350)
+            self.imgView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }

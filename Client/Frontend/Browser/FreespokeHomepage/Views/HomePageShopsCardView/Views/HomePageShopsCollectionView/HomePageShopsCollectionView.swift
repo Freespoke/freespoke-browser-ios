@@ -5,13 +5,14 @@
 import UIKit
 
 class HomePageShopsCollectionView: UICollectionView {
-    var shoppingCoollection: [ShoppingCoollectionItemModel] = [] {
+    var shoppingCollection: [ShoppingCollectionItemModel] = [] {
         didSet {
             ensureMainThread(execute: { [weak self] in
                 self?.reloadData()
             })
         }
     }
+    private var analyticsScrollEventAlreadySent = false
     
     var shopItemTappedClosure: ((_ url: String) -> Void)?
     
@@ -43,17 +44,17 @@ class HomePageShopsCollectionView: UICollectionView {
 
 extension HomePageShopsCollectionView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.shoppingCoollection.count
+        return self.shoppingCollection.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard indexPath.row < self.shoppingCoollection.count else { return UICollectionViewCell() }
-        let shop = self.shoppingCoollection[indexPath.row]
+        guard indexPath.row < self.shoppingCollection.count else { return UICollectionViewCell() }
+        let shop = self.shoppingCollection[indexPath.row]
         let cell = self.prepareShopCell(shop: shop, collectionView: collectionView, indexPath: indexPath)
         return cell
     }
     
-    private func prepareShopCell(shop: ShoppingCoollectionItemModel, collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
+    private func prepareShopCell(shop: ShoppingCollectionItemModel, collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomePageShopsCollectionViewCell.reuseIdentifier, for: indexPath) as? HomePageShopsCollectionViewCell else { return HomePageShopsCollectionViewCell() }
         cell.configure(with: shop)
         cell.shopItemTappedClosure = { [weak self] url in
@@ -64,5 +65,16 @@ extension HomePageShopsCollectionView: UICollectionViewDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 154, height: self.bounds.height)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == self {
+            if !self.analyticsScrollEventAlreadySent {
+                AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                                  action: AnalyticsManager.MatomoAction.appHomeShopUsaCarouselScroll.rawValue,
+                                                  name: AnalyticsManager.MatomoName.scrollName)
+                self.analyticsScrollEventAlreadySent = true
+            }
+        }
     }
 }

@@ -12,6 +12,10 @@ enum TrendingStoryArticlesCellType {
 class TrendingStoryArticlesCollectionView: UICollectionView {
     private var cellsArray: [TrendingStoryArticlesCellType] = []
     
+    private var analyticsScrollEventAlreadySent = false
+    
+    private var storyItem: StoryFeedItemModel?
+    
     var storyItemTappedClosure: ((_ url: String) -> Void)?
     
     init(frame: CGRect) {
@@ -41,6 +45,8 @@ class TrendingStoryArticlesCollectionView: UICollectionView {
     }
     
     func configure(with storyItem: StoryFeedItemModel) {
+        self.storyItem = storyItem
+        
         var cells: [TrendingStoryArticlesCellType] = []
         
         (storyItem.tweets ?? []).forEach({ cells.append(.tweet(tweet: $0)) })
@@ -96,5 +102,26 @@ extension TrendingStoryArticlesCollectionView: UICollectionViewDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 270, height: 293)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == self {
+            if !self.analyticsScrollEventAlreadySent {
+                switch self.storyItem?.category {
+                case .trending:
+                    AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                                      action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabArticlesTabCarouselScroll.rawValue,
+                                                      name: AnalyticsManager.MatomoName.scrollName)
+                case .world:
+                    AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                                      action: AnalyticsManager.MatomoAction.appHomeWorldStoryCarouselScroll.rawValue,
+                                                      name: AnalyticsManager.MatomoName.scrollName)
+                case nil:
+                    break
+                }
+                
+                self.analyticsScrollEventAlreadySent = true
+            }
+        }
     }
 }

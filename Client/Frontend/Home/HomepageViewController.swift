@@ -77,6 +77,11 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     
     var profile: Profile?
     
+    private var portraitPhoneConstraints: [NSLayoutConstraint] = []
+    private var landscapePhoneConstraints: [NSLayoutConstraint] = []
+    private var portraitPadConstraints: [NSLayoutConstraint] = []
+    private var landscapePadConstraints: [NSLayoutConstraint] = []
+    
     // MARK: - Initializers
     init(profile: Profile,
          tabManager: TabManagerProtocol,
@@ -134,7 +139,8 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         super.viewDidLoad()
         
         configureWallpaperView()
-        configureContentStackView()
+        self.addSubviews()
+        addContentStackViewConstraints()
         
         // Delay setting up the view model delegate to ensure the views have been configured first
         self.viewModel.delegate = self
@@ -173,8 +179,8 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         
         NSLayoutConstraint.activate([
             self.freespokeHomepageView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.freespokeHomepageView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.freespokeHomepageView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.freespokeHomepageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.freespokeHomepageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.freespokeHomepageView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
@@ -248,7 +254,8 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
-        wallpaperView.updateImageForOrientationChange()
+        self.wallpaperView.updateImageForOrientationChange()
+        self.activateCurrentConstraints()
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             reloadOnRotation(newSize: size)
@@ -276,17 +283,81 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         }
     }
     
-    // MARK: - Layout
-    func configureContentStackView() {
+    private func addSubviews() {
         view.addSubview(self.searchPageView)
-        self.searchPageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            searchPageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 15),
-            searchPageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            searchPageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            searchPageView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
     }
+    
+    // MARK: - Layout
+    func addContentStackViewConstraints() {
+        self.searchPageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Constraints for iPhone
+        self.portraitPhoneConstraints = [
+            self.searchPageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 15),
+            self.searchPageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.searchPageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.searchPageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ]
+        
+        self.landscapePhoneConstraints = [
+            self.searchPageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 15),
+            self.searchPageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.searchPageView.widthAnchor.constraint(equalTo: self.view.widthAnchor,
+                                                       multiplier: Constants.DrawingSizes.iPadContentWidthFactorLandscape),
+            self.searchPageView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ]
+        
+        // Constraints for iPad
+        self.portraitPadConstraints = [
+            self.searchPageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 15),
+            self.searchPageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.searchPageView.widthAnchor.constraint(equalTo: self.view.widthAnchor,
+                                                       multiplier: Constants.DrawingSizes.iPadContentWidthFactorPortrait),
+            self.searchPageView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ]
+        
+        self.landscapePadConstraints = [
+            self.searchPageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 15),
+            self.searchPageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.searchPageView.widthAnchor.constraint(equalTo: self.view.widthAnchor,
+                                                       multiplier: Constants.DrawingSizes.iPadContentWidthFactorLandscape),
+            self.searchPageView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ]
+        self.activateCurrentConstraints()
+    }
+      
+      private func activateCurrentConstraints() {
+          // Deactivate Constraints
+          NSLayoutConstraint.deactivate(self.portraitPhoneConstraints)
+          NSLayoutConstraint.deactivate(self.landscapePhoneConstraints)
+          NSLayoutConstraint.deactivate(self.portraitPadConstraints)
+          NSLayoutConstraint.deactivate(self.landscapePadConstraints)
+          
+          // Activate Constraints
+          let currentOrientation = UIDevice.current.orientation
+          switch currentOrientation {
+          case .portrait, .portraitUpsideDown:
+              if UIDevice.current.isPad {
+                  NSLayoutConstraint.activate(self.portraitPadConstraints)
+              } else {
+                  NSLayoutConstraint.activate(self.portraitPhoneConstraints)
+              }
+          case .landscapeLeft, .landscapeRight:
+              if UIDevice.current.isPad {
+                  NSLayoutConstraint.activate(self.landscapePadConstraints)
+              } else {
+                  NSLayoutConstraint.activate(self.landscapePhoneConstraints)
+              }
+          default:
+              if UIDevice.current.isPad {
+                  NSLayoutConstraint.activate(self.portraitPadConstraints)
+              } else {
+                  NSLayoutConstraint.activate(self.portraitPhoneConstraints)
+              }
+          }
+      }
+    
+    
     
     func configureWallpaperView() {
         view.addSubview(wallpaperView)

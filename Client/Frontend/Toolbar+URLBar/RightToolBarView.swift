@@ -14,6 +14,7 @@ protocol RightToolBarViewDelegate {
 
 enum RigthToolBarTypeBtnsHidden {
     case all(isHidden: Bool)
+    case bookmarksAndReload(isHidden: Bool)
 }
 
 final class RightToolBarView: UIView {
@@ -130,6 +131,9 @@ final class RightToolBarView: UIView {
         switch typeBtns {
         case .all(let isHidden):
             self.btnShare.isHidden = isHidden
+            self.btnReload.isHidden = isHidden
+            self.btnBookmark.isHidden = isHidden
+        case .bookmarksAndReload(isHidden: let isHidden):
             self.btnReload.isHidden = isHidden
             self.btnBookmark.isHidden = isHidden
         }

@@ -137,11 +137,27 @@ extension ToolbarTextField: NotificationThemeable {
         case .normal:
             textColor = .blackColor
             
+            if let attributedString = self.attributedPlaceholder {
+                let coloredAttributedString = self.applyColor(to: attributedString, color: UIColor.neutralsGray01)
+                self.attributedPlaceholder = coloredAttributedString
+            }
+            
         case .dark:
             textColor = .white
+            
+            if let attributedString = self.attributedPlaceholder {
+                let coloredAttributedString = self.applyColor(to: attributedString, color: UIColor.neutralsGray07)
+                self.attributedPlaceholder = coloredAttributedString
+            }
         }
         
         tintColor = .redHomeToolbar
+    }
+
+    private func applyColor(to attributedString: NSAttributedString, color: UIColor) -> NSAttributedString {
+        let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
+        mutableAttributedString.addAttribute(.foregroundColor, value: color, range: NSRange(location: 0, length: mutableAttributedString.length))
+        return mutableAttributedString
     }
 
     // ToolbarTextField is created on-demand, so the textSelectionColor is a static prop for use when created

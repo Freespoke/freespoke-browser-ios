@@ -81,7 +81,7 @@ class HomepageSearchBarView: UIView {
             self.imgMicroView.image = UIImage(named: ImageIdentifiers.imgMicrophoneTurnOn)?.withTintColor(UIColor.neutralsGray01,
                                                                                                           renderingMode: .alwaysOriginal)
         case .dark:
-            self.backgroundColor = UIColor.whiteColor.withAlphaComponent(0.05)
+            self.backgroundColor = UIColor.freespokeWhite05
             self.layer.borderColor = UIColor.neutralsGray01.cgColor
             self.lblTitle.textColor = UIColor.neutralsGray07
             self.imgSearchView.image = UIImage(named: ImageIdentifiers.imgHomeSearchIcon)?.withTintColor(UIColor.white,
@@ -125,7 +125,7 @@ extension HomepageSearchBarView {
         ])
         
         NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 52)
+            self.heightAnchor.constraint(equalToConstant: 62)
         ])
     }
     

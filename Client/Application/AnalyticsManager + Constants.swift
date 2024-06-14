@@ -31,6 +31,8 @@ extension AnalyticsManager {
         case appShareCategory   = "app share"
         case appOnboardCategory = "app onboard"
         case appProfileCategory = "app profile"
+        case appAdClickCategory = "app ad click"
+        
     }
     
     // MARK: - Matomo Name
@@ -39,6 +41,7 @@ extension AnalyticsManager {
         static let open       = "open"
         static let clickName  = "click"
         static let search     = "search"
+        static let scrollName = "scroll"
     }
     
     // MARK: - Matomo Action
@@ -57,16 +60,29 @@ extension AnalyticsManager {
         case appManageСancelPlanClickAction = "app manage cancel plan click"		// menu006
         
         // app home actions
-        case appHomeSearch                   = "app home search"									// home001
-        case appHomeBookmarks                = "app home my bookmarks click"						// home002
-        case appHomeTrendingNewsStoryViewMoreClick = "app home trending news story view more click"	// home003
-        case appHomeRecently                 = "app home recently viewed click"						// home004
-        case appHomeShopUsaClick             = "app home shop usa click"							// home005
-        case appHomeFreespoke                = "app home the freespoke way click - "				// home006
-        case appHomeBreakingNewsStoryViewAllClick = "app home breaking news story view all click"
+        case appHomeSearch                   = "app home search"														// home001
+        case appHomeBookmarks                = "app home my bookmarks click"											// home002
+        case appHomeTrendingNewsStoryViewMoreClick = "app home trending news story view more click"						// home003
+        case appHomeRecently                 = "app home recently viewed click"											// home004
+        case appHomeShopUsaClick             = "app home shop usa click"												// home005
+        case appHomeFreespoke                = "app home the freespoke way click - "									// home006
+        case appHomeBreakingNewsViewAllClick = "app home breaking news view all click"              					// home009
+        case appHomeBreakingNewsContentClick = "app home breaking news content click"               					// home010
+        case appHomeBreakingNewsCarouselScroll = "app home breaking news carousel scroll"           					// home011
+        case appHomeTrendingStoryTabClickArticles = "app home trending story tab click - articles"                      // home012
+        case appHomeTrendingStoryTabClickStorySummary = "app home trending story tab click - story summary"             // home013
+        case appHomeTrendingStoryTabClickStorySeeMore = "app home trending story tab click - see more"                  // home014
+        case appHomeTrendingStoryTabArticlesTabContentClick = "app home trending story articles tab content click"      // home015
+        case appHomeTrendingStoryTabArticlesTabCarouselScroll = "app home trending story articles tab carousel scroll"  // home016
+        case appHomeTrendingStorySummaryReadMoreClick = "app home trending story summary read more click"               // home017
+        case appHomeTrendingStorySummaryLinkClick = "app home trending story summary link click"                        // home018
         
-        case appHomeTrendingNewsStoryClick   = "app home trending news story click"					// home0041
-        case appHomeShopUsaViewMoreClick     = "app home shop usa view more click"					// home0051
+        case appHomeWorldStoryContentClick = "app home world story content click"                                       // home020
+        case appHomeWorldStoryCarouselScroll = "app home world story carousel scroll"                                   // home021
+        case appHomeViewMoreNewsClick = "app home view more news click"                                                 // home022
+        case appHomeShopUsaContentClick = "app home shop usa content click"                                             // home023
+        case appHomeShopUsaCarouselScroll = "app home shop usa carousel scroll"											// home024
+        case appHomeShopUsaViewAllClick = "app home shop usa view all click"											// home025
         
         // app tabs
         case appTabsCloseTabsMenu   = "app tabs close tabs menu"		// Tabs001
@@ -79,6 +95,7 @@ extension AnalyticsManager {
         case appShareMenuAction            = "app share from menu"			// share001
         case appWebWrapperShareAction      = "app web wrapper share"		// share002
         case appShareFromProfileMenuAction = "app share from profile menu"	// share003
+        case appShareStoryFromHomeAction   = "app share story from home"    // share004
         
         // app profile
         case appProfileHomePageAvatarClickedAction  = "app profile avatar clicked to open profile menu" // profile001
@@ -94,6 +111,9 @@ extension AnalyticsManager {
         case appOnbCreateAccPremiumPriceClickAction = "app onboard create account premium price click"								// ob007
         case appOnbCreateAccSetAsDefBrowserClickAction = "app onboard create account an account set as default browser click"		// ob008
         case appOnbCreateAccAllowNotificationsClickAction = "app onboard create account allow notifications click" 					// ob009
+        
+        // app Advertisement actions
+        case appAdvertisementAction   = "app ad click - location"        // ads001
     }
 }
 

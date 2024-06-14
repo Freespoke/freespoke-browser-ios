@@ -11,11 +11,14 @@ protocol LockURLViewDelegate {
 }
 
 final class LockURLView: UIView {
-    
     var delegate: LockURLViewDelegate?
     
-    lazy var placeholder: NSAttributedString = {
-        return NSAttributedString(string: .TabLocationURLPlaceholder, attributes: [NSAttributedString.Key.foregroundColor: UIColor.Photon.Grey50])
+    private lazy var placeholder: NSAttributedString = {
+        return NSAttributedString(string: .TabLocationURLPlaceholder,
+                                  attributes: [
+                                    NSAttributedString.Key.font: UIFont.sourceSansProFont(.regular, size: 17),
+                                    NSAttributedString.Key.foregroundColor: UIColor.neutralsGray02
+                                  ])
     }()
     
     private let contentItemsView: UIView = {
@@ -133,10 +136,26 @@ final class LockURLView: UIView {
         case .normal:
             urlTextField.textColor = UIColor.blackColor
             
+            if let attributedString = self.urlTextField.attributedPlaceholder {
+                let coloredAttributedString = applyColor(to: attributedString, color: UIColor.neutralsGray02)
+                self.urlTextField.attributedPlaceholder = coloredAttributedString
+            }
+            
         case .dark:
             urlTextField.textColor = UIColor.white
+            
+            if let attributedString = self.urlTextField.attributedPlaceholder {
+                let coloredAttributedString = self.applyColor(to: attributedString, color: UIColor.neutralsGray04)
+                self.urlTextField.attributedPlaceholder = coloredAttributedString
+            }
         }
         btnTrackingPtotection.applyTheme()
+    }
+    
+    private func applyColor(to attributedString: NSAttributedString, color: UIColor) -> NSAttributedString {
+        let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
+        mutableAttributedString.addAttribute(.foregroundColor, value: color, range: NSRange(location: 0, length: mutableAttributedString.length))
+        return mutableAttributedString
     }
     
     func updateBlockerStatus(forTab tab: Tab) {

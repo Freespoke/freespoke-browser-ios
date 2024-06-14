@@ -232,6 +232,10 @@ enum Constants: String {
             }
         }
     }
+    
+    static var freespokeAppDeepLinkScheme: String {
+        return "freespokeapp"
+    }
 }
 
 extension UIColor {

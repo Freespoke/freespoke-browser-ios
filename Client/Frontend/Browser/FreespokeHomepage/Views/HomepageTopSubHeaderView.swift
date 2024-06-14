@@ -71,11 +71,11 @@ extension HomepageTopSubHeaderView {
         
         // Set font
         attributedText.addAttribute(.font,
-                                    value: UIFont.sourceSerifProFontFont(.semiBold, size: 18),
+                                    value: UIFont.sourceSerifProFontFont(.semiBold, size: 15),
                                     range: getTheFullPictureRange)
         
         attributedText.addAttribute(.font,
-                                    value: UIFont.sourceSerifProFontFont(.regularItalic, size: 18),
+                                    value: UIFont.sourceSerifProFontFont(.regularItalic, size: 15),
                                     range: learnMoreRange)
         
         // Set the color based on the current theme

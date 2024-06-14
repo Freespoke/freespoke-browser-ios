@@ -15,6 +15,8 @@ class BreakingNewsCardCollectionView: UICollectionView {
     
     var breakingNewsItemTappedClosure: ((_ url: String) -> Void)?
     
+    private var analyticsScrollEventAlreadySent = false
+    
     init(frame: CGRect) {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 12
@@ -97,5 +99,16 @@ extension BreakingNewsCardCollectionView: UICollectionViewDelegate, UICollection
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 320, height: 220)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == self {
+            if !self.analyticsScrollEventAlreadySent {
+                AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                                  action: AnalyticsManager.MatomoAction.appHomeBreakingNewsCarouselScroll.rawValue,
+                                                  name: AnalyticsManager.MatomoName.scrollName)
+                self.analyticsScrollEventAlreadySent = true
+            }
+        }
     }
 }

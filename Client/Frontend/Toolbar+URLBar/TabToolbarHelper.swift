@@ -325,7 +325,7 @@ open class TabToolbarHelper: NSObject {
 
     func didClickHome() {
         AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
-                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Home",
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "home",
                                           name: AnalyticsManager.MatomoName.clickName)
         
         toolbar.tabToolbarDelegate?.tabToolbarDidPressHome(toolbar, button: toolbar.appMenuButton)

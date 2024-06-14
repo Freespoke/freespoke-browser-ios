@@ -74,8 +74,8 @@ class HomePageShopsCardView: UIView {
     }
     
     // MARK: - Configuration
-    func configure(with shoppingCoollection: [ShoppingCoollectionItemModel]) {
-        self.collectionView.shoppingCoollection = shoppingCoollection
+    func configure(with shoppingCollection: [ShoppingCollectionItemModel]) {
+        self.collectionView.shoppingCollection = shoppingCollection
     }
 }
 

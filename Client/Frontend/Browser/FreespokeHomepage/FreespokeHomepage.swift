@@ -400,13 +400,19 @@ extension FreespokeHomepage {
         self.breakingNewsCardView.btnViewAllDidTapClosure = { [weak self] in
             guard let self = self else { return }
             AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
-                                              action: AnalyticsManager.MatomoAction.appHomeBreakingNewsStoryViewAllClick.rawValue,
+                                              action: AnalyticsManager.MatomoAction.appHomeBreakingNewsViewAllClick.rawValue,
                                               name: AnalyticsManager.MatomoName.clickName)
+            
             self.delegate?.showURL(url: Constants.AppInternalBrowserURLs.breakingNewsViewAllURL)
         }
         
         self.breakingNewsCardView.breakingNewsItemTappedClosure = { [weak self] url in
             guard let self = self else { return }
+            
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeBreakingNewsContentClick.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
+            
             self.delegate?.showURL(url: url)
         }
         
@@ -598,7 +604,7 @@ extension FreespokeHomepage {
             guard let self = self else { return }
             
             AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
-                                              action: AnalyticsManager.MatomoAction.appHomeShopUsaViewMoreClick.rawValue,
+                                              action: AnalyticsManager.MatomoAction.appHomeShopUsaViewAllClick.rawValue,
                                               name: AnalyticsManager.MatomoName.clickName)
             
             self.delegate?.showURL(url: Constants.AppInternalBrowserURLs.viewMoreShopsURL)
@@ -606,6 +612,11 @@ extension FreespokeHomepage {
         
         self.shopsCardView.shopItemTappedClosure = { [weak self] url in
             guard let self = self else { return }
+            
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeShopUsaContentClick.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
+            
             self.delegate?.showURL(url: url)
         }
         
@@ -624,6 +635,11 @@ extension FreespokeHomepage {
 extension FreespokeHomepage {
     private func addMoreNewsCardView() {
         self.moreNewsCardView.didTapMoreNewsButtonClosure = { [weak self] in
+            
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeViewMoreNewsClick.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
+            
             self?.delegate?.showURL(url: Constants.AppInternalBrowserURLs.newsURL)
         }
         

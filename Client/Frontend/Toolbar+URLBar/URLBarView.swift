@@ -134,8 +134,6 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         return locationContainer
     }()
 
-    let line = UIView()
-
     /*
     lazy var tabsButton: TabsButton = {
         let tabsButton = TabsButton.tabTrayButton()
@@ -246,11 +244,6 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
 
         set(newURL) {
             locationView.url = newURL
-            if let url = newURL, InternalURL(url)?.isAboutHomeURL ?? false {
-                line.isHidden = true
-            } else {
-                line.isHidden = false
-            }
         }
     }
 
@@ -284,7 +277,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     fileprivate func commonInit() {
         locationContainer.addSubview(locationView)
 
-        [borderView, scrollToTopButton, line, tabsButton, progressBar, cancelButtonStackView, btnMicrophone,
+        [borderView, scrollToTopButton, tabsButton, progressBar, cancelButtonStackView, btnMicrophone,
          homeButton, bookmarksButton, appMenuButton, addNewTabButton, forwardButton, backButton, electionButton,
          multiStateButton, locationContainer].forEach { [weak self] in
             guard let self = self else { return }
@@ -325,8 +318,8 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
             guard let self = self else { return }
             let heightMin = URLBarViewUX.LocationHeight + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
             make.height.greaterThanOrEqualTo(heightMin)
-            make.trailing.equalTo(self.safeArea.trailing).inset(4)
-            make.leading.equalTo(self.safeArea.leading).inset(4)
+            make.trailing.equalTo(self.safeArea.trailing)
+            make.leading.equalTo(self.safeArea.leading)
             make.centerY.equalTo(self)
         }
         scrollToTopButton.snp.makeConstraints { [weak self] make in
@@ -428,16 +421,6 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
 
     override func updateConstraints() {
         super.updateConstraints()
-
-        line.snp.remakeConstraints { [weak self] make in
-            guard let self = self else { return }
-            if isBottomSearchBar {
-                make.top.equalTo(self).offset(0)
-            } else {
-                make.bottom.equalTo(self)
-            }
-            make.height.equalTo(1)
-        }
 
         progressBar.snp.remakeConstraints { [weak self] make in
             guard let self = self else { return }
@@ -555,7 +538,12 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         locationTxt.textAlignment = .left
         locationTxt.accessibilityIdentifier = AccessibilityIdentifiers.Browser.UrlBar.searchTextField
         locationTxt.accessibilityLabel = .URLBarLocationAccessibilityLabel
-        locationTxt.attributedPlaceholder = self.locationView.placeholder
+        
+        locationTxt.attributedPlaceholder = NSAttributedString(string: .TabLocationURLPlaceholder,
+                                                               attributes: [
+                                                                NSAttributedString.Key.font: UIFont.sourceSansProFont(.regular, size: 17),
+                                                                NSAttributedString.Key.foregroundColor: UIColor.neutralsGray01
+                                                               ])
         locationContainer.addSubview(locationTxt)
         // Disable dragging urls on iPhones because it conflicts with editing the text
         if UIDevice.current.userInterfaceIdiom != .pad {
@@ -772,14 +760,12 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         locationContainer.layer.borderColor = borderColor.cgColor
 
         if inOverlayMode {
-            line.isHidden = true
             // Make the editable text field span the entire URL bar, covering the lock and reader icons.
             locationTextField?.snp.remakeConstraints { [weak self] make in
                 guard let self = self else { return }
                 make.edges.equalTo(self.locationView)
             }
         } else {
-            line.isHidden = false
             // Shrink the editable text field back to the size of the location view before hiding it.
             locationTextField?.snp.remakeConstraints { [weak self] make in
                 guard let self = self else { return }
@@ -853,7 +839,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     }
     
     private func hideButtonsInLocationView(typeBtns: RigthToolBarTypeBtnsHidden) {
-        self.locationView.shouldHideButtons(typeBtns: typeBtns)
+//        self.locationView.shouldHideButtons(typeBtns: typeBtns)
     }
 }
 
@@ -1081,8 +1067,6 @@ extension URLBarView: NotificationThemeable {
 
         cancelTintColor = UIColor.legacyTheme.browser.tint
         //showQRButtonTintColor = UIColor.legacyTheme.browser.tint
-        
-        line.backgroundColor = UIColor.legacyTheme.browser.urlBarDivider
         
         switch LegacyThemeManager.instance.currentName {
         case .normal:

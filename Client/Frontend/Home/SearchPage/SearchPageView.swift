@@ -12,11 +12,8 @@ protocol SearchPageViewDelegate: AnyObject {
 }
 
 final class SearchPageView: UIView {
-    // MARK: UI values
-    lazy private var contentStackView: UIStackView = .build { stackView in
-        stackView.backgroundColor = .clear
-        stackView.axis = .vertical
-    }
+    
+    private let maxCountForBookmarks = 5
     
     lazy private var searchCollectionView: UICollectionView = {
         let searchCollectionView = UICollectionView(frame: self.bounds,
@@ -37,7 +34,6 @@ final class SearchPageView: UIView {
         searchCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         searchCollectionView.backgroundColor = .clear
         searchCollectionView.accessibilityIdentifier = a11y.collectionView
-        contentStackView.addArrangedSubview(searchCollectionView)
         return searchCollectionView
     }()
 
@@ -71,8 +67,6 @@ final class SearchPageView: UIView {
     private func prepareUI() {
         searchCollectionView.delegate = self
         searchCollectionView.dataSource = self
-//        self.backgroundColor = .red
-//        self.searchCollectionView.backgroundColor = .brown
     }
     
     private func addingViews() {
@@ -216,8 +210,16 @@ extension SearchPageView: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = self.viewModel.getSectionViewModel(shownSection: section)?.numberOfItemsInSection() ?? 0
-        return count
+        var count = self.viewModel.getSectionViewModel(shownSection: section)?.numberOfItemsInSection() ?? 0
+        if section == 0 {
+            if count > self.maxCountForBookmarks {
+                return self.maxCountForBookmarks
+            } else {
+                return count
+            }
+        } else {
+            return count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

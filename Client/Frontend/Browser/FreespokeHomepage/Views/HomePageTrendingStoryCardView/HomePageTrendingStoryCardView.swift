@@ -118,6 +118,20 @@ class HomePageTrendingStoryCardView: UIView {
         self.btnShare.addTarget(self, action: #selector(self.didTapShareButton(_:)), for: .touchUpInside)
         
         self.articlesContentView.storyItemTappedClosure = { [weak self] url in
+            
+            switch self?.storyItem?.category {
+            case .trending:
+                AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                                  action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabArticlesTabContentClick.rawValue,
+                                                  name: AnalyticsManager.MatomoName.clickName)
+            case .world:
+                AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                                  action: AnalyticsManager.MatomoAction.appHomeWorldStoryContentClick.rawValue,
+                                                  name: AnalyticsManager.MatomoName.clickName)
+            case nil:
+                break
+            }
+            
             self?.storyItemTappedClosure?(url)
         }
         
@@ -264,6 +278,11 @@ extension HomePageTrendingStoryCardView {
         guard let storyItem = self.storyItem else { return }
         guard let shareLinkString = storyItem.links?.shareLink else { return }
         guard let shareLink = URL(string: shareLinkString) else { return }
+        
+        AnalyticsManager.trackMatomoEvent(category: .appShareCategory,
+                                          action: AnalyticsManager.MatomoAction.appShareStoryFromHomeAction.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
+        
         self.didTapShareButtonCompletion?(sender, shareLink)
     }
     
@@ -297,10 +316,18 @@ extension HomePageTrendingStoryCardView: TrendingStoryBtnsViewDelegate {
         guard let storyItem = self.storyItem else { return }
         guard let seeMoreLinkString = storyItem.links?.seeMoreLink else { return }
         
+        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                          action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabClickStorySeeMore.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
+        
         self.didTapSeeMoreButtonCompletion?(seeMoreLinkString)
     }
     
     func articlesTapped() {
+        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                          action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabClickArticles.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
+        
         self.contentStackView.arrangedSubviews.forEach({ [weak self] in
             guard let self = self else { return }
             self.contentStackView.removeArrangedSubview($0)
@@ -310,6 +337,10 @@ extension HomePageTrendingStoryCardView: TrendingStoryBtnsViewDelegate {
     }
     
     func storySummaryTapped() {
+        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                          action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabClickStorySummary.rawValue,
+                                          name: AnalyticsManager.MatomoName.clickName)
+        
         self.contentStackView.arrangedSubviews.forEach({ [weak self] in
             guard let self = self else { return }
             self.contentStackView.removeArrangedSubview($0)

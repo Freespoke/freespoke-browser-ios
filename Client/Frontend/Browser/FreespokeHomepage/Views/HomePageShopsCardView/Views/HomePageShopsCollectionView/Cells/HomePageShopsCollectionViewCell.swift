@@ -18,13 +18,18 @@ final class HomePageShopsCollectionViewCell: UICollectionViewCell, Themeable {
         return img
     }()
     
+    private let imageOverlayView: ShopCollectionViewCellImageOverlayView = {
+        let view = ShopCollectionViewCellImageOverlayView()
+        return view
+    }()
+    
     private let lblTitle: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.sourceSansProFont(.semiBold, size: 18)
         label.numberOfLines = 5
         label.lineBreakMode = .byTruncatingTail
-        label.textColor = UIColor.neutralsGray01
+        label.textColor = UIColor.white
         return label
     }()
     
@@ -37,7 +42,7 @@ final class HomePageShopsCollectionViewCell: UICollectionViewCell, Themeable {
     var notificationCenter: NotificationProtocol = NotificationCenter.default
     var themeObserver: NSObjectProtocol?
     
-    var shop: ShoppingCoollectionItemModel?
+    var shop: ShoppingCollectionItemModel?
     
     var shopItemTappedClosure: ((_ url: String) -> Void)?
     
@@ -84,12 +89,15 @@ final class HomePageShopsCollectionViewCell: UICollectionViewCell, Themeable {
     
     private func addSubviews() {
         self.contentView.addSubview(self.imageView)
+        self.contentView.addSubview(self.imageOverlayView)
+        
         self.contentView.addSubview(self.lblTitle)
         self.contentView.addSubview(self.overlayActionButton)
     }
     
     private func addSubviewsConstraints() {
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
+        self.imageOverlayView.translatesAutoresizingMaskIntoConstraints = false
         self.lblTitle.translatesAutoresizingMaskIntoConstraints = false
         self.overlayActionButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -101,6 +109,11 @@ final class HomePageShopsCollectionViewCell: UICollectionViewCell, Themeable {
             self.imageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             self.imageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
             
+            self.imageOverlayView.topAnchor.constraint(equalTo: self.lblTitle.topAnchor, constant: -5),
+            self.imageOverlayView.leadingAnchor.constraint(equalTo: self.imageView.leadingAnchor),
+            self.imageOverlayView.trailingAnchor.constraint(equalTo: self.imageView.trailingAnchor),
+            self.imageOverlayView.bottomAnchor.constraint(equalTo: self.imageView.bottomAnchor),
+            
             self.lblTitle.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
             self.lblTitle.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             self.lblTitle.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5)
@@ -109,7 +122,7 @@ final class HomePageShopsCollectionViewCell: UICollectionViewCell, Themeable {
     
     // MARK: - Configuration Method
     
-    func configure(with shop: ShoppingCoollectionItemModel) {
+    func configure(with shop: ShoppingCollectionItemModel) {
         self.shop = shop
         
         if let imageUrl = shop.thumbnail, let url = URL(string: imageUrl) {
@@ -129,12 +142,12 @@ final class HomePageShopsCollectionViewCell: UICollectionViewCell, Themeable {
         case .light:
             self.contentView.backgroundColor = UIColor.clear
             self.imageView.backgroundColor = .clear
-            self.lblTitle.textColor = UIColor.neutralsGray01
+            self.lblTitle.textColor = UIColor.white
             self.contentView.layer.borderColor = UIColor.neutralsGray05.cgColor
         case .dark:
             self.contentView.backgroundColor = UIColor.clear
             self.imageView.backgroundColor = .clear
-            self.lblTitle.textColor = UIColor.neutralsGray01
+            self.lblTitle.textColor = UIColor.white
             self.contentView.layer.borderColor = UIColor.neutralsGray01.cgColor
         }
     }

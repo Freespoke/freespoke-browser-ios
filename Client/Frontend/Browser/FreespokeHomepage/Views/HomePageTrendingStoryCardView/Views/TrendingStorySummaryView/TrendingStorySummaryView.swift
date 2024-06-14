@@ -99,6 +99,9 @@ class TrendingStorySummaryView: UIView {
         self.summaryTextViewHeightConstraint?.isActive = true
         
         self.overlayView.btnReadMoreTappedClosure = { [weak self] in
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeTrendingStorySummaryReadMoreClick.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
             self?.showExpandedState()
         }
     }
@@ -201,20 +204,12 @@ class TrendingStorySummaryView: UIView {
         paragraphStyle.lineSpacing = 22.5 - (self.summaryTextView.font?.lineHeight ?? 0) // Adjust line spacing to achieve 22.5 px line height
         paragraphStyle.paragraphSpacing = 6
         paragraphStyle.headIndent = 0
-        paragraphStyle.firstLineHeadIndent = 8
+        paragraphStyle.firstLineHeadIndent = 0 //8
 
         // Update bullet indentation
         let tabStop = NSTextTab(textAlignment: .left, location: 12, options: [:])
         paragraphStyle.tabStops = [tabStop]
         paragraphStyle.defaultTabInterval = 12
-        
-        mutableAttributedString.enumerateAttribute(.paragraphStyle, in: NSRange(location: 0, length: mutableAttributedString.length)) { value, range, _ in
-            if let existingStyle = value as? NSMutableParagraphStyle {
-                existingStyle.headIndent = 12
-                existingStyle.firstLineHeadIndent = 12
-                mutableAttributedString.addAttribute(.paragraphStyle, value: existingStyle, range: range)
-            }
-        }
         
         mutableAttributedString.addAttribute(NSAttributedString.Key.foregroundColor,
                                              value: currentTheme?.type == .dark ? UIColor.white : UIColor.neutralsGray01,
@@ -231,6 +226,11 @@ class TrendingStorySummaryView: UIView {
 
 extension TrendingStorySummaryView: UITextViewDelegate {
        func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+           
+           AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                             action: AnalyticsManager.MatomoAction.appHomeTrendingStorySummaryLinkClick.rawValue,
+                                             name: AnalyticsManager.MatomoName.clickName)
+           
            self.linkTappedClosure?(URL.absoluteString)
            return false
        }

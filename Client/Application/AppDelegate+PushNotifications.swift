@@ -103,8 +103,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
         let userInfo    = response.notification.request.content.userInfo
         let info        = userInfo as NSDictionary
+        
+        print("DEBUG: notifications didReceive response \(userInfo)")
         
         if let custom = info["custom"] as? NSDictionary {
             if let url = custom["u"] as? String {
@@ -157,11 +160,29 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         //RustFirefoxAccounts.shared.pushNotifications.didRegister(withDeviceToken: deviceToken)
+        
+        // Convert token to string
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        
+        // Print it to console
+        
+        print("DEBUG: notifications didRegisterForRemoteNotificationsWithDeviceToken deviceToken: ", deviceTokenString)
+        print("DEBUG: APNs device token: \(deviceTokenString)")
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("DEBUG: notifications didFailToRegisterForRemoteNotificationsWithError")
+        // Print the error to console (you should alert the user that registration failed)
+        print("DEBUG: APNs registration failed: \(error)")
+        
         logger.log("Failed to register for APNS",
                    level: .info,
                    category: .setup)
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("DEBUG: notifications didReceiveRemoteNotification")
+        print("DEBUG: notifications Entire message \(userInfo)")
+        completionHandler(.newData)
     }
 }

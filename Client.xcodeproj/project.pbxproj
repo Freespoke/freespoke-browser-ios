@@ -1694,6 +1694,9 @@
 		01D9984A2C0FBF8800C7B9DF /* CGPoint + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D998492C0FBF8800C7B9DF /* CGPoint + Extensions.swift */; };
 		01D9984B2C0FBF8800C7B9DF /* CGPoint + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D998492C0FBF8800C7B9DF /* CGPoint + Extensions.swift */; };
 		01D9984C2C0FBF8800C7B9DF /* CGPoint + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D998492C0FBF8800C7B9DF /* CGPoint + Extensions.swift */; };
+		01DA4E342C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DA4E332C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift */; };
+		01DA4E352C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DA4E332C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift */; };
+		01DA4E362C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DA4E332C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift */; };
 		01DDC24C2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */; };
 		01DDC24D2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */; };
 		01DDC24F2B9F024D00B06189 /* ManagingSubscriptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */; };
@@ -3790,6 +3793,7 @@
 		01CE393E2BB23A54009CEE9B /* SubscriptionsStoreKitTest.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = SubscriptionsStoreKitTest.storekit; path = Client/Frontend/Subscriptions/SubscriptionsStoreKitTest.storekit; sourceTree = "<group>"; };
 		01D998452C0F910C00C7B9DF /* StorySummaryOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorySummaryOverlayView.swift; sourceTree = "<group>"; };
 		01D998492C0FBF8800C7B9DF /* CGPoint + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint + Extensions.swift"; sourceTree = "<group>"; };
+		01DA4E332C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopCollectionViewCellImageOverlayView.swift; sourceTree = "<group>"; };
 		01DDC24B2B9EFEB500B06189 /* GetLinkForManagingSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLinkForManagingSubscription.swift; sourceTree = "<group>"; };
 		01DDC24E2B9F024D00B06189 /* ManagingSubscriptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagingSubscriptionModel.swift; sourceTree = "<group>"; };
 		01E2D4302C00857400B1ED3A /* HomepageTopHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageTopHeaderView.swift; sourceTree = "<group>"; };
@@ -6082,6 +6086,7 @@
 			isa = PBXGroup;
 			children = (
 				01FDF3A12C0DA9B7000FE329 /* HomePageShopsCollectionViewCell.swift */,
+				01DA4E332C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -11810,6 +11815,7 @@
 				016C93EF2BFE13DC006520D0 /* LoginOnboardingViewController.swift in Sources */,
 				016C93F02BFE13DC006520D0 /* FreespokeAuthEventLogoutHelper.swift in Sources */,
 				016C93F12BFE13DC006520D0 /* UIImage+ImageEffects.m in Sources */,
+				01DA4E352C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift in Sources */,
 				016C93F22BFE13DC006520D0 /* TabContentBlocker.swift in Sources */,
 				016C93F32BFE13DC006520D0 /* RecentlySavedViewModel.swift in Sources */,
 				016C93F42BFE13DC006520D0 /* ClearPrivateDataTableViewController.swift in Sources */,
@@ -12176,6 +12182,7 @@
 				01BD24652B6CF7EB00B8B9EB /* AppDelegate.swift in Sources */,
 				012591262C065B2A003B74B4 /* MoreNewsButton.swift in Sources */,
 				01BD24662B6CF7EB00B8B9EB /* UIViewController + Extension.swift in Sources */,
+				01DA4E362C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift in Sources */,
 				0106B22F2C13258C00DAF058 /* MicrophoneButton.swift in Sources */,
 				01FDF3A92C0E37E3000FE329 /* StorySummaryTopView.swift in Sources */,
 				01BD24672B6CF7EB00B8B9EB /* BrowserPrompts.swift in Sources */,
@@ -13349,6 +13356,7 @@
 				F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */,
 				012591242C065B2A003B74B4 /* MoreNewsButton.swift in Sources */,
 				E1442FD2294782D9003680B0 /* UIViewController + Extension.swift in Sources */,
+				01DA4E342C1C7963007599E2 /* ShopCollectionViewCellImageOverlayView.swift in Sources */,
 				0106B22D2C13258C00DAF058 /* MicrophoneButton.swift in Sources */,
 				01FDF3A72C0E37E3000FE329 /* StorySummaryTopView.swift in Sources */,
 				0181A41D2B861CF7005BE1F6 /* FreespokeJWTDecodeModel.swift in Sources */,

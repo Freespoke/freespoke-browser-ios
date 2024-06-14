@@ -10,7 +10,7 @@ class HomepageTopHeaderView: UIView {
     
     private lazy var imgView: UIImageView = {
         let img = UIImageView()
-        img.contentMode = .scaleAspectFill
+        img.contentMode = .scaleAspectFit
         img.image = UIImage(named: "banner-light")
         img.layer.masksToBounds = true
         return img
@@ -54,8 +54,8 @@ extension HomepageTopHeaderView {
         self.imgView.pinToView(view: self)
         
         NSLayoutConstraint.activate([
-            self.imgView.widthAnchor.constraint(equalToConstant: 160),
-            self.imgView.heightAnchor.constraint(equalToConstant: 30)
+            self.imgView.widthAnchor.constraint(equalToConstant: 167.38),
+            self.imgView.heightAnchor.constraint(equalToConstant: 32)
         ])
     }
 }

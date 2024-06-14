@@ -80,10 +80,6 @@ class TabLocationView: UIView, FeatureFlaggable {
         }
     }
 
-    lazy var placeholder: NSAttributedString = {
-        return NSAttributedString(string: .TabLocationURLPlaceholder, attributes: [NSAttributedString.Key.foregroundColor: UIColor.Photon.Grey50])
-    }()
-
     lazy var lockURLView: LockURLView = .build({ lockURLView in
         lockURLView.delegate = self
     })
@@ -228,6 +224,8 @@ class TabLocationView: UIView, FeatureFlaggable {
         switch typeBtns {
         case .all(let isHidden):
             self.btnReaderMode.isHidden = isHidden
+        case .bookmarksAndReload(isHidden: let isHidden):
+            break
         }
     }
 }

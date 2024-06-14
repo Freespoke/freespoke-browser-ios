@@ -19,6 +19,9 @@ class HomepageViewModel: FeatureFlaggable {
         static let standardInset: CGFloat = 18
         static let iPadInset: CGFloat = 50
         static let iPadTopSiteInset: CGFloat = 25
+        
+        // Constants for SearchPageView
+        static let insetForSearchPageView: CGFloat = 0
 
         // Shadow
         static let shadowRadius: CGFloat = 4
@@ -36,7 +39,7 @@ class HomepageViewModel: FeatureFlaggable {
             guard interfaceIdiom != .phone else { return standardInset }
 
             // Handles multitasking on iPad
-            return traitCollection.horizontalSizeClass == .regular ? iPadInset : standardInset
+            return  insetForSearchPageView //traitCollection.horizontalSizeClass == .regular ? iPadInset : standardInset
         }
 
         static func topSiteLeadingInset(traitCollection: UITraitCollection) -> CGFloat {

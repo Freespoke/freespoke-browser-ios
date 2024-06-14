@@ -5,10 +5,10 @@
 import Foundation
 
 struct ShoppingCollectionModel: Codable {
-    var collections: [ShoppingCoollectionItemModel]
+    var collections: [ShoppingCollectionItemModel]
 }
 
-struct ShoppingCoollectionItemModel: Codable {
+struct ShoppingCollectionItemModel: Codable {
     var id: String?
     var title: String?
     var url: String?

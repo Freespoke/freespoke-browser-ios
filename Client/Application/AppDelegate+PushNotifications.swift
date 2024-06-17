@@ -114,14 +114,18 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 print(url)
                 
                 if let url = URL(string: url) {
-                    if UIApplication.shared.applicationState == .active {
-                        let object = OpenTabNotificationObject(type: .switchToTabForURLOrOpen(url))
-                        NotificationCenter.default.post(name: .OpenTabNotification, object: object)
+                    if NotificationManager().notificationHasSilentDeepLink(link: url) {
+                        NotificationManager().handleSilentDeepLinkFromPush(url)
                     } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                            if UIApplication.shared.applicationState == .active {
-                                let object = OpenTabNotificationObject(type: .switchToTabForURLOrOpen(url))
-                                NotificationCenter.default.post(name: .OpenTabNotification, object: object)
+                        if UIApplication.shared.applicationState == .active {
+                            let object = OpenTabNotificationObject(type: .switchToTabForURLOrOpen(url))
+                            NotificationCenter.default.post(name: .OpenTabNotification, object: object)
+                        } else {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                if UIApplication.shared.applicationState == .active {
+                                    let object = OpenTabNotificationObject(type: .switchToTabForURLOrOpen(url))
+                                    NotificationCenter.default.post(name: .OpenTabNotification, object: object)
+                                }
                             }
                         }
                     }

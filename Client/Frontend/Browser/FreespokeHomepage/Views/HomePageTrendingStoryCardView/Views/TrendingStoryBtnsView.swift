@@ -8,8 +8,8 @@ import Common
 
 protocol TrendingStoryBtnsViewDelegate: AnyObject {
     func seeMoreTapped()
-    func articlesTapped()
-    func storySummaryTapped()
+    func articlesTabDidSelect()
+    func storySummaryTabDidSelect()
 }
 
 class TrendingStoryBtnsView: UIView, Themeable {
@@ -171,9 +171,9 @@ extension TrendingStoryBtnsView: TrendingStorySegmentedControlViewDelegate {
     func didSelectTab(selectedtab: TrendingStorySegmentControlTabs) {
         switch selectedtab {
         case .articlesBtn:
-            self.delegate?.articlesTapped()
+            self.delegate?.articlesTabDidSelect()
         case .storySummaryBtn:
-            self.delegate?.storySummaryTapped()
+            self.delegate?.storySummaryTabDidSelect()
         }
     }
 }

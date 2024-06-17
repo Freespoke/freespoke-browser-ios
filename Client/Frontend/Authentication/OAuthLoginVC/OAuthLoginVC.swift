@@ -325,9 +325,9 @@ class OAuthLoginVC: UIViewController, Themeable {
                         return
                     }
                     
-                    let apiAuth = FreespokeAuthModel(id: idToken,
+                    let apiAuth = FreespokeAuthModel(idToken: idToken,
                                                      accessToken: accessToken,
-                                                     refreshToken: refreshToken, 
+                                                     refreshToken: refreshToken,
                                                      magicLink: nil)
                     Keychain.authInfo = apiAuth
                     sSelf.oAuthAuthorizaionCompletion?(apiAuth, nil)

@@ -12,9 +12,20 @@ protocol RightToolBarViewDelegate {
     func tabLocationViewDidLongPressReload(button: UIButton)
 }
 
-enum RigthToolBarTypeBtnsHidden {
-    case all(isHidden: Bool)
-    case bookmarksAndReload(isHidden: Bool)
+//enum RigthToolBarTypeBtnsHidden {
+//    case all(isHidden: Bool)
+//    case bookmarksAndReload(isHidden: Bool)
+//}
+
+enum LeftToolBarButton {
+    case readerMode
+}
+
+enum RightToolBarButton {
+    case share
+    case bookmarks
+    case microphone
+    case reload
 }
 
 final class RightToolBarView: UIView {
@@ -127,17 +138,41 @@ final class RightToolBarView: UIView {
         }
     }
     
-    func shouldHideBtns(typeBtns: RigthToolBarTypeBtnsHidden) {
-        switch typeBtns {
-        case .all(let isHidden):
-            self.btnShare.isHidden = isHidden
-            self.btnReload.isHidden = isHidden
-            self.btnBookmark.isHidden = isHidden
-        case .bookmarksAndReload(isHidden: let isHidden):
-            self.btnReload.isHidden = isHidden
-            self.btnBookmark.isHidden = isHidden
+    func handleButtonsVisability(visibleButtons: [RightToolBarButton]) {
+        self.hideAllButtons()
+        
+        for btn in visibleButtons {
+            switch btn {
+            case .share:
+                self.btnShare.isHidden = false
+            case .bookmarks:
+                self.btnBookmark.isHidden = false
+            case .microphone:
+                self.btnMicrophone.isHidden = false
+            case .reload:
+                self.btnReload.isHidden = false
+            }
         }
     }
+    
+    private func hideAllButtons() {
+        self.btnShare.isHidden = true
+        self.btnReload.isHidden = true
+        self.btnBookmark.isHidden = true
+        self.btnMicrophone.isHidden = true
+    }
+    
+//    func shouldHideBtns(typeBtns: RigthToolBarTypeBtnsHidden) {
+//        switch typeBtns {
+//        case .all(let isHidden):
+//            self.btnShare.isHidden = isHidden
+//            self.btnReload.isHidden = isHidden
+//            self.btnBookmark.isHidden = isHidden
+//        case .bookmarksAndReload(isHidden: let isHidden):
+//            self.btnReload.isHidden = isHidden
+//            self.btnBookmark.isHidden = isHidden
+//        }
+//    }
     
     func getHiddenValueForBtnReload() -> Bool {
         return self.btnReload.isHidden

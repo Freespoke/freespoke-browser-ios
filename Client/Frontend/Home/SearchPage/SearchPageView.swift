@@ -210,7 +210,7 @@ extension SearchPageView: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var count = self.viewModel.getSectionViewModel(shownSection: section)?.numberOfItemsInSection() ?? 0
+        let count = self.viewModel.getSectionViewModel(shownSection: section)?.numberOfItemsInSection() ?? 0
         if section == 0 {
             if count > self.maxCountForBookmarks {
                 return self.maxCountForBookmarks

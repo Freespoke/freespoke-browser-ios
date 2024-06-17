@@ -61,11 +61,16 @@ class TabToolbar: UIView {
         warningMenuBadge.layout(onButton: appMenuButton)
 
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
         ])
+        
+        actionButtons.forEach({
+            $0.heightAnchor.constraint(equalToConstant: 41).isActive = true
+        })
+        
         super.updateConstraints()
     }
 

@@ -360,6 +360,8 @@ extension AppDelegate {
         // One Signal Secret Key
         OneSignal.setAppId(Constants.OneSignalConstants.oneSignalId)
         
+//        OneSignal.sendTags(["is_test": "true"])
+        
         //        // Ask for setup notification setting
         //        OneSignal.promptForPushNotifications(userResponse: { accepted in
         //            print("User accepted notification: \(accepted)")
@@ -371,7 +373,6 @@ extension AppDelegate {
         } else {
             print("DEBUG: OneSignal No Player ID")
         }
-        
     }
 }
 

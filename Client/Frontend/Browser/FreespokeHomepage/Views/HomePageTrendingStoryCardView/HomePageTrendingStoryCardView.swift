@@ -271,7 +271,7 @@ extension HomePageTrendingStoryCardView {
             self.contentStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.contentStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.contentStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
-            ])
+        ])
     }
     
     @objc private func didTapShareButton(_ sender: UIButton) {
@@ -298,11 +298,11 @@ extension HomePageTrendingStoryCardView {
     
     private func showStorySummary() {
         /* test data
-        let sources = ["Sky News", "Variety", "The Sun"]
-        
-        let summaryText = """
-                <p>U.K. Prime Minister <a href=\"https://freespoke.com/search/web?q=Rishi%20Sunak\">Rishi Sunak</a> has announced a general election to be held on July 4, following a period of intense speculation and political maneuvering. Reports from various sources, including <a href=\"https://freespoke.com/search/web?q=Sky%20News\">Sky News</a>, Variety, and The Sun, indicate that this decision was made after comprehensive discussions within <a href=\"https://freespoke.com/search/web?q=Downing%20Street\">Downing Street</a>. Sunak’s decision came unexpectedly, as he had not completed the key pledges he set out in January 2023, such as curbing the influx of small boats across the Channel. Despite rumors and a day filled with high drama and emergency meetings, Sunak has chosen to challenge Labour’s <a href=\"https://freespoke.com/search/web?q=Keir%20Starmer\">Keir Starmer</a> at the height of summer, a strategic move likely influenced by recent improvements in inflation rates and economic forecasts.</p><p>In a speech delivered in the pouring rain on the steps of <a href=\"https://freespoke.com/search/web?q=10%20Downing%20Street\">10 Downing Street</a>, Sunak highlighted his record during the pandemic and reassured the public of his commitment to their welfare. The election will decide 650 seats in the <a href=\"https://freespoke.com/search/web?q=House%20of%20Commons\">House of Commons</a>, with the <a href=\"https://freespoke.com/search/web?q=Labour%20Party\">Labour Party</a> currently leading the polls. Recent local council election results show Labour gaining ground, while the Conservatives have faced a decline. The election will not only determine the ruling party but may also result in a hung parliament, where smaller parties like the <a href=\"https://freespoke.com/search/web?q=Liberal%20Democrats\">Liberal Democrats</a> and <a href=\"https://freespoke.com/search/web?q=Scottish%20National%20Party\">Scottish National Party</a> could play decisive roles.</p><p>Sunak’s tenure as Prime Minister began in October 2022 following a turbulent period marked by the resignations of <a href=\"https://freespoke.com/search/web?q=Liz%20Truss\">Liz Truss</a> and <a href=\"https://freespoke.com/search/web?q=Boris%20Johnson\">Boris Johnson</a>. Despite internal party challenges and political scandals, the Conservative government has implemented supportive measures for the creative sector, such as corporate tax relief for film and TV studios. However, Sunak's government has faced criticism for a decade of austerity that affected arts funding and the music industry's touring capabilities in a post-Brexit landscape. As the election day approaches, Sunak has emphasized positive economic indicators, such as reduced inflation rates and favorable IMF growth forecasts, to bolster his campaign.</p>
-"""
+         let sources = ["Sky News", "Variety", "The Sun"]
+         
+         let summaryText = """
+         <p>U.K. Prime Minister <a href=\"https://freespoke.com/search/web?q=Rishi%20Sunak\">Rishi Sunak</a> has announced a general election to be held on July 4, following a period of intense speculation and political maneuvering. Reports from various sources, including <a href=\"https://freespoke.com/search/web?q=Sky%20News\">Sky News</a>, Variety, and The Sun, indicate that this decision was made after comprehensive discussions within <a href=\"https://freespoke.com/search/web?q=Downing%20Street\">Downing Street</a>. Sunak’s decision came unexpectedly, as he had not completed the key pledges he set out in January 2023, such as curbing the influx of small boats across the Channel. Despite rumors and a day filled with high drama and emergency meetings, Sunak has chosen to challenge Labour’s <a href=\"https://freespoke.com/search/web?q=Keir%20Starmer\">Keir Starmer</a> at the height of summer, a strategic move likely influenced by recent improvements in inflation rates and economic forecasts.</p><p>In a speech delivered in the pouring rain on the steps of <a href=\"https://freespoke.com/search/web?q=10%20Downing%20Street\">10 Downing Street</a>, Sunak highlighted his record during the pandemic and reassured the public of his commitment to their welfare. The election will decide 650 seats in the <a href=\"https://freespoke.com/search/web?q=House%20of%20Commons\">House of Commons</a>, with the <a href=\"https://freespoke.com/search/web?q=Labour%20Party\">Labour Party</a> currently leading the polls. Recent local council election results show Labour gaining ground, while the Conservatives have faced a decline. The election will not only determine the ruling party but may also result in a hung parliament, where smaller parties like the <a href=\"https://freespoke.com/search/web?q=Liberal%20Democrats\">Liberal Democrats</a> and <a href=\"https://freespoke.com/search/web?q=Scottish%20National%20Party\">Scottish National Party</a> could play decisive roles.</p><p>Sunak’s tenure as Prime Minister began in October 2022 following a turbulent period marked by the resignations of <a href=\"https://freespoke.com/search/web?q=Liz%20Truss\">Liz Truss</a> and <a href=\"https://freespoke.com/search/web?q=Boris%20Johnson\">Boris Johnson</a>. Despite internal party challenges and political scandals, the Conservative government has implemented supportive measures for the creative sector, such as corporate tax relief for film and TV studios. However, Sunak's government has faced criticism for a decade of austerity that affected arts funding and the music industry's touring capabilities in a post-Brexit landscape. As the election day approaches, Sunak has emphasized positive economic indicators, such as reduced inflation rates and favorable IMF growth forecasts, to bolster his campaign.</p>
+         """
          */
         
         guard let summaryText = self.storyItem?.aiSummary?.htmlLinkified else { return }
@@ -323,11 +323,7 @@ extension HomePageTrendingStoryCardView: TrendingStoryBtnsViewDelegate {
         self.didTapSeeMoreButtonCompletion?(seeMoreLinkString)
     }
     
-    func articlesTapped() {
-        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
-                                          action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabClickArticles.rawValue,
-                                          name: AnalyticsManager.MatomoName.clickName)
-        
+    func articlesTabDidSelect() {
         self.contentStackView.arrangedSubviews.forEach({ [weak self] in
             guard let self = self else { return }
             self.contentStackView.removeArrangedSubview($0)
@@ -336,11 +332,7 @@ extension HomePageTrendingStoryCardView: TrendingStoryBtnsViewDelegate {
         self.showArticles()
     }
     
-    func storySummaryTapped() {
-        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
-                                          action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabClickStorySummary.rawValue,
-                                          name: AnalyticsManager.MatomoName.clickName)
-        
+    func storySummaryTabDidSelect() {
         self.contentStackView.arrangedSubviews.forEach({ [weak self] in
             guard let self = self else { return }
             self.contentStackView.removeArrangedSubview($0)

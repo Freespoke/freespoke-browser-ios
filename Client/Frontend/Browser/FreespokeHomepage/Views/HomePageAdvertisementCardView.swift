@@ -169,8 +169,9 @@ class HomePageAdvertisementCardView: UIView {
     }
     
     @objc private func didTapAdvertisement() {
+        
         AnalyticsManager.trackMatomoEvent(category: .appAdClickCategory,
-                                          action: AnalyticsManager.MatomoAction.appAdvertisementAction.rawValue,
+                                          action: AnalyticsManager.MatomoAction.appAdvertisementAction.rawValue + "home",
                                           name: AnalyticsManager.MatomoName.clickName)
         self.didTapAdvertisementClosure?()
     }

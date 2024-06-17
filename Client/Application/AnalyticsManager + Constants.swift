@@ -40,7 +40,7 @@ extension AnalyticsManager {
     struct MatomoName {
         static let open       = "open"
         static let clickName  = "click"
-        static let search     = "search"
+        static let searchName = "search"
         static let scrollName = "scroll"
     }
     
@@ -113,7 +113,7 @@ extension AnalyticsManager {
         case appOnbCreateAccAllowNotificationsClickAction = "app onboard create account allow notifications click" 					// ob009
         
         // app Advertisement actions
-        case appAdvertisementAction   = "app ad click - location"        // ads001
+        case appAdvertisementAction  = "app ad click - "        // ads001
     }
 }
 

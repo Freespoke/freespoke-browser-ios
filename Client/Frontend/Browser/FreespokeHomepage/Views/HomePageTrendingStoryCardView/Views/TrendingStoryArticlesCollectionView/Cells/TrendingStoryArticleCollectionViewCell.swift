@@ -216,7 +216,7 @@ final class TrendingStoryArticleCollectionViewCell: UICollectionViewCell, Themea
         
         switch self.themeManager.currentTheme.type {
         case .light:
-            self.contentView.backgroundColor = UIColor.white
+            
             self.imageView.backgroundColor = .clear
             
             self.lblPublisherName.textColor = UIColor.neutralsGray02
@@ -224,8 +224,12 @@ final class TrendingStoryArticleCollectionViewCell: UICollectionViewCell, Themea
             
             self.lineView.backgroundColor = UIColor.neutralsGray05
             self.contentView.layer.borderColor = UIColor.neutralsGray05.cgColor
+            
+            self.backgroundColor = .clear
+            self.contentView.backgroundColor = UIColor.white
+            
         case .dark:
-            self.contentView.backgroundColor = UIColor.darkBackground
+//            self.contentView.backgroundColor = UIColor.darkBackground
             self.imageView.backgroundColor = .clear
             
             self.lblPublisherName.textColor = UIColor.neutralsGray05
@@ -233,6 +237,9 @@ final class TrendingStoryArticleCollectionViewCell: UICollectionViewCell, Themea
             
             self.lineView.backgroundColor = UIColor.neutralsGray01
             self.contentView.layer.borderColor = UIColor.neutralsGray01.cgColor
+            
+            self.backgroundColor = .clear
+            self.contentView.backgroundColor = .freespokeWhite05
         }
     }
 }

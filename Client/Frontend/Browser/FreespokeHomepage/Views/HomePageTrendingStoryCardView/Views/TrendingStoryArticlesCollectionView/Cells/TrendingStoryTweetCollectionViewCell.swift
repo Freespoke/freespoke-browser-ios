@@ -198,23 +198,25 @@ final class TrendingStoryTweetCollectionViewCell: UICollectionViewCell, Themeabl
         
         switch self.themeManager.currentTheme.type {
         case .light:
-            self.backgroundColor = .white
-            self.contentView.backgroundColor = .white
             self.lineView.backgroundColor = UIColor.neutralsGray05
             self.contentView.layer.borderColor = UIColor.neutralsGray05.cgColor
             
             self.lblAuthorName.textColor = UIColor.neutralsGray01
             self.lblAuthorUsername.textColor = UIColor.neutralsGray01
             self.lblDescription.textColor = UIColor.neutralsGray01
-        case .dark:
+            
             self.backgroundColor = .clear
-            self.contentView.backgroundColor = .clear
+            self.contentView.backgroundColor = .white
+        case .dark:
             self.lineView.backgroundColor = UIColor.neutralsGray01
             self.contentView.layer.borderColor = UIColor.neutralsGray01.cgColor
             
             self.lblAuthorName.textColor = UIColor.neutralsGray05
             self.lblAuthorUsername.textColor = UIColor.neutralsGray04
             self.lblDescription.textColor = UIColor.white
+            
+            self.backgroundColor = .clear
+            self.contentView.backgroundColor = .freespokeWhite05
         }
     }
     

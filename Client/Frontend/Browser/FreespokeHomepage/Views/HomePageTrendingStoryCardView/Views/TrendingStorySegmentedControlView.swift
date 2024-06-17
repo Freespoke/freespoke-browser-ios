@@ -64,7 +64,6 @@ class TrendingStorySegmentedControlView: UIView {
         self.selectTab(at: self.selectedIndex, animated: false)
         let selectedTab = self.tabs[self.selectedIndex]
         self.delegate?.didSelectTab(selectedtab: selectedTab)
-        //        self.delegate?.didSelectTab(at: self.selectedIndex)
     }
     
     // MARK: - Setup Methods
@@ -136,14 +135,44 @@ class TrendingStorySegmentedControlView: UIView {
             if self.selectedIndex < labels.count - 1 {
                 self.selectTab(at: self.selectedIndex + 1, animated: true)
                 let selectedTab = self.tabs[self.selectedIndex]
+               
+                self.sendSwipeEvent(selectedTab: selectedTab)
                 self.delegate?.didSelectTab(selectedtab: selectedTab)
             }
         } else if gesture.direction == .right {
             if self.selectedIndex > 0 {
                 self.selectTab(at: self.selectedIndex - 1, animated: true)
                 let selectedTab = self.tabs[self.selectedIndex]
+                
+                self.sendSwipeEvent(selectedTab: selectedTab)
                 self.delegate?.didSelectTab(selectedtab: selectedTab)
             }
+        }
+    }
+    
+    private func sendSwipeEvent(selectedTab: TrendingStorySegmentControlTabs) {
+        switch selectedTab {
+        case .articlesBtn:
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabClickArticles.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
+        case .storySummaryBtn:
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabClickStorySummary.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
+        }
+    }
+    
+    private func sendClickEvent(selectedTab: TrendingStorySegmentControlTabs) {
+        switch selectedTab {
+        case .articlesBtn:
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabClickArticles.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
+        case .storySummaryBtn:
+            AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                              action: AnalyticsManager.MatomoAction.appHomeTrendingStoryTabClickStorySummary.rawValue,
+                                              name: AnalyticsManager.MatomoName.clickName)
         }
     }
     
@@ -155,6 +184,8 @@ class TrendingStorySegmentedControlView: UIView {
         }
         self.selectTab(at: index, animated: true)
         let selectedTab = self.tabs[self.selectedIndex]
+       
+        self.sendClickEvent(selectedTab: selectedTab)
         self.delegate?.didSelectTab(selectedtab: selectedTab)
     }
     

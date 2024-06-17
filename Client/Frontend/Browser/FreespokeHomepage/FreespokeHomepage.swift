@@ -413,15 +413,15 @@ extension FreespokeHomepage {
         switch currentOrientation {
         case .portrait, .portraitUpsideDown:
             if UIDevice.current.isPad {
-                self.scrollableContentViewBottomConstraint?.constant = -20
+                self.scrollableContentViewBottomConstraint?.constant = 0 //-20
             } else {
                 self.scrollableContentViewBottomConstraint?.constant = 0
             }
         case .landscapeLeft, .landscapeRight:
             if UIDevice.current.isPad {
-                self.scrollableContentViewBottomConstraint?.constant = -20
+                self.scrollableContentViewBottomConstraint?.constant = 0//-20
             } else {
-                self.scrollableContentViewBottomConstraint?.constant = -20
+                self.scrollableContentViewBottomConstraint?.constant = 0//-20
             }
         default:
             break

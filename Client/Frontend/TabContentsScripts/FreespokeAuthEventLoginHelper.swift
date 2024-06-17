@@ -28,7 +28,7 @@ class FreespokeAuthEventLoginHelper: TabContentScript {
         guard let idToken = body["id_token"] as? String else { return }
         guard let refreshToken = body["refresh_token"] as? String else { return }
         
-        let authInfo = FreespokeAuthModel(id: idToken,
+        let authInfo = FreespokeAuthModel(idToken: idToken,
                                           accessToken: accessToken,
                                           refreshToken: refreshToken,
                                           magicLink: nil)

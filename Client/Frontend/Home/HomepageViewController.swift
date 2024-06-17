@@ -425,7 +425,7 @@ class HomepageViewController: UIViewController, HomePanel, FeatureFlaggable, The
         
         switch theme.type {
         case .light:
-            view.backgroundColor = theme.colors.layer1
+            view.backgroundColor = .white //theme.colors.layer1
         case .dark:
             view.backgroundColor = .darkBackground
         }

@@ -104,6 +104,9 @@ class TabLocationView: UIView, FeatureFlaggable {
     lazy var rightToolBarView: RightToolBarView = .build { [weak self] rightToolBarView in
         rightToolBarView.delegate = self
     }
+    
+    var currentLeftToolBarButtons: [LeftToolBarButton] = []
+    var currentRightToolBarButtons: [RightToolBarButton] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -219,15 +222,30 @@ class TabLocationView: UIView, FeatureFlaggable {
         self.lockURLView.updateURL(url: self.url)
     }
     
-    func shouldHideButtons(typeBtns: RigthToolBarTypeBtnsHidden) {
-        self.rightToolBarView.shouldHideBtns(typeBtns: typeBtns)
-        switch typeBtns {
-        case .all(let isHidden):
-            self.btnReaderMode.isHidden = isHidden
-        case .bookmarksAndReload(isHidden: let isHidden):
-            break
+    func handleButtonsVisability(leftToolBarButtons: [LeftToolBarButton], rightToolBarButtons: [RightToolBarButton]) {
+        self.currentLeftToolBarButtons = leftToolBarButtons
+        self.currentRightToolBarButtons = rightToolBarButtons
+        
+        self.rightToolBarView.handleButtonsVisability(visibleButtons: rightToolBarButtons)
+        
+        self.btnReaderMode.isHidden = true
+        for leftButton in leftToolBarButtons {
+            switch leftButton {
+            case .readerMode:
+                self.btnReaderMode.isHidden = false
+            }
         }
     }
+    
+//    func shouldHideButtons(typeBtns: RigthToolBarTypeBtnsHidden) {
+//        self.rightToolBarView.shouldHideBtns(typeBtns: typeBtns)
+//        switch typeBtns {
+//        case .all(let isHidden):
+//            self.btnReaderMode.isHidden = isHidden
+//        case .bookmarksAndReload(isHidden: let isHidden):
+//            break
+//        }
+//    }
 }
 
 extension TabLocationView: LockURLViewDelegate {
@@ -270,7 +288,7 @@ private extension TabLocationView {
     func setReaderModeState(_ newReaderModeState: ReaderModeState) {
         let wasHidden = btnReaderMode.isHidden
         self.btnReaderMode.readerModeState = newReaderModeState
-        self.btnReaderMode.isHidden = (newReaderModeState == ReaderModeState.unavailable)
+//        self.btnReaderMode.isHidden = (newReaderModeState == ReaderModeState.unavailable)
         if wasHidden != btnReaderMode.isHidden {
             UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged, argument: nil)
             if !btnReaderMode.isHidden {

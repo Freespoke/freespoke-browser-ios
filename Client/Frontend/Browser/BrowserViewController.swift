@@ -52,8 +52,6 @@ class BrowserViewController: UIViewController {
     var libraryViewController: LibraryViewController?
     var webViewContainer: UIView!
     var urlBar: URLBarView!
-    var urlBarHeightConstraint: Constraint!
-    var urlBarHeightConstraintValue: CGFloat?
     var clipboardBarDisplayHandler: ClipboardBarDisplayHandler?
     var readerModeBar: ReaderModeBarView?
     var readerModeCache: ReaderModeCache
@@ -92,6 +90,8 @@ class BrowserViewController: UIViewController {
     let profile: Profile
     let tabManager: TabManager
     let ratingPromptManager: RatingPromptManager
+    
+    private var topBackgroundView = UIView()
 
     // Header can contain the top url bar, bottomContainer only contains toolbar
     // OverKeyboardContainer contains the reader mode and maybe the bottom url bar
@@ -99,7 +99,6 @@ class BrowserViewController: UIViewController {
     var overKeyboardContainer: BaseAlphaStackView = .build { _ in }
     var overKeyboardContainerTopLine: UIView = {
         let view = UIView()
-        view.backgroundColor = .blue
         return view
     }()
     private var bottomBackgroundView = UIView()
@@ -292,13 +291,14 @@ class BrowserViewController: UIViewController {
     }
 
     func updateToolbarStateForTraitCollection(_ newCollection: UITraitCollection) {
-        let showToolbar = UIDevice.current.isPad ? true : shouldShowToolbarForTraitCollection(newCollection)
+        let showToolbar = true //UIDevice.current.isPad ? true : shouldShowToolbarForTraitCollection(newCollection)
         // if need show TopTabsViewController you must set true and check constraints for header
         let showTopTabs = false //UIDevice.current.isPad ? true : shouldShowTopTabsForTraitCollection(newCollection)
 
-        let hideReloadButton = shouldUseiPadSetup(traitCollection: newCollection)
+//        let hideReloadButton = shouldUseiPadSetup(traitCollection: newCollection)
         urlBar.topTabsIsShowing = showTopTabs
-        urlBar.setShowToolbar(!showToolbar, hideReloadButton: hideReloadButton)
+//        urlBar.setShowToolbar(!showToolbar, hideReloadButton: hideReloadButton)
+//        urlBar.setShowToolbar(!showToolbar)
         toolbar.addNewTabButton.isHidden = showToolbar
 
         if showToolbar {
@@ -310,12 +310,12 @@ class BrowserViewController: UIViewController {
             //toolbar.updateNavigationButtonsState(currentNavigationButtonsState ?? .home)
             updateTabCountUsingTabManager(self.tabManager)
         } else {
-            toolbar.tabToolbarDelegate = nil
-            if self.urlBar.inOverlayMode {
-                self.toolbar.isHidden = false
-            } else {
-                self.toolbar.isHidden = UIDevice.current.isPad ? false : true
-            }
+//            toolbar.tabToolbarDelegate = nil
+//            if self.urlBar.inOverlayMode {
+//                self.toolbar.isHidden = false
+//            } else {
+//                self.toolbar.isHidden = UIDevice.current.isPad ? false : false //true
+//            }
         }
 
         appMenuBadgeUpdate()
@@ -585,6 +585,8 @@ class BrowserViewController: UIViewController {
         // Work around for covering the non-clipped web view content
         statusBarOverlay = UIView()
         view.addSubview(statusBarOverlay)
+        
+        view.addSubview(self.topBackgroundView)
 
         // Setup the URL bar, wrapped in a view to get transparency effect
         urlBar = URLBarView(profile: profile)
@@ -601,7 +603,7 @@ class BrowserViewController: UIViewController {
         
         self.overKeyboardContainerTopLine.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.overKeyboardContainerTopLine.topAnchor.constraint(equalTo: self.overKeyboardContainer.topAnchor),
+            self.overKeyboardContainerTopLine.topAnchor.constraint(equalTo: self.overKeyboardContainer.topAnchor, constant: -1),
             self.overKeyboardContainerTopLine.leadingAnchor.constraint(equalTo: self.overKeyboardContainer.leadingAnchor),
             self.overKeyboardContainerTopLine.trailingAnchor.constraint(equalTo: self.overKeyboardContainer.trailingAnchor),
             self.overKeyboardContainerTopLine.heightAnchor.constraint(equalToConstant: 1)
@@ -779,11 +781,6 @@ class BrowserViewController: UIViewController {
     // MARK: - Constraints
 
     private func setupConstraints() {
-        urlBar.snp.makeConstraints { [weak self] make in
-            guard let self = self else { return }
-            self.urlBarHeightConstraint = make.height.equalTo(UIConstants.TopToolbarHeightMax).constraint
-        }
-
         webViewContainerBackdrop.snp.makeConstraints { [weak self] make in
             guard let self = self else { return }
             make.edges.equalTo(self.view)
@@ -792,7 +789,18 @@ class BrowserViewController: UIViewController {
 
     override func updateViewConstraints() {
         super.updateViewConstraints()
-
+        
+        self.topBackgroundView.snp.remakeConstraints { [weak self] make in
+            guard let self = self else { return }
+            if isBottomSearchBar {
+                make.top.equalTo(self.view.safeArea.top)
+                make.bottom.equalTo(self.view.safeArea.top)
+            } else {
+                make.top.leading.trailing.equalTo(self.view)
+                make.bottom.equalTo(self.header.snp.bottom)
+            }
+        }
+        
         header.snp.remakeConstraints { [weak self] make in
             guard let self = self else { return }
             let currentOrientation = UIDevice.current.orientation
@@ -802,32 +810,6 @@ class BrowserViewController: UIViewController {
                 // Making sure we cover at least the status bar
                 make.bottom.equalTo(self.view.safeArea.top)
                 
-                switch currentOrientation {
-                case .portrait, .portraitUpsideDown:
-                    if UIDevice.current.isPad {
-                        make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintPadForToolbar)
-                        make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintPadForToolbar)
-                    } else {
-                        make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintForToolbar)
-                        make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintForToolbar)
-                    }
-                case .landscapeLeft, .landscapeRight:
-                    if UIDevice.current.isPad {
-                        make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintPhoneForToolbarInOverlayMode)
-                        make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintPhoneForToolbarInOverlayMode)
-                    } else {
-                        make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintPhoneForToolbarInOverlayMode)
-                        make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintPhoneForToolbarInOverlayMode)
-                    }
-                default:
-                    if UIDevice.current.isPad {
-                        make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintPadForToolbar)
-                        make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintPadForToolbar)
-                    } else {
-                        make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintForToolbar)
-                        make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintForToolbar)
-                    }
-                }
             } else {
                 switch currentOrientation {
                 case .portrait, .portraitUpsideDown:
@@ -844,7 +826,7 @@ class BrowserViewController: UIViewController {
                         make.width.equalTo(self.view.snp.width).multipliedBy(Constants.DrawingSizes.iPadContentWidthFactorLandscape)
                     } else {
                         make.centerX.equalTo(self.view.snp.centerX)
-                        make.width.equalTo(self.view.snp.width).multipliedBy(Constants.DrawingSizes.iPadContentWidthFactorLandscape)
+                        make.width.equalTo(self.view.snp.width).multipliedBy(Constants.DrawingSizes.iPadContentWidthFactorLandscape).offset(-UIConstants.StandartInsetForPhone * 2)
                     }
                 default:
                     if UIDevice.current.isPad {
@@ -882,11 +864,6 @@ class BrowserViewController: UIViewController {
             make.bottom.equalTo(overKeyboardContainer.snp.top)
         }
 
-        // Setup the bottom toolbar
-        toolbar.snp.remakeConstraints { make in
-            make.height.equalTo(UIConstants.BottomToolbarHeight)
-        }
-
         overKeyboardContainer.snp.remakeConstraints { [weak self] make in
             guard let self = self else { return }
             self.scrollController.overKeyboardContainerConstraint = make.bottom.equalTo(bottomContainer.snp.top).constraint
@@ -899,11 +876,17 @@ class BrowserViewController: UIViewController {
         bottomContainer.snp.remakeConstraints { [weak self] make in
             guard let self = self else { return }
             if UIDevice.current.isPad {
-                self.scrollController.bottomContainerConstraint = make.bottom.equalTo(self.view.safeArea.bottom).constraint
+                self.scrollController.bottomContainerConstraint = make.bottom.equalTo(self.view.safeArea.bottom).offset(-14).constraint
                 make.centerX.equalTo(self.view.snp.centerX)
             } else {
-                self.scrollController.bottomContainerConstraint = make.bottom.equalTo(self.view.snp.bottom).constraint
-                make.leading.trailing.equalTo(self.view)
+                if ScreenUtilities.isLandscape {
+                    self.scrollController.bottomContainerConstraint = make.bottom.equalTo(self.view.safeArea.bottom).offset(-14).constraint
+                    make.centerX.equalTo(self.view.snp.centerX)
+                } else {
+                    self.scrollController.bottomContainerConstraint = make.bottom.equalTo(self.view.safeArea.bottom).constraint
+                    make.leading.equalTo(self.view.snp.leading).offset(UIConstants.StandartInsetForPhone)
+                    make.trailing.equalTo(self.view.snp.trailing).offset(-UIConstants.StandartInsetForPhone)
+                }
             }
         }
         
@@ -921,8 +904,7 @@ class BrowserViewController: UIViewController {
                 guard let self = self else { return }
                 make.top.equalTo(self.header.snp.bottom)
                 make.left.right.equalTo(self.view)
-                let homePageBottomOffset: CGFloat = self.isBottomSearchBar ? self.urlBarHeightConstraintValue ?? 0 : 0
-                make.bottom.equalTo(self.bottomContainer.snp.top).offset(-homePageBottomOffset)
+                make.bottom.equalTo(self.overKeyboardContainer.snp.top)
             }
         }
   
@@ -931,9 +913,29 @@ class BrowserViewController: UIViewController {
             self.adjustBottomContentStackView(remake)
         }
         
-        urlBar.snp.makeConstraints { [weak self] make in
+        urlBar.snp.remakeConstraints { [weak self] make in
             guard let self = self else { return }
-            make.leading.trailing.equalTo(self.header)
+            if isBottomSearchBar {
+                if UIDevice.current.isPad {
+                    if ScreenUtilities.isLandscape {
+                        make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintPhoneForToolbarInOverlayMode)
+                        make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintPhoneForToolbarInOverlayMode)
+                    } else {
+                        make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintPadForToolbar)
+                        make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintPadForToolbar)
+                    }
+                } else {
+                    if ScreenUtilities.isLandscape {
+                        make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintPhoneForToolbarInOverlayMode)
+                        make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintPhoneForToolbarInOverlayMode)
+                    } else {
+                        make.left.equalTo(self.view).offset(UIConstants.LeftRightConstraintForToolbar)
+                        make.right.equalTo(self.view).offset(-UIConstants.LeftRightConstraintForToolbar)
+                    }
+                }
+            } else {
+                make.leading.trailing.equalTo(self.header)
+            }
         }
         adjustBottomSearchBarForKeyboard()
     }
@@ -994,22 +996,19 @@ class BrowserViewController: UIViewController {
 
         // Adjustment for landscape on the urlbar
         // need to account for inset and remove it when keyboard is showing
-        let showToolBar = shouldShowToolbarForTraitCollection(traitCollection)
-        let isKeyboardShowing = keyboardState != nil && keyboardState?.intersectionHeightForView(view) != 0
-        if !showToolBar && isBottomSearchBar && !isKeyboardShowing {
-            overKeyboardContainer.addBottomInsetSpacer(spacerHeight: UIConstants.BottomInset)
+//        let showToolBar = shouldShowToolbarForTraitCollection(traitCollection)
+//        let isKeyboardShowing = keyboardState != nil && keyboardState?.intersectionHeightForView(view) != 0
+//        if !showToolBar && isBottomSearchBar && !isKeyboardShowing {
+//            overKeyboardContainer.addBottomInsetSpacer(spacerHeight: UIConstants.BottomInset)
+//        } else {
+//            overKeyboardContainer.removeBottomInsetSpacer()
+//        }
+        if isBottomSearchBar {
+            self.overKeyboardContainer.addTopInsetSpacer(spacerHeight: UIConstants.HeightForOverKeyboardContainerSpacer)
+            self.overKeyboardContainer.addBottomInsetSpacer(spacerHeight: UIConstants.HeightForOverKeyboardContainerSpacer)
         } else {
-            overKeyboardContainer.removeBottomInsetSpacer()
-        }
-
-        // We have to deactivate the original constraint, and remake the constraint
-        // or else funky conflicts happen
-        urlBarHeightConstraint.deactivate()
-        urlBar.snp.makeConstraints { [weak self] make in
-            guard let self = self else { return }
-            let height = UIConstants.TopToolbarHeight
-            self.urlBarHeightConstraint = make.height.equalTo(height).constraint
-            self.urlBarHeightConstraintValue = height
+            self.overKeyboardContainer.removeTopInsetSpacer()
+            self.overKeyboardContainer.removeBottomInsetSpacer()
         }
     }
 
@@ -1153,7 +1152,9 @@ class BrowserViewController: UIViewController {
 
         // Make sure reload button is hidden on homepage
         urlBar.locationView.rightToolBarView.updateStatusForReloadBtn(status: .disabled)
-        self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: true))
+//        self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: true))
+        self.urlBar.locationView.handleButtonsVisability(leftToolBarButtons: [],
+                                                         rightToolBarButtons: [.microphone])
     }
 
     /// Once the homepage is created, browserViewController keeps a reference to it, never setting it to nil during
@@ -1219,7 +1220,10 @@ class BrowserViewController: UIViewController {
         guard let url = url else {
             hideHomepage()
             urlBar.locationView.rightToolBarView.updateStatusForReloadBtn(status: .disabled)
-            self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: true))
+//            self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: true))
+            
+            self.urlBar.locationView.handleButtonsVisability(leftToolBarButtons: [.readerMode],
+                                                             rightToolBarButtons: [.share])
             return
         }
 
@@ -1235,7 +1239,9 @@ class BrowserViewController: UIViewController {
             }
         } else if !url.absoluteString.hasPrefix("\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)") {
             hideHomepage()
-            urlBar.shouldHideReloadButton(shouldUseiPadSetup())
+//            urlBar.shouldHideReloadButton(shouldUseiPadSetup())
+            self.urlBar.locationView.handleButtonsVisability(leftToolBarButtons: [.readerMode],
+                                                             rightToolBarButtons: [.share])
         }
 
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -1506,14 +1512,27 @@ class BrowserViewController: UIViewController {
         if let tab = tabManager.selectedTab {
             let status: ReloadButtonState = isLoading ? .stop : .reload
             urlBar.locationView.rightToolBarView.updateStatusForReloadBtn(status: status)
-            self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: isLoading))
+//            self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: isLoading))
+           
+//            let leftToolBarButtons: [LeftToolBarButton] = isLoading ? [] : [LeftToolBarButton.readerMode]
+//            let rightToolBarButtons: [RightToolBarButton] = isLoading ? [] : [RightToolBarButton.share]
+//            
+//            print("DEBUG: setupMiddleButtonStatus isLoading: ", isLoading)
+//            print("DEBUG: setupMiddleButtonStatus leftToolBarButtons: ", leftToolBarButtons)
+//            print("DEBUG: setupMiddleButtonStatus rightToolBarButtons: ", rightToolBarButtons)
+//            
+//            self.urlBar.locationView.handleButtonsVisability(leftToolBarButtons: leftToolBarButtons,
+//                                                             rightToolBarButtons: rightToolBarButtons)
             navigationToolbar.updateMiddleButtonState(state)
             currentMiddleButtonState = state
             
             // Tab with starting page
             if tab.isURLStartingPage {
                 urlBar.locationView.rightToolBarView.updateStatusForReloadBtn(status: .disabled)
-                self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: true))
+//                self.urlBar.locationView.shouldHideButtons(typeBtns: .all(isHidden: true))
+//                self.urlBar.locationView.handleButtonsVisability(leftToolBarButtons: [],
+//                                                                 rightToolBarButtons: [.microphone])
+                
                 navigationToolbar.updateMiddleButtonState(state)
                 currentMiddleButtonState = state
                 
@@ -1526,13 +1545,22 @@ class BrowserViewController: UIViewController {
                 
                 return
             }
-        }
-        else {
+        } else {
             return
         }
 
         if isHome {
             navigationToolbar.updateForwardStatus(false)
+        }
+        
+        if self.isHome {
+            self.urlBar.locationView.handleButtonsVisability(leftToolBarButtons: [],
+                                                             rightToolBarButtons: [.microphone])
+        } else {
+//            self.urlBar.locationView.handleButtonsVisability(leftToolBarButtons: self.urlBar.locationView.currentLeftToolBarButtons,
+//                                                             rightToolBarButtons: self.urlBar.locationView.currentRightToolBarButtons)
+            self.urlBar.locationView.handleButtonsVisability(leftToolBarButtons: [.readerMode],
+                                                             rightToolBarButtons: [.share])
         }
         
         isHome = false
@@ -1547,7 +1575,10 @@ class BrowserViewController: UIViewController {
 
         navigationToolbar.updateMiddleButtonState(state)
             
-        self.urlBar.locationView.shouldHideButtons(typeBtns: .bookmarksAndReload(isHidden: true))
+//        self.urlBar.locationView.shouldHideButtons(typeBtns: .bookmarksAndReload(isHidden: true))
+        
+      
+        
         currentMiddleButtonState = state
     }
     
@@ -2511,14 +2542,14 @@ extension BrowserViewController: TabManagerDelegate {
         }
 
         if let readerMode = selected?.getContentScript(name: ReaderMode.name()) as? ReaderMode {
-            urlBar.updateReaderModeState(readerMode.state, hideReloadButton: shouldUseiPadSetup())
+            urlBar.updateReaderModeState(readerMode.state)
             if readerMode.state == .active {
                 showReaderModeBar(animated: false)
             } else {
                 hideReaderModeBar(animated: false)
             }
         } else {
-            urlBar.updateReaderModeState(ReaderModeState.unavailable, hideReloadButton: shouldUseiPadSetup())
+            urlBar.updateReaderModeState(ReaderModeState.unavailable)
         }
 
         if topTabsVisible {
@@ -3103,7 +3134,7 @@ extension BrowserViewController: Themeable {
                                             topTabsViewController]
         ui.forEach { $0?.applyTheme() }
         
-        self.header.backgroundColor = self.themeManager.currentTheme.type == .dark ? .darkBackground : .neutralsGray07
+        self.header.backgroundColor = self.themeManager.currentTheme.type == .dark ? .darkBackground : .white
         
         self.bottomBackgroundView.backgroundColor = self.themeManager.currentTheme.type == .dark ? .darkBackground : .neutralsGray07
         
@@ -3129,6 +3160,8 @@ extension BrowserViewController: Themeable {
         self.view.backgroundColor = self.themeManager.currentTheme.type == .dark ? .darkBackground : .neutralsGray07
      
         self.overKeyboardContainerTopLine.backgroundColor = self.themeManager.currentTheme.type == .dark ? .neutralsGray01 : .neutralsGray05
+        
+        self.topBackgroundView.backgroundColor = self.themeManager.currentTheme.type == .dark ? .darkBackground : .white
     }
 }
 

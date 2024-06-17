@@ -14,7 +14,7 @@ private struct URLBarViewUX {
     static let LocationLeftPadding: CGFloat = 8
     static let Padding: CGFloat = 10
     static let LocationHeight: CGFloat = 44
-    static let ButtonHeight: CGFloat = 48
+    static let ButtonHeight: CGFloat = 44
     static let LocationContentOffset: CGFloat = 8
     static let TextFieldCornerRadius: CGFloat = 8
     static let TextFieldBorderWidth: CGFloat = 0
@@ -316,11 +316,11 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     fileprivate func setupConstraints() {
         borderView.snp.makeConstraints { [weak self] make in
             guard let self = self else { return }
-            let heightMin = URLBarViewUX.LocationHeight + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
-            make.height.greaterThanOrEqualTo(heightMin)
+            make.top.equalTo(self.snp.top)
             make.trailing.equalTo(self.safeArea.trailing)
             make.leading.equalTo(self.safeArea.leading)
-            make.centerY.equalTo(self)
+            make.bottom.equalTo(self.snp.bottom)
+            make.height.equalTo(UIConstants.TopToolbarHeight)
         }
         scrollToTopButton.snp.makeConstraints { [weak self] make in
             guard let self = self else { return }
@@ -341,7 +341,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         
         cancelButton.snp.makeConstraints { [weak self] make in
             guard let self = self else { return }
-            make.size.equalTo(URLBarViewUX.ButtonHeight - 4)
+            make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
 
         backButton.snp.makeConstraints { [weak self] make in
@@ -411,7 +411,7 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
             guard let self = self else { return }
             make.trailing.equalTo(self.safeArea.trailing).inset(4)
             make.centerY.equalTo(self.locationContainer)
-            make.size.equalTo(URLBarViewUX.ButtonHeight - 4)
+            make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
 
         privateModeBadge.layout(onButton: tabsButton)
@@ -440,16 +440,14 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
             self.locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidthSelected
             self.locationContainer.snp.remakeConstraints { [weak self] make in
                 guard let self = self else { return }
-                let heightMin = URLBarViewUX.LocationHeight + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
-                make.height.greaterThanOrEqualTo(heightMin)
                 make.trailing.equalTo(self.btnMicrophone.snp.leading)
                 if self.cancelButton.isHidden {
                     make.leading.equalTo(self.borderView.snp.leading)
                 } else {
                     make.leading.equalTo(self.cancelButtonStackView.snp.trailing)
                 }
-                make.leading.equalTo(self.cancelButtonStackView.snp.trailing)
-                make.centerY.equalTo(self)
+                make.top.equalTo(self.snp.top)
+                make.bottom.equalTo(self.snp.bottom)
             }
 
             self.locationTextField?.snp.remakeConstraints { [weak self] make in
@@ -472,8 +470,8 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
                     // Otherwise, left align the location view
                     make.leading.trailing.equalTo(self).inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding-1, bottom: 0, right: URLBarViewUX.LocationLeftPadding-1))
                 }
-                make.height.greaterThanOrEqualTo(URLBarViewUX.LocationHeight+2)
-                make.centerY.equalTo(self)
+                make.top.equalTo(self.snp.top)
+                make.bottom.equalTo(self.snp.bottom)
             }
             self.locationView.snp.remakeConstraints { [weak self] make in
                 guard let self = self else { return }
@@ -569,17 +567,19 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     /// Ideally we'd split this implementation in two, one URLBarView with a toolbar and one without
     /// However, switching views dynamically at runtime is a difficult. For now, we just use one view
     /// that can show in either mode. For the reload button, we hide it on iPad (apart from multitasking mode)
-    func setShowToolbar(_ shouldShow: Bool, hideReloadButton: Bool) {
-        toolbarIsShowing = shouldShow
-        setNeedsUpdateConstraints()
-        // when we transition from portrait to landscape, calling this here causes
-        // the constraints to be calculated too early and there are constraint errors
-        if !toolbarIsShowing {
-            updateConstraintsIfNeeded()
-        }
-        self.hideButtonsInLocationView(typeBtns: .all(isHidden: hideReloadButton))
-        updateViewsForOverlayModeAndToolbarChanges()
-    }
+//    func setShowToolbar(_ shouldShow: Bool) {
+//        toolbarIsShowing = shouldShow
+//        setNeedsUpdateConstraints()
+//        // when we transition from portrait to landscape, calling this here causes
+//        // the constraints to be calculated too early and there are constraint errors
+//        if !toolbarIsShowing {
+//            updateConstraintsIfNeeded()
+//        }
+////        self.hideButtonsInLocationView(typeBtns: .all(isHidden: hideReloadButton))
+//        self.locationView.handleButtonsVisability(leftToolBarButtons: [.readerMode],
+//                                                  rightToolBarButtons: [.share])
+//        updateViewsForOverlayModeAndToolbarChanges()
+//    }
 
     func updateAlphaForSubviews(_ alpha: CGFloat) {
         locationContainer.alpha = alpha
@@ -598,15 +598,19 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
     }
 
     /// We hide reload button on iPad, but not in multitasking mode
-    func updateReaderModeState(_ state: ReaderModeState, hideReloadButton: Bool) {
+    func updateReaderModeState(_ state: ReaderModeState/*, hideReloadButton: Bool*/) {
         locationView.readerModeState = state
-        self.hideButtonsInLocationView(typeBtns: .all(isHidden: hideReloadButton))
+//        self.hideButtonsInLocationView(typeBtns: .all(isHidden: hideReloadButton))
+//        self.locationView.handleButtonsVisability(leftToolBarButtons: [.readerMode],
+//                                                  rightToolBarButtons: [.share])
     }
 
     /// We hide reload button on iPad, but not in multitasking mode
-    func shouldHideReloadButton(_ isHidden: Bool) {
-        self.hideButtonsInLocationView(typeBtns: .all(isHidden: isHidden))
-    }
+//    func shouldHideReloadButton(_ isHidden: Bool) {
+//        self.hideButtonsInLocationView(typeBtns: .all(isHidden: isHidden))
+//        self.locationView.handleButtonsVisability(leftToolBarButtons: [],
+//                                                  rigthToolBarButtons: [])
+//    }
 
     func setAutocompleteSuggestion(_ suggestion: String?) {
         locationTextField?.setAutocompleteSuggestion(suggestion)
@@ -838,9 +842,9 @@ class URLBarView: UIView, URLBarViewProtocol, AlphaDimmable, TopBottomInterchang
         delegate?.urlBarDidPressScrollToTop(self)
     }
     
-    private func hideButtonsInLocationView(typeBtns: RigthToolBarTypeBtnsHidden) {
+//    private func hideButtonsInLocationView(typeBtns: RigthToolBarTypeBtnsHidden) {
 //        self.locationView.shouldHideButtons(typeBtns: typeBtns)
-    }
+//    }
 }
 
 extension URLBarView: TabToolbarProtocol {
@@ -972,10 +976,14 @@ extension URLBarView: TabLocationViewDelegate {
         case .reload:
             delegate?.urlBarDidPressReload(self)
             TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .reloadFromUrlBar)
-            self.hideButtonsInLocationView(typeBtns: .all(isHidden: true))
+//            self.hideButtonsInLocationView(typeBtns: .all(isHidden: true))
+            self.locationView.handleButtonsVisability(leftToolBarButtons: [],
+                                                      rightToolBarButtons: [])
         case .stop:
             delegate?.urlBarDidPressStop(self)
-            self.hideButtonsInLocationView(typeBtns: .all(isHidden: false))
+//            self.hideButtonsInLocationView(typeBtns: .all(isHidden: false))
+            self.locationView.handleButtonsVisability(leftToolBarButtons: [.readerMode],
+                                                      rightToolBarButtons: [.share])
         case .disabled:
             // do nothing
             break
@@ -1070,7 +1078,7 @@ extension URLBarView: NotificationThemeable {
         
         switch LegacyThemeManager.instance.currentName {
         case .normal:
-            self.backgroundColor = .neutralsGray07
+            self.backgroundColor = .white
             self.borderView.backgroundColor = UIColor.neutralsGray06
             self.borderView.layer.borderColor = UIColor.neutralsGray5.cgColor
             self.cancelButton.backgroundColor = .clear

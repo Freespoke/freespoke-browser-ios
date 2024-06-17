@@ -135,10 +135,16 @@ final class BreakingNewsArticleCollectionViewCell: UICollectionViewCell, Themeab
             self.imageView.backgroundColor = .clear
             self.lineView.backgroundColor = UIColor.neutralsGray05
             self.contentView.layer.borderColor = UIColor.neutralsGray05.cgColor
+            
+            self.backgroundColor = .clear
+            self.contentView.backgroundColor = UIColor.white
         case .dark:
             self.imageView.backgroundColor = .clear
             self.lineView.backgroundColor = UIColor.neutralsGray01
             self.contentView.layer.borderColor = UIColor.neutralsGray01.cgColor
+            
+            self.backgroundColor = .clear
+            self.contentView.backgroundColor = UIColor.freespokeWhite05
         }
     }
     

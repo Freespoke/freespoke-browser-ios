@@ -95,7 +95,6 @@ class HomepageSearchBarView: UIView {
 // MARK: - Add Subviews
 
 extension HomepageSearchBarView {
-    
     private func addSubviews() {
         self.addSubview(self.imgSearchView)
         self.addSubview(self.lblTitle)
@@ -131,6 +130,10 @@ extension HomepageSearchBarView {
     
     @objc private func handleTap(_ gesture: UITapGestureRecognizer) {
         let location = gesture.location(in: self)
+        
+        AnalyticsManager.trackMatomoEvent(category: .appHomeCategory,
+                                          action: AnalyticsManager.MatomoAction.appHomeSearch.rawValue,
+                                          name: AnalyticsManager.MatomoName.searchName)
         
         if self.imgMicroView.frame.contains(location) {
             self.delegate?.didTapMicrophoneButton()

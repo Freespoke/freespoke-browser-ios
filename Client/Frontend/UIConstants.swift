@@ -29,6 +29,8 @@ public struct UIConstants {
     static let TopHeaderConstraintForPhone: CGFloat = 15
     static let TopHeaderConstraintForPad: CGFloat = 30
     static var ToolbarHeight: CGFloat = 46
+    static let HeightForOverKeyboardContainerSpacer: CGFloat = 8
+    static let StandartInsetForPhone: CGFloat = 20
 
     static let SystemBlueColor = UIColor.Photon.Blue40
 

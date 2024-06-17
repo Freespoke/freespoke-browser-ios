@@ -90,7 +90,7 @@ class FreefolkProfileVC: UIViewController, Themeable {
                 self.contentView.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor, constant: 0),
                 self.contentView.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: 0),
                 self.contentView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-//                self.contentView.widthAnchor.constraint(equalToConstant: (self.view.frame.width * Constants.DrawingSizes.iPadContentWidthFactorPortrait)),
+//                self.contentMainStackView.widthAnchor.constraint(equalToConstant: (self.view.frame.width * Constants.DrawingSizes.iPadContentWidthFactorPortrait)),
                 self.contentView.widthAnchor.constraint(equalToConstant: Constants.DrawingSizes.iPadContentWidthStaticValue),
                 self.contentView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
                 self.titleLbl.topAnchor.constraint(equalTo: customTitleView.bottomAnchor, constant: 50)
@@ -127,10 +127,10 @@ class FreefolkProfileVC: UIViewController, Themeable {
         case .dark:
             self.view.backgroundColor = UIColor.black
             self.tableView.backgroundColor = .clear
-            self.titleLbl.textColor = .gray7
+            self.titleLbl.textColor = .neutralsGray07
         case .light:
-            self.view.backgroundColor = .gray7
-            self.tableView.backgroundColor = .gray7
+            self.view.backgroundColor = .neutralsGray07
+            self.tableView.backgroundColor = .neutralsGray07
             self.titleLbl.textColor = .blackColor
         }
         
@@ -331,7 +331,7 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
                        currentTheme: self.themeManager.currentTheme)
         
         let theme = self.themeManager.currentTheme
-        cell.backgroundColor = (theme.type == .light) ? .gray7 : .clear
+        cell.backgroundColor = (theme.type == .light) ? .neutralsGray07 : .clear
         
         switch cellType {
         case .account:
@@ -414,7 +414,7 @@ extension FreefolkProfileVC: UITableViewDataSource, UITableViewDelegate {
     
     private func configureLogoutCell(_ cell: LogoutCell) {
         let theme = self.themeManager.currentTheme
-        cell.backgroundColor = (theme.type == .light) ? .gray7 : .clear
+        cell.backgroundColor = (theme.type == .light) ? .neutralsGray07 : .clear
         cell.configureCell(textColor: (theme.type == .light) ? .blackColor : .whiteColor)
         
         cell.tapClosure = { [weak self] in

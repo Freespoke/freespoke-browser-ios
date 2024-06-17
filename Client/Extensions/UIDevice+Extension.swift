@@ -18,7 +18,7 @@ extension UIDevice {
     
     // Returns `true` if the device has a notch
     var hasNotch: Bool {
-        let bottom = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        let bottom = UIApplication.shared.keyWindowCustom?.safeAreaInsets.bottom ?? 0
         return bottom > 0
     }
 

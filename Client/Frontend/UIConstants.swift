@@ -20,9 +20,17 @@ extension UIColor {
 public struct UIConstants {
     static let DefaultPadding: CGFloat = 10
     static let SnackbarButtonHeight: CGFloat = 57
-    static let TopToolbarHeight: CGFloat = 56
-    static let TopToolbarHeightMax: CGFloat = 75
+    static let TopToolbarHeight: CGFloat = 46 // 52
+    static let TopToolbarHeightMax: CGFloat = 46 //52
+    static let LeftRightConstraintForToolbar: CGFloat = 7
+    static let LeftRightConstraintPhoneForToolbarInOverlayMode: CGFloat = 60
+    static let LeftRightConstraintForToolbarInOverlayMode: CGFloat = 20
+    static let LeftRightConstraintPadForToolbar: CGFloat = 40
+    static let TopHeaderConstraintForPhone: CGFloat = 15
+    static let TopHeaderConstraintForPad: CGFloat = 30
     static var ToolbarHeight: CGFloat = 46
+    static let HeightForOverKeyboardContainerSpacer: CGFloat = 8
+    static let StandartInsetForPhone: CGFloat = 20
 
     static let SystemBlueColor = UIColor.Photon.Blue40
 

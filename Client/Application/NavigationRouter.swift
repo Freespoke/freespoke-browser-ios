@@ -76,19 +76,24 @@ enum DeepLink {
     case settings(SettingsPage)
     case homePanel(HomePanelPath)
     case defaultBrowser(DefaultBrowserPath)
+    case getPremium
 
     init?(urlString: String) {
         let paths = urlString.split(separator: "/")
         guard let component = paths[safe: 0],
               let componentPath = paths[safe: 1]
-        else { return nil }
-
+        else {
+            return nil
+        }
+        
         if component == "settings", let link = SettingsPage(rawValue: String(componentPath)) {
             self = .settings(link)
         } else if component == "homepanel", let link = HomePanelPath(rawValue: String(componentPath)) {
             self = .homePanel(link)
         } else if component == "default-browser", let link = DefaultBrowserPath(rawValue: String(componentPath)) {
             self = .defaultBrowser(link)
+        } else if component == "\(Constants.freespokeAppDeepLinkScheme):", componentPath == "getpremium" {
+            self = .getPremium
         } else {
             return nil
         }
@@ -121,7 +126,9 @@ enum NavigationPath {
         func sanitizedURL(for unsanitized: URL) -> URL {
             guard var components = URLComponents(url: unsanitized, resolvingAgainstBaseURL: true),
                   let scheme = components.scheme, !scheme.isEmpty
-            else { return unsanitized }
+            else {
+                return unsanitized
+            }
 
             components.scheme = scheme.lowercased()
             return components.url ?? unsanitized
@@ -136,11 +143,16 @@ enum NavigationPath {
             return nil
         }
 
-        guard let scheme = components.scheme, urlSchemes.contains(scheme) else { return nil }
+        guard let scheme = components.scheme, urlSchemes.contains(scheme) else {
+            return nil
+        }
 
         let isOurScheme = [URL.mozPublicScheme, URL.mozInternalScheme].contains(scheme)
         if isOurScheme, let host = components.host?.lowercased(), !host.isEmpty {
             if host == "deep-link", let deepURL = components.valueForQuery("url"), let link = DeepLink(urlString: deepURL.lowercased()) {
+                self = .deepLink(link)
+            } else if host == "getpremium",
+                      let link = DeepLink(urlString: url.absoluteString.lowercased()) {
                 self = .deepLink(link)
             } else if host == "fxa-signin", components.valueForQuery("signin") != nil {
                 self = .fxa(params: FxALaunchParams(entrypoint: .fxaDeepLinkNavigation, query: url.getQuery()))
@@ -206,6 +218,8 @@ enum NavigationPath {
 
         case .defaultBrowser(let path):
             NavigationPath.handleDefaultBrowser(path: path, with: bvc)
+        case .getPremium:
+            NavigationPath.handleGetPremium(with: bvc)
         }
     }
 
@@ -384,6 +398,23 @@ enum NavigationPath {
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])
         case .tutorial:
             bvc.presentDBOnboardingViewController(true)
+        }
+    }
+    
+    private static func handleGetPremium(with bvc: BrowserViewController) {
+        Task {
+            do {
+                if let userType = try? await AppSessionManager.shared.userType() {
+                    switch userType {
+                    case .authorizedWithoutPremium:
+                        await bvc.showGetPremiumScreen()
+                    case .unauthorizedWithoutPremium, .unauthorizedWithPremium:
+                        await bvc.showSignUpScreen()
+                    case .premiumOriginalApple, .premiumNotApple, .premiumBecauseAppleAccountHasSubscription:
+                        return
+                    }
+                }
+            }
         }
     }
 }

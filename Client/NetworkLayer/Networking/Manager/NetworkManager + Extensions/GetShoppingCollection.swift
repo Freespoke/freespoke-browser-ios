@@ -5,7 +5,7 @@
 import Foundation
 
 extension NetworkManager {
-    // MARK: getLinkForManagingSubscription
+    // MARK: Get Shopping Collection
     
     func getShoppingCollection(page: Int, perPage: Int, completion: @escaping (_ shoppingCollectionModel: ShoppingCollectionModel?, _ error: CustomError?) -> Void) {
         func performRequest() {

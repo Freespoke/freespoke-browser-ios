@@ -517,7 +517,7 @@ class LoginManagerTests: KIFTestCase {
      tester().tapView(withAccessibilityLabel: "Edit")
 
      // Check that we've selected the username field
-     var firstResponder = UIApplication.shared.keyWindow?.firstResponder()
+     var firstResponder = UIApplication.shared.keyWindowCustom?.firstResponder()
      let usernameCell = list.cellForRow(at: IndexPath(row: 1, section: 0)) as! LoginDetailTableViewCell
      let usernameField = usernameCell.descriptionLabel
 
@@ -525,7 +525,7 @@ class LoginManagerTests: KIFTestCase {
      tester().clearTextFromAndThenEnterText(intoCurrentFirstResponder: "changedusername")
      tester().tapView(withAccessibilityLabel: "Next")
 
-     firstResponder = UIApplication.shared.keyWindow?.firstResponder()
+     firstResponder = UIApplication.shared.keyWindowCustom?.firstResponder()
      let passwordCell = list.cellForRow(at: IndexPath(row: 2, section: 0)) as! LoginDetailTableViewCell
      let passwordField = passwordCell.descriptionLabel
 

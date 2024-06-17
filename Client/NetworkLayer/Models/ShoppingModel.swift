@@ -5,31 +5,19 @@
 import Foundation
 
 struct ShoppingCollectionModel: Codable {
-    var collections: [ShoppingCoollectionItemModel]
+    var collections: [ShoppingCollectionItemModel]
 }
 
-struct ShoppingCoollectionItemModel: Codable, Hashable {
-    var id: String
-    var title: String
-    var url: String
-    var thumbnail: String
-    
-    var hashValue: Int {
-        return id.hashValue << 15 + title.hashValue
-    }
+struct ShoppingCollectionItemModel: Codable {
+    var id: String?
+    var title: String?
+    var url: String?
+    var thumbnail: String?
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case title = "title"
         case url = "url"
         case thumbnail = "thumbnail"
-    }
-    
-    init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(String.self, forKey: .id)
-        self.title = try container.decode(String.self, forKey: .title)
-        self.url = (try? container.decode(String.self, forKey: .url)) ?? ""
-        self.thumbnail = (try? container.decode(String.self, forKey: .thumbnail)) ?? ""
     }
 }

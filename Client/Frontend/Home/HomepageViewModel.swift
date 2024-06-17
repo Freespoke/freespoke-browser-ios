@@ -15,10 +15,13 @@ protocol HomepageDataModelDelegate: AnyObject {
 
 class HomepageViewModel: FeatureFlaggable {
     struct UX {
-        static let spacingBetweenSections: CGFloat = 62
+        static let spacingBetweenSections: CGFloat = 18
         static let standardInset: CGFloat = 18
         static let iPadInset: CGFloat = 50
         static let iPadTopSiteInset: CGFloat = 25
+        
+        // Constants for SearchPageView
+        static let insetForSearchPageView: CGFloat = 0
 
         // Shadow
         static let shadowRadius: CGFloat = 4
@@ -36,7 +39,7 @@ class HomepageViewModel: FeatureFlaggable {
             guard interfaceIdiom != .phone else { return standardInset }
 
             // Handles multitasking on iPad
-            return traitCollection.horizontalSizeClass == .regular ? iPadInset : standardInset
+            return  insetForSearchPageView //traitCollection.horizontalSizeClass == .regular ? iPadInset : standardInset
         }
 
         static func topSiteLeadingInset(traitCollection: UITraitCollection) -> CGFloat {
@@ -85,9 +88,9 @@ class HomepageViewModel: FeatureFlaggable {
 
     // Child View models
     private var childViewModels: [HomepageViewModelProtocol]
-    var headerViewModel: HomeLogoHeaderViewModel
     var messageCardViewModel: HomepageMessageCardViewModel
     var topSiteViewModel: TopSitesViewModel
+    var trendingNewsModel: TrendingNewsModel
     var recentlySavedViewModel: RecentlySavedViewModel
     var jumpBackInViewModel: JumpBackInViewModel
     var historyHighlightsViewModel: HistoryHighlightsViewModel
@@ -97,7 +100,7 @@ class HomepageViewModel: FeatureFlaggable {
     var shouldDisplayHomeTabBanner: Bool {
         return messageCardViewModel.shouldDisplayMessageCard
     }
-
+        
     // MARK: - Initializers
     init(profile: Profile,
          isPrivate: Bool,
@@ -111,13 +114,13 @@ class HomepageViewModel: FeatureFlaggable {
         self.isZeroSearch = isZeroSearch
         self.theme = theme
 
-        self.headerViewModel = HomeLogoHeaderViewModel(profile: profile, theme: theme)
         let messageCardAdaptor = MessageCardDataAdaptorImplementation()
         self.messageCardViewModel = HomepageMessageCardViewModel(dataAdaptor: messageCardAdaptor, theme: theme)
         messageCardAdaptor.delegate = messageCardViewModel
         self.topSiteViewModel = TopSitesViewModel(profile: profile,
                                                   theme: theme,
                                                   wallpaperManager: wallpaperManager)
+        self.trendingNewsModel = TrendingNewsModel(profile: profile, theme: theme, wallpaperManager: wallpaperManager)
         self.wallpaperManager = wallpaperManager
 
         let jumpBackInAdaptor = JumpBackInDataAdaptorImplementation(profile: profile,
@@ -156,18 +159,19 @@ class HomepageViewModel: FeatureFlaggable {
         pocketDataAdaptor.delegate = pocketViewModel
 
         self.customizeButtonViewModel = CustomizeHomepageSectionViewModel(theme: theme)
-        self.childViewModels = [headerViewModel,
-                                messageCardViewModel,
+        self.childViewModels = [messageCardViewModel,
                                 topSiteViewModel,
-                                jumpBackInViewModel,
-                                recentlySavedViewModel,
+                                trendingNewsModel,
+//                                jumpBackInViewModel,
+//                                recentlySavedViewModel,
                                 historyHighlightsViewModel,
                                 pocketViewModel,
-                                customizeButtonViewModel]
+                                /*customizeButtonViewModel*/]
         self.isPrivate = isPrivate
 
         self.nimbus = nimbus
         topSiteViewModel.delegate = self
+        self.trendingNewsModel.delegate = self
         historyHighlightsViewModel.delegate = self
         recentlySavedViewModel.delegate = self
         pocketViewModel.delegate = self
@@ -177,7 +181,7 @@ class HomepageViewModel: FeatureFlaggable {
         Task {
             await jumpBackInAdaptor.setDelegate(delegate: jumpBackInViewModel)
         }
-
+        
         updateEnabledSections()
     }
 
@@ -217,6 +221,8 @@ class HomepageViewModel: FeatureFlaggable {
         childViewModels.forEach {
             if $0.shouldShow { shownSections.append($0.sectionType) }
         }
+        self.removeTrendingStory(trendingNews: self.trendingNewsModel.trendingStory)
+//        shownSections.remove(at: 0)
     }
 
     func refreshData(for traitCollection: UITraitCollection, size: CGSize) {
@@ -234,6 +240,19 @@ class HomepageViewModel: FeatureFlaggable {
     func getSectionViewModel(shownSection: Int) -> HomepageViewModelProtocol? {
         guard let actualSectionNumber = shownSections[safe: shownSection]?.rawValue else { return nil }
         return childViewModels[safe: actualSectionNumber]
+    }
+    
+    func updateTrendingNews(trendingNews: StoryFeedModel) {
+        self.removeTrendingStory(trendingNews: trendingNews)
+        self.trendingNewsModel.updateTrendingNews(trendingNews: trendingNews)
+    }
+    
+    func removeTrendingStory(trendingNews: StoryFeedModel?) {
+        if let stories = trendingNews?.stories, stories.isEmpty{
+            self.shownSections.removeAll(where: { $0 == .trendingNews })
+        } else if trendingNews?.stories == nil {
+            self.shownSections.removeAll(where: { $0 == .trendingNews })
+        }
     }
 }
 

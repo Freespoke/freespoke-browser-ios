@@ -132,11 +132,11 @@ class TabCell: UICollectionViewCell,
 
             faviconBG.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 10),
             faviconBG.centerXAnchor.constraint(equalTo: centerXAnchor),
-            faviconBG.heightAnchor.constraint(equalToConstant: TopSiteItemCell.UX.imageBackgroundSize.height),
-            faviconBG.widthAnchor.constraint(equalToConstant: TopSiteItemCell.UX.imageBackgroundSize.width),
+            faviconBG.heightAnchor.constraint(equalToConstant: BookmarkItemCell.UX.imageBackgroundSize.height),
+            faviconBG.widthAnchor.constraint(equalToConstant: BookmarkItemCell.UX.imageBackgroundSize.width),
 
-            smallFaviconView.heightAnchor.constraint(equalToConstant: TopSiteItemCell.UX.iconSize.height),
-            smallFaviconView.widthAnchor.constraint(equalToConstant: TopSiteItemCell.UX.iconSize.width),
+            smallFaviconView.heightAnchor.constraint(equalToConstant: BookmarkItemCell.UX.iconSize.height),
+            smallFaviconView.widthAnchor.constraint(equalToConstant: BookmarkItemCell.UX.iconSize.width),
             smallFaviconView.centerYAnchor.constraint(equalTo: faviconBG.centerYAnchor),
             smallFaviconView.centerXAnchor.constraint(equalTo: faviconBG.centerXAnchor),
         ])

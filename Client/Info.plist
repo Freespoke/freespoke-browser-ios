@@ -42,6 +42,7 @@
 				<string>$(MOZ_INTERNAL_URL_SCHEME)</string>
 				<string>http</string>
 				<string>https</string>
+				<string>freespokeapp</string>
 			</array>
 		</dict>
 	</array>
@@ -98,6 +99,8 @@
 	<string>Websites you visit may request your location.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Freespoke uses your microphone to record and upload audio.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Freespoke uses your microphone for speech recognition.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This lets you save photos.</string>
 	<key>NSUserActivityTypes</key>

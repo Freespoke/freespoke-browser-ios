@@ -66,3 +66,12 @@ extension UIView {
         layer.mask = maskLayer
     }
 }
+
+// MARK: - Global frames
+
+extension UIView {
+    var globalFrame: CGRect? {
+        guard let keyWindowCustom = UIApplication.shared.keyWindowCustom else { return nil }
+        return self.convert(self.bounds, to: keyWindowCustom)
+    }
+}

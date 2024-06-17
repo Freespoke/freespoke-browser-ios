@@ -108,6 +108,8 @@ class SiteTableViewController: UIViewController,
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
     }
 
     func reloadData() {
@@ -141,7 +143,7 @@ class SiteTableViewController: UIViewController,
             switch LegacyThemeManager.instance.currentName {
             case .normal:
                 header.textLabel?.textColor = .blackColor
-                header.contentView.backgroundColor = .gray7
+                header.contentView.backgroundColor = .neutralsGray07
                 
             case .dark:
                 header.textLabel?.textColor = .white
@@ -170,7 +172,7 @@ class SiteTableViewController: UIViewController,
 
         switch LegacyThemeManager.instance.currentName {
         case .normal:
-            tableView.backgroundColor = .gray7
+            tableView.backgroundColor = .neutralsGray07
             
         case .dark:
             tableView.backgroundColor = .darkBackground

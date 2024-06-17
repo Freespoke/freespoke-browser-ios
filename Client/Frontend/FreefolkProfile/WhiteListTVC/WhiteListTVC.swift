@@ -51,7 +51,7 @@ final class WhiteListTVC: UIViewController, Themeable {
     
     func applyTheme() {
         self.navigationView.applyTheme(currentTheme: self.themeManager.currentTheme)
-        self.view.backgroundColor = (self.themeManager.currentTheme.type == .dark) ? UIColor.black : .gray7
+        self.view.backgroundColor = (self.themeManager.currentTheme.type == .dark) ? UIColor.black : .neutralsGray07
         self.tableView.backgroundColor = .clear
         self.tableView.reloadData()
     }

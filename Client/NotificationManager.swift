@@ -152,3 +152,31 @@ class NotificationManager {
         center.add(request, withCompletionHandler: nil)
     }
 }
+
+// MARK: Handle Notification Payload
+
+extension NotificationManager {
+    func notificationHasSilentDeepLink(link: URL) -> Bool {
+        if let deepLink = DeepLink(urlString: link.absoluteString) {
+            switch deepLink {
+            case .settings,
+                    .homePanel,
+                    .defaultBrowser:
+                return false
+            case .getPremium:
+                return true
+            }
+        }
+        return false
+    }
+    
+    func handleSilentDeepLinkFromPush(_ link: URL) {
+        if let routerPath = NavigationPath(url: link) {
+            DispatchQueue.main.async {
+                guard let scene = UIApplication.shared.connectedScenes.first else { return }
+                guard let sceneDelegate = scene.delegate as? SceneDelegate else { return }
+                NavigationPath.handle(nav: routerPath, with: sceneDelegate.browserViewController)
+            }
+        }
+    }
+}

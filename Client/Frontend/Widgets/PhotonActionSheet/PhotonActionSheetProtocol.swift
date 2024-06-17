@@ -50,7 +50,7 @@ extension PhotonActionSheetProtocol {
 
         let pasteAction = SingleActionViewModel(title: .PasteTitle, iconString: ImageIdentifiers.paste) { _ in
             if let pasteboardContents = UIPasteboard.general.string {
-                urlBar.enterOverlayMode(pasteboardContents, pasted: true, search: true)
+                urlBar.enterOverlayMode(pasteboardContents, pasted: true, search: true, voiceInput: false)
             }
         }.items
 

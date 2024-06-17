@@ -16,6 +16,7 @@ protocol TabToolbarProtocol: AnyObject {
     var homeButton: ToolbarButton { get }
     var forwardButton: ToolbarButton { get }
     var backButton: ToolbarButton { get }
+    var electionButton: ToolbarButton { get }
     var multiStateButton: ToolbarButton { get }
     var actionButtons: [NotificationThemeable & UIButton] { get }
 
@@ -32,8 +33,10 @@ protocol TabToolbarProtocol: AnyObject {
 protocol TabToolbarDelegate: AnyObject {
     func tabToolbarDidPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton)
+    func tabToolbarDidPressElection(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton)
+    func tabToolbarDidLongPressElection(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidPressReload(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressReload(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidPressStop(_ tabToolbar: TabToolbarProtocol, button: UIButton)
@@ -60,10 +63,10 @@ open class TabToolbarHelper: NSObject {
     let ImageStop = UIImage.templateImageNamed("nav-stop")
     let ImageSearch = UIImage.templateImageNamed("nav-search")
     let ImageNewTab = UIImage.templateImageNamed("nav-add")
-    let ImageHome = UIImage.templateImageNamed("icon-menu-Home")
+    let ImageHome = UIImage.templateImageNamed("img_tabBar_icon_search")
     let ImageTabs = UIImage.templateImageNamed("icon-tabs")
-    
-    let ImageShop = UIImage.templateImageNamed("icon-election")
+    let ImageShop = UIImage.templateImageNamed("img_tabBar_icon_shop")
+    let ImageElection = UIImage.templateImageNamed("icon-election")
     let ImageNews = UIImage.templateImageNamed("icon-news")
     let ImageBack = UIImage.templateImageNamed("nav-back")?.imageFlippedForRightToLeftLayoutDirection()
     let ImageForward = UIImage.templateImageNamed("nav-forward")?.imageFlippedForRightToLeftLayoutDirection()
@@ -98,20 +101,28 @@ open class TabToolbarHelper: NSObject {
         let device = UIDevice.current.userInterfaceIdiom
         switch (state, device) {
         case (.home, _):
-            toolbar.forwardButton.setImage(ImageShop, for: .normal)
+            
+            // back button
             toolbar.backButton.setImage(ImageNews, for: .normal)
-            
-            toolbar.forwardButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
-            toolbar.forwardButton.setTitle("ELECTION", for: .normal)
-            toolbar.forwardButton.alignTextBelow()
-            
             toolbar.backButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
             toolbar.backButton.setTitle("NEWS", for: .normal)
             toolbar.backButton.alignTextBelow()
             
             toolbar.backButton.tag = 1
+            
+            // forward button
+            toolbar.forwardButton.setImage(ImageShop, for: .normal)
+            toolbar.forwardButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
+            toolbar.forwardButton.setTitle("SHOP", for: .normal)
+            toolbar.forwardButton.alignTextBelow()
             toolbar.forwardButton.tag = 1
             
+            // election button
+            toolbar.electionButton.setImage(ImageElection, for: .normal)
+            toolbar.electionButton.setTitle("ELECTION", for: .normal)
+            toolbar.electionButton.titleLabel?.font = UIFont(name: "SourceSansPro-SemiBold", size: 10)
+            toolbar.electionButton.alignTextBelow()
+
             toolbar.homeButton.isHome = true
             
             switch LegacyThemeManager.instance.currentName {
@@ -167,6 +178,7 @@ open class TabToolbarHelper: NSObject {
         self.toolbar = toolbar
         super.init()
 
+        // set back/news button
         toolbar.backButton.setImage(UIImage.templateImageNamed("nav-back")?.imageFlippedForRightToLeftLayoutDirection(), for: .normal)
         toolbar.backButton.accessibilityLabel = .TabToolbarBackAccessibilityLabel
         let longPressGestureBackButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBack))
@@ -176,17 +188,28 @@ open class TabToolbarHelper: NSObject {
         toolbar.backButton.setTitle("NEWS", for: .normal)
         toolbar.backButton.alignTextBelow()
 
+        // set forward/shop button
         toolbar.forwardButton.setImage(UIImage.templateImageNamed("nav-forward")?.imageFlippedForRightToLeftLayoutDirection(), for: .normal)
         toolbar.forwardButton.accessibilityLabel = .TabToolbarForwardAccessibilityLabel
         let longPressGestureForwardButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressForward))
         toolbar.forwardButton.addGestureRecognizer(longPressGestureForwardButton)
         toolbar.forwardButton.addTarget(self, action: #selector(didClickForward), for: .touchUpInside)
         
-        toolbar.forwardButton.setTitle("ELECTION", for: .normal)
+        toolbar.forwardButton.setTitle("SHOP", for: .normal)
         toolbar.forwardButton.alignTextBelow()
 
+        // set election button
+        toolbar.electionButton.setImage(ImageElection, for: .normal)
+        toolbar.electionButton.setTitle("ELECTION", for: .normal)
+        toolbar.electionButton.accessibilityLabel = .TabToolbarElectionAccessibilityLabel
+        let longPressGestureElectionButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressElection))
+        toolbar.electionButton.addGestureRecognizer(longPressGestureElectionButton)
+        toolbar.electionButton.addTarget(self, action: #selector(didClickElection), for: .touchUpInside)
+        toolbar.electionButton.alignTextBelow()
+        
+        // set multiStateButton
         if UIDevice.current.userInterfaceIdiom == .phone {
-            toolbar.multiStateButton.setImage(UIImage.templateImageNamed("icon-menu-Home"), for: .normal)
+            toolbar.multiStateButton.setImage(UIImage.templateImageNamed("img_tabBar_icon_search"), for: .normal)
         } else {
             toolbar.multiStateButton.setImage(UIImage.templateImageNamed("nav-refresh"), for: .normal)
         }
@@ -196,6 +219,7 @@ open class TabToolbarHelper: NSObject {
         toolbar.multiStateButton.addGestureRecognizer(longPressMultiStateButton)
         toolbar.multiStateButton.addTarget(self, action: #selector(didPressMultiStateButton), for: .touchUpInside)
         
+        // set tabsButton
         toolbar.tabsButton.contentMode = .center
         toolbar.tabsButton.setImage(UIImage.templateImageNamed("icon-tabs"), for: .normal)
         toolbar.tabsButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.settingsMenuButton
@@ -218,11 +242,11 @@ open class TabToolbarHelper: NSObject {
         toolbar.appMenuButton.addTarget(self, action: #selector(didClickMenu), for: .touchUpInside)
         toolbar.appMenuButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.settingsMenuButton
         
-        toolbar.appMenuButton.setTitle(" ", for: .normal)
+        toolbar.appMenuButton.setTitle("SETTINGS", for: .normal)
         toolbar.appMenuButton.alignTextBelow()
         
         toolbar.homeButton.contentMode = .center
-        toolbar.homeButton.setImage(UIImage.templateImageNamed("icon-menu-Home"), for: .normal)
+        toolbar.homeButton.setImage(UIImage.templateImageNamed("img_tabBar_icon_search"), for: .normal)
         toolbar.homeButton.accessibilityLabel = .AppMenu.Toolbar.HomeMenuButtonAccessibilityLabel
         toolbar.homeButton.addTarget(self, action: #selector(didClickHome), for: .touchUpInside)
         toolbar.homeButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.homeButton
@@ -275,11 +299,23 @@ open class TabToolbarHelper: NSObject {
         toolbar.tabToolbarDelegate?.tabToolbarDidPressForward(toolbar, button: toolbar.forwardButton)
         TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .navigateTabHistoryForward)
     }
+    
+    func didClickElection() {
+        toolbar.tabToolbarDelegate?.tabToolbarDidPressElection(toolbar, button: toolbar.electionButton)
+        TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .navigateTabHistoryElection)
+    }
 
     func didLongPressForward(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began {
             toolbar.tabToolbarDelegate?.tabToolbarDidLongPressForward(toolbar, button: toolbar.forwardButton)
             TelemetryWrapper.recordEvent(category: .action, method: .press, object: .navigateTabHistoryForward)
+        }
+    }
+    
+    func didLongPressElection(_ recognizer: UILongPressGestureRecognizer) {
+        if recognizer.state == .began {
+            toolbar.tabToolbarDelegate?.tabToolbarDidLongPressElection(toolbar, button: toolbar.electionButton)
+            TelemetryWrapper.recordEvent(category: .action, method: .press, object: .navigateTabHistoryElection)
         }
     }
 
@@ -289,7 +325,7 @@ open class TabToolbarHelper: NSObject {
 
     func didClickHome() {
         AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
-                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Home",
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "home",
                                           name: AnalyticsManager.MatomoName.clickName)
         
         toolbar.tabToolbarDelegate?.tabToolbarDidPressHome(toolbar, button: toolbar.appMenuButton)

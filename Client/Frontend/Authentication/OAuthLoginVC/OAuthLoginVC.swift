@@ -192,10 +192,10 @@ class OAuthLoginVC: UIViewController, Themeable {
                 let closeImage = UIImage(named: "img_close_onboarding")?.withTintColor(.whiteColor, renderingMode: .alwaysOriginal)
                 self.btnClose.setImage(closeImage, for: .normal)
             case .light:
-                self.view.backgroundColor = UIColor.gray7
-                self.topBackgroundView.backgroundColor = UIColor.gray7
-                self.webView.backgroundColor = UIColor.white // UIColor.gray7
-                self.webView.scrollView.backgroundColor = UIColor.gray7 // UIColor.gray7
+                self.view.backgroundColor = UIColor.neutralsGray07
+                self.topBackgroundView.backgroundColor = UIColor.neutralsGray07
+                self.webView.backgroundColor = UIColor.white // UIColor.neutralsGray07
+                self.webView.scrollView.backgroundColor = UIColor.neutralsGray07
                 self.loadingIndicatorImageName = "freespoke_loader_torch_light"
                 let closeImage = UIImage(named: "img_close_onboarding")?.withTintColor(.blackColor, renderingMode: .alwaysOriginal)
                 self.btnClose.setImage(closeImage, for: .normal)
@@ -325,9 +325,9 @@ class OAuthLoginVC: UIViewController, Themeable {
                         return
                     }
                     
-                    let apiAuth = FreespokeAuthModel(id: idToken,
+                    let apiAuth = FreespokeAuthModel(idToken: idToken,
                                                      accessToken: accessToken,
-                                                     refreshToken: refreshToken, 
+                                                     refreshToken: refreshToken,
                                                      magicLink: nil)
                     Keychain.authInfo = apiAuth
                     sSelf.oAuthAuthorizaionCompletion?(apiAuth, nil)

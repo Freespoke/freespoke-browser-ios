@@ -1274,11 +1274,16 @@ extension String {
 
 // MARK: - Activity Stream
 extension String {
-    public static let ASShortcutsTitle =  MZLocalizedString(
-        "ActivityStream.Shortcuts.SectionTitle",
+    public static let MyBookmarksTitle =  MZLocalizedString(
+        "ActivityStream.MyBookmarks.SectionTitle",
         tableName: nil,
-        value: "Shortcuts",
-        comment: "Section title label for Shortcuts")
+        value: "MY BOOKMARKS",
+        comment: "Section title label for My Bookmarks")
+    public static let TrendingNewsTitle =  MZLocalizedString(
+        "ActivityStream.TrendingNews.SectionTitle",
+        tableName: nil,
+        value: "TRENDING NEWS",
+        comment: "Section title label for Trending news")
     public static let RecentlySavedSectionTitle = MZLocalizedString(
         "ActivityStream.Library.Title",
         tableName: nil,
@@ -3760,7 +3765,7 @@ extension String {
 // MARK: - Tab Location View
 extension String {
     public static let TabLocationURLPlaceholder = MZLocalizedString(
-        "Search or enter address",
+        "Search anything privately...",
         tableName: nil,
         value: nil,
         comment: "The text shown in the URL bar on about:home")
@@ -3827,6 +3832,11 @@ extension String {
         tableName: nil,
         value: "Search",
         comment: "Accessibility Label for the tab toolbar Search button")
+    public static let TabToolbarElectionAccessibilityLabel = MZLocalizedString(
+        "Election",
+        tableName: nil,
+        value: nil,
+        comment: "Accessibility label for the Election button in the tab toolbar.")
     public static let TabToolbarBackAccessibilityLabel = MZLocalizedString(
         "Back",
         tableName: nil,

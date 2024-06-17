@@ -282,7 +282,7 @@ class LibraryViewModelTests: XCTestCase {
         XCTAssertEqual(toolbarItems.count, 4, "Expected Edit button and flexibleSpace")
     }
 
-    func testHistoryShouldDismissOnDone_ForSearch() {
+    func testHistoryShouldDismissOnDone() {
         setup(panelType: .history)
         guard let panel = subject.currentPanel as? HistoryPanel else {
             XCTFail("Expected history panel")

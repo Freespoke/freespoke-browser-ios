@@ -150,7 +150,7 @@ class FreespokeAuthService {
                     return
                 }
                 
-                let apiAuth = FreespokeAuthModel(id: idToken,
+                let apiAuth = FreespokeAuthModel(idToken: idToken,
                                                  accessToken: accessToken,
                                                  refreshToken: refreshToken,
                                                  magicLink: nil)

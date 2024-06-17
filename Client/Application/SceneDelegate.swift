@@ -97,7 +97,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         BranchScene.shared().scene(scene, openURLContexts: URLContexts)
         
         guard let url = URLContexts.first?.url,
-              let routerPath = NavigationPath(url: url) else { return }
+              let routerPath = NavigationPath(url: url) else {
+            return
+        }
 
         if profile.prefs.boolForKey(PrefsKeys.AppExtensionTelemetryOpenUrl) != nil {
             profile.prefs.removeObjectForKey(PrefsKeys.AppExtensionTelemetryOpenUrl)

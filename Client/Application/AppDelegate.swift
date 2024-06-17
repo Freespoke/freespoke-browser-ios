@@ -91,6 +91,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Branch init
         self.setupBranchSDK(launchOptions: launchOptions)
         
+        self.setupOneSignal(with: launchOptions)
+        
         // pushNotificationSetup()
         appLaunchUtil?.setUpPostLaunchDependencies()
         backgroundSyncUtil = BackgroundSyncUtil(profile: profile, application: application)
@@ -139,20 +141,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             UserDefaults.standard.set(NimbusFeatureFlagIsSet.sponsoredTiles.rawValue, forKey: NimbusFeatureFlagIsSet.sponsoredTiles.rawValue)
         }
-        
-        // OneSignal initialization
-        OneSignal.initWithLaunchOptions(launchOptions)
-        OneSignal.setLaunchURLsInApp(true)
-        
-        // One Signal Secret Key
-        OneSignal.setAppId(Constants.OneSignalConstants.oneSignalId)
-        
-        UNUserNotificationCenter.current().delegate = self
-        
-//        // Ask for setup notification setting
-//        OneSignal.promptForPushNotifications(userResponse: { accepted in
-//            print("User accepted notification: \(accepted)")
-//        })
         
         // Matomo tracker
         MatomoTracker.shared.isOptedOut = false
@@ -352,6 +340,39 @@ extension AppDelegate {
         configuration.delegateClass = connectingSceneSession.configuration.delegateClass
         
         return configuration
+    }
+}
+
+// MARK: - Setup OneSignal
+
+extension AppDelegate {
+    private func setupOneSignal(with launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        UNUserNotificationCenter.current().delegate = self
+        UIApplication.shared.registerForRemoteNotifications()
+        
+        // Remove this method to stop OneSignal Debugging
+//        OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+        
+        // OneSignal initialization
+        OneSignal.initWithLaunchOptions(launchOptions)
+        OneSignal.setLaunchURLsInApp(true)
+        
+        // One Signal Secret Key
+        OneSignal.setAppId(Constants.OneSignalConstants.oneSignalId)
+        
+//        OneSignal.sendTags(["is_test": "true"])
+        
+        //        // Ask for setup notification setting
+        //        OneSignal.promptForPushNotifications(userResponse: { accepted in
+        //            print("User accepted notification: \(accepted)")
+        //        })
+        let state = OneSignal.getDeviceState()
+        if let userId = state?.userId {
+            print("DEBUG: OneSignal Player ID: \(userId)")
+            // Save this userId for later use
+        } else {
+            print("DEBUG: OneSignal No Player ID")
+        }
     }
 }
 

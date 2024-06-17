@@ -49,7 +49,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 //        case .topSites:
 //            tabManager.startAtHomeCheck()
 //        }
-        
+        self.urlBar.leaveOverlayMode(didCancel: true)
         TelemetryWrapper.recordEvent(category: .action, method: .tap, object: .home)
     }
 
@@ -82,7 +82,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     func tabToolbarDidPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
             AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
-                                              action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "News",
+                                              action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "news",
                                               name: AnalyticsManager.MatomoName.clickName)
             
             openLinkURL(Constants.AppInternalBrowserURLs.newsURL)
@@ -105,6 +105,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             
             tabManager.selectedTab?.goBack()
         }
+        self.urlBar.leaveOverlayMode(didCancel: true)
     }
 
     func tabToolbarDidLongPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -112,16 +113,27 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         generator.impactOccurred()
         showBackForwardList()
     }
+    
+    func tabToolbarDidPressElection(_ tabToolbar: any TabToolbarProtocol, button: UIButton) {
+        AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "election",
+                                          name: AnalyticsManager.MatomoName.clickName)
+        self.urlBar.leaveOverlayMode(didCancel: true)
+        openLinkURL(Constants.AppInternalBrowserURLs.electionURL)
+    }
+    
+    func tabToolbarDidLongPressElection(_ tabToolbar: any TabToolbarProtocol, button: UIButton) {
+        
+    }
 
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         if button.tag == 1 {
             AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
-                                              action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Election",
+                                              action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "shop",
                                               name: AnalyticsManager.MatomoName.clickName)
             
-            openLinkURL(Constants.AppInternalBrowserURLs.electionURL)
-        }
-        else {
+            openLinkURL(Constants.AppInternalBrowserURLs.viewMoreShopsURL)
+        } else {
             /*
             if !isNewTab {
                 if UIDevice.current.userInterfaceIdiom == .phone {
@@ -137,6 +149,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             
             tabManager.selectedTab?.goForward()
         }
+        self.urlBar.leaveOverlayMode(didCancel: true)
     }
 
     func tabToolbarDidLongPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -159,7 +172,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         // Ensure that any keyboards or spinners are dismissed before presenting the menu
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
-                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Menu",
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "menu",
                                           name: AnalyticsManager.MatomoName.clickName)
 
         // Logs homePageMenu or siteMenu depending if HomePage is open or not
@@ -174,7 +187,8 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         menuHelper.menuActionDelegate = self
         menuHelper.sendToDeviceDelegate = self
         
-        menuHelper.getToolbarActions(navigationController: navigationController) { actions in
+        menuHelper.getToolbarActions(navigationController: navigationController) { [weak self] actions in
+            guard let self = self else { return }
             let viewModel = PhotonActionSheetViewModel(actions: actions, modalStyle: .popover, isMainMenu: true, isMainMenuInverted: false)
             self.presentSheetWith(viewModel: viewModel, on: self, from: button)
         }
@@ -199,7 +213,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         AnalyticsManager.trackMatomoEvent(category: .appMenuCategory,
-                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "Tabs",
+                                          action: AnalyticsManager.MatomoAction.appMenuTab.rawValue + "tabs",
                                           name: AnalyticsManager.MatomoName.clickName)
         
         let boolBookmarksProfile = profile.prefs.boolForKey("ContextualHintBookmarksLocationKey") ?? false
@@ -211,6 +225,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         else {
             showBookamrksAlert()
         }
+        self.urlBar.leaveOverlayMode(didCancel: true)
     }
 
     func getTabToolbarLongPressActionsForModeSwitching() -> [PhotonRowActions] {

@@ -910,7 +910,8 @@ class Tab: NSObject {
         // For WKWebView background color to take effect, isOpaque must be false,
         // which is counter-intuitive. Default is true. The color is previously
         // set to black in the WKWebView init.
-        webView?.isOpaque = !nightMode
+        
+//        webView?.isOpaque = !nightMode
         
         print("TEST: injectUserScriptsIntoTab: ", nightMode)
         
@@ -927,6 +928,8 @@ class Tab: NSObject {
 //        } else {
 //            UserScriptManager.shared.injectUserScriptsIntoTab(self, nightMode: nightMode, noImageMode: noImageMode)
 //        }
+        
+        self.webView?.isOpaque = true
     }
 
     func getProviderForUrl() -> SearchEngine {

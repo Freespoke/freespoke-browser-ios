@@ -66,23 +66,42 @@ class BaseAlphaStackView: UIStackView, AlphaDimmable {
 
     // MARK: - Spacer view
 
-    private var insetSpacer: UIView?
+    private var insetTopSpacer: UIView?
+    private var insetBottomSpacer: UIView?
+    
+    func addTopInsetSpacer(spacerHeight: CGFloat) {
+        guard insetTopSpacer == nil else { return }
 
-    func addBottomInsetSpacer(spacerHeight: CGFloat) {
-        guard insetSpacer == nil else { return }
-
-        insetSpacer = UIView()
-        insetSpacer!.snp.makeConstraints { make in
+        insetTopSpacer = UIView()
+        insetTopSpacer!.snp.makeConstraints { make in
             make.height.equalTo(spacerHeight)
         }
-        addArrangedViewToBottom(insetSpacer!)
+        addArrangedViewToTop(insetTopSpacer!)
+    }
+
+    func removeTopInsetSpacer() {
+        guard let insetTopSpacer = self.insetTopSpacer else { return }
+
+        removeArrangedView(insetTopSpacer)
+        self.insetTopSpacer = nil
+        self.layoutIfNeeded()
+    }
+
+    func addBottomInsetSpacer(spacerHeight: CGFloat) {
+        guard insetBottomSpacer == nil else { return }
+
+        insetBottomSpacer = UIView()
+        insetBottomSpacer!.snp.makeConstraints { make in
+            make.height.equalTo(spacerHeight)
+        }
+        addArrangedViewToBottom(insetBottomSpacer!)
     }
 
     func removeBottomInsetSpacer() {
-        guard let insetSpacer = self.insetSpacer else { return }
+        guard let insetSpacer = self.insetBottomSpacer else { return }
 
         removeArrangedView(insetSpacer)
-        self.insetSpacer = nil
+        self.insetBottomSpacer = nil
         self.layoutIfNeeded()
     }
 
@@ -108,13 +127,15 @@ extension BaseAlphaStackView: NotificationThemeable {
             let color = isClearBackground ? .clear : UIColor.legacyTheme.browser.background
             backgroundColor = color
             keyboardSpacer?.backgroundColor = color
-            insetSpacer?.backgroundColor = color
+            insetTopSpacer?.backgroundColor = color
+            insetBottomSpacer?.backgroundColor = color
             
         case .dark:
             let color = isClearBackground ? .clear : UIColor.darkBackground
             backgroundColor = color
             keyboardSpacer?.backgroundColor = color
-            insetSpacer?.backgroundColor = color
+            insetTopSpacer?.backgroundColor = color
+            insetBottomSpacer?.backgroundColor = color
         }
     }
 }

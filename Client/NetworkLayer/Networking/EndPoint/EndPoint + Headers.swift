@@ -15,7 +15,10 @@ extension EndPoint {
             return [NetworkLayerConstants.HeaderKeys.authorization: "\(NetworkLayerConstants.HeaderKeys.bearer) \(Keychain.authInfo?.accessToken ?? "")",
                     NetworkLayerConstants.HeaderKeys.contentType: NetworkLayerConstants.HeaderValue.applicationJson
             ]
-        case .getShoppingCollection:
+        case .getBreakingNews,
+                .getStoryFeed,
+                .getAdvertisement,
+                .getShoppingCollection:
             return nil
         }
     }

@@ -90,21 +90,15 @@ extension BrowserViewController: URLBarDelegate {
             let isBookmarkedSite = profile.places.isBookmarked(url: tabUrl.absoluteString).value.successValue ?? false
             
             if !isBookmarkedSite {
-                tabLocationView.shareButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.actionRemoveBookmark), for: .normal)
+                tabLocationView.rightToolBarView.btnBookmark.setImage(UIImage.templateImageNamed(ImageIdentifiers.actionRemoveBookmark), for: .normal)
                 
                 self.addBookmark(url: tabUrl.absoluteString, title: selectedtab.title)
             }
             else {
-                tabLocationView.shareButton.setImage(UIImage.templateImageNamed(ImageIdentifiers.addToBookmark), for: .normal)
+                tabLocationView.rightToolBarView.btnBookmark.setImage(UIImage.templateImageNamed(ImageIdentifiers.addToBookmark), for: .normal)
                 
                 self.removeBookmark(url: tabUrl.absoluteString)
             }
-            
-            //            presentShareSheet(tabUrl,
-            //                              tab: selectedtab,
-            //                              sourceView: shareView,
-            //                              sourceRect: CGRect.null,
-            //                              arrowDirection: isBottomSearchBar ? .down : .up)
         }
     }
     
@@ -195,7 +189,7 @@ extension BrowserViewController: URLBarDelegate {
             } else {
                 etpVC.asPopover = true
                 etpVC.modalPresentationStyle = .popover
-                etpVC.popoverPresentationController?.sourceView = urlBar.locationView.trackingProtectionButton
+                etpVC.popoverPresentationController?.sourceView = urlBar.locationView.lockURLView.btnTrackingPtotection
                 etpVC.popoverPresentationController?.permittedArrowDirections = .up
                 etpVC.popoverPresentationController?.delegate = self
             }
@@ -400,6 +394,7 @@ extension BrowserViewController: URLBarDelegate {
             
             setValues(isHome: isHome, isNewTab: isNewTab, isSearching: true)
         }
+        self.searchBarMoveToTop()
     }
 
     func urlBarDidLeaveOverlayMode(_ urlBar: URLBarView) {
@@ -407,10 +402,45 @@ extension BrowserViewController: URLBarDelegate {
         
         destroySearchController()
         updateInContentHomePanel(tabManager.selectedTab?.url as URL?)
+        self.searchBarMoveToBottom()
     }
 
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView) {
         dismissVisibleMenus()
+    }
+    
+    func searchBarMoveToTop() {
+        let newPositionIsBottom = false
+        let newParent = header
+        urlBar.removeFromParent()
+        urlBar.addToParent(parent: newParent)
+
+        if let readerModeBar = readerModeBar {
+            readerModeBar.removeFromParent()
+            readerModeBar.addToParent(parent: newParent, addToTop: true)
+        }
+        
+        self.isBottomSearchBar = newPositionIsBottom
+        updateViewConstraints()
+        toolbar.setNeedsDisplay()
+        urlBar.updateConstraints()
+    }
+    
+    func searchBarMoveToBottom() {
+        let newPositionIsBottom = true
+        let newParent = overKeyboardContainer
+        urlBar.removeFromParent()
+        urlBar.addToParent(parent: newParent)
+
+        if let readerModeBar = readerModeBar {
+            readerModeBar.removeFromParent()
+            readerModeBar.addToParent(parent: newParent, addToTop: false)
+        }
+        
+        self.isBottomSearchBar = newPositionIsBottom
+        updateViewConstraints()
+        toolbar.setNeedsDisplay()
+        urlBar.updateConstraints()
     }
 }
 

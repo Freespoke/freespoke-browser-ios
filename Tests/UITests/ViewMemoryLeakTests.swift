@@ -84,7 +84,7 @@ class ViewMemoryLeakTests: KIFTestCase, UITextFieldDelegate {
     }
 
     private func getTopViewController() -> UIViewController {
-        //return (UIApplication.sharedApplication().keyWindow!.rootViewController as! UINavigationController).topViewController!
+        //return (UIApplication.sharedApplication().keyWindowCustom!.rootViewController as! UINavigationController).topViewController!
         return UIApplication.sharedApplication().keyWindow!.rootViewController!
     }
 

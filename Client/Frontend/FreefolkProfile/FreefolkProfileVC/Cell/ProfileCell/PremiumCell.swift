@@ -130,7 +130,7 @@ class PremiumCell: UITableViewCell {
     
     private func applyTheme() {
         if let theme = currentTheme {
-            self.backgroundColor = (theme.type == .light) ? .gray7 : .clear
+            self.backgroundColor = (theme.type == .light) ? .neutralsGray07 : .clear
             self.titleView.titleLabel.textColor = (theme.type == .light) ? .blackColor : .white
             self.borderView.layer.borderColor = (theme.type == .light) ? UIColor.whiteColor.cgColor : UIColor.blackColor.cgColor
         }

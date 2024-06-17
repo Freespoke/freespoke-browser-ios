@@ -452,6 +452,7 @@ extension TelemetryWrapper {
         case navigateTabHistoryBack = "navigate-tab-history-back"
         case navigateTabHistoryBackSwipe = "navigate-tab-history-back-swipe"
         case navigateTabHistoryForward = "navigate-tab-history-forward"
+        case navigateTabHistoryElection = "navigate-tab-history-election"
         case nightModeEnabled = "night-mode-enabled"
         case nightModeDisabled = "night-mode-disabled"
         case logins = "logins-and-passwords"
